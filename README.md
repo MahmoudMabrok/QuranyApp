@@ -1,0 +1,2 @@
+# QuranyApp
+Simple HolyQuran app
