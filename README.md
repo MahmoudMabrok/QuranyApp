@@ -1,6 +1,8 @@
 # QuranyApp
 Simple HolyQuran app
 
+[Google Play Link ](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
+
 # Features 
 - Go to specific sura by Scrolling and click.
 - Go to specific sura by its Num.
