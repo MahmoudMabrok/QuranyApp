@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/_16sdp">
+
+
+    <EditText
+        android:id="@+id/edSurahNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:hint="@string/enter_surah_num"
+        android:inputType="numberDecimal"
+        android:textSize="@dimen/_15ssp" />
+
+    <EditText
+        android:id="@+id/edSurahName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:hint="Enter Surah Name"
+        android:inputType="text"
+        android:textSize="@dimen/_15ssp" />
+
+    <Button
+        android:id="@+id/btnGoToSura"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="#ffaadd"
+        android:text="@string/go"
+        android:textSize="@dimen/_15ssp" />
+
+    <Button
+        android:id="@+id/btnGoToSuraByName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffaadd"
+        android:text="@string/go_by_name"
+        android:textSize="@dimen/_15ssp" />
+
+</LinearLayout>

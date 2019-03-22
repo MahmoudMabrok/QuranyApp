@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_sura"
+    android:orientation="vertical"
+    tools:context=".feature.show_sura_ayas.ShowSuarhAyas">
+
+    <TextView
+        android:id="@+id/tvSuraNameShowAyas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:alpha="@android:integer/config_mediumAnimTime"
+        android:capitalize="characters"
+        android:drawableStart="@drawable/ic_phasel"
+        android:drawableEnd="@drawable/ic_phasel"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/_22ssp"
+        tools:text="HHH" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvAyahs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/_25ssp"
+            tools:text="Hello" />
+
+    </ScrollView>
+
+</LinearLayout>
