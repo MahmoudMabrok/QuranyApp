@@ -9,4 +9,11 @@
         android:title="Go to Surah"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/actionGoToLastRead"
+        android:orderInCategory="100"
+        android:title="Go to Latest Read"
+        app:showAsAction="never" />
+
+
 </menu>

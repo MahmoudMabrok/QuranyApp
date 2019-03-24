@@ -94,4 +94,5 @@
     <string name="enter_surah_num">Enter Surah Num</string>
     <string name="go">Go By Num</string>
     <string name="go_by_name">Go By Name</string>
+    <string name="saved">^_^ Saved ^_^</string>
 </resources>

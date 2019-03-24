@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_16sdp"
         android:alpha="@android:integer/config_mediumAnimTime"
-        android:capitalize="characters"
         android:drawableStart="@drawable/ic_phasel"
         android:drawableEnd="@drawable/ic_phasel"
         android:gravity="center_horizontal"
@@ -21,13 +20,14 @@
         tools:text="HHH" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvAyahs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textSize="@dimen/_25ssp"
             tools:text="Hello" />

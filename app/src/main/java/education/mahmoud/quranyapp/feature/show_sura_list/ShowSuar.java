@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -16,7 +17,11 @@ import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.Util.Data;
+import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowSuarhAyas;
+import safety.com.br.android_shake_detector.core.ShakeCallback;
+import safety.com.br.android_shake_detector.core.ShakeDetector;
+import safety.com.br.android_shake_detector.core.ShakeOptions;
 
 public class ShowSuar extends AppCompatActivity {
 
@@ -32,6 +37,24 @@ public class ShowSuar extends AppCompatActivity {
         initRv();
 
 
+        ShakeOptions options = new ShakeOptions()
+                .interval(1000)
+                .shakeCount(2)
+                .sensibility(2.0f);
+
+        ShakeDetector shakeDetector = new ShakeDetector(options).start(this, new ShakeCallback() {
+            @Override
+            public void onShake() {
+                int index = Repository.getInstance(ShowSuar.this).getLastSura();
+                if (index == -1) {
+                    Toast.makeText(ShowSuar.this, "You Have no saved recititaion", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                gotoSuraa(index);
+            }
+        });
+
     }
 
     private void initRv() {
@@ -44,15 +67,18 @@ public class ShowSuar extends AppCompatActivity {
         suraAdapter.setSuraListner(new SuraAdapter.SuraListner() {
             @Override
             public void onSura(int pos) {
-                Intent openAcivity = new Intent(ShowSuar.this, ShowSuarhAyas.class);
-                openAcivity.putExtra(Constants.SURAH_INDEX, pos);
-                startActivity(openAcivity);
+                gotoSuraa(pos);
             }
         });
 
 
     }
 
+    public void gotoSuraa(int pos) {
+        Intent openAcivity = new Intent(ShowSuar.this, ShowSuarhAyas.class);
+        openAcivity.putExtra(Constants.SURAH_INDEX, pos);
+        startActivity(openAcivity);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_sura_details, menu);
@@ -66,8 +92,20 @@ public class ShowSuar extends AppCompatActivity {
             case R.id.action_settings:
                 openGoToSura();
                 break;
+            case R.id.actionGoToLastRead:
+                gotoLastRead();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void gotoLastRead() {
+        int index = Repository.getInstance(ShowSuar.this).getLastSura();
+        if (index == -1) {
+            Toast.makeText(ShowSuar.this, "You Have no saved recitation", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        gotoSuraa(index);
     }
 
     private void openGoToSura() {
