@@ -2,6 +2,7 @@ package education.mahmoud.quranyapp.feature.show_sura_ayas;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.Util.Data;
 import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
+import education.mahmoud.quranyapp.feature.show_sura_list.ShowSuar;
 import education.mahmoud.quranyapp.model.Aya;
 import education.mahmoud.quranyapp.model.Sura;
 
@@ -27,27 +29,32 @@ public class ShowSuarhAyas extends AppCompatActivity {
 
 
     int index;
+    int scroll ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_suarh_ayas);
         ButterKnife.bind(this);
 
+        // get index from intent
         index = getIntent().getIntExtra(Constants.SURAH_INDEX, 0);
         tvSuraNameShowAyas.setText(Data.SURA_NAMES[index]);
         parseSura(index);
-
+        // add last sura
         Repository.getInstance(ShowSuarhAyas.this).addLastSura(index);
-        Toast.makeText(ShowSuarhAyas.this, R.string.saved, Toast.LENGTH_SHORT).show();
 
+        // check if get from last read option
+        scroll = getIntent().getIntExtra(Constants.LAST_INDEX_Scroll, 0);
+        showMessage(""+scroll);
 
         scrollView.post(new Runnable() {
             public void run() {
-                scrollView.smoothScrollTo(0, 700);
+                scrollView.smoothScrollTo(0, scroll);
             }
         });
 
-
+        int scroll1 = Repository.getInstance(this).getLastSuraWithScroll();
+        showMessage("** "+ scroll1);
 
     }
 
@@ -72,5 +79,14 @@ public class ShowSuarhAyas extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Repository.getInstance(this).addLastSura(index);
+        int lastScroll = scrollView.getScrollY() ;
+        Repository.getInstance(this).addLastSuraWithScroll(lastScroll);
     }
+
+    private static final String TAG = "ShowSuarhAyas";
+
+     private void showMessage(String message) {
+//             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+         Log.d(TAG, message);
+       }
 }

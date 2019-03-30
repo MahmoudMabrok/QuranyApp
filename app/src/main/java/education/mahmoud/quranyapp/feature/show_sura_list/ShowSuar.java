@@ -51,7 +51,7 @@ public class ShowSuar extends AppCompatActivity {
                     return;
                 }
 
-                gotoSuraa(index);
+                gotoSuraa(index , 0 );
             }
         });
 
@@ -67,18 +67,13 @@ public class ShowSuar extends AppCompatActivity {
         suraAdapter.setSuraListner(new SuraAdapter.SuraListner() {
             @Override
             public void onSura(int pos) {
-                gotoSuraa(pos);
+                gotoSuraa(pos , 0 );
             }
         });
 
 
     }
 
-    public void gotoSuraa(int pos) {
-        Intent openAcivity = new Intent(ShowSuar.this, ShowSuarhAyas.class);
-        openAcivity.putExtra(Constants.SURAH_INDEX, pos);
-        startActivity(openAcivity);
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_sura_details, menu);
@@ -99,13 +94,21 @@ public class ShowSuar extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void gotoLastRead() {
+    private void gotoLastRead(){
         int index = Repository.getInstance(ShowSuar.this).getLastSura();
+        int scroll = Repository.getInstance(ShowSuar.this).getLastSuraWithScroll();
         if (index == -1) {
             Toast.makeText(ShowSuar.this, "You Have no saved recitation", Toast.LENGTH_SHORT).show();
             return;
         }
-        gotoSuraa(index);
+        gotoSuraa(index , scroll);
+    }
+
+    private void gotoSuraa(int index, int scroll) {
+        Intent openAcivity = new Intent(ShowSuar.this, ShowSuarhAyas.class);
+        openAcivity.putExtra(Constants.SURAH_INDEX, index);
+        openAcivity.putExtra(Constants.LAST_INDEX_Scroll, scroll);
+        startActivity(openAcivity);
     }
 
     private void openGoToSura() {

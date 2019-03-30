@@ -13,15 +13,15 @@ public class LocalShared {
 
     public LocalShared(Context context) {
         preferences = context.getSharedPreferences("quran_data", Context.MODE_PRIVATE);
-        editor = preferences.edit();
+//        editor = preferences.edit();
     }
 
     public void addLastSura(int index) {
-        editor.putInt(Constants.LAST_INDEX, index).commit();
+       preferences.edit().putInt(Constants.LAST_INDEX, index).apply();
     }
 
     public void addLastSuraWithScroll(int index) {
-        editor.putInt(Constants.LAST_INDEX_Scroll, index).apply();
+       preferences.edit().putInt(Constants.LAST_INDEX_Scroll, index).apply();
     }
 
 

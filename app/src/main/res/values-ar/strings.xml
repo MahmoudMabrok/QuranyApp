@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">القران الكريم</string>
+    <string name="title_activity_sura_details">SuraDetails</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+    </string>
+    <string name="action_settings">اذهب الى السورة..</string>
+    <string name="enter_surah_num">ادخل رقم السورة</string>
+    <string name="go">اذهب الى السورة برقمها</string>
+    <string name="go_by_name">اذهب الى السورة بالاسم</string>
+    <string name="saved">^_^ تم الحفظ ^_^</string>
+</resources>
