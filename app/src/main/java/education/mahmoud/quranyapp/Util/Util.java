@@ -27,14 +27,26 @@ public class Util {
              BufferedInputStream bufferedIn = new BufferedInputStream(fileIn);
              Reader reader = new InputStreamReader(bufferedIn, StandardCharsets.UTF_8)) {
             Quran quran = new Gson().fromJson(reader, Quran.class);
-
             return quran.getSurahs()[index];
 
         } catch (Exception e) {
             return null;
         }
-
     }
+
+    public static Quran getQuran(Context context) {
+        try (InputStream fileIn = context.getAssets().open("data.json");
+             BufferedInputStream bufferedIn = new BufferedInputStream(fileIn);
+             Reader reader = new InputStreamReader(bufferedIn, StandardCharsets.UTF_8)) {
+            Quran quran = new Gson().fromJson(reader, Quran.class);
+            return quran;
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
 
     public static Spannable getSpannable(String text) {
 

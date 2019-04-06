@@ -17,11 +17,11 @@ public class LocalShared {
     }
 
     public void addLastSura(int index) {
-       preferences.edit().putInt(Constants.LAST_INDEX, index).apply();
+        preferences.edit().putInt(Constants.LAST_INDEX, index).apply();
     }
 
     public void addLastSuraWithScroll(int index) {
-       preferences.edit().putInt(Constants.LAST_INDEX_Scroll, index).apply();
+        preferences.edit().putInt(Constants.LAST_INDEX_Scroll, index).apply();
     }
 
 
