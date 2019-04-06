@@ -6,6 +6,8 @@ import android.util.Log;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
@@ -13,8 +15,7 @@ import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.Util.Data;
 import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
-import education.mahmoud.quranyapp.model.Aya;
-import education.mahmoud.quranyapp.model.Sura;
+import education.mahmoud.quranyapp.data_layer.local.AyahItem;
 
 public class ShowSuarhAyas extends AppCompatActivity {
 
@@ -25,26 +26,14 @@ public class ShowSuarhAyas extends AppCompatActivity {
     @BindView(R.id.scrollView)
     ScrollView scrollView;
 
+    private Repository repository;
+
 
     int index;
     private static final String TAG = "ShowSuarhAyas";
     int scroll;
 
-    private void parseSura(int index) {
-        Sura sura = Util.getSurah(this, index);
-        Aya[] ayas = sura.getAyahs();
-        StringBuilder builder = new StringBuilder();
 
-        String aya;
-        for (int i = 0; i < ayas.length; i++) {
-            aya = ayas[i].getText();
-            //  aya  = Util.getSpannable(aya).toString();
-            builder.append(aya + "(" + ayas[i].getNum() + ")");
-            //      System.out.println("ayas = " + ayas[i].getText());
-        }
-        String res = builder.toString();
-        tvAyahs.setText(Util.getSpannable(res), TextView.BufferType.SPANNABLE);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,26 +41,39 @@ public class ShowSuarhAyas extends AppCompatActivity {
         setContentView(R.layout.activity_show_suarh_ayas);
         ButterKnife.bind(this);
 
+        repository = Repository.getInstance(getApplication());
+
         // get index from intent
         index = getIntent().getIntExtra(Constants.SURAH_INDEX, 0);
         tvSuraNameShowAyas.setText(Data.SURA_NAMES[index]);
-        parseSura(index);
+
+        loadSurahFromDb2UI(index);
         // add last sura
         Repository.getInstance(getApplication()).addLastSura(index);
-
         // check if get from last read option
         scroll = getIntent().getIntExtra(Constants.LAST_INDEX_Scroll, 0);
-        showMessage("" + scroll);
-
         scrollView.post(new Runnable() {
             public void run() {
                 scrollView.smoothScrollTo(0, scroll);
             }
         });
-
         int scroll1 = Repository.getInstance(getApplication()).getLastSuraWithScroll();
-        showMessage("** " + scroll1);
 
+    }
+
+    private void loadSurahFromDb2UI(int index) {
+        index++; // index in db start from 1
+        StringBuilder builder = new StringBuilder();
+        List<AyahItem> ayahs = repository.getAyahsOfSura(index);
+        String aya;
+        for (AyahItem ayahItem : ayahs) {
+            aya = ayahItem.getText();
+            //  aya  = Util.getSpannable(aya).toString();
+            builder.append(aya + "(" + ayahItem.getAyahInSurahIndex() + ")");
+            //      System.out.println("ayas = " + ayas[i].getText());
+        }
+        String res = builder.toString();
+        tvAyahs.setText(Util.getSpannable(res), TextView.BufferType.SPANNABLE);
     }
 
     @Override

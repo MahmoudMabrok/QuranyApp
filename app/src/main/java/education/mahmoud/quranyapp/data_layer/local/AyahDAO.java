@@ -17,7 +17,7 @@ public interface AyahDAO {
     @Update
     public void updateAyah(AyahItem item);
 
-    @Query("select  * from ayahs where `surahIndex` = :id")
+    @Query("select  * from ayahs where `surahIndex` = :id order by ayahInSurahIndex asc")
     public List<AyahItem> getAllAyahOfSurahIndex(int id);
 
     @Query("select  * from ayahs where `ayahIndex` = :id")

@@ -47,14 +47,13 @@ public class ShowSuar extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    checkDb();
+                    fillDBfromJson();
                 }
             }).start();
 
     }
 
-    private void checkDb() {
-
+    private void fillDBfromJson() {
         Quran quran = Util.getQuran(this);
         int ayahIndex = 1, surahIndex = 1;
         for (Sura sura : quran != null ? quran.getSurahs() : new Sura[0]) {

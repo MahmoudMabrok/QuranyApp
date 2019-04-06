@@ -2,6 +2,8 @@ package education.mahmoud.quranyapp.data_layer;
 
 import android.app.Application;
 
+import java.util.List;
+
 import education.mahmoud.quranyapp.data_layer.local.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.LocalShared;
 import education.mahmoud.quranyapp.data_layer.local.QuranDB;
@@ -48,9 +50,12 @@ public class Repository {
     public void addAyah(AyahItem item) {
         quranDB.ayahDAO().addAyah(item);
     }
-
     public int getTotlaAyahs() {
         return quranDB.ayahDAO().getAyahCount();
+    }
+
+    public List<AyahItem> getAyahsOfSura(int index) {
+        return quranDB.ayahDAO().getAllAyahOfSurahIndex(index);
     }
 
 
