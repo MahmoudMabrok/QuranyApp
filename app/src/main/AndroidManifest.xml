@@ -10,17 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".feature.ayahs_search.ShowSearchResults"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
             android:name=".feature.show_sura_ayas.ShowSuarhAyas"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".feature.show_sura_list.ShowSuar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Util.testsomefeature.MainActivity"></activity>
+        <activity android:name=".Util.testsomefeature.MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

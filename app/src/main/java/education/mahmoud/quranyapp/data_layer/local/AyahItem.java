@@ -11,12 +11,14 @@ public class AyahItem {
     private int surahIndex;
     private int ayahInSurahIndex;
     private String text;
+    private String textClean;
 
-    public AyahItem(int ayahIndex, int surahIndex, int ayahInSurahIndex, String text) {
+    public AyahItem(int ayahIndex, int surahIndex, int ayahInSurahIndex, String text, String textClean) {
         this.ayahIndex = ayahIndex;
         this.surahIndex = surahIndex;
         this.ayahInSurahIndex = ayahInSurahIndex;
         this.text = text;
+        this.textClean = textClean;
     }
 
     public int getAyahIndex() {
@@ -49,5 +51,13 @@ public class AyahItem {
 
     public void setAyahInSurahIndex(int ayahInSurahIndex) {
         this.ayahInSurahIndex = ayahInSurahIndex;
+    }
+
+    public String getTextClean() {
+        return textClean;
+    }
+
+    public void setTextClean(String textClean) {
+        this.textClean = textClean;
     }
 }

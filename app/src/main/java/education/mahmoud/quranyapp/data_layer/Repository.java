@@ -50,12 +50,17 @@ public class Repository {
     public void addAyah(AyahItem item) {
         quranDB.ayahDAO().addAyah(item);
     }
+
     public int getTotlaAyahs() {
         return quranDB.ayahDAO().getAyahCount();
     }
 
     public List<AyahItem> getAyahsOfSura(int index) {
         return quranDB.ayahDAO().getAllAyahOfSurahIndex(index);
+    }
+
+    public List<AyahItem> getAyahByAyahText(String text) {
+        return quranDB.ayahDAO().getAyahByAyahText(text);
     }
 
 

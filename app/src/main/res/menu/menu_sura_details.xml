@@ -6,13 +6,19 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="Go to Surah"
+        android:title="@string/jump"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/actionGoToLastRead"
         android:orderInCategory="100"
-        android:title="Go to Latest Read"
+        android:title="@string/go_to_latest_read"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionSearch"
+        android:orderInCategory="100"
+        android:title="@string/search"
         app:showAsAction="never" />
 
 

@@ -95,4 +95,10 @@
     <string name="go">Go By Num</string>
     <string name="go_by_name">Go By Name</string>
     <string name="saved">^_^ Saved ^_^</string>
+    <string name="jump">Jump</string>
+    <string name="go_to_latest_read">Go to Latest Read</string>
+    <string name="search">Search</string>
+    <string name="ayah_to_search">ayah to search</string>
+    <string name="notfound">Not Found</string>
+    <string name="times">  times</string>
 </resources>

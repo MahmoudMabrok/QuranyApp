@@ -22,9 +22,9 @@ import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.SuraItem;
+import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowSuarhAyas;
 import education.mahmoud.quranyapp.model.Aya;
-import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
 
 public class ShowSuar extends AppCompatActivity {
@@ -54,13 +54,24 @@ public class ShowSuar extends AppCompatActivity {
     }
 
     private void fillDBfromJson() {
-        Quran quran = Util.getQuran(this);
+        Sura[] suralList = Util.getQuran(this).getSurahs();
+        Sura[] suralListClean = Util.getQuranClean(this).getSurahs();
         int ayahIndex = 1, surahIndex = 1;
-        for (Sura sura : quran != null ? quran.getSurahs() : new Sura[0]) {
+        Sura sura;
+        Aya[] cleanAyahs;
+        for (int i = 0; i < suralList.length; i++) {
+            sura = suralList[i];
             // here ayahIndex represent first ayahIndex in a sura
-            repository.addSurah(new SuraItem(surahIndex, ayahIndex, sura.getAyahs().length, sura.getName()));
-            for (Aya aya : sura.getAyahs()) {
-                repository.addAyah(new AyahItem(ayahIndex, surahIndex, Integer.parseInt(aya.getNum()), aya.getText()));
+            // add sura to db (index, startayahindex , n of ayahs)
+            repository.addSurah(new SuraItem(surahIndex, ayahIndex, suralList[i].getAyahs().length, sura.getName()));
+
+            // add ayahs of this sura
+            // aya (ayah index -global index- , surah index , order inside sura , text , clean text -text withot symbol- )
+            cleanAyahs = suralListClean[i].getAyahs(); // hold ayahs of clean sura
+            for (int j = 0; j < sura.getAyahs().length; j++) {
+                repository.addAyah(new AyahItem(ayahIndex, surahIndex,
+                        Integer.parseInt(sura.getAyahs()[j].getNum()),
+                        sura.getAyahs()[j].getText(), cleanAyahs[j].getText()));
                 ++ayahIndex;// update suraIndex
             }
             surahIndex++; // update suraIndex
@@ -103,8 +114,16 @@ public class ShowSuar extends AppCompatActivity {
             case R.id.actionGoToLastRead:
                 gotoLastRead();
                 break;
+            case R.id.actionSearch:
+                openSearch();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openSearch() {
+        Intent openAcivity = new Intent(ShowSuar.this, ShowSearchResults.class);
+        startActivity(openAcivity);
     }
 
     private void gotoLastRead() {
