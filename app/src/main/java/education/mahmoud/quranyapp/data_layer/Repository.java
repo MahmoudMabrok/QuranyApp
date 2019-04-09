@@ -40,11 +40,18 @@ public class Repository {
     public int getLastSuraWithScroll() {
         return localShared.getLastSuraWithScroll();
     }
+    public boolean getPermissionState(){
+        return localShared.getPermissionState();
+    }
+    public void setPermissionState(boolean state){
+        localShared.setPermissionState(state);
+    }
 
     // suarh db operation
     public void addSurah(SuraItem suraItem) {
         quranDB.surahDAO().addSurah(suraItem);
     }
+
 
     // ayah db operation
     public void addAyah(AyahItem item) {
@@ -61,6 +68,14 @@ public class Repository {
 
     public List<AyahItem> getAyahByAyahText(String text) {
         return quranDB.ayahDAO().getAyahByAyahText(text);
+    }
+
+    public AyahItem getAyahByIndex(int index){
+        return quranDB.ayahDAO().getAyahByIndex(index);
+    }
+
+    public void updateAyahItem(AyahItem item){
+        quranDB.ayahDAO().updateAyah(item);
     }
 
 

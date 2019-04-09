@@ -17,6 +17,7 @@ import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.downloader.Status;
+import com.facebook.stetho.Stetho;
 
 import java.io.IOException;
 
@@ -25,6 +26,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Util;
+import education.mahmoud.quranyapp.data_layer.Repository;
+import education.mahmoud.quranyapp.data_layer.local.AyahItem;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
@@ -33,6 +36,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class ListeningActivity extends AppCompatActivity implements OnDownloadListener {
 
     private static final int RC_STORAGE = 1001;
+
     @BindView(R.id.button)
     Button button;
     @BindView(R.id.btnPlayPause)
@@ -43,24 +47,32 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     TextView tvProgressAudio;
 
     MediaPlayer mediaPlayer;
+    private Repository repository ;
     String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
-    int i = 0;
-
     boolean isPermissionAllowed;
-    String path;
     int downloadID;
+    int i = 1;
 
+    
+    //// TODO: 4/9/2019 selector and download (check if already download not download else down load )
+    //// TODO: 4/9/2019  design of display ayah then swipe after complete audi  
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listening);
         ButterKnife.bind(this);
 
+        repository = Repository.getInstance(getApplication());
+
         // // TODO: 4/8/2019  fix dialoge
         //  makeAlertForPermission();
+        isPermissionAllowed = repository.getPermissionState();
+        if (!isPermissionAllowed){
+            acquirePermission();
+        }
 
-
-        acquirePermission();
+        Stetho.initializeWithDefaults(this);
     }
 
     private void makeAlertForPermission() {
@@ -99,6 +111,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
         if (requestCode == RC_STORAGE && grantResults[0] == PERMISSION_GRANTED) {
             isPermissionAllowed = true;
+            repository.setPermissionState(true);
         } else {
             finish();
         }
@@ -107,27 +120,76 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     //// TODO: 4/8/2019 handle state of permission
     @OnClick(R.id.button)
     public void onButtonClicked() {
-
-        path = "";
-
-//        if (isPermissionAllowed) {
-        String downURL = url + i;
-        i++;
-        // path of file
-        path = Util.getDirectoryPath();
-        // name of file
-        String name = i + ".mp3";
-        downloadID = PRDownloader.download(downURL, path, "1.mp3").build().start(this);
-        path += ("/" + name);
-       /* } else {
-            finish();
-        }*/
+        downloadAllQuran(i ,25 );
     }
+
+
+    int startDown , endDown ;
+    String downURL , path , filename ;
+
+    private void downloadAllQuran(int start, int end) {
+        startDown = start ;
+        endDown = end ;
+
+        downloadAudio();
+
+        /*
+        for (int i = start; i <= end ; i++) {
+            // form  URL
+            downURL = url + start ;
+            // form path
+            path = Util.getDirectoryPath(); // get folder path
+            // form file name
+            filename = start + ".mp3" ;
+
+        }
+
+        */
+
+    }
+
+    private void downloadAudio() {
+        // form  URL
+        downURL = url + startDown ;
+        // form path
+        path = Util.getDirectoryPath(); // get folder path
+        // form file name
+        filename = startDown + ".mp3" ;
+
+        //start downloading
+        PRDownloader.download(downURL, path, filename).build().start(this);
+
+    }
+
+
+    @Override
+    public void onDownloadComplete() {
+        // display status
+        Status status = PRDownloader.getStatus(downloadID);
+        showMessage(status.name() + " " + startDown);
+
+        // store storage path in db to use in media player
+        AyahItem ayahItem = repository.getAyahByIndex(startDown); // first get ayah to edit it with storage path
+        String storagePath = path + "/" + filename ;
+        showMessage("path " + storagePath);
+        ayahItem.setAudioPath(storagePath); // set path
+        repository.updateAyahItem(ayahItem);
+
+        // update startdown to indicate complete of download
+        startDown++;
+        if (startDown <= endDown){
+            // still files to download
+            downloadAudio();
+        }
+    }
+
 
     @OnClick(R.id.btnPlayPause)
     public void onBtnPlayPauseClicked() {
         i++;
-        String newUrl = url + i;
+
+        AyahItem ayahItem = repository.getAyahByIndex(i);
+        String newUrl = ayahItem.getAudioPath();
         btnPlayPause.setEnabled(false);
         try {
 
@@ -179,16 +241,6 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-    }
-
-    @Override
-    public void onDownloadComplete() {
-        showMessage("Complete");
-        Status status = PRDownloader.getStatus(downloadID);
-        showMessage(status.name());
-
-        //  playAudio();
 
     }
 
@@ -244,6 +296,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         }
 
     }
+
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

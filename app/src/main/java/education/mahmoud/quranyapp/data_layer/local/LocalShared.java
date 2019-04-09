@@ -8,8 +8,6 @@ import education.mahmoud.quranyapp.Util.Constants;
 public class LocalShared {
 
     private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
-
 
     public LocalShared(Context context) {
         preferences = context.getSharedPreferences("quran_data", Context.MODE_PRIVATE);
@@ -24,7 +22,6 @@ public class LocalShared {
         preferences.edit().putInt(Constants.LAST_INDEX_Scroll, index).apply();
     }
 
-
     public int getLastSura() {
         return preferences.getInt(Constants.LAST_INDEX, -1);
     }
@@ -33,7 +30,12 @@ public class LocalShared {
         return preferences.getInt(Constants.LAST_INDEX_Scroll, -1);
     }
 
+    public void setPermissionState(boolean state){
+        preferences.edit().putBoolean(Constants.PERMISSION_STATE, state).apply();
+    }
 
-
+    public boolean getPermissionState(){
+        return preferences.getBoolean(Constants.PERMISSION_STATE,false);
+    }
 
 }

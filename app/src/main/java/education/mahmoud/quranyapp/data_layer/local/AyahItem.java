@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.data_layer.local;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "ayahs")
@@ -12,7 +13,18 @@ public class AyahItem {
     private int ayahInSurahIndex;
     private String text;
     private String textClean;
+    private String audioPath;
 
+    public AyahItem(int ayahIndex, int surahIndex, int ayahInSurahIndex, String text, String textClean, String audioPath) {
+        this.ayahIndex = ayahIndex;
+        this.surahIndex = surahIndex;
+        this.ayahInSurahIndex = ayahInSurahIndex;
+        this.text = text;
+        this.textClean = textClean;
+        this.audioPath = audioPath;
+    }
+
+    @Ignore
     public AyahItem(int ayahIndex, int surahIndex, int ayahInSurahIndex, String text, String textClean) {
         this.ayahIndex = ayahIndex;
         this.surahIndex = surahIndex;
@@ -60,4 +72,14 @@ public class AyahItem {
     public void setTextClean(String textClean) {
         this.textClean = textClean;
     }
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioPath(String audioPath) {
+        this.audioPath = audioPath;
+    }
+
+
 }

@@ -14,7 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.listening_activity.ListeningActivity"></activity>
+        <activity android:name=".feature.listening_activity.ListeningActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".feature.ayahs_search.ShowSearchResults"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
@@ -24,11 +31,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".feature.show_sura_list.ShowSuar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <meta-data

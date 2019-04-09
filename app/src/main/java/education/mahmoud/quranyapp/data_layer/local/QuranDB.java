@@ -5,7 +5,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 
-@Database(entities = {AyahItem.class, SuraItem.class}, version = 1, exportSchema = false)
+@Database(entities = {AyahItem.class, SuraItem.class}, version = 2, exportSchema = false)
 public abstract class QuranDB extends RoomDatabase {
 
     // Singleton Pattern only one istance exists and availbale for all classes from this class

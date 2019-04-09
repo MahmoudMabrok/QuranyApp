@@ -7,8 +7,8 @@ android {
         applicationId "education.mahmoud.quranyapp"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.2.12"
+        versionCode 5
+        versionName "1.2.15"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -38,6 +38,8 @@ dependencies {
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
 
     implementation files('libs/AppRate_1.1.jar')
+
+
     def lifecycle_version = "1.1.1"
     implementation "android.arch.persistence.room:runtime:$lifecycle_version"
     annotationProcessor "android.arch.persistence.room:compiler:$lifecycle_version"
@@ -45,4 +47,7 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
     implementation 'pub.devrel:easypermissions:1.1.1'
     implementation 'com.mindorks.android:prdownloader:0.4.0'
+
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+
 }
