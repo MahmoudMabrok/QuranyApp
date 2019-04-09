@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.ayahs_search;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -63,9 +64,9 @@ public class ShowSearchResults extends AppCompatActivity {
                     Log.d(TAG, "afterTextChanged: " + ayahItems.size());
 
                     int count = ayahItems.size(); // n of results
-                    tvSearchCount.setText(count + getString(R.string.times));
+                    tvSearchCount.setText(getString(R.string.times, count));
                     if (count > 0) {
-                        adapter.setAyahItemList(ayahItems);
+                        adapter.setAyahItemList(ayahItems, ayah);
                         foundState();
                     } else {
                         notFoundState();
@@ -94,7 +95,11 @@ public class ShowSearchResults extends AppCompatActivity {
     private void initRv() {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         rvSearch.setLayoutManager(manager);
-        adapter = new SearchResultsAdapter();
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "kfgqpc_naskh.ttf");
+        adapter = new SearchResultsAdapter(typeface);
         rvSearch.setAdapter(adapter);
+
+
     }
 }

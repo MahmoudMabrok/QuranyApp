@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_ayah2"
+    android:background="@color/bg_show_ays"
     android:orientation="vertical"
     tools:context=".feature.show_sura_ayas.ShowSuarhAyas">
 
@@ -17,6 +17,7 @@
         android:drawableEnd="@drawable/ic_phasel"
         android:gravity="center_horizontal"
         android:textSize="@dimen/_22ssp"
+        android:textColor="@color/ayas_color"
         tools:text="HHH" />
 
     <ScrollView
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textSize="@dimen/_25ssp"
+            android:textColor="@color/ayas_color"
             android:textIsSelectable="true"
             tools:text="Hello" />
 

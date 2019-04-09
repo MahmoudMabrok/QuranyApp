@@ -16,5 +16,6 @@
         android:textIsSelectable="true"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/ayas_color"
         tools:text="@tools:sample/lorem" />
 </LinearLayout>

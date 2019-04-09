@@ -8,6 +8,7 @@ Simple HolyQuran app
 - Go to specific sura by its Num.
 - Go to specific sura by its Name.
 - Go to last Read Position.
+- Search for words or complete ayah.
 
 # Challenges 
 - **Data** 
@@ -22,12 +23,36 @@ last method app load data from JSON and parse it with every open to **sura** so 
 Search is fundamental feature of any Qurany App so I wrote Query to search in Ayahs but faced problem that Quran is dialacted(Tashkill - symbols) which make search impossible so I have searched and get a clean Version and add it beside last one (each ayah has two version one for display and other to search), data was XML from [Tanzil](http://tanzil.net/download) and use online converter to convert from XML to JSON but file was not as standard of JSON  so I have fixed it.
 
 
+## Technologies
+Qurany is built using:
+
+Technology | Version
+---------- | -------
+Java | 8
+XML | 1.0
+Android Support Library | 28.0.0
+ButterKnife | 8.8.1
+gson | 2.8.5
+sdp-android | 1.0.5 
+ssp-android | 1.0.5
+AppRate | 1.1
+Room| 1.1
+prdownloader | 0.4.0
+easypermissions|1.1.1
+
+
+
 # Screens
 
-- ![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/1.png)
 
-- ![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/4.png)
+![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/1.png)
 
-- ![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/5.png)
+![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/2.png)
 
-- ![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/6.png)
+![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/3.png)
+
+![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/4.png)
+
+![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/5.png)
+
+![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/6.png)

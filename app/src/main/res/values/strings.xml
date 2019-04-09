@@ -100,5 +100,6 @@
     <string name="search">Search</string>
     <string name="ayah_to_search">ayah to search</string>
     <string name="notfound">Not Found</string>
-    <string name="times">  times</string>
+    <string name="times">%d  times</string>
+    <string name="time_progress"> %d / %d</string>
 </resources>

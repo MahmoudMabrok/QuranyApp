@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="@color/bg_show_ays"
     android:orientation="vertical"
     android:padding="@dimen/_16sdp"
     tools:context=".feature.ayahs_search.ShowSearchResults">
@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textColor="@color/ayas_color"
             android:text="@string/notfound"
             android:textSize="@dimen/_55ssp" />
 

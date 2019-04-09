@@ -1,8 +1,8 @@
 package education.mahmoud.quranyapp.feature.show_sura_list;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +23,14 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
     private SuraListner suraListner;
     private List<String> list;
 
+    private Typeface typeface;
+
     public SuraAdapter() {
         list = new ArrayList<>();
+    }
+
+    public SuraAdapter(Typeface typeface) {
+        this.typeface = typeface;
     }
 
     public void setSuraListner(SuraListner suraListner) {
@@ -57,7 +63,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
         String s = list.get(i);
         s = Data.SURA_NAMES[i];
         holder.tvSura.setText(s);
-        Log.d(TAG, "onBindViewHolder: " + i + s);
+        holder.tvSura.setTypeface(typeface);
     }
 
     @Override

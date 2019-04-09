@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/_16sdp"
+    android:background="@color/bg_show_ays"
     android:orientation="vertical"
+    android:paddingBottom="@dimen/_16sdp"
     tools:context=".feature.show_sura_list.ShowSuar">
 
     <android.support.v7.widget.RecyclerView

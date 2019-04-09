@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.feature.show_sura_list;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +52,7 @@ public class ShowSuar extends AppCompatActivity {
                 }
             }).start();
 
+
     }
 
     private void fillDBfromJson() {
@@ -83,7 +85,8 @@ public class ShowSuar extends AppCompatActivity {
 
     private void initRv() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        SuraAdapter suraAdapter = new SuraAdapter();
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "kfgqpc_naskh.ttf");
+        SuraAdapter suraAdapter = new SuraAdapter(typeface);
         rvSura.setLayoutManager(linearLayoutManager);
         rvSura.setAdapter(suraAdapter);
         suraAdapter.setStringList(Arrays.asList(Data.SURA_NAMES));

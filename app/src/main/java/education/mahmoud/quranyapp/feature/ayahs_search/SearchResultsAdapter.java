@@ -1,7 +1,9 @@
 package education.mahmoud.quranyapp.feature.ayahs_search;
 
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Data;
+import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.local.AyahItem;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.Holder> {
@@ -21,15 +24,20 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     private AyahListner ayahListner;
     private List<AyahItem> list;
 
-    public SearchResultsAdapter() {
+    private String wordSearched;
+    private Typeface typeface;
+
+    public SearchResultsAdapter(Typeface typeface) {
         list = new ArrayList<>();
+        this.typeface = typeface;
     }
 
     public void setSuraListner(AyahListner ayahListner) {
         this.ayahListner = ayahListner;
     }
 
-    public void setAyahItemList(List<AyahItem> newList) {
+    public void setAyahItemList(List<AyahItem> newList, String word) {
+        wordSearched = word;
         list = new ArrayList<>(newList);
         notifyDataSetChanged();
     }
@@ -53,11 +61,14 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
         AyahItem item = list.get(i);
-        holder.tvSearchResult.setText(item.getText());
+        Spannable ayahSpanned = Util.getSpanOfText(item.getTextClean(), wordSearched);
+
+        holder.tvSearchResult.setText(ayahSpanned, TextView.BufferType.SPANNABLE);
         holder.tvSearchAyahNum.setText("" + item.getAyahInSurahIndex());
         holder.tvSearchSuraName.setText("" + Data.SURA_NAMES[item.getSurahIndex() - 1]);
 
-
+        holder.tvSearchResult.setTypeface(typeface);
+        holder.tvSearchSuraName.setTypeface(typeface);
     }
 
     @Override

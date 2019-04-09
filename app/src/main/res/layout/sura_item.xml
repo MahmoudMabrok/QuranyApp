@@ -10,7 +10,7 @@
         android:id="@+id/tvSuraName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_sura"
+        android:background="@drawable/back_edit_search"
         android:gravity="center_horizontal"
         android:textSize="@dimen/_25ssp"
         tools:text="@tools:sample/lorem" />
