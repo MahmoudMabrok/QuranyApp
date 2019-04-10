@@ -7,6 +7,7 @@ import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,19 +22,25 @@ import education.mahmoud.quranyapp.data_layer.local.AyahItem;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.Holder> {
 
-    private AyahListner ayahListner;
     private List<AyahItem> list;
 
     private String wordSearched;
     private Typeface typeface;
+
+    IOnDownload iOnDownload  ;
+    IOnPlay iOnPlay ;
 
     public SearchResultsAdapter(Typeface typeface) {
         list = new ArrayList<>();
         this.typeface = typeface;
     }
 
-    public void setSuraListner(AyahListner ayahListner) {
-        this.ayahListner = ayahListner;
+    public void setiOnDownload(IOnDownload iOnDownload) {
+        this.iOnDownload = iOnDownload;
+    }
+
+    public void setiOnPlay(IOnPlay iOnPlay) {
+        this.iOnPlay = iOnPlay;
     }
 
     public void setAyahItemList(List<AyahItem> newList, String word) {
@@ -69,6 +76,14 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
         holder.tvSearchResult.setTypeface(typeface);
         holder.tvSearchSuraName.setTypeface(typeface);
+
+        if (item.getAudioPath() != null){
+            holder.btnPlayInSearch.setVisibility(View.VISIBLE);
+            holder.btnDownloadSearch.setVisibility(View.GONE);
+        }else{
+            holder.btnPlayInSearch.setVisibility(View.GONE);
+            holder.btnDownloadSearch.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -76,9 +91,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         return list.size();
     }
 
-    interface AyahListner {
-        void onSura(int pos);
-    }
 
     class Holder extends RecyclerView.ViewHolder {
 
@@ -88,20 +100,38 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         TextView tvSearchAyahNum;
         @BindView(R.id.tvSearchResult)
         TextView tvSearchResult;
-
+        @BindView(R.id.btnPlayInSearch)
+        ImageButton btnPlayInSearch;
+        @BindView(R.id.btnDownloadSearch)
+        ImageButton btnDownloadSearch;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-           /* itemView.setOnClickListener(new View.OnClickListener() {
+
+            btnDownloadSearch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int pos = getAdapterPosition();
-                    ayahListner.onSura(pos);
+                    iOnDownload.onDownloadClick(list.get(getAdapterPosition()));
                 }
-            });*/
+            });
+
+            btnPlayInSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    iOnPlay.onPlayClick(list.get(getAdapterPosition()));
+                }
+            });
 
         }
+    }
+
+    interface IOnPlay {
+        void onPlayClick(AyahItem item);
+    }
+
+    interface IOnDownload {
+        void onDownloadClick(AyahItem item);
     }
 
 }

@@ -79,6 +79,8 @@
             android:textColor="@color/ayas_color"
             android:text="@string/btn_start"/>
 
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -109,10 +111,9 @@
 
             <Button
                 android:id="@+id/btnPlayPause"
-                android:layout_width="@dimen/_50sdp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/ic_play"/>
+              />
 
             <SeekBar
                 android:id="@+id/sbPosition"
@@ -122,6 +123,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_weight="2" />
+
 
             <TextView
                 android:id="@+id/tvProgressAudio"

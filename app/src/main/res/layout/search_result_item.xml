@@ -42,4 +42,24 @@
         android:ellipsize="end"
         android:textSize="@dimen/_25ssp"
         tools:text="@tools:sample/lorem/random" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/btnPlayInSearch"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/ic_play"/>
+
+        <ImageButton
+            android:id="@+id/btnDownloadSearch"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/ic_file_download"/>
+
+
+    </LinearLayout>
 </LinearLayout>
