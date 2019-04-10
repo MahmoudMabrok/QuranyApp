@@ -19,6 +19,14 @@ public interface SurahDAO {
     @Query("select  * from surah ")
     public List<SuraItem> getAllSurah();
 
+    @Query("select name from surah ")
+    public List<String> getAllSurahNames();
+
     @Query("select  * from surah where `index` = :id")
     public SuraItem getSurahByIndex(int id);
+
+    @Query("select  * from surah where `name` = :name")
+    public SuraItem getSurahByName(String name);
+
+
 }

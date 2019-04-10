@@ -7,4 +7,6 @@
     <color name="bg_show_ays">#000000</color>
     <color name="ayas_color">#ffffff</color>
     <color name="dialoge_bg">#000000</color>
+    <color name="bg_play_audio">#000000</color>
+    <color name="bg_listening">#000000</color>
 </resources>

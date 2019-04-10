@@ -5,11 +5,16 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +25,7 @@ import com.downloader.Status;
 import com.facebook.stetho.Stetho;
 
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +34,7 @@ import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.AyahItem;
+import education.mahmoud.quranyapp.data_layer.local.SuraItem;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
@@ -37,8 +44,6 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     private static final int RC_STORAGE = 1001;
 
-    @BindView(R.id.button)
-    Button button;
     @BindView(R.id.btnPlayPause)
     Button btnPlayPause;
     @BindView(R.id.sbPosition)
@@ -47,16 +52,30 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     TextView tvProgressAudio;
 
     MediaPlayer mediaPlayer;
-    private Repository repository ;
+    @BindView(R.id.spStartSura)
+    Spinner spStartSura;
+    @BindView(R.id.edStartSuraAyah)
+    TextInputEditText edStartSuraAyah;
+    @BindView(R.id.spEndSura)
+    Spinner spEndSura;
+    @BindView(R.id.edEndSuraAyah)
+    TextInputEditText edEndSuraAyah;
+    @BindView(R.id.btnStartListening)
+    Button btnStartListening;
+    @BindView(R.id.lnSelectorAyahs)
+    LinearLayout lnSelectorAyahs;
+    @BindView(R.id.lnPlayView)
+    LinearLayout lnPlayView;
+    private Repository repository;
     String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
     boolean isPermissionAllowed;
     int downloadID;
     int i = 1;
 
-    
+
     //// TODO: 4/9/2019 selector and download (check if already download not download else down load )
     //// TODO: 4/9/2019  design of display ayah then swipe after complete audi  
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,11 +87,51 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         // // TODO: 4/8/2019  fix dialoge
         //  makeAlertForPermission();
         isPermissionAllowed = repository.getPermissionState();
-        if (!isPermissionAllowed){
+        if (!isPermissionAllowed) {
             acquirePermission();
         }
-
+        // Stetho for debuging app with browser
         Stetho.initializeWithDefaults(this);
+
+        initSpinners();
+    }
+
+    SuraItem startSura , endSura ;
+    private void initSpinners() {
+        List<String> suraNames = repository.getSurasNames();
+
+        ArrayAdapter<String> startAdapter = new ArrayAdapter<>(this , android.R.layout.simple_dropdown_item_1line,suraNames);
+        spStartSura.setAdapter(startAdapter);
+
+        ArrayAdapter<String> endAdapter = new ArrayAdapter<>(this , android.R.layout.simple_dropdown_item_1line,suraNames);
+        spEndSura.setAdapter(endAdapter);
+
+        spStartSura.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String sura = (String) spStartSura.getSelectedItem();
+                startSura = repository.getSuraByName(sura);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spEndSura.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String sura = (String) spEndSura.getSelectedItem();
+                endSura = repository.getSuraByName(sura);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
     private void makeAlertForPermission() {
@@ -118,18 +177,18 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     }
 
     //// TODO: 4/8/2019 handle state of permission
-    @OnClick(R.id.button)
+    /*@OnClick(R.id.button)
     public void onButtonClicked() {
         downloadAllQuran(i ,25 );
     }
+*/
 
-
-    int startDown , endDown ;
-    String downURL , path , filename ;
+    int startDown, endDown;
+    String downURL, path, filename;
 
     private void downloadAllQuran(int start, int end) {
-        startDown = start ;
-        endDown = end ;
+        startDown = start;
+        endDown = end;
 
         downloadAudio();
 
@@ -150,11 +209,11 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     private void downloadAudio() {
         // form  URL
-        downURL = url + startDown ;
+        downURL = url + startDown;
         // form path
         path = Util.getDirectoryPath(); // get folder path
         // form file name
-        filename = startDown + ".mp3" ;
+        filename = startDown + ".mp3";
 
         //start downloading
         PRDownloader.download(downURL, path, filename).build().start(this);
@@ -170,14 +229,14 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
         // store storage path in db to use in media player
         AyahItem ayahItem = repository.getAyahByIndex(startDown); // first get ayah to edit it with storage path
-        String storagePath = path + "/" + filename ;
+        String storagePath = path + "/" + filename;
         showMessage("path " + storagePath);
         ayahItem.setAudioPath(storagePath); // set path
         repository.updateAyahItem(ayahItem);
 
         // update startdown to indicate complete of download
         startDown++;
-        if (startDown <= endDown){
+        if (startDown <= endDown) {
             // still files to download
             downloadAudio();
         }
@@ -305,5 +364,35 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     @Override
     public void onError(Error error) {
 
+    }
+
+    @OnClick(R.id.btnStartListening)
+    public void onViewClicked() {
+        if (startSura != null && endSura != null){
+            try {
+                int start = Integer.parseInt(edStartSuraAyah.getText().toString());
+                if (start > startSura.getNumOfAyahs()){
+                    edStartSuraAyah.setError(getString(R.string.outofrange,startSura.getNumOfAyahs()) );
+                    return;
+                }
+                int end = Integer.parseInt(edStartSuraAyah.getText().toString());
+                if (end > endSura.getNumOfAyahs()){
+                    edEndSuraAyah.setError(getString(R.string.outofrange,endSura.getNumOfAyahs()) );
+                    return;
+                }
+
+                downloadAllQuran(start , end);
+
+
+
+            } catch (NumberFormatException e) {
+                edStartSuraAyah.setError("error");
+                edEndSuraAyah.setError("error");
+                return;
+            }
+
+        }else{
+            showMessage("Select from suras");
+        }
     }
 }

@@ -24,6 +24,7 @@ import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.SuraItem;
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults;
+import education.mahmoud.quranyapp.feature.listening_activity.ListeningActivity;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowSuarhAyas;
 import education.mahmoud.quranyapp.model.Aya;
 import education.mahmoud.quranyapp.model.Sura;
@@ -120,8 +121,17 @@ public class ShowSuar extends AppCompatActivity {
             case R.id.actionSearch:
                 openSearch();
                 break;
+
+                case R.id.actionListening:
+                openListening();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openListening() {
+        Intent openAcivity = new Intent(ShowSuar.this, ListeningActivity.class);
+        startActivity(openAcivity);
     }
 
     private void openSearch() {

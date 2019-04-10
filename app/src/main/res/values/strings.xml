@@ -102,4 +102,9 @@
     <string name="notfound">Not Found</string>
     <string name="times">%d  times</string>
     <string name="time_progress"> %d / %d</string>
+    <string name="start_ayah">Start from Ayah ...</string>
+    <string name="end_ayah">end at ayah</string>
+    <string name="btn_start">Start</string>
+    <string name="outofrange">out of range max is %d</string>
+    <string name="open_listening">Open Listening</string>
 </resources>

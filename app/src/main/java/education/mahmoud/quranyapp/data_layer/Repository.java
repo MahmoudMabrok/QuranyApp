@@ -52,6 +52,14 @@ public class Repository {
         quranDB.surahDAO().addSurah(suraItem);
     }
 
+    public List<String> getSurasNames(){
+        return quranDB.surahDAO().getAllSurahNames();
+    }
+
+    public SuraItem getSuraByName(String name){
+        return quranDB.surahDAO().getSurahByName(name);
+    }
+
 
     // ayah db operation
     public void addAyah(AyahItem item) {
@@ -64,6 +72,10 @@ public class Repository {
 
     public List<AyahItem> getAyahsOfSura(int index) {
         return quranDB.ayahDAO().getAllAyahOfSurahIndex(index);
+    }
+
+    public List<AyahItem> getAyahSInRange(int start , int end) {
+        return quranDB.ayahDAO().getAyahSInRange(start , end);
     }
 
     public List<AyahItem> getAyahByAyahText(String text) {
