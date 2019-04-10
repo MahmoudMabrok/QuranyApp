@@ -2,12 +2,14 @@ package education.mahmoud.quranyapp.feature.listening_activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +27,7 @@ import com.downloader.Status;
 import com.facebook.stetho.Stetho;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,6 +42,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.view.View.GONE;
 
 public class ListeningActivity extends AppCompatActivity implements OnDownloadListener {
 
@@ -66,12 +70,19 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     LinearLayout lnSelectorAyahs;
     @BindView(R.id.lnPlayView)
     LinearLayout lnPlayView;
+    @BindView(R.id.tvAyahToListen)
+    TextView tvAyahToListen;
     private Repository repository;
     String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
     boolean isPermissionAllowed;
     int downloadID;
     int i = 1;
 
+    private ArrayList<AyahItem> ayahsToDownLoad;
+
+    Typeface typeface ;
+
+    private static final String TAG = "ListeningActivity";
 
     //// TODO: 4/9/2019 selector and download (check if already download not download else down load )
     //// TODO: 4/9/2019  design of display ayah then swipe after complete audi  
@@ -84,8 +95,10 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
         repository = Repository.getInstance(getApplication());
 
+        typeface = Typeface.createFromAsset(getAssets() , "kfgqpc_naskh.ttf");
         // // TODO: 4/8/2019  fix dialoge
         //  makeAlertForPermission();
+
         isPermissionAllowed = repository.getPermissionState();
         if (!isPermissionAllowed) {
             acquirePermission();
@@ -96,14 +109,15 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         initSpinners();
     }
 
-    SuraItem startSura , endSura ;
+    SuraItem startSura, endSura;
+
     private void initSpinners() {
         List<String> suraNames = repository.getSurasNames();
 
-        ArrayAdapter<String> startAdapter = new ArrayAdapter<>(this , android.R.layout.simple_dropdown_item_1line,suraNames);
+        ArrayAdapter<String> startAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, suraNames);
         spStartSura.setAdapter(startAdapter);
 
-        ArrayAdapter<String> endAdapter = new ArrayAdapter<>(this , android.R.layout.simple_dropdown_item_1line,suraNames);
+        ArrayAdapter<String> endAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, suraNames);
         spEndSura.setAdapter(endAdapter);
 
         spStartSura.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -176,12 +190,6 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         }
     }
 
-    //// TODO: 4/8/2019 handle state of permission
-    /*@OnClick(R.id.button)
-    public void onButtonClicked() {
-        downloadAllQuran(i ,25 );
-    }
-*/
 
     int startDown, endDown;
     String downURL, path, filename;
@@ -207,41 +215,77 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     }
 
+    int index;
+
     private void downloadAudio() {
+        // compute index
+        index = ayahsToDownLoad.get(currentIteration).getAyahIndex();
         // form  URL
-        downURL = url + startDown;
+        downURL = url + index;
         // form path
         path = Util.getDirectoryPath(); // get folder path
         // form file name
-        filename = startDown + ".mp3";
+        filename = index + ".mp3";
 
+        Log.d(TAG, "downloadAudio:  file name " + filename);
         //start downloading
         PRDownloader.download(downURL, path, filename).build().start(this);
 
     }
 
-
     @Override
     public void onDownloadComplete() {
+        Log.d(TAG, "onDownloadComplete: ");
         // display status
         Status status = PRDownloader.getStatus(downloadID);
-        showMessage(status.name() + " " + startDown);
 
         // store storage path in db to use in media player
-        AyahItem ayahItem = repository.getAyahByIndex(startDown); // first get ayah to edit it with storage path
+        AyahItem ayahItem = repository.getAyahByIndex(index); // first get ayah to edit it with storage path
         String storagePath = path + "/" + filename;
         showMessage("path " + storagePath);
         ayahItem.setAudioPath(storagePath); // set path
         repository.updateAyahItem(ayahItem);
 
-        // update startdown to indicate complete of download
-        startDown++;
-        if (startDown <= endDown) {
+        // update currentIteration to indicate complete of download
+        currentIteration++;
+
+        Log.d(TAG, "onDownloadComplete:  end " + endIteration );
+        Log.d(TAG, "onDownloadComplete:  current " + currentIteration );
+
+        if (currentIteration < endIteration) {
             // still files to download
             downloadAudio();
+        } else {
+            // here i finish download all ayas
+            // start to display
+            displayAyasState();
         }
     }
 
+    int currentAyaAtAyasToListen = 0, totalAyahsToListen;
+
+    private void displayAyasState() {
+        Log.d(TAG, "displayAyasState: ");
+        currentAyaAtAyasToListen= 0 ;
+        // first re-load ayahs from db
+        ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
+        // control visibility
+        lnSelectorAyahs.setVisibility(GONE);
+        lnPlayView.setVisibility(View.VISIBLE);
+
+        displayAyahs();
+
+    }
+
+
+    private void displayAyahs() {
+        Log.d(TAG, "displayAyahs: " + currentAyaAtAyasToListen);
+      //  showMessage("STaert display ayas");
+        AyahItem ayahItem = ayahsToListen.get(currentAyaAtAyasToListen);
+        tvAyahToListen.setTypeface(typeface);
+        tvAyahToListen.setText(ayahItem.getText());
+        playAudio();
+    }
 
     @OnClick(R.id.btnPlayPause)
     public void onBtnPlayPauseClicked() {
@@ -303,16 +347,18 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     }
 
+    String fileSource ;
+
     private void playAudio() {
+        Log.d(TAG, "playAudio: ");
         btnPlayPause.setEnabled(false);
         try {
             mediaPlayer = new MediaPlayer();
-            //   File file = new File(path);
-            showMessage(path);
-            mediaPlayer.setDataSource(path);
+            fileSource = ayahsToListen.get(currentAyaAtAyasToListen).getAudioPath();
+            showMessage(fileSource);
+            mediaPlayer.setDataSource(fileSource);
             mediaPlayer.prepare();
             mediaPlayer.start();
-
 
             new Thread(new Runnable() {
                 @Override
@@ -322,8 +368,8 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    tvProgressAudio.setText(getString(R.string.time_progress, mediaPlayer.getCurrentPosition()
-                                            , mediaPlayer.getDuration()));
+                                    tvProgressAudio.setText(getString(R.string.time_progress, mediaPlayer.getCurrentPosition()/1000
+                                            , mediaPlayer.getDuration()/1000));
                                 }
                             });
                             Thread.sleep(750);
@@ -334,19 +380,20 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
                 }
             }).start();
 
-
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer1) {
                     mediaPlayer.release();
                     mediaPlayer = null;
                     btnPlayPause.setEnabled(true);
+                    currentAyaAtAyasToListen ++ ;
 
-/*
-                    if (i <= 7) {
-                        onBtnPlayPauseClicked();
+                    Log.d(TAG, "onCompletion: ");
+                    if (currentAyaAtAyasToListen < ayahsToListen.size() ) {
+                        Log.d(TAG, "@@  onCompletion: " + ayahsToListen.size());
+                        displayAyahs();
                     }
-*/
+
                 }
             });
         } catch (IOException e) {
@@ -355,7 +402,6 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         }
 
     }
-
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -366,33 +412,70 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     }
 
+    List<AyahItem> ayahsToListen;
+
+    int actualStart, actualEnd;
+
     @OnClick(R.id.btnStartListening)
     public void onViewClicked() {
-        if (startSura != null && endSura != null){
+        ayahsToDownLoad = new ArrayList<>();
+
+        if (startSura != null && endSura != null) {
             try {
                 int start = Integer.parseInt(edStartSuraAyah.getText().toString());
-                if (start > startSura.getNumOfAyahs()){
-                    edStartSuraAyah.setError(getString(R.string.outofrange,startSura.getNumOfAyahs()) );
+                if (start > startSura.getNumOfAyahs()) {
+                    edStartSuraAyah.setError(getString(R.string.outofrange, startSura.getNumOfAyahs()));
                     return;
                 }
-                int end = Integer.parseInt(edStartSuraAyah.getText().toString());
-                if (end > endSura.getNumOfAyahs()){
-                    edEndSuraAyah.setError(getString(R.string.outofrange,endSura.getNumOfAyahs()) );
+                int end = Integer.parseInt(edEndSuraAyah.getText().toString());
+                if (end > endSura.getNumOfAyahs()) {
+                    edEndSuraAyah.setError(getString(R.string.outofrange, endSura.getNumOfAyahs()));
                     return;
                 }
+                // compute actual start
+                actualStart = startSura.getStartIndex() + start - 1;
+                // compute actual end
+                actualEnd = endSura.getStartIndex() + end - 1;
 
-                downloadAllQuran(start , end);
+                Log.d(TAG, "onViewClicked: actual " +actualStart + " " + actualEnd);
 
+                // get ayas from db
+                ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
 
+                // traverse ayahs to check if it downloaded or not
+                for (AyahItem ayahItem : ayahsToListen) {
+                    if (ayahItem.getAudioPath() == null) {
+                        ayahsToDownLoad.add(ayahItem);
+                    }
+                }
+                checkAyahsToDownloadIt();
+                showMessage("Finish Loop");
 
             } catch (NumberFormatException e) {
                 edStartSuraAyah.setError("error");
                 edEndSuraAyah.setError("error");
-                return;
             }
 
-        }else{
+        } else {
             showMessage("Select from suras");
         }
+    }
+
+    int currentIteration = 0, endIteration;
+
+    private void checkAyahsToDownloadIt() {
+        Log.d(TAG, "checkAyahsToDownloadIt: " + ayahsToDownLoad.size());
+        currentIteration = 0;
+        if (ayahsToDownLoad != null && ayahsToDownLoad.size() > 0) {
+            endIteration = ayahsToDownLoad.size();
+            downloadAyahs();
+        }else{
+            displayAyasState();
+        }
+    }
+
+    private void downloadAyahs() {
+        Log.d(TAG, "downloadAyahs: ");
+        downloadAudio();
     }
 }
