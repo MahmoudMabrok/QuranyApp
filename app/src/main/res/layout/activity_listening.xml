@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="@dimen/_16sdp"
     android:padding="@dimen/_10sdp"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:background="@color/bg_listening"
     tools:context=".feature.listening_activity.ListeningActivity">
 
@@ -79,6 +80,18 @@
             android:textColor="@color/ayas_color"
             android:text="@string/btn_start"/>
 
+        <com.github.ybq.android.spinkit.SpinKitView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spinListening"
+            style="@style/SpinKitView.Large.Circle"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:SpinKit_Color="@color/spin_color" />
+
+
 
 
     </LinearLayout>
@@ -136,7 +149,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
 
 </LinearLayout>

@@ -107,5 +107,5 @@
     <string name="btn_start">Start</string>
     <string name="outofrange">out of range max is %d</string>
     <string name="open_listening">Open Listening</string>
-    <string name="error_net">Error, check your Internet connection</string>
+    <string name="error_net">Error, check your Internet connection , Try Again</string>
 </resources>

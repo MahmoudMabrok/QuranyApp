@@ -2,11 +2,15 @@ package education.mahmoud.quranyapp.Util;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.gson.Gson;
 
@@ -110,6 +114,25 @@ public class Util {
     public static String makeFilePath(String name) {
         String dirPath = getDirectoryPath("quran");
         return dirPath + name;
+    }
+
+    /**
+     * checks if the device is connected to the internet or not
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
+    public static void hideInputKeyboard(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
 

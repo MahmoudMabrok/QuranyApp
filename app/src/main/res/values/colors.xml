@@ -9,4 +9,5 @@
     <color name="dialoge_bg">#000000</color>
     <color name="bg_play_audio">#000000</color>
     <color name="bg_listening">#000000</color>
+    <color name="spin_color">#ffffff</color>
 </resources>

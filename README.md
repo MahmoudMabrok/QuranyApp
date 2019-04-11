@@ -9,6 +9,7 @@ Simple HolyQuran app
 - Go to specific sura by its Name.
 - Go to last Read Position.
 - Search for words or complete ayah.
+- Download and Listen to ayahs
 
 # Challenges 
 - **Data** 
@@ -22,6 +23,8 @@ last method app load data from JSON and parse it with every open to **sura** so 
 - **Search**
 Search is fundamental feature of any Qurany App so I wrote Query to search in Ayahs but faced problem that Quran is dialacted(Tashkill - symbols) which make search impossible so I have searched and get a clean Version and add it beside last one (each ayah has two version one for display and other to search), data was XML from [Tanzil](http://tanzil.net/download) and use online converter to convert from XML to JSON but file was not as standard of JSON  so I have fixed it.
 
+- **Listening**
+Download audio have two ways first download whole sura or download seperate ayahs, i have used seperate ayahs to enable feature of listen to specific ayahs. I download audio in storage then store path into database to be used by medialPlayer.
 
 ## Technologies
 Qurany is built using:
@@ -56,3 +59,5 @@ easypermissions|1.1.1
 ![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/5.png)
 
 ![img1](https://github.com/MahmoudMabrok/QuranyApp/blob/master/6.png)
+
+![img1](7.png)

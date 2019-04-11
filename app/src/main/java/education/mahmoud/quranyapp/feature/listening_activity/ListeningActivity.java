@@ -23,8 +23,8 @@ import android.widget.Toast;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
-import com.downloader.Status;
 import com.facebook.stetho.Stetho;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,6 +72,8 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     LinearLayout lnPlayView;
     @BindView(R.id.tvAyahToListen)
     TextView tvAyahToListen;
+    @BindView(R.id.spinListening)
+    SpinKitView spinListening;
     private Repository repository;
     String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
     boolean isPermissionAllowed;
@@ -80,7 +82,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     private ArrayList<AyahItem> ayahsToDownLoad;
 
-    Typeface typeface ;
+    Typeface typeface;
 
     private static final String TAG = "ListeningActivity";
 
@@ -92,9 +94,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
         repository = Repository.getInstance(getApplication());
 
-        typeface = Typeface.createFromAsset(getAssets() , "kfgqpc_naskh.ttf");
-        // // TODO: 4/8/2019  fix dialoge
-        //  makeAlertForPermission();
+        typeface = Typeface.createFromAsset(getAssets(), "kfgqpc_naskh.ttf");
 
         isPermissionAllowed = repository.getPermissionState();
         if (!isPermissionAllowed) {
@@ -195,22 +195,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     private void downloadAllQuran(int start, int end) {
         startDown = start;
         endDown = end;
-
         downloadAudio();
-
-        /*
-        for (int i = start; i <= end ; i++) {
-            // form  URL
-            downURL = url + start ;
-            // form path
-            path = Util.getDirectoryPath(); // get folder path
-            // form file name
-            filename = start + ".mp3" ;
-
-        }
-
-        */
-
     }
 
     int index;
@@ -244,8 +229,8 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         // update currentIteration to indicate complete of download
         currentIteration++;
 
-        Log.d(TAG, "onDownloadComplete:  end " + endIteration );
-        Log.d(TAG, "onDownloadComplete:  current " + currentIteration );
+        Log.d(TAG, "onDownloadComplete:  end " + endIteration);
+        Log.d(TAG, "onDownloadComplete:  current " + currentIteration);
 
         if (currentIteration < endIteration) {
             // still files to download
@@ -253,15 +238,23 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         } else {
             // here i finish download all ayas
             // start to display
+            finishDownloadState();
             displayAyasState();
         }
     }
 
-    int currentAyaAtAyasToListen = 0, totalAyahsToListen;
+    private void finishDownloadState() {
+        showMessage("Finished Downloading... ");
+        btnStartListening.setVisibility(View.VISIBLE);
+        spinListening.setVisibility(GONE);
+    }
+
+    int currentAyaAtAyasToListen = 0;
 
     private void displayAyasState() {
+        closeKeyboard();
         Log.d(TAG, "displayAyasState: ");
-        currentAyaAtAyasToListen= 0 ;
+        currentAyaAtAyasToListen = 0;
         // first re-load ayahs from db
         ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
         Log.d(TAG, "displayAyasState: " + ayahsToListen.size());
@@ -277,31 +270,31 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     }
 
     private void logAyahs() {
-        for(AyahItem ayahItem : ayahsToListen){
+        for (AyahItem ayahItem : ayahsToListen) {
             Log.d(TAG, "logAyahs: " + ayahItem.getAyahIndex());
         }
     }
 
     private void displayAyahs() {
         Log.d(TAG, "displayAyahs: " + currentAyaAtAyasToListen);
-      //  showMessage("STaert display ayas");
+        //  showMessage("STaert display ayas");
         AyahItem ayahItem = ayahsToListen.get(currentAyaAtAyasToListen);
         tvAyahToListen.setTypeface(typeface);
-        tvAyahToListen.setText(ayahItem.getText() + "("+ ayahItem.getAyahInSurahIndex()+")");
+        tvAyahToListen.setText(ayahItem.getText() + "(" + ayahItem.getAyahInSurahIndex() + ")");
         playAudio();
     }
 
     @OnClick(R.id.btnPlayPause)
     public void onBtnPlayPauseClicked() {
         Log.d(TAG, "onBtnPlayPauseClicked: ");
-        if (mediaPlayer!= null) {
-            if (!mediaPlayer.isPlaying()){
+        if (mediaPlayer != null) {
+            if (!mediaPlayer.isPlaying()) {
                 mediaPlayer.start();
                 Log.d(TAG, "onBtnPlayPauseClicked: ");
-           //     btnPlayPause.setBackground(getDrawable(R.drawable.ic_pause));
+                //     btnPlayPause.setBackground(getDrawable(R.drawable.ic_pause));
                 btnPlayPause.setBackgroundResource(R.drawable.ic_pause);
-            }else{
-            //    btnPlayPause.setBackground(getDrawable(R.drawable.ic_play));
+            } else {
+                //    btnPlayPause.setBackground(getDrawable(R.drawable.ic_play));
                 btnPlayPause.setBackgroundResource(R.drawable.ic_play);
                 mediaPlayer.pause();
             }
@@ -309,7 +302,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     }
 
-    String fileSource ;
+    String fileSource;
 
     private void playAudio() {
         Log.d(TAG, "playAudio: ");
@@ -331,9 +324,9 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (mediaPlayer != null ) {
-                                        tvProgressAudio.setText(getString(R.string.time_progress, mediaPlayer.getCurrentPosition()/1000
-                                                , mediaPlayer.getDuration()/1000));
+                                    if (mediaPlayer != null) {
+                                        tvProgressAudio.setText(getString(R.string.time_progress, mediaPlayer.getCurrentPosition() / 1000
+                                                , mediaPlayer.getDuration() / 1000));
                                         sbPosition.setProgress(mediaPlayer.getCurrentPosition());
                                     }
                                 }
@@ -349,8 +342,8 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
             sbPosition.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                    if (b){
-                        if (mediaPlayer != null ){
+                    if (b) {
+                        if (mediaPlayer != null) {
                             mediaPlayer.seekTo(progress);
                             sbPosition.setProgress(progress);
 
@@ -375,13 +368,13 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
                     mediaPlayer.release();
                     mediaPlayer = null;
                     btnPlayPause.setEnabled(true);
-                    currentAyaAtAyasToListen ++ ;
+                    currentAyaAtAyasToListen++;
 
                     Log.d(TAG, "onCompletion: ");
-                    if (currentAyaAtAyasToListen < ayahsToListen.size() ) {
+                    if (currentAyaAtAyasToListen < ayahsToListen.size()) {
                         Log.d(TAG, "@@  onCompletion: " + ayahsToListen.size());
                         displayAyahs();
-                    }else{
+                    } else {
                         backToSelectionState();
                     }
 
@@ -410,7 +403,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     @OnClick(R.id.btnStartListening)
     public void onViewClicked() {
         ayahsToDownLoad = new ArrayList<>();
-        ayahsToListen = new ArrayList<>(); 
+        ayahsToListen = new ArrayList<>();
 
         if (startSura != null && endSura != null) {
             try {
@@ -430,10 +423,11 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
                 actualEnd = endSura.getStartIndex() + end - 1;
 
                 // check actualstart & actualEnd
-                if (actualEnd < actualStart){
+                if (actualEnd < actualStart) {
                     makeRangeError();
+                    return;
                 }
-                Log.d(TAG, "onViewClicked: actual " +actualStart + " " + actualEnd);
+                Log.d(TAG, "onViewClicked: actual " + actualStart + " " + actualEnd);
 
                 // get ayas from db
                 ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
@@ -445,6 +439,10 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
                         ayahsToDownLoad.add(ayahItem);
                     }
                 }
+
+                // close keyboard
+                closeKeyboard();
+
                 checkAyahsToDownloadIt();
 
             } catch (NumberFormatException e) {
@@ -454,6 +452,12 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         } else {
             showMessage("Select from suras");
         }
+    }
+
+    private void closeKeyboard() {
+        Util.hideInputKeyboard(this);
+        edEndSuraAyah.clearFocus();
+        edStartSuraAyah.clearFocus();
     }
 
     private void makeRangeError() {
@@ -469,27 +473,39 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         if (ayahsToDownLoad != null && ayahsToDownLoad.size() > 0) {
             endIteration = ayahsToDownLoad.size();
             downloadAyahs();
-        }else{
+        } else {
             displayAyasState();
         }
     }
 
     private void downloadAyahs() {
         Log.d(TAG, "downloadAyahs: ");
-        downloadAudio();
+        if (Util.isNetworkConnected(this)) {
+            downloadState();
+            downloadAudio();
+        }else{
+            showMessage(getString(R.string.error_net));
+        }
+    }
+
+    private void downloadState() {
+        showMessage("Downloading .... ");
+        btnStartListening.setVisibility(GONE);
+        spinListening.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onBackPressed() {
-        if (ayahsToListen != null && ayahsToListen.size() > 0 ){
+        if (ayahsToListen != null && ayahsToListen.size() > 0) {
             backToSelectionState();
-        }else{
+        } else {
             super.onBackPressed();
+            finish();
         }
     }
 
     private void backToSelectionState() {
-        if (mediaPlayer != null){
+        if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
         }
@@ -497,7 +513,5 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         lnPlayView.setVisibility(GONE);
         lnSelectorAyahs.setVisibility(View.VISIBLE);
 
-       /* startSura = null ;
-        endSura = null ;*/
     }
 }
