@@ -2,13 +2,32 @@
 <resources>
     <string name="app_name">القران الكريم</string>
     <string name="title_activity_sura_details">SuraDetails</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
-
-    </string>
     <string name="action_settings">اذهب الى السورة..</string>
     <string name="enter_surah_num">ادخل رقم السورة</string>
     <string name="go">اذهب الى السورة برقمها</string>
     <string name="go_by_name">اذهب الى السورة بالاسم</string>
     <string name="saved">^_^ تم الحفظ ^_^</string>
+
+    <string name="jump">انتقال سريع</string>
+    <string name="go_to_latest_read">اخر موضع للقراءة</string>
+    <string name="search">بحث</string>
+    <string name="ayah_to_search">اكتب الاية .. </string>
+    <string name="notfound">غير موجود جرب ايه اخري </string>
+
+    <string name="times">مرات</string>
+
+    <string name="time_progress"> %d / %d</string>
+    <string name="start_ayah">ايه البداية </string>
+    <string name="end_ayah">ايه النهاية</string>
+    <string name="btn_start">ابدأ</string>
+    <string name="outofrange">خارج الحدود اكبر قيمة  %d</string>
+    <string name="open_listening">استمع</string>
+    <string name="error_net">شغل الانترنت وعاود المحاولة </string>
+    <string name="repeat_ayah">عدد مرات تكرار الاية الواحده  </string>
+    <string name="repeat_set">عدد مرات تكرار مجموعة الايات </string>
+    <string name="finish">انتهى التحميل بنجاح</string>
+    <string name="error">خطأ</string>
+    <string name="sura_select_error">اختر سورة من القائمة</string>
+    <string name="downloading">سيتم تحميل الملفات …</string>
+
 </resources>

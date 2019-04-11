@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.tjeannin.apprate.AppRate;
+
 import java.util.Arrays;
 
 import butterknife.BindView;
@@ -53,6 +55,8 @@ public class ShowSuar extends AppCompatActivity {
                 }
             }).start();
 
+        new AppRate(this).setMinLaunchesUntilPrompt(3)
+                .init();
 
     }
 

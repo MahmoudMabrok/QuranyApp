@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:name=".feature.listening_activity.ListeningActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 

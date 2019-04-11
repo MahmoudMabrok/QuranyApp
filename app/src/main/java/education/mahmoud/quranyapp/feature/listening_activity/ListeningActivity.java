@@ -85,6 +85,12 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     String downURL, path, filename;
     int index;
     int currentAyaAtAyasToListen = 0;
+    @BindView(R.id.edRepeatAyah)
+    TextInputEditText edRepeatAyah;
+    @BindView(R.id.edRepeatSet)
+    TextInputEditText edRepeatSet;
+    private int ayahsRepeatCount;
+    private int ayahsSetCount;
 
     private void makeAlertForPermission() {
 
@@ -243,7 +249,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     }
 
     private void finishDownloadState() {
-        showMessage("Finished Downloading... ");
+        showMessage(getString(R.string.finish));
         btnStartListening.setVisibility(View.VISIBLE);
         spinListening.setVisibility(GONE);
     }
@@ -252,18 +258,42 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         closeKeyboard();
         Log.d(TAG, "displayAyasState: ");
         currentAyaAtAyasToListen = 0;
-        // first re-load ayahs from db
+        // first reload ayahs from db
         ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
-        Log.d(TAG, "displayAyasState: " + ayahsToListen.size());
-        logAyahs();
+
+        // fill with repearation
+        //// TODO: 4/11/2019  repeat
+
+        ayahsToListen = getAyahsEachOneRepreated(ayahsRepeatCount);
+        ayahsToListen = getAllAyahsRepeated(ayahsSetCount);
+
         // control visibility
         lnSelectorAyahs.setVisibility(GONE);
         lnPlayView.setVisibility(View.VISIBLE);
-
         btnPlayPause.setBackgroundResource(R.drawable.ic_pause);
 
         displayAyahs();
 
+    }
+
+    private List<AyahItem> getAllAyahsRepeated(int ayahsSetCount) {
+        List<AyahItem> ayahItems = new ArrayList<>();
+        for (int i = 0; i < ayahsSetCount; i++) {
+            ayahItems.addAll(ayahsToListen);
+        }
+
+        Log.d(TAG, "getAllAyahsRepeated: " + ayahItems.size());
+        return ayahItems ;
+    }
+
+    private List<AyahItem> getAyahsEachOneRepreated(int ayahsRepeatCount) {
+        List<AyahItem> ayahItems = new ArrayList<>();
+        for (AyahItem ayahItem : ayahsToListen) {
+            for (int j = 0; j < ayahsRepeatCount; j++) {
+                ayahItems.add(ayahItem);
+            }
+        }
+        return ayahItems;
     }
 
     private void logAyahs() {
@@ -380,7 +410,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
             });
         } catch (IOException e) {
             e.printStackTrace();
-            showMessage("error");
+            showMessage(getString(R.string.error));
         }
 
     }
@@ -388,6 +418,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     @Override
     public void onError(Error error) {
         showMessage(getString(R.string.error_net));
+        spinListening.setVisibility(GONE);
     }
 
     @OnClick(R.id.btnStartListening)
@@ -419,6 +450,16 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
                 }
                 Log.d(TAG, "onViewClicked: actual " + actualStart + " " + actualEnd);
 
+                try {
+                    ayahsSetCount = Integer.parseInt(edRepeatSet.getText().toString());
+                } catch (NumberFormatException e) {
+                    ayahsSetCount = 1;
+                }  try {
+                    ayahsRepeatCount = Integer.parseInt(edRepeatAyah.getText().toString());
+                } catch (NumberFormatException e) {
+                    ayahsRepeatCount = 1;
+                }
+
                 // get ayas from db
                 ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
                 Log.d(TAG, "onViewClicked: start log after firest select ");
@@ -440,7 +481,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
             }
 
         } else {
-            showMessage("Select from suras");
+            showMessage(getString(R.string.sura_select_error));
         }
     }
 
@@ -477,14 +518,14 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     }
 
     private void downloadState() {
-        showMessage("Downloading .... ");
+        showMessage(getString(R.string.downloading));
         btnStartListening.setVisibility(GONE);
         spinListening.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onBackPressed() {
-        if (ayahsToListen != null && ayahsToListen.size() > 0) {
+        if (lnPlayView.getVisibility() == View.VISIBLE) {
             backToSelectionState();
         } else {
             super.onBackPressed();
@@ -500,6 +541,8 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
         lnPlayView.setVisibility(GONE);
         lnSelectorAyahs.setVisibility(View.VISIBLE);
+
+        spinListening.setVisibility(GONE);
 
     }
 }

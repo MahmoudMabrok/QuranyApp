@@ -22,15 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_16sdp"
             android:background="@drawable/back_edit_search"
-            android:minHeight="@dimen/_50sdp" />
+            android:minHeight="@dimen/_10sdp" />
 
-        <!--<Spinner
-            android:id="@+id/spStartSuraAyah"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/_50sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search"/>-->
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edStartSuraAyah"
@@ -40,7 +33,7 @@
             android:background="@drawable/back_edit_search"
             android:hint="@string/start_ayah"
             android:inputType="number"
-            android:minHeight="@dimen/_50sdp"
+            android:minHeight="@dimen/_10sdp"
             android:padding="@dimen/_6sdp" />
 
         <Spinner
@@ -49,16 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_16sdp"
             android:background="@drawable/back_edit_search"
-            android:minHeight="@dimen/_50sdp" />
-
-        <!-- <Spinner
-           android:id="@+id/spEndSuraAyah"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:minHeight="@dimen/_50sdp"
-           android:layout_marginBottom="@dimen/_16sdp"
-           android:background="@drawable/back_edit_search"/>
--->
+            android:minHeight="@dimen/_10sdp" />
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edEndSuraAyah"
@@ -68,8 +52,32 @@
             android:background="@drawable/back_edit_search"
             android:hint="@string/end_ayah"
             android:inputType="number"
-            android:minHeight="@dimen/_50sdp"
+            android:minHeight="@dimen/_10sdp"
             android:padding="@dimen/_6sdp" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edRepeatAyah"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search"
+            android:hint="@string/repeat_ayah"
+            android:inputType="number"
+            android:minHeight="@dimen/_10sdp"
+            android:padding="@dimen/_6sdp" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edRepeatSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search"
+            android:hint="@string/repeat_set"
+            android:inputType="number"
+            android:minHeight="@dimen/_10sdp"
+            android:padding="@dimen/_6sdp" />
+
+
 
         <Button
             android:id="@+id/btnStartListening"

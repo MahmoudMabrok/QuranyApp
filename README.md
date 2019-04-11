@@ -2,6 +2,8 @@
 Simple HolyQuran app
 
 [Google Play Link ](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
+[Youtube App Overview](http://bit.ly/2Ggw9Q7)
+
 
 # Features 
 - Go to specific sura by Scrolling and click.
@@ -10,6 +12,7 @@ Simple HolyQuran app
 - Go to last Read Position.
 - Search for words or complete ayah.
 - Download and Listen to ayahs
+- Repeat each ayas and repeat whole listening
 
 # Challenges 
 - **Data** 
@@ -39,9 +42,10 @@ gson | 2.8.5
 sdp-android | 1.0.5 
 ssp-android | 1.0.5
 AppRate | 1.1
-Room| 1.1
+Room| 1.1.1
 prdownloader | 0.4.0
 easypermissions|1.1.1
+stetho | 1.5.1
 
 
 
