@@ -3,6 +3,7 @@ Simple HolyQuran app
 
 [Google Play Link ](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
 [Youtube App Overview](http://bit.ly/2Ggw9Q7)
+[Google drive for APK](http://bit.ly/2Gj346L)
 
 
 # Features 
