@@ -30,12 +30,12 @@ public class LocalShared {
         return preferences.getInt(Constants.LAST_INDEX_Scroll, -1);
     }
 
-    public void setPermissionState(boolean state){
-        preferences.edit().putBoolean(Constants.PERMISSION_STATE, state).apply();
+    public boolean getPermissionState() {
+        return preferences.getBoolean(Constants.PERMISSION_STATE, false);
     }
 
-    public boolean getPermissionState(){
-        return preferences.getBoolean(Constants.PERMISSION_STATE,false);
+    public void setPermissionState(boolean state) {
+        preferences.edit().putBoolean(Constants.PERMISSION_STATE, state).apply();
     }
 
 }

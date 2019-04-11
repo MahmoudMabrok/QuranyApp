@@ -16,8 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:name=".feature.listening_activity.ListeningActivity">
+            android:name=".feature.listening_activity.ListeningActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
         </activity>
         <activity

@@ -56,6 +56,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     TextView tvProgressAudio;
 
     MediaPlayer mediaPlayer;
+    private static final String TAG = "ListeningActivity";
     @BindView(R.id.spStartSura)
     Spinner spStartSura;
     @BindView(R.id.edStartSuraAyah)
@@ -74,17 +75,53 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     TextView tvAyahToListen;
     @BindView(R.id.spinListening)
     SpinKitView spinListening;
-    private Repository repository;
     String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
     boolean isPermissionAllowed;
     int downloadID;
     int i = 1;
-
-    private ArrayList<AyahItem> ayahsToDownLoad;
-
     Typeface typeface;
+    SuraItem startSura, endSura;
+    int startDown, endDown;
+    String downURL, path, filename;
+    int index;
+    int currentAyaAtAyasToListen = 0;
 
-    private static final String TAG = "ListeningActivity";
+    private void makeAlertForPermission() {
+
+        final AlertDialog alertPermission = new AlertDialog.Builder(this)
+                .setMessage("Permission needed to write audio in external storage ")
+                .setTitle("Why Permission")
+                .create();
+
+        alertPermission.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                acquirePermission();
+                alertPermission.dismiss();
+            }
+        });
+
+        alertPermission.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertPermission.setMessage("WE can not do our work ");
+                //   finish();
+            }
+        });
+
+    }
+
+    private void acquirePermission() {
+        String[] perms = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        EasyPermissions.requestPermissions(new PermissionRequest.Builder(this, RC_STORAGE, perms).build());
+    }
+
+    String fileSource;
+    List<AyahItem> ayahsToListen;
+    int actualStart, actualEnd;
+    int currentIteration = 0, endIteration;
+    private Repository repository;
+    private ArrayList<AyahItem> ayahsToDownLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +142,6 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
         initSpinners();
     }
-
-    SuraItem startSura, endSura;
 
     private void initSpinners() {
         List<String> suraNames = repository.getSurasNames();
@@ -146,36 +181,6 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     }
 
-    private void makeAlertForPermission() {
-
-        final AlertDialog alertPermission = new AlertDialog.Builder(this)
-                .setMessage("Permission needed to write audio in external storage ")
-                .setTitle("Why Permission")
-                .create();
-
-        alertPermission.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                acquirePermission();
-                alertPermission.dismiss();
-            }
-        });
-
-        alertPermission.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertPermission.setMessage("WE can not do our work ");
-                //   finish();
-            }
-        });
-
-    }
-
-    private void acquirePermission() {
-        String[] perms = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        EasyPermissions.requestPermissions(new PermissionRequest.Builder(this, RC_STORAGE, perms).build());
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -188,17 +193,11 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         }
     }
 
-
-    int startDown, endDown;
-    String downURL, path, filename;
-
     private void downloadAllQuran(int start, int end) {
         startDown = start;
         endDown = end;
         downloadAudio();
     }
-
-    int index;
 
     private void downloadAudio() {
         // compute index
@@ -249,8 +248,6 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         spinListening.setVisibility(GONE);
     }
 
-    int currentAyaAtAyasToListen = 0;
-
     private void displayAyasState() {
         closeKeyboard();
         Log.d(TAG, "displayAyasState: ");
@@ -275,9 +272,12 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         }
     }
 
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
     private void displayAyahs() {
         Log.d(TAG, "displayAyahs: " + currentAyaAtAyasToListen);
-        //  showMessage("STaert display ayas");
         AyahItem ayahItem = ayahsToListen.get(currentAyaAtAyasToListen);
         tvAyahToListen.setTypeface(typeface);
         tvAyahToListen.setText(ayahItem.getText() + "(" + ayahItem.getAyahInSurahIndex() + ")");
@@ -301,8 +301,6 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         }
 
     }
-
-    String fileSource;
 
     private void playAudio() {
         Log.d(TAG, "playAudio: ");
@@ -387,18 +385,10 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
 
     }
 
-    private void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onError(Error error) {
-
+        showMessage(getString(R.string.error_net));
     }
-
-    List<AyahItem> ayahsToListen;
-
-    int actualStart, actualEnd;
 
     @OnClick(R.id.btnStartListening)
     public void onViewClicked() {
@@ -461,11 +451,9 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
     }
 
     private void makeRangeError() {
-        edStartSuraAyah.setError("error");
-        edEndSuraAyah.setError("error");
+        edStartSuraAyah.setError("Start must be before end ");
+        edEndSuraAyah.setError("End must be after start");
     }
-
-    int currentIteration = 0, endIteration;
 
     private void checkAyahsToDownloadIt() {
         Log.d(TAG, "checkAyahsToDownloadIt: " + ayahsToDownLoad.size());
@@ -483,7 +471,7 @@ public class ListeningActivity extends AppCompatActivity implements OnDownloadLi
         if (Util.isNetworkConnected(this)) {
             downloadState();
             downloadAudio();
-        }else{
+        } else {
             showMessage(getString(R.string.error_net));
         }
     }

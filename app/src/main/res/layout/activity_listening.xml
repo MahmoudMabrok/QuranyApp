@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/_10sdp"
-    android:focusableInTouchMode="true"
-    android:focusable="true"
     android:background="@color/bg_listening"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:padding="@dimen/_10sdp"
     tools:context=".feature.listening_activity.ListeningActivity">
 
     <LinearLayout
@@ -20,9 +20,9 @@
             android:id="@+id/spStartSura"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_50sdp"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search"/>
+            android:background="@drawable/back_edit_search"
+            android:minHeight="@dimen/_50sdp" />
 
         <!--<Spinner
             android:id="@+id/spStartSuraAyah"
@@ -36,62 +36,59 @@
             android:id="@+id/edStartSuraAyah"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_50sdp"
             android:layout_marginBottom="@dimen/_16sdp"
             android:background="@drawable/back_edit_search"
+            android:hint="@string/start_ayah"
             android:inputType="number"
-            android:padding="@dimen/_6sdp"
-            android:hint="@string/start_ayah"/>
+            android:minHeight="@dimen/_50sdp"
+            android:padding="@dimen/_6sdp" />
 
         <Spinner
             android:id="@+id/spEndSura"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_50sdp"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search"/>
+            android:background="@drawable/back_edit_search"
+            android:minHeight="@dimen/_50sdp" />
 
-         <!-- <Spinner
-            android:id="@+id/spEndSuraAyah"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/_50sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search"/>
+        <!-- <Spinner
+           android:id="@+id/spEndSuraAyah"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:minHeight="@dimen/_50sdp"
+           android:layout_marginBottom="@dimen/_16sdp"
+           android:background="@drawable/back_edit_search"/>
 -->
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edEndSuraAyah"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_50sdp"
             android:layout_marginBottom="@dimen/_16sdp"
             android:background="@drawable/back_edit_search"
+            android:hint="@string/end_ayah"
             android:inputType="number"
-            android:padding="@dimen/_6sdp"
-            android:hint="@string/end_ayah"/>
+            android:minHeight="@dimen/_50sdp"
+            android:padding="@dimen/_6sdp" />
 
         <Button
             android:id="@+id/btnStartListening"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/back_search_res"
-            android:layout_height="wrap_content"
-            android:textColor="@color/ayas_color"
-            android:text="@string/btn_start"/>
+            android:text="@string/btn_start"
+            android:textColor="@color/ayas_color" />
 
-        <com.github.ybq.android.spinkit.SpinKitView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/spinListening"
             style="@style/SpinKitView.Large.Circle"
-            android:layout_marginTop="@dimen/_16sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_16sdp"
             android:visibility="gone"
             app:SpinKit_Color="@color/spin_color" />
-
-
 
 
     </LinearLayout>
@@ -109,9 +106,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:textSize="@dimen/_25ssp"
+            android:text="AAAAAAAAAAA"
             android:textColor="@color/ayas_color"
-            android:text="AAAAAAAAAAA" />
+            android:textSize="@dimen/_25ssp" />
 
 
         <LinearLayout
@@ -126,7 +123,7 @@
                 android:id="@+id/btnPlayPause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-              />
+                android:visibility="gone" />
 
             <SeekBar
                 android:id="@+id/sbPosition"
@@ -135,15 +132,16 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_weight="2" />
+                android:layout_weight="2"
+                android:background="@drawable/back_edit_search" />
 
 
             <TextView
                 android:id="@+id/tvProgressAudio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/ayas_color"
-                android:text="@string/time_progress" />
+                android:text="@string/time_progress"
+                android:textColor="@color/ayas_color" />
 
 
         </LinearLayout>

@@ -40,10 +40,12 @@ public class Repository {
     public int getLastSuraWithScroll() {
         return localShared.getLastSuraWithScroll();
     }
-    public boolean getPermissionState(){
+
+    public boolean getPermissionState() {
         return localShared.getPermissionState();
     }
-    public void setPermissionState(boolean state){
+
+    public void setPermissionState(boolean state) {
         localShared.setPermissionState(state);
     }
 
@@ -52,11 +54,11 @@ public class Repository {
         quranDB.surahDAO().addSurah(suraItem);
     }
 
-    public List<String> getSurasNames(){
+    public List<String> getSurasNames() {
         return quranDB.surahDAO().getAllSurahNames();
     }
 
-    public SuraItem getSuraByName(String name){
+    public SuraItem getSuraByName(String name) {
         return quranDB.surahDAO().getSurahByName(name);
     }
 
@@ -74,19 +76,19 @@ public class Repository {
         return quranDB.ayahDAO().getAllAyahOfSurahIndex(index);
     }
 
-    public List<AyahItem> getAyahSInRange(int start , int end) {
-        return quranDB.ayahDAO().getAyahSInRange(start , end);
+    public List<AyahItem> getAyahSInRange(int start, int end) {
+        return quranDB.ayahDAO().getAyahSInRange(start, end);
     }
 
     public List<AyahItem> getAyahByAyahText(String text) {
         return quranDB.ayahDAO().getAyahByAyahText(text);
     }
 
-    public AyahItem getAyahByIndex(int index){
+    public AyahItem getAyahByIndex(int index) {
         return quranDB.ayahDAO().getAyahByIndex(index);
     }
 
-    public void updateAyahItem(AyahItem item){
+    public void updateAyahItem(AyahItem item) {
         quranDB.ayahDAO().updateAyah(item);
     }
 

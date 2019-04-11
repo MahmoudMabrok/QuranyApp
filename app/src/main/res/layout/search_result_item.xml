@@ -52,13 +52,13 @@
             android:id="@+id/btnPlayInSearch"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/ic_play"/>
+            android:background="@drawable/ic_play" />
 
         <ImageButton
             android:id="@+id/btnDownloadSearch"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/ic_file_download"/>
+            android:background="@drawable/ic_file_download" />
 
 
     </LinearLayout>

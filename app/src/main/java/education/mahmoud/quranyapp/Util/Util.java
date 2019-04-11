@@ -132,7 +132,7 @@ public class Util {
 
     public static void hideInputKeyboard(Context context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        imm.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0);
     }
 
 

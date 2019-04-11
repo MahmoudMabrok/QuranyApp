@@ -122,7 +122,7 @@ public class ShowSuar extends AppCompatActivity {
                 openSearch();
                 break;
 
-                case R.id.actionListening:
+            case R.id.actionListening:
                 openListening();
                 break;
         }

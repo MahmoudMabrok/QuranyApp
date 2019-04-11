@@ -27,8 +27,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     private String wordSearched;
     private Typeface typeface;
 
-    IOnDownload iOnDownload  ;
-    IOnPlay iOnPlay ;
+    IOnDownload iOnDownload;
+    IOnPlay iOnPlay;
 
     public SearchResultsAdapter(Typeface typeface) {
         list = new ArrayList<>();
@@ -66,8 +66,8 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, int i) {
-        AyahItem item = list.get(i);
+    public void onBindViewHolder(@NonNull final Holder holder, int i) {
+        final AyahItem item = list.get(i);
         Spannable ayahSpanned = Util.getSpanOfText(item.getTextClean(), wordSearched);
 
         holder.tvSearchResult.setText(ayahSpanned, TextView.BufferType.SPANNABLE);
@@ -77,13 +77,22 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         holder.tvSearchResult.setTypeface(typeface);
         holder.tvSearchSuraName.setTypeface(typeface);
 
-        if (item.getAudioPath() != null){
+        if (item.getAudioPath() != null) {
             holder.btnPlayInSearch.setVisibility(View.VISIBLE);
             holder.btnDownloadSearch.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.btnPlayInSearch.setVisibility(View.GONE);
             holder.btnDownloadSearch.setVisibility(View.VISIBLE);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.tvSearchResult.setText(item.getText());
+            }
+        });
+
+
     }
 
     @Override
@@ -91,6 +100,14 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         return list.size();
     }
 
+
+    interface IOnPlay {
+        void onPlayClick(AyahItem item);
+    }
+
+    interface IOnDownload {
+        void onDownloadClick(AyahItem item);
+    }
 
     class Holder extends RecyclerView.ViewHolder {
 
@@ -124,14 +141,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             });
 
         }
-    }
-
-    interface IOnPlay {
-        void onPlayClick(AyahItem item);
-    }
-
-    interface IOnDownload {
-        void onDownloadClick(AyahItem item);
     }
 
 }

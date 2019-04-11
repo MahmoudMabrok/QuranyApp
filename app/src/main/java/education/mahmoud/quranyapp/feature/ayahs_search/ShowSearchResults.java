@@ -11,7 +11,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +41,20 @@ public class ShowSearchResults extends AppCompatActivity implements OnDownloadLi
     TextView tvSearchCount;
     SearchResultsAdapter adapter;
     private Repository repository;
+    int index;
+    String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
+
+    private void foundState() {
+        rvSearch.setVisibility(View.VISIBLE);
+        tvNotFound.setVisibility(View.GONE);
+    }
+
+    private void notFoundState() {
+        rvSearch.setVisibility(View.GONE);
+        tvNotFound.setVisibility(View.VISIBLE);
+    }
+
+    String downURL, path, filename;
     private MediaPlayer mediaPlayer;
 
     @Override
@@ -52,6 +65,7 @@ public class ShowSearchResults extends AppCompatActivity implements OnDownloadLi
 
         repository = Repository.getInstance(getApplication());
         initRv();
+
 
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -86,16 +100,6 @@ public class ShowSearchResults extends AppCompatActivity implements OnDownloadLi
 
     }
 
-    private void foundState() {
-        rvSearch.setVisibility(View.VISIBLE);
-        tvNotFound.setVisibility(View.GONE);
-    }
-
-    private void notFoundState() {
-        rvSearch.setVisibility(View.GONE);
-        tvNotFound.setVisibility(View.VISIBLE);
-    }
-
     private void initRv() {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         rvSearch.setLayoutManager(manager);
@@ -126,10 +130,18 @@ public class ShowSearchResults extends AppCompatActivity implements OnDownloadLi
     private void playAudio(AyahItem item) {
         Log.d(TAG, "playAudio: ");
         try {
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setDataSource(item.getAudioPath());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.release();
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(item.getAudioPath());
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            } else {
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(item.getAudioPath());
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            }
 
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -144,10 +156,6 @@ public class ShowSearchResults extends AppCompatActivity implements OnDownloadLi
         }
 
     }
-
-    int index ;
-    String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
-    String  downURL , path , filename;
 
     private void downloadAudio(AyahItem item) {
         // compute index
@@ -166,8 +174,8 @@ public class ShowSearchResults extends AppCompatActivity implements OnDownloadLi
     }
 
     private void showMessage(String message) {
-             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-       }
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onDownloadComplete() {

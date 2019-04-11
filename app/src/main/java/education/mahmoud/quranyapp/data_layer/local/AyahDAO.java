@@ -21,7 +21,7 @@ public interface AyahDAO {
     public List<AyahItem> getAllAyahOfSurahIndex(int id);
 
     @Query("select  * from ayahs where `ayahIndex` between :start and :end order by ayahIndex asc ")
-    public List<AyahItem> getAyahSInRange(int start , int end );
+    public List<AyahItem> getAyahSInRange(int start, int end);
 
     @Query("select  * from ayahs where `ayahIndex` = :id")
     public AyahItem getAyahByIndex(int id);
