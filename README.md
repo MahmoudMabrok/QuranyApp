@@ -1,4 +1,9 @@
 # QuranyApp
+
+<h1 align=center>
+<img src="logo/horizontal.png" width=60%>
+</h1>
+
 Simple HolyQuran app
 
 - [Google Play Link ](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
