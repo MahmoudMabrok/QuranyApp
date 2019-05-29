@@ -39,7 +39,7 @@ public class App extends Application {
         }
 
         new Instabug.Builder(this, "7cd38f30270b7b67a104d34f9b9d0b3a")
-                .setInvocationEvents(InstabugInvocationEvent.TWO_FINGER_SWIPE_LEFT, InstabugInvocationEvent.SCREENSHOT)
+                .setInvocationEvents(InstabugInvocationEvent.SHAKE, InstabugInvocationEvent.SCREENSHOT)
                 .build();
 
     }

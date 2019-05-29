@@ -56,24 +56,6 @@ google-services.json
 
 .idea
 
-# Freeline
-freeline.py
-freeline/
-freeline_project_description.json
-
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
 .github/
 .gitignore
 .idea/caches/
@@ -82,17 +64,4 @@ hs_err_pid*
 .idea/misc.xml
 .idea/modules.xml
 .idea/runConfigurations.xml
-CODE_OF_CONDUCT.md
-LICENSE
-QuranyApp-master.iml
-QuranyApp.iml
-README.md
-apk/
 gradle/
-gradlew
-gradlew.bat
-images/
-index.md
-logo/
-privacy.md
-settings.gradle
