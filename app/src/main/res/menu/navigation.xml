@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_read"
+        android:icon="@drawable/ic_read"
+        android:title="@string/read" />
+
+    <item
+        android:id="@+id/navigation_tafseer"
+        android:icon="@drawable/ic_person"
+        android:title="@string/tafseerTap" />
+    <item
+        android:id="@+id/navigationListen"
+        android:icon="@drawable/ic_sound"
+        android:title="@string/listen" />
+
+    <item
+        android:id="@+id/navigation_test"
+        android:icon="@drawable/ic_person"
+        android:title="@string/test" />
+
+    <item
+        android:id="@+id/navigation_bookmarks"
+        android:icon="@drawable/ic_book"
+        android:title="@string/bookmark" />
+
+
+</menu>

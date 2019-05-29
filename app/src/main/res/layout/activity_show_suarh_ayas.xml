@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lnShowAyahs"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".feature.show_sura_ayas.ShowSuarhAyas">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/back_border_page"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvSuraNameShowAyas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:alpha="@android:integer/config_mediumAnimTime"
+            android:gravity="center_horizontal"
+            android:textColor="@color/ayas_color"
+            android:textSize="@dimen/_17ssp"
+            tools:text="HHH" />
+
+        <ImageView
+            android:id="@+id/imBookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:srcCompat="@drawable/ic_book" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <ScrollView
+            android:id="@+id/sc_ayahs_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@color/whiteCardColor">
+
+            <TextView
+                android:id="@+id/tvAyahs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:isScrollContainer="true"
+                android:padding="@dimen/_6sdp"
+                android:scrollbars="vertical"
+                android:textColor="@color/ayas_color"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/_25ssp"
+                tools:text="Hellod" />
+        </ScrollView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="111111" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvPageNum"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/bg_ays_night_mode"
+            android:textSize="@dimen/_22ssp"
+            android:visibility="gone" />
+
+        <SeekBar
+            android:id="@+id/sbRate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_weight="1"
+            android:max="30" />
+
+    </LinearLayout>
+</LinearLayout>

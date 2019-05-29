@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:padding="@dimen/_16sdp"
+    tools:context=".feature.test_quran.TestSaveQuran">
+
+
+    <LinearLayout
+        android:id="@+id/lnSelectorAyahs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spStartSura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search" />
+
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edStartSuraAyah"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search"
+            android:hint="@string/start_ayah"
+            android:inputType="number"
+            android:minHeight="@dimen/_10sdp"
+            android:padding="@dimen/_6sdp" />
+
+        <Spinner
+            android:id="@+id/spEndSura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edEndSuraAyah"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search"
+            android:hint="@string/end_ayah"
+            android:inputType="number"
+            android:minHeight="@dimen/_10sdp"
+            android:padding="@dimen/_6sdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnTestSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_16sdp"
+                android:background="@drawable/back_search_res"
+                android:text="@string/btn_start"
+                android:textColor="@color/ayas_color" />
+
+            <Button
+                android:id="@+id/btnTestSaveRandom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/back_search_res"
+                android:text="@string/btn_start_random"
+                android:textColor="@color/ayas_color" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lnTestLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_descript"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Red color represent missing text"
+                android:textColor="@color/missed"
+                android:textSize="@dimen/describeColors" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Yellow color represent additional (wrong) text"
+                android:textColor="@color/wrong_color"
+                android:textSize="@dimen/describeColors" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Green color represent correct text"
+                android:textColor="@color/correct"
+                android:textSize="@dimen/describeColors" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvAyahToTestAfter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/ayahToTestRanom"
+            android:textColor="@color/ayas_color"
+            android:textSize="@dimen/_22ssp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvTestText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

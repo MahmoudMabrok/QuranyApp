@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/_16sdp"
+    tools:context=".feature.home_Activity.Home$PlaceholderFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvSura"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/recycler_view_item" />
+
+</LinearLayout>

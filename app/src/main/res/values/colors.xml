@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#8BC34A</color>
+    <color name="colorPrimaryDark">#8BC34A</color>
+    <color name="colorAccent">#83E610</color>
+    <color name="font_results">#ffffff</color>
+    <color name="bg_show_ays">#ACA9A9</color>
+
+    <color name="dialoge_bg">#000000</color>
+    <color name="bg_play_audio">#000000</color>
+    <color name="bg_listening">#000000</color>
+    <color name="spin_color">#ffffff</color>
+    <color name="red">#ff0000</color>
+    <color name="wrong_color">#FFEB3B</color>
+    <color name="correct">#00ff00</color>
+    <color name="missed">#ff0000</color>
+
+    <color name="bg_ayahs">#FCF4B1</color>
+    <color name="ayas_color">#000000</color>
+
+
+    <color name="ayas_color_night_mode">#ffffff</color>
+    <color name="bg_ays_night_mode">#292829</color>
+
+    <color name="bg_main">#A88BC34A</color>
+
+    <color name="bg_green">#A88BC34A</color>
+    <color name="bg_white">#ffffff</color>
+    <color name="bg_yellow">#FCF4B1</color>
+    <color name="bg_descript">#ECF1B2</color>
+    <color name="descrip_text">#000000</color>
+
+
+    <!--colors for modern ui-->
+    <color name="whiteTextColor">#fff</color>
+    <color name="primaryTextColor">#03A9F4</color>
+    <color name="loginBkColor">#f0f0f0</color>
+    <!--colros for card-->
+    <color name="whiteCardColor">#fff</color>
+
+
+    <color name="semi_black">#BBAFAF</color>
+    <color name="spin_color_ayahs">#03A9F4</color>
+    <color name="black_gradi">#747171</color>
+
+
+</resources>

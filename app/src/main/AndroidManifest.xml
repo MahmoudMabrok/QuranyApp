@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="education.mahmoud.quranyapp">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".Util.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
+
+        <activity
+            android:name=".feature.show_ayahs_from_pdf.ShowAyahsPDF"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".feature.show_sura_ayas.ShowAyahsActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".feature.home_Activity.HomeActivity"
+            android:label="@string/app_name">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".feature.login.Login"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".feature.splash.Splash"
+            android:theme="@style/SplashTheme" />
+        <activity
+            android:name=".feature.register.RegisterActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".feature.download.DownloadActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feature.scores.ScoreActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".feature.profile.ProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".feature.feedback_activity.FeedbackActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".feature.setting.SettingActivity" />
+        <activity
+            android:name=".feature.ayahs_search.ShowSearchResults"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".feature.show_sura_ayas.ShowSuarhAyas"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
+    </application>
+
+</manifest>

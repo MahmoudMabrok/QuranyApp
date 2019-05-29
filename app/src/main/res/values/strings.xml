@@ -1,0 +1,125 @@
+<resources>
+    <string name="app_name">QuranyApp</string>
+    <string name="title_activity_sura_details">SuraDetails</string>
+    <string name="action_settings">Settings</string>
+    <string name="enter_surah_num">Enter Surah Num</string>
+    <string name="go">Go</string>
+    <string name="go_by_name">Go By Name</string>
+    <string name="saved">^_^ Saved ^_^</string>
+    <string name="jump">Jump</string>
+    <string name="go_to_latest_read">Go to Latest Read</string>
+    <string name="search">Search</string>
+    <string name="ayah_to_search">ayah to search</string>
+    <string name="notfound">Not Found</string>
+    <string name="times">%d  times</string>
+    <string name="time_progress"> %d / %d</string>
+    <string name="start_ayah">Start from Ayah ...</string>
+    <string name="end_ayah">end at ayah</string>
+    <string name="btn_start">Full Test</string>
+    <string name="outofrange">out of range max is %d</string>
+    <string name="open_listening">Listen</string>
+    <string name="error_net">Error, check your Internet connection , Try Again</string>
+    <string name="repeat_ayah">repeat ayah count , default 1 </string>
+    <string name="repeat_set">repeat set, default 1 </string>
+    <string name="finish">Finished Downloading...</string>
+    <string name="error">error</string>
+    <string name="sura_select_error">Select from suras</string>
+    <string name="downloading">Downloading ....</string>
+
+    <string name="test_text">Test Text</string>
+    <string name="setting">Setting</string>
+    <string name="color_for_background_for_regular_mode">Color for background for regular mode</string>
+    <string name="green">Green</string>
+    <string name="yellow">Yellow</string>
+    <string name="white">White</string>
+    <string name="night_mode">Night Mode</string>
+    <string name="downState">%d / %d</string>
+    <string name="now_down">%s is being downloaded</string>
+    <string name="btn_start_random">Random Test</string>
+    <string name="ayahToTestRanom">Write Ayah After below Ayah \n {%s}</string>
+    <string name="not_sufficient_ayahs">number of ayahs must be more than 2</string>
+    <string name="read">Read</string>
+    <string name="test">Test</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="listen">Listen</string>
+    <string name="ayah">ayah</string>
+    <string name="btn_listen">listen</string>
+    <string name="rangeoftest">From %s ayah %d to %s ayah %d</string>
+    <string name="start_range_error">Start Sura  must be before end</string>
+    <string name="end_range_error">End  Sura must be after start</string>
+    <string name="deleted">Deleted</string>
+    <string name="postives">Postives</string>
+    <string name="negatives">Negatives</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="send">send</string>
+    <string name="show_scoreboard">Show Scoreboard</string>
+    <string name="score">Score</string>
+    <string name="profile">profile</string>
+    <string name="score_str">Score \n%d \n %s</string>
+    <string name="download_tafseer_data">Download Tafseer Data</string>
+    <string name="download">Download Zone</string>
+    <string name="tafseer">Show Tafseer</string>
+    <string name="no_bookmarks">No Bookmarks</string>
+    <string name="select_ayah">Please select num of ayah</string>
+    <string name="tafseer_not_down">Please download tafseer first</string>
+    <string name="message_dialoge">Page: %d \n
+    Tafseer :\n
+    %s</string>
+    <string name="result">result: %d </string>
+    <string name="red_color_represent_missing_text">Red color represent missing text (-2 pts)</string>
+    <string name="yellow_color_represent_additional_wrong_text">Yellow color represent additional (wrong) text (-1 pts)</string>
+    <string name="green_color_represent_correct_text">Green color represent correct text(+2 pts)</string>
+    <string name="tafseerbtn">Tafseer</string>
+    <string name="tashkeel">Tashkeel</string>
+    <string name="your_score">Your Score</string>
+    <string name="download_audio_data">Download Audio</string>
+    <string name="not_downlod_audio">PLEASE Download Audio first and Try to play</string>
+    <string name="thanks">Thanks</string>
+    <string name="welcome">Welcome %s</string>
+    <string name="not_registered">not registered user</string>
+    <string name="upload">Upload Score</string>
+    <string name="go_to_login">Register To Upload Points </string>
+
+    <string name="register">REGISTER</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Password</string>
+    <string name="signup_login_hint">Already have an account? Sign In</string>
+    <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
+    <string name="name">Name</string>
+    <string name="wrong_name">Wrong name</string>
+    <string name="wrong_email">wrong email</string>
+    <string name="wrong_pass">wrong password</string>
+
+    <string name="not_req">Not Registered User, Creat account to upload your score</string>
+    <string name="na">NA</string>
+    <string name="empty">it should not be empty</string>
+    <string name="feedback">Feedback</string>
+    <string name="tafserr_info">AyahNum:%d\n PageNum:%d\nJuzNum:%d</string>
+    <string name="created_Account">Acount Created Successfuly, You Can Upokad now</string>
+    <string name="logged_success">Logged Successfuly, now you can  upload points</string>
+    <string name="uploaded">Uploaded</string>
+    <string name="tafseerTap">Tafseer</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="ayah_symb">(%d)</string>
+    <string name="tafseer_ayah_text_header">%d. %s</string>
+    <string name="download_quran_data">Download Quran</string>
+    <string name="tv_no_quran_data">No Quran Data \n Please download from download zone\n
+            click to open download zone</string>
+    <string name="no_data_go_to_download_zone_n_click_to_open_zone">No data go to download zone \n click me  to open zone</string>
+    <string name="sura_rev_mackkia">Makkia</string>
+    <string name="sura_rev_madniaa">Madnia</string>
+    <string name="ayah_num">%d Ayah</string>
+
+    <string name="totalQuranAyahs">Total Ayahs Downloaded \n%d / %d</string>
+    <string name="totalQuranTafseer">Total Tafseer AyahsDownloaded\n %d / %d</string>
+    <string name="totalQuranAudio">Total Audio Ayahs Downloaded \n %d / %d</string>
+    <string name="go_by_juz">Go By Juz</string>
+    <string name="juz_num_i_e_1_2_30">Juz Num (i.e 1,2 .. 30)</string>
+    <string name="ayah_in_surah_num_i_e_1_2_22">Ayah in Surah Num(i.e 1,2,22)</string>
+    <string name="loading">Loading..</string>
+
+
+</resources>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp"
+    tools:context=".feature.listening_activity.ListenFragment">
+
+    <LinearLayout
+        android:id="@+id/lnPlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvAyahToListen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:gravity="center"
+            android:text="AAAAAAAAAAA"
+            android:textColor="@color/ayas_color"
+            android:textSize="@dimen/_25ssp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp">
+
+
+            <Button
+                android:id="@+id/btnPlayPause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <SeekBar
+                android:id="@+id/sbPosition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="2"
+                android:background="@drawable/back_edit_search" />
+
+
+            <TextView
+                android:id="@+id/tvProgressAudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/time_progress"
+                android:textColor="@color/ayas_color"
+                android:textSize="@dimen/_15ssp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/lnSelectorAyahs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Spinner
+                android:id="@+id/spStartSura"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:background="@drawable/back_spinner" />
+
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edStartSuraAyah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:background="@drawable/back_edit_search"
+                android:hint="@string/start_ayah"
+                android:inputType="number"
+                android:padding="@dimen/_6sdp" />
+
+            <Spinner
+                android:id="@+id/spEndSura"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:background="@drawable/back_spinner" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edEndSuraAyah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:background="@drawable/back_edit_search"
+                android:hint="@string/end_ayah"
+                android:inputType="number"
+                android:padding="@dimen/_6sdp" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edRepeatAyah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:background="@drawable/back_edit_search"
+                android:hint="@string/repeat_ayah"
+                android:inputType="number"
+                android:padding="@dimen/_6sdp" />
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edRepeatSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:background="@drawable/back_edit_search"
+                android:hint="@string/repeat_set"
+                android:inputType="number"
+                android:padding="@dimen/_6sdp" />
+
+
+            <Button
+                android:id="@+id/btnStartListening"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/back_search_res"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                android:text="@string/btn_listen"
+                android:textColor="@color/ayas_color"
+                android:textSize="@dimen/_15ssp" />
+
+            <LinearLayout
+                android:id="@+id/lnDownState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/spinListening"
+                    style="@style/SpinKitView.Large.Circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:SpinKit_Color="@color/spin_color" />
+
+                <TextView
+                    android:id="@+id/tvDownStatePercentage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/downState"
+                    android:textSize="@dimen/_22ssp" />
+
+                <TextView
+                    android:id="@+id/tvDownCurrentFile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/now_down"
+                    android:textSize="@dimen/_22ssp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_16sdp"
+    android:orientation="horizontal"
+    android:padding="@dimen/_8sdp">
+
+    <TextView
+        android:id="@+id/tvAyahNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="1"
+        android:textSize="@dimen/_22ssp" />
+
+    <android.support.design.widget.TextInputEditText
+        android:id="@+id/edTextToTest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_weight="1"
+        android:background="@drawable/back_edit_search"
+
+        android:hint="@string/ayah"
+        android:inputType="textAutoComplete"
+        android:minLines="1"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:textColor="@color/ayas_color"
+        android:textSize="@dimen/_17ssp" />
+
+    <Button
+        android:id="@+id/btnCheck"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:background="@drawable/ic_spellcheck" />
+
+</LinearLayout>

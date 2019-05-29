@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:padding="@dimen/_16sdp">
+
+
+    <EditText
+        android:id="@+id/edSurahNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16sp"
+        android:background="@drawable/back_edit_search"
+        android:hint="@string/enter_surah_num"
+        android:inputType="numberDecimal"
+        android:padding="@dimen/_10sdp"
+        android:textSize="@dimen/_15ssp" />
+
+    <EditText
+        android:id="@+id/edSurahAyahNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back_edit_search"
+        android:hint="@string/ayah_in_surah_num_i_e_1_2_22"
+        android:inputType="numberDecimal"
+        android:padding="@dimen/_10sdp"
+        android:textSize="@dimen/_15ssp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/_16sdp"
+        android:text="OR"
+        android:textColor="@color/ayas_color"
+        android:textSize="@dimen/_25ssp"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/edSurahName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@drawable/back_edit_search"
+        android:hint="Enter Surah Name"
+        android:inputType="text"
+        android:padding="@dimen/_10sdp"
+        android:textSize="@dimen/_15ssp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnGo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@drawable/back_search_res"
+        android:text="@string/go"
+        android:textColor="@color/ayas_color"
+        android:textSize="@dimen/_15ssp" />
+
+    <EditText
+        android:id="@+id/edJuz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@drawable/back_edit_search"
+        android:hint="@string/juz_num_i_e_1_2_30"
+        android:inputType="numberDecimal"
+        android:padding="@dimen/_10sdp"
+        android:textSize="@dimen/_15ssp" />
+
+
+    <Button
+        android:id="@+id/btnGoToJuz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back_search_res"
+        android:text="@string/go_by_juz"
+        android:textColor="@color/ayas_color"
+        android:textSize="@dimen/_15ssp" />
+
+</LinearLayout>

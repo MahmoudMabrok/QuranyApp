@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_8sdp">
+
+        <TextView
+            android:id="@+id/tvScoreuserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:layout_weight="2"
+            android:background="@drawable/back_edit_search"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/_17ssp"
+            tools:text="@tools:sample/lorem" />
+
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/back_edit_search"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/_17ssp"
+            tools:text="@tools:sample/lorem" />
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

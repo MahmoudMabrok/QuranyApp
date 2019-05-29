@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/lnTitleInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/back_dialoge_title">
+
+        <TextView
+            android:id="@+id/tvInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:text="SSSSSSSSSSSSS"
+            android:textColor="@color/bg_white"
+            android:textSize="@dimen/_15ssp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lnTitleInfo"
+        android:background="@drawable/back_dialoge">
+
+        <TextView
+            android:id="@+id/tvDialogeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/bg_white"
+            android:textSize="@dimen/_18ssp" />
+    </ScrollView>
+
+
+</RelativeLayout>

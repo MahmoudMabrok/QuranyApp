@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_50sdp"
+    tools:context=".feature.download.DownloadActivity">
+
+    <Button
+        android:id="@+id/btnDownloadQuran"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/back_search_res"
+        android:text="@string/download_quran_data"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnDownloadTafseer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/back_search_res"
+        android:text="@string/download_tafseer_data" />
+
+    <Button
+        android:id="@+id/btnDownloadSound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/back_search_res"
+        android:text="@string/download_audio_data" />
+
+
+    <LinearLayout
+        android:id="@+id/lnDown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/spinListening"
+            style="@style/SpinKitView.Large.Circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_16sdp"
+            app:SpinKit_Color="@color/spin_color" />
+
+        <TextView
+            android:id="@+id/tvDownStatePercentage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/downState"
+            android:textSize="@dimen/_22ssp" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tvTotalQuranAyahs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/totalQuranAyahs"
+            android:textColor="@color/whiteCardColor"
+            android:textSize="@dimen/_17ssp" />
+
+
+        <TextView
+            android:id="@+id/tvTotalQuranTafseer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/totalQuranTafseer"
+            android:textColor="@color/whiteCardColor"
+            android:textSize="@dimen/_17ssp" />
+
+
+        <TextView
+            android:id="@+id/tvTotalQuranAudio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/totalQuranAudio"
+            android:textColor="@color/whiteCardColor"
+            android:textSize="@dimen/_17ssp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

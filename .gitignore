@@ -54,29 +54,13 @@ captures/
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
+.idea
+
 # Freeline
 freeline.py
 freeline/
 freeline_project_description.json
 
-# fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/test_output
-fastlane/readme.md
-### Java template
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
 # Package Files #
 *.jar
@@ -104,9 +88,6 @@ QuranyApp-master.iml
 QuranyApp.iml
 README.md
 apk/
-app/
-build.gradle
-gradle.properties
 gradle/
 gradlew
 gradlew.bat

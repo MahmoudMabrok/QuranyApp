@@ -1,0 +1,26 @@
+<resources>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="describeColors">@dimen/_12ssp</dimen>
+    <dimen name="setting_text_size">@dimen/_22ssp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+    <dimen name="textRange">@dimen/_22ssp</dimen>
+    <dimen name="search_text_size">@dimen/_20ssp</dimen>
+    <dimen name="width_seek">10dp</dimen>
+    <dimen name="text_score_title">@dimen/_20sdp</dimen>
+    <dimen name="score_value">@dimen/_25ssp</dimen>
+    <dimen name="font_feedback">@dimen/_17ssp</dimen>
+
+    <!--dimes for design 3-->
+    <dimen name="headerTextSize">22sp</dimen>
+    <dimen name="newsMoreTextSize">12sp</dimen>
+    <dimen name="loginCardRadius">20dp</dimen>
+    <dimen name="loginViewsMargin">20dp</dimen>
+
+    <dimen name="signup_text_margin_top">10dp</dimen>
+
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.show_ayahs_from_pdf.ShowAyahsPDF">
+
+    <LinearLayout
+        android:id="@+id/topLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal"
+        android:padding="@dimen/_5sdp">
+
+        <TextView
+            android:id="@+id/tvMMMM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tafseerTap" />
+    </LinearLayout>
+    <!--
+
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/pdfView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    -->
+
+    <LinearLayout
+        android:id="@+id/BottomLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="@dimen/_5sdp">
+
+        <TextView
+            android:id="@+id/tvMMKK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tafseerTap" />
+    </LinearLayout>
+
+
+</FrameLayout>
