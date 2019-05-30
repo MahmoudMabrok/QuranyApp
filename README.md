@@ -55,6 +55,10 @@ at Manifiest
         
         ></application>
 ```  
+- **Unrelated histories Unable to merge ** 
+I have tried to make repo clonable and run without problem but i lost all 63 commit.
+Alhumdllah now developers can clone&fork&pull and help us to develop app.
+
 
 
 ## Mistakes & Learn 
