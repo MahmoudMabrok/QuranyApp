@@ -21,6 +21,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
 
 
     private static final String TAG = "SuraAdapter";
+
     private SuraListner suraListner;
     private List<SuraItem> list;
 
@@ -63,14 +64,17 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
     public void onBindViewHolder(@NonNull Holder holder, int i) {
         SuraItem suraItem = list.get(i);
         holder.tvSuraName.setText(suraItem.getName());
+        holder.tvSuraPageNum.setText(String.valueOf(suraItem.getStartIndex()));
         holder.tvSuraName.setTypeface(typeface);
-        holder.tvSuraNumber.setText(String.valueOf(suraItem.getStartIndex()));
-        holder.tvSuraAyahsNum.setText(Util.getArabicStrOfNum(suraItem.getNumOfAyahs()));
+        holder.tvSuraNumber.setText(String.valueOf(suraItem.getIndex()));
+
+        String ayahSuffix = holder.itemView.getContext().getString(R.string.ayahSuffix);
+        holder.tvSuraAyahsNum.setText(suraItem.getNumOfAyahs() + ayahSuffix);
 
         if (suraItem.getRevelationType().equals("Meccan")) {
-            holder.tvSuraRev.setText(holder.itemView.getContext().getString(R.string.sura_rev_mackkia));
+            holder.tvSuraRevolution.setText(holder.itemView.getContext().getString(R.string.sura_rev_mackkia));
         } else {
-            holder.tvSuraRev.setText(holder.itemView.getContext().getString(R.string.sura_rev_madniaa));
+            holder.tvSuraRevolution.setText(holder.itemView.getContext().getString(R.string.sura_rev_madniaa));
         }
     }
 
@@ -84,15 +88,17 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
     }
 
     class Holder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.tvSuraNumber)
         TextView tvSuraNumber;
         @BindView(R.id.tvSuraName)
         TextView tvSuraName;
+        @BindView(R.id.tvSuraRevolution)
+        TextView tvSuraRevolution;
         @BindView(R.id.tvSuraAyahsNum)
         TextView tvSuraAyahsNum;
-
-        @BindView(R.id.tvSuraRevolution)
-        TextView tvSuraRev;
+        @BindView(R.id.tvSuraPageNum)
+        TextView tvSuraPageNum;
 
         public Holder(@NonNull View itemView) {
             super(itemView);

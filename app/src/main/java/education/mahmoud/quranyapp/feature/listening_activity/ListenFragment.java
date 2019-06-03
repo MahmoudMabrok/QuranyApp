@@ -121,11 +121,11 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         typeface = Typeface.createFromAsset(getActivity().getAssets(), "me_quran.ttf");
 
         isPermissionAllowed = repository.getPermissionState();
+        Log.d(TAG, "onCreateView: " + isPermissionAllowed);
         initSpinners();
 
         return view;
     }
-
 
     private void initSpinners() {
         List<String> suraNames = Arrays.asList(Data.SURA_NAMES);
@@ -171,7 +171,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
 
     }
 
-
     private void downloadAudio() {
         // compute index
         index = ayahsToDownLoad.get(currentIteration).getAyahIndex();
@@ -194,6 +193,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        Log.d(TAG, "setUserVisibleHint: ");
         if (isVisibleToUser && lnPlayView != null) {
             initSpinners();
             backToSelectionState();
@@ -476,7 +476,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         edEndSuraAyah.clearFocus();
         edStartSuraAyah.clearFocus();
         lnPlayView.requestFocus();
-        Util.hideInputKeyboard(getContext());
+    //    Util.hideInputKeyboard(getContext());
     }
 
     private void makeRangeError() {
@@ -533,8 +533,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         edStartSuraAyah.setError(null);
         edRepeatAyah.setText(null);
         edRepeatSet.setText(null);
-
-
     }
 
     @Override

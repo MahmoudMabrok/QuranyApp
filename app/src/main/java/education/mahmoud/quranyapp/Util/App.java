@@ -32,7 +32,7 @@ public class App extends Application {
 
         int ahays = repository.getTotlaAyahs();
         if (ahays == 0) {
-            loadQuran();
+          //  loadQuran();
             persistanscePages();
         } else {
             persistanscePages();
@@ -46,7 +46,11 @@ public class App extends Application {
 
     private void persistanscePages() {
         new Thread(() -> {
-            loadFullQuran();
+            try {
+                loadFullQuran();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }).start();
 
     }

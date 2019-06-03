@@ -107,8 +107,8 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                Toast.makeText(DownloadActivity.this, message, Toast.LENGTH_SHORT).show();
                 closeDialoge();
+                createStatistics();
             }
         };
 
@@ -215,6 +215,17 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         }
     }
 
+    /**
+     * load tafseer from internet
+     */
+    private void loadTafseer() {
+        setUI(tafseerToDownload, max_Tafseer);
+        showMessage(String.valueOf(tafseerToDownload));
+        if (tafseerToDownload <= 114)
+            loadChapter();
+        defaultState();
+    }
+
     private void downState() {
         lnDown.setVisibility(View.VISIBLE);
         btnDownloadTafseer.setVisibility(View.GONE);
@@ -224,13 +235,6 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         tvTotalQuranTafseer.setVisibility(View.GONE);
         tvTotalQuranAyahs.setVisibility(View.GONE);
         tvTotalQuranAudio.setVisibility(View.GONE);
-    }
-    private void loadTafseer() {
-        setUI(tafseerToDownload, max_Tafseer);
-        showMessage(String.valueOf(tafseerToDownload));
-        if (tafseerToDownload <= 114)
-            loadChapter();
-        defaultState();
     }
 
     private void setUI(int current, int max) {
@@ -287,16 +291,19 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         handler.sendEmptyMessage(0);
     }
 
-    private void closeDialoge() {
-        loadingDialog.dismiss();
-    }
-
     private void startProgress() {
         loadingDialog = Util.getLoadingDialog(this, "");
         loadingDialog.setCancelable(false);
         loadingDialog.show();
     }
 
+    private void closeDialoge() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
+            loadingDialog.dismiss();
+        }
+    }
+
+    //<editor-fold desc="Download Audio">
     @OnClick(R.id.btnDownloadSound)
     public void onDownloadAudioClicked() {
         audioToDownload = 0;
@@ -354,12 +361,19 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         }
         defaultState();
     }
+    //</editor-fold>
 
+    //<editor-fold desc="download quran">
     @OnClick(R.id.btnDownloadQuran)
     public void onDownloadQuran() {
-        downQuranState();
-        new Thread(this::downloadQuran).start();
+       // downQuranState();
+        new Thread(this::LoadQuranFromJson).start();
 
+    }
+
+    public void LoadQuranFromJson(){
+        List<Surah> surahs = Util.getFullQuranSurahs(this);
+        Store(surahs);
     }
 
     private void downQuranState() {
@@ -445,11 +459,10 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
 
         }
 
+        handler.sendEmptyMessage(0);
 
-        runOnUiThread(() -> {
-            defaultState();
-            showMessage("Finished Successfully");
-            createStatistics();
-        });
     }
+    //</editor-fold>
+
+
 }

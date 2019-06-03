@@ -48,6 +48,7 @@
     <string name="bookmark">المرجعيات</string>
     <string name="listen">استمع</string>
     <string name="ayah">اكتب الايه </string>
+    <string name="ayahSuffix">ايه </string>
     <string name="btn_listen">استمع</string>
     <string name="rangeoftest">من سورة %s الايه  %d  \n
     الى سورة %s  ايه %d</string>
@@ -125,6 +126,7 @@
     <string name="ayah_in_surah_num_i_e_1_2_22">رقم الاية داخل السورة (1و2و3و…22)</string>
     <string name="loading">برجاء الانتظار جاري التحميل</string>
     <string name="down_permission">التطبيق يحتاج للصلاحية من اجل تحميل الملفات </string>
+    <string name="seperator"> - </string>
 
 
 </resources>

@@ -85,7 +85,7 @@ public class SuraListFragment extends Fragment {
 
             }
         };
-
+        loadSuraList();
         return view;
     }
 
@@ -107,21 +107,13 @@ public class SuraListFragment extends Fragment {
 
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser){
-            Log.d(TAG, "setUserVisibleHint: ");
-            loadSuraList();
-            handler.sendEmptyMessage(0);
-        }
-    }
-
 
     private void loadSuraList() {
         Log.d(TAG, "loadSuraList: ");
         suraItems = repository.getSuras();
         handler.sendEmptyMessage(0);
-        Log.d(TAG, "loadSuraList: 2");
+        Log.d(TAG, "loadSuraList: ## " +suraItems.size());
+
     }
 
     private void gotoSuraa(int index) {

@@ -133,25 +133,6 @@ public class HomeActivity extends AppCompatActivity {
         };
 
 
-        /*
-        new CountDownTimer(5000, 1000) {
-            @Override
-            public void onTick(long l) {
-                ahays = repository.getTotlaAyahs();
-                Log.d(TAG, "onTick: " + ahays);
-                if (ahays > 6000) {
-                    closeDialoge();
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                closeDialoge();
-            }
-        }.start();
-*/
-
-
     }
 
     private void closeDialoge() {
@@ -325,8 +306,10 @@ public class HomeActivity extends AppCompatActivity {
         if (requestCode == RC_STORAGE && grantResults[0] == PERMISSION_GRANTED) {
             isPermissionAllowed = true;
             repository.setPermissionState(true);
-        } else {
-            finish();
+        } else if (requestCode == RC_STORAGE ) {
+            showMessage(getString(R.string.down_permission));
+            repository.setPermissionState(false);
+            openListen();
         }
     }
 
