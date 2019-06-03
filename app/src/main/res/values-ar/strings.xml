@@ -124,6 +124,7 @@
     <string name="juz_num_i_e_1_2_30">رقم الجزء (1و2و.... 30)</string>
     <string name="ayah_in_surah_num_i_e_1_2_22">رقم الاية داخل السورة (1و2و3و…22)</string>
     <string name="loading">برجاء الانتظار جاري التحميل</string>
+    <string name="down_permission">التطبيق يحتاج للصلاحية من اجل تحميل الملفات </string>
 
 
 </resources>

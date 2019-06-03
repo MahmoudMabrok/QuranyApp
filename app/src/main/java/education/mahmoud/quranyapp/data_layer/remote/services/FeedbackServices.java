@@ -2,7 +2,7 @@ package education.mahmoud.quranyapp.data_layer.remote.services;
 
 import java.util.List;
 
-import education.mahmoud.quranyapp.data_layer.remote.model.Feedback;
+import education.mahmoud.quranyapp.data_layer.model.Feedback;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

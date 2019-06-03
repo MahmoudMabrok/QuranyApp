@@ -1,6 +1,6 @@
 package education.mahmoud.quranyapp.data_layer.remote.services;
 
-import education.mahmoud.quranyapp.data_layer.remote.model.User;
+import education.mahmoud.quranyapp.data_layer.model.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;

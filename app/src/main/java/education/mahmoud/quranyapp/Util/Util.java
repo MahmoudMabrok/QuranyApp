@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -32,8 +33,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.remote.model.full_quran.FullQuran;
-import education.mahmoud.quranyapp.data_layer.remote.model.full_quran.Surah;
+import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
+import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
+import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
 import education.mahmoud.quranyapp.model.Quran;
 
 public class Util {
@@ -88,13 +90,44 @@ public class Util {
     }
 
     public static List<Surah> getFullQuranSurahs(Context context) {
-        try (InputStream fileIn = context.getAssets().open("quran2.json");
+        try (InputStream fileIn = context.getAssets().open("quran.json");
              BufferedInputStream bufferedIn = new BufferedInputStream(fileIn);
              Reader reader = new InputStreamReader(bufferedIn, Charset.forName("UTF-8"))) {
             return new Gson().fromJson(reader, FullQuran.class).getData().getSurahs();
 
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    /**
+     * parse tafseer file and return object
+     * @param context
+     * @return
+     */
+    public static CompleteTafseer getCompleteTafseer(Context context) {
+        InputStream inputStream  = null;
+        BufferedInputStream stream = null;
+        Reader reader = null;
+
+        try {
+            inputStream = context.getAssets().open("tafseer.json");
+            stream = new BufferedInputStream(inputStream);
+            reader = new InputStreamReader(stream, Charset.forName("UTF-8"));
+            return new Gson().fromJson(reader, CompleteTafseer.class);
+        } catch (Exception e) {
+            return null;
+
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                    stream.close();
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

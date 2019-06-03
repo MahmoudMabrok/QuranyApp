@@ -16,7 +16,7 @@
         android:layout_margin="@dimen/_16sdp"
         android:background="@drawable/back_search_res"
         android:text="@string/download_quran_data"
-        android:visibility="gone" />
+      />
 
     <Button
         android:id="@+id/btnDownloadTafseer"

@@ -13,8 +13,8 @@ import java.util.List;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
-import education.mahmoud.quranyapp.data_layer.remote.model.full_quran.Ayah;
-import education.mahmoud.quranyapp.data_layer.remote.model.full_quran.Surah;
+import education.mahmoud.quranyapp.data_layer.model.full_quran.Ayah;
+import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.Page;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
@@ -51,7 +51,7 @@ public class App extends Application {
 
     }
 
-    private void loadQuran() {
+    public void loadQuran() {
         Log.d(TAG, "loadQuran: ");
         List<Surah> surahs = Util.getFullQuranSurahs(this);
         StoreInDb(surahs);

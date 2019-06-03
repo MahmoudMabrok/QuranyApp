@@ -10,8 +10,8 @@ import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
 import education.mahmoud.quranyapp.data_layer.local.room.QuranDB;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.data_layer.remote.Remote;
-import education.mahmoud.quranyapp.data_layer.remote.model.full_quran.FullQuran;
-import education.mahmoud.quranyapp.data_layer.remote.model.tafseer_model.Tafseer;
+import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
+import education.mahmoud.quranyapp.data_layer.model.tafseer_model.Tafseer;
 import retrofit2.Call;
 
 public class Repository {

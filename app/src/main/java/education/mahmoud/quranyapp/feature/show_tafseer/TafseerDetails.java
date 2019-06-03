@@ -131,5 +131,6 @@ public class TafseerDetails extends Fragment {
     public void onViewClicked() {
         Intent openAcivity = new Intent(getContext(), DownloadActivity.class);
         getContext().startActivity(openAcivity);
+
     }
 }

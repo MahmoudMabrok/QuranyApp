@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.data_layer.Repository;
-import education.mahmoud.quranyapp.data_layer.remote.model.User;
+import education.mahmoud.quranyapp.data_layer.model.User;
 
 public class ProfileActivity extends AppCompatActivity {
 

@@ -1,6 +1,6 @@
 package education.mahmoud.quranyapp.data_layer.remote.services;
 
-import education.mahmoud.quranyapp.data_layer.remote.model.Tafseer;
+import education.mahmoud.quranyapp.data_layer.model.Tafseer;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

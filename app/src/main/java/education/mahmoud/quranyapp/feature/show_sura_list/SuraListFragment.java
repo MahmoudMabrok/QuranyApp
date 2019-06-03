@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.feature.show_sura_list;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -26,9 +27,11 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.feature.download.DownloadActivity;
+import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
 
 /**
@@ -50,6 +53,7 @@ public class SuraListFragment extends Fragment {
     SuraAdapter suraAdapter;
     Unbinder unbinder;
     Repository repository;
+    private Dialog loadingDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +86,6 @@ public class SuraListFragment extends Fragment {
             }
         };
 
-        checkSuraAndload();
         return view;
     }
 
@@ -106,22 +109,13 @@ public class SuraListFragment extends Fragment {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-
+        if (isVisibleToUser){
+            Log.d(TAG, "setUserVisibleHint: ");
+            loadSuraList();
+            handler.sendEmptyMessage(0);
+        }
     }
 
-    private void checkSuraAndload() {
-        Log.d(TAG, "checkSuraAndload: before while");
-        new Thread(() -> {
-            while (suraItems.size() < 100) {
-                loadSuraList();
-                int x;
-                for (int i = 0; i < 4444444444L; i++) {
-                    x = 1;
-                }
-                Log.d(TAG, "checkSuraAndload: ");
-            }
-        }).start();
-    }
 
     private void loadSuraList() {
         Log.d(TAG, "loadSuraList: ");
@@ -147,6 +141,7 @@ public class SuraListFragment extends Fragment {
     @OnClick(R.id.tv_no_quran_data)
     public void onViewClicked() {
         Intent openAcivity = new Intent(getContext(), DownloadActivity.class);
-        startActivity(openAcivity);
+        getContext().startActivity(openAcivity);
     }
+
 }

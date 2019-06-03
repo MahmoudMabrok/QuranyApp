@@ -113,7 +113,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_listen, container, false);
         unbinder = ButterKnife.bind(this, view);
 
@@ -122,9 +121,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         typeface = Typeface.createFromAsset(getActivity().getAssets(), "me_quran.ttf");
 
         isPermissionAllowed = repository.getPermissionState();
-        if (!isPermissionAllowed) {
-            ((HomeActivity) getActivity()).acquirePermission();
-        }
         initSpinners();
 
         return view;
@@ -501,6 +497,10 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
 
     private void downloadAyahs() {
         Log.d(TAG, "downloadAyahs: ");
+
+        if (!isPermissionAllowed) {
+            ((HomeActivity) getActivity()).acquirePermission();
+        }
 
         downloadState();
         downloadAudio();
