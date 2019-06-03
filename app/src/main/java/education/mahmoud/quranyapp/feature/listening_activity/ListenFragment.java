@@ -121,6 +121,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         typeface = Typeface.createFromAsset(getActivity().getAssets(), "me_quran.ttf");
 
         isPermissionAllowed = repository.getPermissionState();
+
         Log.d(TAG, "onCreateView: " + isPermissionAllowed);
         initSpinners();
 

@@ -120,7 +120,7 @@
     <string name="go_by_juz">Go By Juz</string>
     <string name="juz_num_i_e_1_2_30">Juz Num (i.e 1,2 .. 30)</string>
     <string name="ayah_in_surah_num_i_e_1_2_22">Ayah in Surah Num(i.e 1,2,22)</string>
-    <string name="loading">Loading..</string>
+    <string name="loading">Please wiat untill finish Loading... </string>
     <string name="down_permission">Downloading will not not be started, allow permission to able to download</string>
     <string name="seperator"> - </string>
 

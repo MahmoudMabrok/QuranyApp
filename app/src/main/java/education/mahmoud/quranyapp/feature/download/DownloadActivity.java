@@ -48,7 +48,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
  * Download Quran, Tafseer, Sound
- *
  */
 public class DownloadActivity extends AppCompatActivity implements OnDownloadListener {
 
@@ -75,8 +74,10 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     TextView tvTotalQuranTafseer;
     @BindView(R.id.tvTotalQuranAudio)
     TextView tvTotalQuranAudio;
+
+
     String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
-    static Handler handler;
+    Handler handler;
     String message = "";
     private int tafseerToDownload = 1;
     private boolean isPermissionAllowed;
@@ -99,26 +100,26 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         isPermissionAllowed = repository.getPermissionState();
         ahays = repository.getTotlaAyahs();
 
-        if (!isPermissionAllowed) {
-            acquirePermission();
-        }
 
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 closeDialoge();
+                Toast.makeText(DownloadActivity.this, "Download success", Toast.LENGTH_SHORT).show();
                 createStatistics();
             }
         };
 
         createStatistics();
+
     }
 
     private void acquirePermission() {
         String[] perms = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
         EasyPermissions.requestPermissions(new PermissionRequest.Builder(this, RC_STORAGE, perms).build());
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -126,6 +127,7 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         if (requestCode == RC_STORAGE && grantResults[0] == PERMISSION_GRANTED) {
             isPermissionAllowed = true;
             repository.setPermissionState(true);
+            onDownloadAudioClicked();
         } else {
             showMessage(getString(R.string.down_permission));
         }
@@ -176,7 +178,7 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
 
         */
 
-      loadTafseerFromJson();
+        loadTafseerFromJson();
     }
 
     private void loadTafseerFromJson() {
@@ -195,12 +197,12 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     }
 
     private void updateAyahsWithTafseer() {
-        AyahItem ayahItem = null ;
+        AyahItem ayahItem = null;
         CompleteTafseer completeTafseer = Util.getCompleteTafseer(this);
-        if (completeTafseer!= null){
+        if (completeTafseer != null) {
             List<education.mahmoud.quranyapp.data_layer.model.tafseer.Surah> surahs = completeTafseer.getData().getSurahs();
-            for(education.mahmoud.quranyapp.data_layer.model.tafseer.Surah surah1 : surahs){
-                for (education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah ayah:surah1.getAyahs()){
+            for (education.mahmoud.quranyapp.data_layer.model.tafseer.Surah surah1 : surahs) {
+                for (education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah ayah : surah1.getAyahs()) {
                     ayahItem = repository.getAyahByIndex(ayah.getNumber());
                     ayahItem.setTafseer(ayah.getText());
                     try {
@@ -214,6 +216,8 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
             }
         }
     }
+
+    //<editor-fold desc="Tafseer net">
 
     /**
      * load tafseer from internet
@@ -278,38 +282,45 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         lnDown.setVisibility(View.GONE);
         btnDownloadTafseer.setVisibility(View.VISIBLE);
         btnDownloadSound.setVisibility(View.VISIBLE);
-        //   btnDownloadQuran.setVisibility(View.VISIBLE);
+        btnDownloadQuran.setVisibility(View.VISIBLE);
 
         tvTotalQuranTafseer.setVisibility(View.VISIBLE);
         tvTotalQuranAyahs.setVisibility(View.VISIBLE);
         tvTotalQuranAudio.setVisibility(View.VISIBLE);
 
     }
+    //</editor-fold>
 
     private void showMessage(String message) {
-        this.message = message;
-        handler.sendEmptyMessage(0);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void startProgress() {
         loadingDialog = Util.getLoadingDialog(this, "");
         loadingDialog.setCancelable(false);
         loadingDialog.show();
+        Log.d(TAG, "startProgress: ");
     }
 
     private void closeDialoge() {
         if (loadingDialog != null && loadingDialog.isShowing()) {
             loadingDialog.dismiss();
+            loadingDialog = null;
         }
     }
 
     //<editor-fold desc="Download Audio">
     @OnClick(R.id.btnDownloadSound)
     public void onDownloadAudioClicked() {
-        audioToDownload = 0;
-        audioIndexesToDownload = repository.getAyahNumberNotAudioDownloaded();
-        downState();
-        downlaodAudioData();
+        if (!isPermissionAllowed) {
+            acquirePermission();
+        } else {
+            audioToDownload = 0;
+            audioIndexesToDownload = repository.getAyahNumberNotAudioDownloaded();
+            downState();
+            downlaodAudioData();
+
+        }
     }
 
     private void downlaodAudioData() {
@@ -366,14 +377,23 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     //<editor-fold desc="download quran">
     @OnClick(R.id.btnDownloadQuran)
     public void onDownloadQuran() {
-       // downQuranState();
-        new Thread(this::LoadQuranFromJson).start();
+        // downQuranState();
+        Log.d(TAG, "onDownloadQuran: ");
+        startProgress();
+        new Thread(() -> {
+            LoadQuranFromJson();
+        }).start();
 
     }
 
-    public void LoadQuranFromJson(){
-        List<Surah> surahs = Util.getFullQuranSurahs(this);
-        Store(surahs);
+    public void LoadQuranFromJson() {
+        ahays = repository.getTotlaAyahs();
+        if (ahays == 0) {
+            List<Surah> surahs = Util.getFullQuranSurahs(this);
+            Store(surahs);
+        } else {
+            closeDialoge();
+        }
     }
 
     private void downQuranState() {
@@ -409,10 +429,8 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     }
 
     private void Store(List<Surah> surahs) {
-
         SuraItem suraItem;
         AyahItem ayahItem;
-
         Quran quran = Util.getQuranClean(this);
         Sura[] surahClean = quran.getSurahs();
 
@@ -445,8 +463,6 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
                 } else {
                     ayahItem.setTextClean(Util.removeTashkeel(ayahItem.getText()));
                 }
-
-                Log.d(TAG, "StoreInDb: " + ayahItem.getTextClean());
 
                 try {
                     repository.addAyah(ayahItem);

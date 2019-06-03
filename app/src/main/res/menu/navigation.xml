@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/navigation_tafseer"
-        android:icon="@drawable/ic_person"
+        android:icon="@drawable/ic_tafseer"
         android:title="@string/tafseerTap" />
     <item
         android:id="@+id/navigationListen"
@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/navigation_test"
-        android:icon="@drawable/ic_person"
+        android:icon="@drawable/ic_test"
         android:title="@string/test" />
 
     <item

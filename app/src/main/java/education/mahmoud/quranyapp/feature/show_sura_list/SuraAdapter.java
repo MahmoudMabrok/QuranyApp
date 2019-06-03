@@ -69,7 +69,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
         holder.tvSuraNumber.setText(String.valueOf(suraItem.getIndex()));
 
         String ayahSuffix = holder.itemView.getContext().getString(R.string.ayahSuffix);
-        holder.tvSuraAyahsNum.setText(suraItem.getNumOfAyahs() + ayahSuffix);
+        holder.tvSuraAyahsNum.setText(suraItem.getNumOfAyahs() + " "+ayahSuffix);
 
         if (suraItem.getRevelationType().equals("Meccan")) {
             holder.tvSuraRevolution.setText(holder.itemView.getContext().getString(R.string.sura_rev_mackkia));

@@ -67,8 +67,7 @@ public class HomeActivity extends AppCompatActivity {
     Repository repository;
 
 
-    static Handler handler;
-    ProgressDialog progressDialog;
+    Handler handler;
     Dialog loadingDialog;
 
 
@@ -118,11 +117,9 @@ public class HomeActivity extends AppCompatActivity {
         new AppRate(this).setMinLaunchesUntilPrompt(5)
                 .init();
 
-        Stetho.initializeWithDefaults(getApplication());
+   //     Stetho.initializeWithDefaults(getApplication());
 
         ahays = repository.getTotlaAyahs();
-
-        openRead();
 
         handler = new Handler() {
             @Override
@@ -132,7 +129,16 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
 
+        openRead();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // used to update UI
+        int id = navigation.getSelectedItemId();
+        navigation.setSelectedItemId(id);
     }
 
     private void closeDialoge() {
@@ -218,23 +224,6 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
-    }
-
-    /**
-     * load tafseer from json into database
-     */
-    public void loadTafseer() {
-        Log.d(TAG, "loadTafseer: ");
-        startProgress();
-        new Thread(() -> {
-            if (ahays > 0) {
-                updateAyahsWithTafseer();
-            } else {
-                showMessage("First Load Ayahs");
-            }
-            handler.sendEmptyMessage(0);
-
-        }).start();
     }
 
     private void showMessage(String message) {
