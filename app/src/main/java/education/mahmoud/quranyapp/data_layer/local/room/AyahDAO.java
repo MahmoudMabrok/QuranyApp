@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Dao
@@ -68,4 +69,7 @@ public interface AyahDAO {
 
     @Query("select  * from ayahs where `surahIndex` = :l and tafseer is not null")
     List<AyahItem> getAllAyahOfSurahIndexForTafseer(long l);
+
+    @Query("select pageNum from ayahs group by hizbQuarter")
+    List<Integer> getHizbQuaterStart();
 }

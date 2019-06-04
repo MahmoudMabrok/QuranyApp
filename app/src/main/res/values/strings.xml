@@ -125,6 +125,15 @@
     <string name="seperator"> - </string>
     <string name="start_from">Start From</string>
     <string name="end_at">End at</string>
+    <string name="juz_to_display">Juz %d</string>
+    <string name="hizb_to_display">Hizb %d</string>
+    <string name="part_to_display">%s Hizb %d</string>
+
+    <array name="parts">
+        <item>1/4</item>
+        <item>1/2</item>
+        <item>3/4</item>
+    </array>
 
 
 </resources>

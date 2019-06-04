@@ -237,6 +237,10 @@ public class Repository {
         return quranDB.ayahDAO().getAllAyahOfSurahIndexForTafseer(l);
     }
 
+    public List<Integer> getHizbQuaterStart() {
+        return quranDB.ayahDAO().getHizbQuaterStart();
+    }
+
 
    /* public Call<String> getUsers() {
         return remote.getUsers();

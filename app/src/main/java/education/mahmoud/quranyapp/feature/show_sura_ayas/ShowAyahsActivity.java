@@ -53,6 +53,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
     List<Page> pageList;
     int ayahsColor, scrollorColor;
     private int lastpageShown = 1;
+    private List<Integer> quraterSStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +140,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
         rvAyahsPages.setAdapter(pageAdapter);
         rvAyahsPages.setItemAnimator(new DefaultItemAnimator());
 
+        //// TODO: 6/4/2019  get pages that contain start of rub3
         pageAdapter.setPageShown(new PageAdapter.PageShown() {
             @Override
             public void onDiplayed(int pos, PageAdapter.Holder holder) {
@@ -150,9 +152,22 @@ public class ShowAyahsActivity extends AppCompatActivity {
 
                 // calculate Hizb info.
                 Page page = pageAdapter.getPage(pos);
-                // get last ayah to extract info from it
-                AyahItem ayahItem = page.getAyahItems().get(page.getAyahItems().size()-1);
-                int rub3Num = ayahItem.getHizbQuarter();
+                if (quraterSStart.contains(page.getPageNum())) {
+                    // get last ayah to extract info from it
+                    AyahItem ayahItem = page.getAyahItems().get(page.getAyahItems().size()-1);
+                    int rub3Num = ayahItem.getHizbQuarter();
+                    rub3Num -- ; // as first one must be 0
+                    if (rub3Num % 8  == 0 ){
+                        showMessage(getString(R.string.juz_to_display , ayahItem.getJuz()));
+                    }else if (rub3Num % 4 == 0 ){
+                        showMessage(getString(R.string.hizb_to_display , rub3Num / 4));
+                    }else{
+                        int part = rub3Num % 4 ;
+                        part -- ; // 1/4 is first element which is 0
+                        String[] parts = getResources().getStringArray(R.array.parts);
+                        showMessage(getString(R.string.part_to_display , parts[part], (rub3Num/4)+1));
+                    }
+                }
 
 
             }
@@ -251,6 +266,15 @@ public class ShowAyahsActivity extends AppCompatActivity {
 
             }).start();
         }
+        new Thread(this::generateListOfPagesStartWithHizbQurater).start();
+    }
+
+    /**
+     * retrieve list of pages that contain start of hizb Quaters.
+     */
+    private void generateListOfPagesStartWithHizbQurater() {
+       quraterSStart = repository.getHizbQuaterStart();
+
     }
 
     private void foundState() {

@@ -268,7 +268,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         Log.d(TAG, "displayAyasState: ");
         currentAyaAtAyasToListen = 0;
         // first reload ayahs from db
-        ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd+1);
+        ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
 
         // repeatation formation
         ayahsToListen = getAyahsEachOneRepreated(ayahsRepeatCount);
@@ -417,7 +417,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
             if (mediaPlayer != null) {
                 mediaPlayer.release();
                 mediaPlayer = null;
-
             }
 
             mediaPlayer = new MediaPlayer();
