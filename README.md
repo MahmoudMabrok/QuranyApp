@@ -11,8 +11,7 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 - [Youtube Demo](https://www.youtube.com/watch?v=-DbH0EKkAzw)
 
 
-## This repo will not be maintained until 15/6/2019 as I have been doing exams if you found  a bug or any feature suggest I will be happy if you make a new Issue in repo and I will come back for it. 
-
+## App now is Feedbacked and crash reported by InstaBug 
 
 # Features 
 - Go to specific sura by Scrolling and click.
@@ -63,9 +62,22 @@ Alhumdllah now developers can clone&fork&pull and help us to develop app.
 after returning from download activity it is good to load data, I have tried play with lifecycle but not work.
 I solved it using a tricky solution
 
+``` java
+@Override
+    protected void onResume() {
+        super.onResume();
+        // used to update UI
+        int id = navigation.getSelectedItemId();
+        navigation.setSelectedItemId(id); // here fragment will be opened with new Data
+    }
 ```
 
-```
+- **Display HizbQurater**
+I create function to count and diplay hizbQuarter info but faced challenge of determine the first and right time to display it.
+so it made a SQL Query to get StartIndex of pages that contain first HizbQuarter.
+
+
+
 
 
 
@@ -89,7 +101,12 @@ I solved it using a tricky solution
 # Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
 -dontwarn kotlin.Unit
 ```
-- base url of retrofit must end with / 
+
+- *baseUrl* of **retrofit** must end with / 
+
+- betwenen has upper bound **included** so if we want from 1 to 10 SQL will be between 1 and 10. 
+
+
 
 
 ## Technologies
@@ -102,6 +119,7 @@ XML | 1.0
 Android Support Library | 28.0.0
 retrofit2 | 2.3.0
 Room| 1.1.1
+instabug | 8.4.0
 ButterKnife | 8.8.1
 crashreporter | 1.0.9
 gson | 2.8.5

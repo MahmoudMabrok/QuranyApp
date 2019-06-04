@@ -126,6 +126,7 @@ public class HomeActivity extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 closeDialoge();
+
             }
         };
 

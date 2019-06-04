@@ -185,7 +185,7 @@ public class TestFragment extends Fragment {
     public void onViewClicked() {
         checkInput();
         if (isInputValid) {
-            ayahsToTest = repository.getAyahSInRange(actualStart, actualEnd+1);
+            ayahsToTest = repository.getAyahSInRange(actualStart+1, actualEnd+1);
             adapter.setAyahItemList(ayahsToTest);
             TestState();
         }
@@ -221,7 +221,7 @@ public class TestFragment extends Fragment {
                 }
                 Log.d(TAG, "onViewClicked: actual " + actualStart + " " + actualEnd);
                 // get ayas from db
-                ayahsToTest = repository.getAyahSInRange(actualStart, actualEnd+1);
+                ayahsToTest = repository.getAyahSInRange(actualStart+1, actualEnd+1);
                 isInputValid = true;
                 // place data in UI
                 tvTestRange.setText(getString(R.string.rangeoftest, startSura.getName(), start, endSura.getName(), end));
@@ -296,7 +296,7 @@ public class TestFragment extends Fragment {
     public void onbtnTestSaveRandom() {
         checkInput();
         if (isInputValid) {
-            ayahsToTest = repository.getAyahSInRange(actualStart, actualEnd+1);
+            ayahsToTest = repository.getAyahSInRange(actualStart+1, actualEnd+1);
             if (ayahsToTest.size() >= 3) {
                 int r = new Random().nextInt(ayahsToTest.size() - 1);
                 AyahItem ayahItem = ayahsToTest.get(r);
