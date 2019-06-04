@@ -11,7 +11,7 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 - [Youtube Demo](https://www.youtube.com/watch?v=-DbH0EKkAzw)
 
 
-## App now is Feedbacked and crash reported by InstaBug 
+## App now is Feedbacked and crash reported by [InstaBug](https://github.com/apps/instabug) 
 
 # Features 
 - Go to specific sura by Scrolling and click.
@@ -24,6 +24,7 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 - Repeat each ayas and repeat whole listening
 - Tafseer
 - Points for Tasmee3 
+- can report a bug, chat with app developer powered by InstaBug - explaned in demo video - (trial).
 
 # Challenges 
 - **Data** 
@@ -48,15 +49,14 @@ there were a problem with downloading audio on Android 8, I found that we must a
 *solution* 
 at Manifiest
 ``` XML
-
     <application
         android:usesCleartextTraffic="true"
         
         ></application>
 ```  
 - **Unrelated histories Unable to merge** 
-I have tried to make repo clonable and run without problem but i lost all 63 commit.
-Alhumdllah now developers can clone&fork&pull and help us to develop app.
+I have tried to make repo clonable and run without problem but i lost all **63 commit**.
+Alhumdllah now developers can **clone & fork & pull** and help us to develop app.
 
 - **Update UI after finish downloading**
 after returning from download activity it is good to load data, I have tried play with lifecycle but not work.
@@ -75,8 +75,6 @@ I solved it using a tricky solution
 - **Display HizbQurater**
 I create function to count and diplay hizbQuarter info but faced challenge of determine the first and right time to display it.
 so it made a SQL Query to get StartIndex of pages that contain first HizbQuarter.
-
-
 
 
 
@@ -106,6 +104,16 @@ so it made a SQL Query to get StartIndex of pages that contain first HizbQuarter
 
 - betwenen has upper bound **included** so if we want from 1 to 10 SQL will be between 1 and 10. 
 
+
+# ChangeLog
+- Second Generation **V2.0** 
+  - new UI
+    - ayahEnd Symbol is fixed.
+    - UI for Listen & Test.
+  - add HizbQuarter Info.
+  - Tafseer is now offline.
+  - fix Bugs [#31](https://github.com/MahmoudMabrok/QuranyApp/issues/31),[#30](https://github.com/MahmoudMabrok/QuranyApp/issues/30).[#29](https://github.com/MahmoudMabrok/QuranyApp/issues/29),[#28](https://github.com/MahmoudMabrok/QuranyApp/issues/28),[#27](https://github.com/MahmoudMabrok/QuranyApp/issues/27).
+  - add InstaBug(trial) for in-app feedback and crash reporting feature.
 
 
 
