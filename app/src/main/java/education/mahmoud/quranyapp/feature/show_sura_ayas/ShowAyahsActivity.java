@@ -274,7 +274,6 @@ public class ShowAyahsActivity extends AppCompatActivity {
      */
     private void generateListOfPagesStartWithHizbQurater() {
        quraterSStart = repository.getHizbQuaterStart();
-
     }
 
     private void foundState() {

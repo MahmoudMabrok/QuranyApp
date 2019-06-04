@@ -112,6 +112,10 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                 pos += (new String("ٱلرَّحِيم").length());
                 Log.d(TAG, "onBindViewHolder: last text after bsmallah " +aya.substring(pos));
 
+                // insert  البسملة
+                builder.append(aya.substring(0, pos+1));
+                // cute ayah
+                aya = aya.substring(pos);
             }
             isFirst = false;
             builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ " , aya , ayahItem.getAyahInSurahIndex()));

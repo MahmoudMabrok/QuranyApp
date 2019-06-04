@@ -70,6 +70,6 @@ public interface AyahDAO {
     @Query("select  * from ayahs where `surahIndex` = :l and tafseer is not null")
     List<AyahItem> getAllAyahOfSurahIndexForTafseer(long l);
 
-    @Query("select pageNum from ayahs group by hizbQuarter")
+    @Query("select pageNum from ayahs group by hizbQuarter order by pageNum asc")
     List<Integer> getHizbQuaterStart();
 }

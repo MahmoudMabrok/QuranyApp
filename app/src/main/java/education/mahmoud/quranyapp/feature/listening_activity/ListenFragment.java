@@ -268,7 +268,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         Log.d(TAG, "displayAyasState: ");
         currentAyaAtAyasToListen = 0;
         // first reload ayahs from db
-        ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
+        ayahsToListen = repository.getAyahSInRange(actualStart+1, actualEnd+1);
 
         // repeatation formation
         ayahsToListen = getAyahsEachOneRepreated(ayahsRepeatCount);
@@ -305,7 +305,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
 
     private void logAyahs() {
         for (AyahItem ayahItem : ayahsToListen) {
-            Log.d(TAG, "logAyahs: " + ayahItem.getAyahIndex());
+            Log.d(TAG, "logAyahs: " + ayahItem.getAyahIndex() + ayahItem.getText());
         }
     }
 
@@ -318,7 +318,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         AyahItem ayahItem = ayahsToListen.get(currentAyaAtAyasToListen);
         tvAyahToListen.setTypeface(typeface);
         tvAyahToListen.setText(MessageFormat.format("{0} ﴿ {1} ﴾ " , ayahItem.getText() , ayahItem.getAyahInSurahIndex()));
-        showMessage("size " + ayahsToListen.size());
+       // showMessage("size " + ayahsToListen.size());
         playAudio();
     }
 
@@ -383,7 +383,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
 
                 // get ayahs from db,
                 // actual end is updated with one as query return result excluded one item
-                ayahsToListen = repository.getAyahSInRange(actualStart, actualEnd);
+                ayahsToListen = repository.getAyahSInRange(actualStart+1, actualEnd+1);
                 Log.d(TAG, "onViewClicked: start log after first select "+ ayahsToListen.size());
                  logAyahs();
                 // traverse ayahs to check if it downloaded or not
@@ -414,24 +414,23 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         Log.d(TAG, "playAudio:  current " + currentAyaAtAyasToListen );
         btnPlayPause.setEnabled(false);
         try {
-            if (mediaPlayer != null) {
+           /* if (mediaPlayer != null) {
                 mediaPlayer.release();
                 mediaPlayer = null;
             }
-
+*/
             mediaPlayer = new MediaPlayer();
             fileSource = ayahsToListen.get(currentAyaAtAyasToListen).getAudioPath();
             mediaPlayer.setDataSource(fileSource);
             Log.d(TAG, "playAudio: file source " + fileSource);
-            try {
-                mediaPlayer.prepare();
-                mediaPlayer.seekTo(0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
-            mediaPlayer.start();
+            mediaPlayer.prepare();
+
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    mediaPlayer.start();
+                }
+            });
 
             sbPosition.setMax(mediaPlayer.getDuration());
 
