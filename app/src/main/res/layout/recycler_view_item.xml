@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:nestedScrollingEnabled="true"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -11,11 +10,11 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/antic"
-        android:textAlignment="viewStart"
         android:textColor="@color/ayas_color"
         android:textIsSelectable="true"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_gravity="center"
+        android:gravity="center"
         tools:text="@tools:sample/lorem" />
 </LinearLayout>

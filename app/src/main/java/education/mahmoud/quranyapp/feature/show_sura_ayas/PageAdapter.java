@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,8 @@ import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 
 public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
+
+    private static final String TAG = "PageAdapter";
 
     int ayahsColor, scrollColor;
     int vis = View.INVISIBLE;
@@ -102,10 +106,15 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                 } else {
                     builder.append("\n" + tempSuraName + "\n");
                 }
-                //// TODO: 5/16/2019 splist basmallah
+
+                int pos = aya.indexOf("ٱلرَّحِيم");
+                Log.d(TAG, "onBindViewHolder: pos " + pos);
+                pos += (new String("ٱلرَّحِيم").length());
+                Log.d(TAG, "onBindViewHolder: last text after bsmallah " +aya.substring(pos));
+
             }
             isFirst = false;
-            builder.append(aya + " ﴿ " + ayahItem.getAyahInSurahIndex() + " ﴾ ");
+            builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ " , aya , ayahItem.getAyahInSurahIndex()));
 
         }
 
@@ -167,6 +176,11 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
         }.start();
         pageShown.onDiplayed(holder.getAdapterPosition(), holder);
     }
+
+    public Page getPage(int pos){
+        return list.get(pos);
+    }
+
 
     interface PageShown {
         void onDiplayed(int pos, Holder holder);

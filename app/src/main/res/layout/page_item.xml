@@ -26,7 +26,7 @@
             android:isScrollContainer="true"
             android:scrollbars="vertical"
             android:textColor="@color/ayas_color"
-            android:textIsSelectable="false"
+            android:textIsSelectable="true"
             android:textSize="@dimen/_16ssp"
             tools:text="Hellodsaasasasa" />
     </ScrollView>

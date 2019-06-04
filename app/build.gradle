@@ -7,7 +7,7 @@ android {
         applicationId "education.mahmoud.quranyapp"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 15
+        versionCode 18
         versionName "2.0.0"
 //        testInstrumentationRumannner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

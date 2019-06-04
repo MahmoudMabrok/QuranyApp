@@ -55,9 +55,17 @@ at Manifiest
         
         ></application>
 ```  
-- **Unrelated histories Unable to merge ** 
+- **Unrelated histories Unable to merge** 
 I have tried to make repo clonable and run without problem but i lost all 63 commit.
 Alhumdllah now developers can clone&fork&pull and help us to develop app.
+
+- **Update UI after finish downloading**
+after returning from download activity it is good to load data, I have tried play with lifecycle but not work.
+I solved it using a tricky solution
+
+```
+
+```
 
 
 

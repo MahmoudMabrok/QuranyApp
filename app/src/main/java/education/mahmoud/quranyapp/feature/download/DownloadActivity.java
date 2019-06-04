@@ -184,13 +184,17 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     private void loadTafseerFromJson() {
         Log.d(TAG, "loadTafseer: ");
         startProgress();
+        ahays = repository.getTotlaAyahs();
         new Thread(() -> {
             if (ahays > 0) {
                 updateAyahsWithTafseer();
             } else {
-                showMessage("First Load Ayahs");
+                runOnUiThread(()->{
+                    Toast.makeText(this, "First Load Ayahs", Toast.LENGTH_SHORT).show();
+                });
+                handler.sendEmptyMessage(0);
             }
-            handler.sendEmptyMessage(0);
+
 
         }).start();
 
@@ -215,6 +219,8 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
                 Log.d(TAG, "updateAyahsWithTafseer: ");
             }
         }
+        handler.sendEmptyMessage(0);
+
     }
 
     //<editor-fold desc="Tafseer net">

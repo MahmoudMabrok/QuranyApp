@@ -57,7 +57,7 @@
     <string name="score">Score</string>
     <string name="profile">profile</string>
     <string name="score_str">Score \n%d \n %s</string>
-    <string name="download_tafseer_data">Download Tafseer Data</string>
+    <string name="download_tafseer_data">Download Tafseer Data(With No Internet)</string>
     <string name="download">Download Zone</string>
     <string name="tafseer">Show Tafseer</string>
     <string name="no_bookmarks">No Bookmarks</string>
@@ -106,10 +106,10 @@
     <string name="title_notifications">Notifications</string>
     <string name="ayah_symb">(%d)</string>
     <string name="tafseer_ayah_text_header">%d. %s</string>
-    <string name="download_quran_data">Download Quran</string>
-    <string name="tv_no_quran_data">No Quran Data \n Please download from download zone\n
+    <string name="download_quran_data">Download Quran(With No Internet)</string>
+    <string name="tv_no_quran_data">No Quran Data \n Please Click me to open load zone\n
             click to open download zone</string>
-    <string name="no_data_go_to_download_zone_n_click_to_open_zone">No data go to download zone \n click me  to open zone</string>
+    <string name="no_data_go_to_download_zone_n_click_to_open_zone">No data \n Please Click me to open load zone\n</string>
     <string name="sura_rev_mackkia">Makkia</string>
     <string name="sura_rev_madniaa">Madnia</string>
     <string name="ayah_num">%d Ayah</string>
@@ -123,6 +123,8 @@
     <string name="loading">Please wiat untill finish Loading... </string>
     <string name="down_permission">Downloading will not not be started, allow permission to able to download</string>
     <string name="seperator"> - </string>
+    <string name="start_from">Start From</string>
+    <string name="end_at">End at</string>
 
 
 </resources>

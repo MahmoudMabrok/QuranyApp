@@ -74,15 +74,13 @@ public class ShowAyahsActivity extends AppCompatActivity {
             int ayah = getIntent().getIntExtra(Constants.AYAH_GO_INDEX, 1);
             Log.d(TAG, "onCreate: ayah  " + ayah);
             pos = getPosFromSurahAndAyah(surah, ayah);
-            Log.d(TAG, "onCreate:  pos " + pos);
             //       showMessage(String.valueOf(pos));D
         } else if (getIntent().hasExtra(Constants.LAST_INDEX)) {
             pos = repository.getLatestRead(); // as it will be decreased
-            Log.d(TAG, "onCreate: ##");
+
         } else if (getIntent().hasExtra(Constants.PAGE_INDEX)) {  // case bookmark
             pos = getIntent().getIntExtra(Constants.PAGE_INDEX, 1);
-            Log.d(TAG, "onCreate: ###" + pos);
-        } else if (getIntent().hasExtra(Constants.JUZ_INDEX)) {
+         } else if (getIntent().hasExtra(Constants.JUZ_INDEX)) {
             pos = getIntent().getIntExtra(Constants.JUZ_INDEX, 1);
             pos = getPageFromJuz(pos);
         }
@@ -144,14 +142,19 @@ public class ShowAyahsActivity extends AppCompatActivity {
         pageAdapter.setPageShown(new PageAdapter.PageShown() {
             @Override
             public void onDiplayed(int pos, PageAdapter.Holder holder) {
-                // items start from 0 increase 1 to get real page num
+                // items start from 0 increase 1 to get real page num, will be used in bookmark
                 lastpageShown = pos + 1;
 
                 holder.topLinear.setVisibility(View.INVISIBLE);
                 holder.BottomLinear.setVisibility(View.INVISIBLE);
 
-                rvAyahsPages.scrollToPosition(pos + 2);
-                Log.d(TAG, "onDiplayed: " + pos + " rr ");
+                // calculate Hizb info.
+                Page page = pageAdapter.getPage(pos);
+                // get last ayah to extract info from it
+                AyahItem ayahItem = page.getAyahItems().get(page.getAyahItems().size()-1);
+                int rub3Num = ayahItem.getHizbQuarter();
+
+
             }
         });
 

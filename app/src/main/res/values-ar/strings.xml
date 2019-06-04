@@ -63,7 +63,7 @@
     <string name="score">النقاط</string>
     <string name="profile">ملفك الشخصى</string>
     <string name="score_str">نقاطك \n%d \n %s</string>
-    <string name="download_tafseer_data">تحميل ملفات التفسير </string>
+    <string name="download_tafseer_data">تحميل ملفات التفسير(بدون انترنت) </string>
     <string name="download">تحميل البيانات </string>
     <string name="tafseer">التفسير</string>
     <string name="no_bookmarks">المرجعيات فارغة </string>
@@ -112,9 +112,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="tafseer_ayah_text_header">%d. %s</string>
-    <string name="download_quran_data">تحميل القران الكريم </string>
-    <string name="tv_no_quran_data">لا يتوفر النص برجاء التحميل \n اضغط للذهاب لصفحة التحميل </string>
-    <string name="no_data_go_to_download_zone_n_click_to_open_zone">لا يتوفر النص برجاء التحميل \n اضغط للذهاب لصفحة التحميل </string>
+    <string name="download_quran_data">تحميل القران الكريم(بدون انترنت) </string>
+    <string name="tv_no_quran_data">لا يتوفر النص   \n اضغط للذهاب لصفحة التحميل </string>
+    <string name="no_data_go_to_download_zone_n_click_to_open_zone">لا يتوفر النص  \n اضغط للذهاب لصفحة التحميل </string>
     <string name="sura_rev_mackkia">مكية</string>
     <string name="sura_rev_madniaa">مدنية</string>
     <string name="ayah_num">%d ايه</string>
@@ -127,6 +127,8 @@
     <string name="loading">برجاء الانتظار جاري التحميل</string>
     <string name="down_permission">التطبيق يحتاج للصلاحية من اجل تحميل الملفات </string>
     <string name="seperator"> - </string>
+    <string name="start_from">البداية </string>
+    <string name="end_at"> النهاية</string>
 
 
 </resources>
