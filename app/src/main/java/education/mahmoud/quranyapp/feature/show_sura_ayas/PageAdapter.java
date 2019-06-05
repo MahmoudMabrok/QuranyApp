@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -73,8 +74,8 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, int i) {
-        Page item = list.get(i);
+    public void onBindViewHolder(@NonNull Holder holder, int index) {
+        Page item = list.get(index);
 
         holder.imBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,18 +108,22 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                     builder.append("\n" + tempSuraName + "\n");
                 }
 
-                int pos = aya.indexOf("ٱلرَّحِيم");
-                Log.d(TAG, "onBindViewHolder: pos " + pos);
-                pos += (new String("ٱلرَّحِيم").length());
-                Log.d(TAG, "onBindViewHolder: last text after bsmallah " +aya.substring(pos));
+                // AlFatiha(index = 1 ) has a Basmallah in first ayah.
+                if (ayahItem.getSurahIndex() != 1) {
+                    int pos = aya.indexOf("ٱلرَّحِيم");
+                    Log.d(TAG, "onBindViewHolder: pos " + pos);
+                    pos += (new String("ٱلرَّحِيم").length());
+                    Log.d(TAG, "onBindViewHolder: last text after bsmallah " + aya.substring(pos));
 
-                // insert  البسملة
-                builder.append(aya.substring(0, pos+1));
-                // cute ayah
-                aya = aya.substring(pos);
+                    // insert  البسملة
+                    builder.append(aya.substring(0, pos + 1));
+                    builder.append("\n");
+                    // cute ayah
+                    aya = aya.substring(pos);
+                }
             }
             isFirst = false;
-            builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ " , aya , ayahItem.getAyahInSurahIndex()));
+            builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ ", aya, ayahItem.getAyahInSurahIndex()));
 
         }
 
@@ -136,17 +141,49 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
         // holder.tvJuz.setText(Util.getArabicStrOfNum(item.getJuz()));
         holder.tvJuz.setText(String.valueOf(item.getJuz()));
 
-        // handle click to show/hide info
+       /* // handle click to show/hide info
         holder.topLinear.setOnClickListener(e -> {
-            vis = holder.topLinear.getVisibility();
-            vis = vis == View.VISIBLE ? View.INVISIBLE : View.VISIBLE;
-            holder.BottomLinear.setVisibility(vis);
-            holder.topLinear.setVisibility(vis);
-        });
+
+        });*/
+
 
         holder.scAyahsText.setOnClickListener((v) -> {
-            iOnClick.onClick(holder.getAdapterPosition());
+            Log.d(TAG, "onBindViewHolder: sc ");
+            flipState(holder);
         });
+        
+        holder.ayahsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: frameLayout");
+                flipState(holder);
+            }
+        });
+
+        holder.btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    iOnClick.onClick(holder.getAdapterPosition());
+            }
+        });
+
+        if (index == 0 ){
+            holder.btnNext.setVisibility(View.VISIBLE);
+            holder.btnPrev.setVisibility(View.INVISIBLE);
+        }else if (index == 603 ){
+            holder.btnNext.setVisibility(View.INVISIBLE);
+            holder.btnPrev.setVisibility(View.VISIBLE);
+        }else{
+            holder.btnNext.setVisibility(View.VISIBLE);
+            holder.btnPrev.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void flipState(Holder holder) {
+        vis = holder.topLinear.getVisibility();
+        vis = vis == View.VISIBLE ? View.INVISIBLE : View.VISIBLE;
+        holder.BottomLinear.setVisibility(vis);
+        holder.topLinear.setVisibility(vis);
     }
 
     /**
@@ -178,10 +215,11 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                 holder.topLinear.setVisibility(vis);
             }
         }.start();
+
         pageShown.onDiplayed(holder.getAdapterPosition(), holder);
     }
 
-    public Page getPage(int pos){
+    public Page getPage(int pos) {
         return list.get(pos);
     }
 
@@ -208,8 +246,12 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
         ImageView imBookmark;
         @BindView(R.id.topLinear)
         LinearLayout topLinear;
+        @BindView(R.id.btnNext)
+        ImageButton btnNext;
         @BindView(R.id.tvPageNumShowAyahs)
         TextView tvPageNumShowAyahs;
+        @BindView(R.id.btnPrev)
+        ImageButton btnPrev;
         @BindView(R.id.BottomLinear)
         LinearLayout BottomLinear;
         @BindView(R.id.ayahsLayout)
@@ -218,6 +260,12 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
         public Holder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "onClick:  item ");
+                }
+            });
         }
     }
 

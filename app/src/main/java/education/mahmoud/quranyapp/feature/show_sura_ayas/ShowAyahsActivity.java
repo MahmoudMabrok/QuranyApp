@@ -140,7 +140,6 @@ public class ShowAyahsActivity extends AppCompatActivity {
         rvAyahsPages.setAdapter(pageAdapter);
         rvAyahsPages.setItemAnimator(new DefaultItemAnimator());
 
-        //// TODO: 6/4/2019  get pages that contain start of rub3
         pageAdapter.setPageShown(new PageAdapter.PageShown() {
             @Override
             public void onDiplayed(int pos, PageAdapter.Holder holder) {
@@ -193,6 +192,14 @@ public class ShowAyahsActivity extends AppCompatActivity {
         });
 
         rvAyahsPages.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
+        pageAdapter.setiOnClick(new IOnClick() {
+            @Override
+            public void onClick(int pos) {
+                rvAyahsPages.scrollToPosition(pos+1);
+                Log.d(TAG, "onClickaaa : " + pos);
+            }
+        });
 
     }
 

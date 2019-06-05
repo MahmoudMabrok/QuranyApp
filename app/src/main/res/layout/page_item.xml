@@ -7,13 +7,15 @@
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/_6sdp"
     android:layout_marginEnd="@dimen/_6sdp"
+    android:focusableInTouchMode="false"
+    android:focusable="false"
     tools:context=".feature.show_sura_ayas.ShowAyahsActivity">
 
     <ScrollView
         android:id="@+id/sc_ayahs_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_22sdp"
+        android:layout_marginTop="@dimen/_29sdp"
         android:layout_marginBottom="@dimen/_30sdp"
         android:background="@color/whiteCardColor"
         android:padding="@dimen/_10sdp">
@@ -26,7 +28,7 @@
             android:isScrollContainer="true"
             android:scrollbars="vertical"
             android:textColor="@color/ayas_color"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
             android:textSize="@dimen/_16ssp"
             tools:text="Hellodsaasasasa" />
     </ScrollView>
@@ -85,14 +87,30 @@
         android:orientation="horizontal"
         android:padding="@dimen/_5sdp">
 
+        <ImageButton
+            android:id="@+id/btnNext"
+            app:srcCompat="@drawable/ic_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
         <TextView
             android:id="@+id/tvPageNumShowAyahs"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/tafseerTap"
             android:textColor="@color/whiteCardColor"
             android:textSize="@dimen/_17ssp" />
+
+        <ImageButton
+            android:id="@+id/btnPrev"
+            app:srcCompat="@drawable/ic_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 
