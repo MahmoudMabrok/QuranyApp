@@ -77,18 +77,14 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
     public void onBindViewHolder(@NonNull Holder holder, int index) {
         Page item = list.get(index);
 
-        holder.imBookmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iBookmark.onBookmarkClicked(item);
-            }
-        });
+        holder.topLinear.setVisibility(View.VISIBLE);
+        holder.BottomLinear.setVisibility(View.VISIBLE);
 
         // set Colors
         holder.tvAyahs.setTextColor(ayahsColor);
         holder.scAyahsText.setBackgroundColor(scrollColor);
 
-
+        //<editor-fold desc="Create Text">
         StringBuilder builder = new StringBuilder();
         String aya;
         String suraName = "";
@@ -114,22 +110,22 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                     Log.d(TAG, "onBindViewHolder: pos " + pos);
                     pos += (new String("ٱلرَّحِيم").length());
                     Log.d(TAG, "onBindViewHolder: last text after bsmallah " + aya.substring(pos));
-
                     // insert  البسملة
-                    builder.append(aya.substring(0, pos + 1));
+                    builder.append(aya.substring(0, pos + 1)); // +1 as substring upper bound is excluded
                     builder.append("\n");
                     // cute ayah
-                    aya = aya.substring(pos);
+                    aya = aya.substring(pos+1); // +1 to start with new character after البسملة
                 }
             }
             isFirst = false;
             builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ ", aya, ayahItem.getAyahInSurahIndex()));
 
         }
-
+        //</editor-fold>
 
         holder.tvAyahs.setText(Util.getSpannable(builder.toString()), TextView.BufferType.SPANNABLE);
         holder.tvAyahs.setTypeface(typeface);
+
         // text justifivation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             holder.tvAyahs.setJustificationMode(Layout.JUSTIFICATION_MODE_NONE);
@@ -138,20 +134,16 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
         // top - bottom details
         holder.tvPageNumShowAyahs.setText(String.valueOf(item.getPageNum()));
         holder.tvSurahName.setText(suraName);
-        // holder.tvJuz.setText(Util.getArabicStrOfNum(item.getJuz()));
         holder.tvJuz.setText(String.valueOf(item.getJuz()));
 
-       /* // handle click to show/hide info
-        holder.topLinear.setOnClickListener(e -> {
-
-        });*/
-
-
-        holder.scAyahsText.setOnClickListener((v) -> {
-            Log.d(TAG, "onBindViewHolder: sc ");
-            flipState(holder);
+        //<editor-fold desc="listeners">
+        holder.imBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iBookmark.onBookmarkClicked(item);
+            }
         });
-        
+
         holder.ayahsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,6 +159,15 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
             }
         });
 
+        holder.btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    iOnClick.onClick(holder.getAdapterPosition() - 2); // there will be update by one
+            }
+        });
+        //</editor-fold>
+
+        //<editor-fold desc="configure next/prev buttons">
         if (index == 0 ){
             holder.btnNext.setVisibility(View.VISIBLE);
             holder.btnPrev.setVisibility(View.INVISIBLE);
@@ -177,6 +178,9 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
             holder.btnNext.setVisibility(View.VISIBLE);
             holder.btnPrev.setVisibility(View.VISIBLE);
         }
+        //</editor-fold>
+
+
     }
 
     private void flipState(Holder holder) {
@@ -202,6 +206,9 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
     @Override
     public void onViewAttachedToWindow(@NonNull Holder holder) {
         super.onViewAttachedToWindow(holder);
+
+
+        /* //<editor-fold desc="timer to hide">
         new CountDownTimer(1000, 1000) {
             @Override
             public void onTick(long l) {
@@ -215,6 +222,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                 holder.topLinear.setVisibility(vis);
             }
         }.start();
+        //</editor-fold>*/
 
         pageShown.onDiplayed(holder.getAdapterPosition(), holder);
     }
@@ -222,7 +230,6 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
     public Page getPage(int pos) {
         return list.get(pos);
     }
-
 
     interface PageShown {
         void onDiplayed(int pos, Holder holder);
@@ -260,12 +267,6 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
         public Holder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(TAG, "onClick:  item ");
-                }
-            });
         }
     }
 

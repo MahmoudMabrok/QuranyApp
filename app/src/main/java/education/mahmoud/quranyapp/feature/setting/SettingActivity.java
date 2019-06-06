@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.data_layer.Repository;
 
@@ -31,6 +33,11 @@ public class SettingActivity extends AppCompatActivity {
     Spinner spColorReqularMode;
     @BindView(R.id.linearColor)
     LinearLayout linearColor;
+    @BindView(R.id.btnSetColor)
+    Button btnSetColor;
+
+
+    int colorPosForBackground ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +50,14 @@ public class SettingActivity extends AppCompatActivity {
                 , getString(R.string.green)));
 
         repository = Repository.getInstance(getApplication());
+
         cbNightMode.setChecked(repository.getNightModeState());
         if (cbNightMode.isChecked()) {
             nightMode();
         } else {
             defaultMode();
         }
+
         cbNightMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean state) {
@@ -64,6 +73,9 @@ public class SettingActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, colorSet);
         spColorReqularMode.setAdapter(adapter);
+        // load from shared preference and set to spinner.
+        colorPosForBackground = repository.getBackColorState();
+        spColorReqularMode.setSelection(colorPosForBackground);
 
         spColorReqularMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -71,7 +83,7 @@ public class SettingActivity extends AppCompatActivity {
                 Log.d(TAG, "onItemSelected: " + i + ":: " + l);
                 int pos = spColorReqularMode.getSelectedItemPosition();
                 Log.d(TAG, "onItemSelected: pos " + pos);
-                repository.setBackColorState(pos);
+                colorPosForBackground = pos ;
             }
 
             @Override
@@ -80,6 +92,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        setTitle(getString(R.string.setting));
     }
 
     private void defaultMode() {
@@ -89,5 +102,10 @@ public class SettingActivity extends AppCompatActivity {
 
     private void nightMode() {
         linearColor.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.btnSetColor)
+    public void onViewClicked() {
+        repository.setBackColorState(colorPosForBackground);
     }
 }

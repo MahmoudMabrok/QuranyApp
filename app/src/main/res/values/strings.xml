@@ -28,7 +28,7 @@
 
     <string name="test_text">Test Text</string>
     <string name="setting">Setting</string>
-    <string name="color_for_background_for_regular_mode">Color for background for regular mode</string>
+    <string name="color_for_background_for_regular_mode">Ayahs Color background</string>
     <string name="green">Green</string>
     <string name="yellow">Yellow</string>
     <string name="white">White</string>
@@ -128,6 +128,7 @@
     <string name="juz_to_display">Juz %d</string>
     <string name="hizb_to_display">Hizb %d</string>
     <string name="part_to_display">%s Hizb %d</string>
+    <string name="set">Set</string>
 
     <array name="parts">
         <item>1/4</item>

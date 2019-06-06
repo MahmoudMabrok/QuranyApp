@@ -20,7 +20,8 @@
             android:layout_marginBottom="@dimen/_16sdp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/start_from"
                 android:textSize="@dimen/_15ssp"
@@ -32,7 +33,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="match_parent"
                 android:background="@drawable/back_edit_search" />
 
 
@@ -56,7 +57,8 @@
             android:layout_marginBottom="@dimen/_16sdp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="@string/end_at"
                 android:textSize="@dimen/_15ssp"
@@ -68,7 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="match_parent"
                 android:background="@drawable/back_edit_search" />
 
 

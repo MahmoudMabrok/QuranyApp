@@ -129,12 +129,18 @@ public class ShowAyahsActivity extends AppCompatActivity {
 
     private void initRV() {
         prepareColors();
-        LinearLayoutManager manager = new LinearLayoutManager(this);
+        LinearLayoutManager manager = new LinearLayoutManager(this){
+            @Override
+            public boolean canScrollHorizontally() {
+                return false;
+            }
+        };
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        GridLayoutManager manager1 = new GridLayoutManager(this, 2);
-        rvAyahsPages.setLayoutManager(manager);
+       /* GridLayoutManager manager1 = new GridLayoutManager(this, 2);
+       */
 
+        rvAyahsPages.setLayoutManager(manager);
         rvAyahsPages.setHasFixedSize(true);
         pageAdapter = new PageAdapter(typeface, ayahsColor, scrollorColor);
         rvAyahsPages.setAdapter(pageAdapter);
@@ -200,6 +206,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
                 Log.d(TAG, "onClickaaa : " + pos);
             }
         });
+
 
     }
 

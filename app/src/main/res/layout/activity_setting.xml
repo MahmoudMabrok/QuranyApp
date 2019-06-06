@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/_22sdp"
+    android:background="@color/colorPrimary"
+    android:padding="@dimen/_20sdp"
     tools:context=".feature.setting.SettingActivity">
 
 
-    <CheckBox
-        android:id="@+id/cbNightMode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_16sdp"
-        android:text="@string/night_mode"
-        android:textSize="@dimen/setting_text_size" />
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@drawable/setting_border"
+       android:padding="@dimen/_10sdp">
+
+       <CheckBox
+           android:id="@+id/cbNightMode"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="@dimen/_10sdp"
+           android:text="@string/night_mode"
+           android:textSize="@dimen/setting_text_size"
+           />
+   </LinearLayout>
 
 
     <LinearLayout
@@ -24,12 +32,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_16sdp"
-        android:layout_marginBottom="@dimen/_16sdp">
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:orientation="vertical"
+        android:background="@drawable/setting_border"
+        android:padding="@dimen/_10sdp"
+        android:gravity="center_horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:padding="@dimen/_10sdp"
             android:text="@string/color_for_background_for_regular_mode"
             android:textSize="@dimen/setting_text_size"
@@ -38,7 +49,15 @@
         <Spinner
             android:id="@+id/spColorReqularMode"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"/>
+
+        <Button
+            android:id="@+id/btnSetColor"
+            android:background="@drawable/back_search_res"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set"/>
 
     </LinearLayout>
 

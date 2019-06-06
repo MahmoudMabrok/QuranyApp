@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ayahsLayout"
     android:layout_width="match_parent"
+    android:layoutDirection="ltr"
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/_6sdp"
     android:layout_marginEnd="@dimen/_6sdp"
-    android:focusableInTouchMode="false"
-    android:focusable="false"
     tools:context=".feature.show_sura_ayas.ShowAyahsActivity">
 
     <ScrollView
@@ -40,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:alpha="0.9"
+        android:layoutDirection="locale"
         android:background="@color/black_gradi"
         android:orientation="horizontal"
         android:padding="@dimen/_5sdp">
@@ -85,14 +85,14 @@
         android:alpha="0.9"
         android:background="@color/black_gradi"
         android:orientation="horizontal"
-        android:padding="@dimen/_5sdp">
+        >
 
         <ImageButton
             android:id="@+id/btnNext"
             app:srcCompat="@drawable/ic_next"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"/>
 
         <TextView
             android:id="@+id/tvPageNumShowAyahs"
@@ -100,7 +100,7 @@
             android:layout_weight="1"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:text="@string/tafseerTap"
             android:textColor="@color/whiteCardColor"
             android:textSize="@dimen/_17ssp" />
@@ -109,7 +109,8 @@
             android:id="@+id/btnPrev"
             app:srcCompat="@drawable/ic_prev"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"/>
 
     </LinearLayout>
 
