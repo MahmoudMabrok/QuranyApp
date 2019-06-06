@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,6 +94,8 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         setTitle(getString(R.string.setting));
+
+        Toast.makeText(this, "AA", Toast.LENGTH_SHORT).show();
     }
 
     private void defaultMode() {

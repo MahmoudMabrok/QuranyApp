@@ -206,10 +206,8 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
     @Override
     public void onViewAttachedToWindow(@NonNull Holder holder) {
         super.onViewAttachedToWindow(holder);
-
-
-        /* //<editor-fold desc="timer to hide">
-        new CountDownTimer(1000, 1000) {
+         //<editor-fold desc="timer to hide">
+        new CountDownTimer(100, 100) {
             @Override
             public void onTick(long l) {
 
@@ -222,7 +220,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                 holder.topLinear.setVisibility(vis);
             }
         }.start();
-        //</editor-fold>*/
+        //</editor-fold>
 
         pageShown.onDiplayed(holder.getAdapterPosition(), holder);
     }

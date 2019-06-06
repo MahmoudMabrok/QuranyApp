@@ -106,6 +106,14 @@ so it made a SQL Query to get StartIndex of pages that contain first HizbQuarter
 
 
 # ChangeLog
+- **V2.1.3**
+  - new UI
+     - page layout
+     - setting activity
+  - new way of switching pages
+  - fix bugs [#39](https://github.com/MahmoudMabrok/QuranyApp/issues/39),[#38](https://github.com/MahmoudMabrok/QuranyApp/issues/38),
+  [#37](https://github.com/MahmoudMabrok/QuranyApp/issues/37),[#35](https://github.com/MahmoudMabrok/QuranyApp/issues/35),  
+
 - Second Generation **V2.0** 
   - new UI
     - ayahEnd Symbol is fixed.
