@@ -73,17 +73,18 @@ I solved it using a tricky solution
 ```
 
 - **Display HizbQurater**
-I create function to count and diplay hizbQuarter info but faced challenge of determine the first and right time to display it.
-so it made a SQL Query to get StartIndex of pages that contain first HizbQuarter.
+I create function to count and display hizbQuarter info but faced challenge of determine the **first** and **right time** to display it.
+so it made a **SQL Query** to get startIndex of pages that contain *first HizbQuarter*.
 
 
 
 
 ## Mistakes & Learn 
 
-- I have a crash app on real device but app work correctly on emulator so I used a **crashReporter library** and it generates a report after check I found problem was with *primaryColor* that it has a *aplha value* so I removed alpha and app work correctly
+- The app have crashed  on real device but app work correctly on emulator so I used a **crashReporter library** and it generates a report after check I found problem was with **primaryColor** that it has a **alpha value** so I removed alpha and app work correctly.
 
-- got error whrn build release app after use retrofit so i added some rules for proguard 
+- got error when I built release app after use **retrofit** so I added some rules for **proguard** 
+
 ```
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
 # EnclosingMethod is required to use InnerClasses.
@@ -111,17 +112,16 @@ so it made a SQL Query to get StartIndex of pages that contain first HizbQuarter
      - page layout
      - setting activity
   - new way of switching pages
-  - fix bugs [#39](https://github.com/MahmoudMabrok/QuranyApp/issues/39),[#38](https://github.com/MahmoudMabrok/QuranyApp/issues/38),
-  [#37](https://github.com/MahmoudMabrok/QuranyApp/issues/37),[#35](https://github.com/MahmoudMabrok/QuranyApp/issues/35),  
+  - fix bugs [#39](https://github.com/MahmoudMabrok/QuranyApp/issues/39),[#38](https://github.com/MahmoudMabrok/QuranyApp/issues/38),[#37](https://github.com/MahmoudMabrok/QuranyApp/issues/37),[#35](https://github.com/MahmoudMabrok/QuranyApp/issues/35). 
 
-- Second Generation **V2.0** 
+- **V2.0** 
   - new UI
     - ayahEnd Symbol is fixed.
     - UI for Listen & Test.
   - add HizbQuarter Info.
   - Tafseer is now offline.
   - fix Bugs [#31](https://github.com/MahmoudMabrok/QuranyApp/issues/31),[#30](https://github.com/MahmoudMabrok/QuranyApp/issues/30).[#29](https://github.com/MahmoudMabrok/QuranyApp/issues/29),[#28](https://github.com/MahmoudMabrok/QuranyApp/issues/28),[#27](https://github.com/MahmoudMabrok/QuranyApp/issues/27).
-  - add InstaBug(trial) for in-app feedback and crash reporting feature.
+  - add **InstaBug**(trial) for in-app feedback and crash reporting feature.
 
 
 
