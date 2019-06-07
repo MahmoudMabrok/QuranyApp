@@ -4,14 +4,21 @@
 <img src="logo/horizontal.png" width=60%>
 </h1>
 
-Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them and app is very small size <= 3M
+Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them and app is very small size
 
 - [Google Play Link ](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
 - [F-Droid link](https://apt.izzysoft.de/fdroid/index/apk/education.mahmoud.quranyapp) 
-- [Youtube Demo](https://www.youtube.com/watch?v=-DbH0EKkAzw)
+- Youtube Demo
+  - [V2.0](https://www.youtube.com/watch?v=hzJV1lth958).
+  - [V1.8](https://www.youtube.com/watch?v=-DbH0EKkAzw).
+- apk
+  - [V2.1.3](https://github.com/MahmoudMabrok/QuranyApp/blob/master/apk/appv2_1_3.apk).
+  - [V2](https://github.com/MahmoudMabrok/QuranyApp/blob/master/apk/appv2.apk).
+ 
+  
 
 
-## App now is Feedbacked and crash reported by [InstaBug](https://github.com/apps/instabug) 
+## App now is Feedbacked and crash reported by [InstaBug](https://github.com/apps/instabug)(Just shake your device). 
 
 # Features 
 - Go to specific sura by Scrolling and click.
