@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -144,13 +145,14 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
             }
         });
 
-        holder.ayahsLayout.setOnClickListener(new View.OnClickListener() {
+        /*holder.ayahsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: frameLayout");
                 flipState(holder);
             }
         });
+        */
 
         holder.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +182,34 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
         }
         //</editor-fold>
 
+        /**
+         * getAxisValueis more accurate it get axis inside textView not screen
+         * view.getWidth == view.getMeasuredWidth()) ==>  width of textView
+         */
+        holder.tvAyahs.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Log.d(TAG, "2 - onTouch: getRawX  " + motionEvent.getRawX());
+                Log.d(TAG, "2 - onTouch: getAxisValue " + motionEvent.getAxisValue(MotionEvent.AXIS_X));
+                Log.d(TAG, "onTouch: getWidth  " + view.getWidth());
+                Log.d(TAG, "onTouch: getMeasuredWidth " + view.getMeasuredWidth());
+                Log.d(TAG, "onTouch: getX" + view.getX());
+
+                int width = view.getWidth() ;
+                int xAxix = (int) motionEvent.getAxisValue(MotionEvent.AXIS_X);
+
+                if (width / 2 >= xAxix) // means left part so perform nextAction 
+                {
+                    iOnClick.onClick(holder.getAdapterPosition());
+                }else{
+                    iOnClick.onClick(holder.getAdapterPosition()-2);
+                }
+
+
+                return false;
+            }
+        });
+
 
     }
 
@@ -207,7 +237,7 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
     public void onViewAttachedToWindow(@NonNull Holder holder) {
         super.onViewAttachedToWindow(holder);
          //<editor-fold desc="timer to hide">
-        new CountDownTimer(100, 100) {
+        new CountDownTimer(50, 100) {
             @Override
             public void onTick(long l) {
 

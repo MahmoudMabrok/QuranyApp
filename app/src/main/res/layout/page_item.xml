@@ -26,6 +26,7 @@
             android:gravity="center"
             android:isScrollContainer="true"
             android:scrollbars="vertical"
+            android:focusableInTouchMode="true"
             android:textColor="@color/ayas_color"
             android:textIsSelectable="false"
             android:textSize="@dimen/_16ssp"
@@ -90,7 +91,8 @@
         <ImageButton
             android:id="@+id/btnNext"
             app:srcCompat="@drawable/ic_next"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"/>
 
@@ -108,7 +110,8 @@
         <ImageButton
             android:id="@+id/btnPrev"
             app:srcCompat="@drawable/ic_prev"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_10sdp"/>
 

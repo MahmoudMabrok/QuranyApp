@@ -17,7 +17,9 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_30sdp"
             android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/back_edit_search" />
+
 
 
         <Spinner
@@ -26,7 +28,7 @@
             android:layout_height="@dimen/_30sdp"
             android:layout_weight="1"
             android:background="@drawable/back_edit_search"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
 
     </LinearLayout>

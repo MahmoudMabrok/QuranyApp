@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -83,6 +84,7 @@ public class TafseerDetails extends Fragment {
     }
 
     private void fillSpinners() {
+
         List<String> suraNames = Arrays.asList(Data.SURA_NAMES);
         ArrayAdapter<String> startAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, suraNames);
         spSuraTafser.setAdapter(startAdapter);
@@ -96,7 +98,24 @@ public class TafseerDetails extends Fragment {
                 if (suraAyahsTafseer.size() > 0) {
                     foundState();
                     adapter.setTafseerList(suraAyahsTafseer);
-                    Log.d(TAG, "onItemSelected: " + suraName);
+                   // Log.d(TAG, "onItemSelected: " + suraName);
+
+                    List<String> ayahsNums = creatAyahsNumList(suraAyahsTafseer.size()); // size() ->  n of ayahs
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext() ,android.R.layout.simple_dropdown_item_1line,ayahsNums );
+                    spAyahTafser.setAdapter(adapter);
+                    spAyahTafser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            rvTafeer.scrollToPosition((int) l);
+                            Log.d(TAG, "onItemSelected: TAFSEEER POS " + l);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
                 } else {
                     notFoundState();
                 }
@@ -107,16 +126,25 @@ public class TafseerDetails extends Fragment {
 
             }
         });
+    }
 
+    private List<String> creatAyahsNumList(int i) {
+        List<String> ayahsNums = new ArrayList<>();
+        for (int j = 1; j <= i  ; j++) {
+            ayahsNums.add(String.valueOf(j));
+        }
+        return ayahsNums;
     }
 
     private void foundState() {
         rvTafeer.setVisibility(View.VISIBLE);
+        spAyahTafser.setVisibility(View.VISIBLE);
         tvNoDataInTafseer.setVisibility(View.GONE);
     }
 
     private void notFoundState() {
         rvTafeer.setVisibility(View.GONE);
+        spAyahTafser.setVisibility(View.INVISIBLE);
         tvNoDataInTafseer.setVisibility(View.VISIBLE);
     }
 
