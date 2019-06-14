@@ -1,12 +1,12 @@
 package education.mahmoud.quranyapp.data_layer.local.room;
 
 import android.app.Application;
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.migration.Migration;
-import android.support.annotation.NonNull;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
+import androidx.annotation.NonNull;
 
 @Database(entities = {AyahItem.class, SuraItem.class, BookmarkItem.class}, version = 5, exportSchema = false)
 public abstract class QuranDB extends RoomDatabase {

@@ -179,7 +179,7 @@
             android:textColor="@color/ayas_color"
             android:textSize="@dimen/_22ssp" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTestText"
             android:layout_width="match_parent"
             android:layout_height="0dp"

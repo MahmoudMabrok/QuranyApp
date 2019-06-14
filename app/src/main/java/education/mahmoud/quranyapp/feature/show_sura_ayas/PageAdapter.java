@@ -3,12 +3,11 @@ package education.mahmoud.quranyapp.feature.show_sura_ayas;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.CountDownTimer;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -182,10 +181,11 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
         }
         //</editor-fold>
 
-        /**
+        /*
+        *//**
          * getAxisValueis more accurate it get axis inside textView not screen
          * view.getWidth == view.getMeasuredWidth()) ==>  width of textView
-         */
+         *//*
         holder.tvAyahs.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -204,9 +204,17 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                 }else{
                     iOnClick.onClick(holder.getAdapterPosition()-2);
                 }
-
-
+                
                 return false;
+            }
+        });*/
+
+
+        
+        holder.tvAyahs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: ");
             }
         });
 

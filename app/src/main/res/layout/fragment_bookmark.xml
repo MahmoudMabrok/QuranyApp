@@ -10,7 +10,7 @@
     android:paddingEnd="@dimen/_16sdp"
     tools:context=".feature.bookmark_fragment.BookmarkFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBookmark"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

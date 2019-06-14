@@ -1,7 +1,7 @@
 package education.mahmoud.quranyapp.Util.testsomefeature.testtafseer;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.data_layer.Repository;

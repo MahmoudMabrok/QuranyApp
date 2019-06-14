@@ -1,9 +1,9 @@
 package education.mahmoud.quranyapp.data_layer.local;
 
 import android.app.Application;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 @Database(entities = {AyahItem.class, SuraItem.class}, version = 2, exportSchema = false)
 public abstract class QuranDB extends RoomDatabase {

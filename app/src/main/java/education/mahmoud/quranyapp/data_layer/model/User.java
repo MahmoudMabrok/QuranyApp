@@ -1,6 +1,6 @@
 package education.mahmoud.quranyapp.data_layer.model;
 
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 
 @Keep
 public class User {

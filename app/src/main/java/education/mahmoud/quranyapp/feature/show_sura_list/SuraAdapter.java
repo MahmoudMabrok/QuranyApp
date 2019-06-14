@@ -1,8 +1,8 @@
 package education.mahmoud.quranyapp.feature.show_sura_list;
 
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 
 public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
