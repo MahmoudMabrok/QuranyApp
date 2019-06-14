@@ -25,7 +25,7 @@
             android:text="@string/postives"
             android:textSize="@dimen/font_feedback" />
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edPositives"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:text="@string/negatives"
             android:textSize="@dimen/font_feedback" />
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edNegatives"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
             android:text="@string/suggestions"
             android:textSize="@dimen/font_feedback" />
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edSuggestions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
