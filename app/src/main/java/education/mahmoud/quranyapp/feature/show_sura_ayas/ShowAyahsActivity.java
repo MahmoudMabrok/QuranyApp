@@ -131,6 +131,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this){
             @Override
             public boolean canScrollHorizontally() {
+                // disable scrolling
                 return false;
             }
         };
@@ -287,6 +288,13 @@ public class ShowAyahsActivity extends AppCompatActivity {
      */
     private void generateListOfPagesStartWithHizbQurater() {
        quraterSStart = repository.getHizbQuaterStart();
+       logData(quraterSStart);
+    }
+
+    private void logData(List<Integer> quraterSStart) {
+        for(Integer integer : quraterSStart){
+            Log.d(TAG, "logData: " + integer);
+        }
     }
 
     private void foundState() {
@@ -301,8 +309,14 @@ public class ShowAyahsActivity extends AppCompatActivity {
         rvAyahsPages.setVisibility(View.GONE);
     }
 
+    Toast toast ;
     private void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if (toast != null){
+            toast.cancel();
+        }
+        toast = Toast.makeText(this , message, Toast.LENGTH_SHORT);
+        toast.show();
+
     }
 
     @OnClick(R.id.tv_no_quran_data)

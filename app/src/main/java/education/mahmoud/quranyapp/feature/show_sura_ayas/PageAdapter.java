@@ -208,8 +208,6 @@ public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
                 return false;
             }
         });*/
-
-
         
         holder.tvAyahs.setOnClickListener(new View.OnClickListener() {
             @Override

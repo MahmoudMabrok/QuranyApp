@@ -138,15 +138,18 @@ public class TafseerDetails extends Fragment {
 
     private void foundState() {
         rvTafeer.setVisibility(View.VISIBLE);
+        spSuraTafser.setVisibility(View.VISIBLE);
         spAyahTafser.setVisibility(View.VISIBLE);
         tvNoDataInTafseer.setVisibility(View.GONE);
     }
 
     private void notFoundState() {
         rvTafeer.setVisibility(View.GONE);
+        spSuraTafser.setVisibility(View.INVISIBLE);
         spAyahTafser.setVisibility(View.INVISIBLE);
         tvNoDataInTafseer.setVisibility(View.VISIBLE);
     }
+
 
 
     @Override
