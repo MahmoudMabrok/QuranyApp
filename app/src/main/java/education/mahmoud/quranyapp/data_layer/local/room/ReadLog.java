@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.data_layer.local.room;
 
 import java.util.List;
+import java.util.Set;
 
 import androidx.collection.ArraySet;
 import androidx.room.ColumnInfo;
@@ -18,7 +19,7 @@ public class ReadLog {
     private String strDate;
 
     @ColumnInfo(name = "page_num")
-    private ArraySet<Integer> pages = new ArraySet<>();
+    private Set<Integer> pages = new ArraySet<>();
 
 
     public ReadLog() {
@@ -47,11 +48,11 @@ public class ReadLog {
         this.strDate = strDate;
     }
 
-    public ArraySet<Integer> getPages() {
+    public Set<Integer> getPages() {
         return pages;
     }
 
-    public void setPages(ArraySet<Integer> pages) {
+    public void setPages(Set<Integer> pages) {
         this.pages = pages;
     }
 }

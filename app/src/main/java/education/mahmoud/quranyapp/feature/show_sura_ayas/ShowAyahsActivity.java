@@ -228,6 +228,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
             public void onClick(int pos) {
                 rvAyahsPages.scrollToPosition(pos+1);
                 Log.d(TAG, "onClickaaa : " + pos);
+                pagesReadLogNumber.add(Integer.valueOf(pos+1));
             }
         });
 
@@ -373,6 +374,6 @@ public class ShowAyahsActivity extends AppCompatActivity {
     }
 
     private void saveReadLog() {
-
+        readLog.setPages(pagesReadLogNumber);
     }
 }

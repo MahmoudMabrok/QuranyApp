@@ -38,6 +38,7 @@ import education.mahmoud.quranyapp.feature.bookmark_fragment.BookmarkFragment;
 import education.mahmoud.quranyapp.feature.download.DownloadActivity;
 import education.mahmoud.quranyapp.feature.feedback_activity.FeedbackActivity;
 import education.mahmoud.quranyapp.feature.listening_activity.ListenFragment;
+import education.mahmoud.quranyapp.feature.read_log.ReadLogFragment;
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity;
 import education.mahmoud.quranyapp.feature.setting.SettingActivity;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
@@ -97,6 +98,7 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.navigation_bookmarks:
                     openBookmark();
                     return true;
+
 
 
             }
@@ -328,6 +330,8 @@ public class HomeActivity extends AppCompatActivity {
                 gotoLastRead();
                 break;
 
+            case R.id.actionReadLog:
+                goToReadLog();
 
             case R.id.actionScore:
                 gotoScore();
@@ -340,6 +344,13 @@ public class HomeActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToReadLog() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        ReadLogFragment logFragment = new ReadLogFragment();
+        transaction.replace(homeContainer.getId(),logFragment).commit();
+
     }
 
     private void openSearch() {

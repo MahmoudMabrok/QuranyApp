@@ -133,6 +133,7 @@
     <string name="hizb_to_display">الحزب %d</string>
     <string name="part_to_display">%s  الحزب  %d</string>
     <string name="set">Set</string>
+    <string name="readlog">ReadLog</string>
     <array name="parts">
         <item>1/4</item>
         <item>1/2</item>

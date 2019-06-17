@@ -22,5 +22,6 @@
     <dimen name="loginViewsMargin">20dp</dimen>
 
     <dimen name="signup_text_margin_top">10dp</dimen>
+    <dimen name="tv_read_log">@dimen/_15ssp</dimen>
 
 </resources>
