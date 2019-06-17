@@ -1,6 +1,8 @@
 package education.mahmoud.quranyapp.data_layer.local.room;
 
 import android.app.Application;
+
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -8,45 +10,22 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.annotation.NonNull;
 
-@Database(entities = {AyahItem.class, SuraItem.class, BookmarkItem.class}, version = 5, exportSchema = false)
+@Database(entities = {AyahItem.class, SuraItem.class, BookmarkItem.class, ReadLog.class}, version = 6, exportSchema = false)
+@TypeConverters({PagesConverter.class})
 public abstract class QuranDB extends RoomDatabase {
 
-    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+    static final Migration MIGRATION_5_6 = new Migration(5, 6) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("ALTER TABLE ayahs "
-                    + " ADD COLUMN pageNum INTEGER not null default 1 ");
 
-            database.execSQL("ALTER TABLE ayahs "
-                    + " ADD COLUMN juz INTEGER not null default 1 ");
-
-            database.execSQL("ALTER TABLE ayahs "
-                    + " ADD COLUMN tafseer TEXT");
-
-            database.execSQL("CREATE table bookmark (" +
-                    "id INTEGER PRIMARY KEY NOT NULL , scrollIndex INTEGER NOT NULL default 0 ,timemills  " +
-                    "INTEGER NOT NULL default 0 , suraName TEXT default null , pageNum INTEGER NOT NULL  default 0 )");
+            database.execSQL("CREATE table readlog (" +
+                    "date INTEGER PRIMARY KEY NOT NULL , " +
+                    " strDate TEXT default null , " +
+                    "page_num TEXT   )");
 
         }
     };
-    static final Migration MIGRATION_1_3 = new Migration(1, 3) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("ALTER TABLE ayahs "
-                    + " ADD COLUMN pageNum INTEGER not null default 1 ");
 
-            database.execSQL("ALTER TABLE ayahs "
-                    + " ADD COLUMN juz INTEGER not null default 1 ");
-
-            database.execSQL("ALTER TABLE ayahs "
-                    + " ADD COLUMN tafseer TEXT");
-
-            database.execSQL("CREATE table bookmark (" +
-                    "id INTEGER PRIMARY KEY NOT NULL , scrollIndex INTEGER NOT NULL default 0 ,timemills  " +
-                    "INTEGER NOT NULL default 0 , suraName TEXT default null , pageNum INTEGER NOT NULL  default 0 )");
-
-        }
-    };
     // Singleton Pattern only one instance exists and available for all classes from this class
     private static QuranDB instance;
 
@@ -54,6 +33,7 @@ public abstract class QuranDB extends RoomDatabase {
         if (instance == null) { // first time to create instance
             instance = Room.databaseBuilder(application, QuranDB.class, "quran")
                     .allowMainThreadQueries()
+                    .addMigrations(MIGRATION_5_6)
                     .fallbackToDestructiveMigration()
                     .build();
         }
@@ -61,8 +41,7 @@ public abstract class QuranDB extends RoomDatabase {
     }
 
     public abstract AyahDAO ayahDAO();
-
     public abstract SurahDAO surahDAO();
-
     public abstract BookmarkDAO bookmarkDao();
+    public abstract ReadLogDAO readLogDAO();
 }

@@ -83,7 +83,22 @@ I solved it using a tricky solution
 I create function to count and display hizbQuarter info but faced challenge of determine the **first** and **right time** to display it.
 so it made a **SQL Query** to get startIndex of pages that contain *first HizbQuarter*.
 
+- **Android Design Library not working**
+can not resolve design library so that BottomNavigation and other component not work. After 3 days from solving errors and applying stackoverflow solutions finally solved it by migrating to androidX and solve some third party library configuration.
 
+- **Bad Experience with Toasts**
+toasts was shown one after other and conflict user so solution was to check first if toast is shown cancel it then show new one.
+``` java 
+ Toast toast ;
+    private void showMessage(String message) {
+        if (toast != null){
+            toast.cancel();
+        }
+        toast = Toast.makeText(this , message, Toast.LENGTH_SHORT);
+        toast.show();
+
+    }
+```
 
 
 ## Mistakes & Learn 
@@ -114,6 +129,13 @@ so it made a **SQL Query** to get startIndex of pages that contain *first HizbQu
 
 
 # ChangeLog
+
+- **V2.2.0**
+  - fix bugs[#](),[#](),[#]().
+
+
+
+
 - **V2.1.3**
   - new UI
      - page layout
