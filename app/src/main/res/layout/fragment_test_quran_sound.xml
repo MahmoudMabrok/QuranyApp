@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".feature.test_quran.TestQuranSound">
+
+
+    <Button
+        android:id="@+id/btnAA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="aa"/>
+    <TextView
+        android:id="@+id/tvRecongnizedText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="AAS"
+        android:textSize="@dimen/_22ssp" />
+
+    <TextView
+        android:id="@+id/aaa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sss"/>
+
+    <ImageView
+        android:id="@+id/imRecord"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_40sdp"
+        app:srcCompat="@drawable/ic_sound" />
+
+</LinearLayout>

@@ -81,6 +81,7 @@ public class SuraListFragment extends Fragment {
                     }
                 }
 
+
             }
         };
         loadSuraList();

@@ -45,6 +45,7 @@ import education.mahmoud.quranyapp.feature.show_sura_list.GoToSurah;
 import education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment;
 import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails;
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment;
+import education.mahmoud.quranyapp.feature.test_quran.TestQuranSound;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -270,7 +271,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void openTest() {
-        TestFragment fragment = new TestFragment();
+      //  TestFragment fragment = new TestFragment();
+        TestQuranSound fragment = new TestQuranSound();
         FragmentTransaction a = getSupportFragmentManager().beginTransaction();
         a.replace(homeContainer.getId(), fragment).commit();
     }

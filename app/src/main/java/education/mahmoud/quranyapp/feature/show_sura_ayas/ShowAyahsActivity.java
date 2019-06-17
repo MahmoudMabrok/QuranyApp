@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import com.github.ybq.android.spinkit.SpinKitView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,9 +30,12 @@ import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.App;
 import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.Util.Data;
+import education.mahmoud.quranyapp.Util.DateOperation;
+import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
+import education.mahmoud.quranyapp.data_layer.local.room.ReadLog;
 import education.mahmoud.quranyapp.feature.download.DownloadActivity;
 
 public class ShowAyahsActivity extends AppCompatActivity {
@@ -52,7 +58,25 @@ public class ShowAyahsActivity extends AppCompatActivity {
     List<Page> pageList;
     int ayahsColor, scrollorColor;
     private int lastpageShown = 1;
+
+    /**
+     * list of pages num that contain start of HizbQurater
+     */
     private List<Integer> quraterSStart;
+    /**
+     * hold num of pages that read today
+     * will be update(in db) with every exit from activity
+     */
+    Set<Integer> pagesReadLogNumber ;
+
+    /**
+     * hold current date used to retrive pages and also with updating
+     */
+    private long currentDate;
+    /**
+     * hold current readLog item used to retrive pages and also with updating
+     */
+    private ReadLog readLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,7 +231,6 @@ public class ShowAyahsActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     private void prepareColors() {
@@ -250,6 +273,23 @@ public class ShowAyahsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadData();
+        loadPagesReadLoge();
+    }
+
+
+
+
+    private void loadPagesReadLoge() {
+        currentDate = DateOperation.getCurrentDate().getTime();
+     //   pagesReadLogNumber = repository.getReadLogpagesByDate(currentDate);
+        readLog = repository.getLReadLogByDate(currentDate);
+        if (readLog == null){
+            readLog = new ReadLog();
+            readLog.setDate(currentDate);
+            readLog.setStrDate(DateOperation.getStringDate(currentDate));
+        }
+
+        pagesReadLogNumber = readLog.getPages();
     }
 
     private void loadData() {
@@ -329,5 +369,10 @@ public class ShowAyahsActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         repository.addLatestread(lastpageShown);
+        saveReadLog();
+    }
+
+    private void saveReadLog() {
+
     }
 }

@@ -3,11 +3,13 @@ package education.mahmoud.quranyapp.data_layer;
 import android.app.Application;
 
 import java.util.List;
+import java.util.Set;
 
 import education.mahmoud.quranyapp.data_layer.local.LocalShared;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
 import education.mahmoud.quranyapp.data_layer.local.room.QuranDB;
+import education.mahmoud.quranyapp.data_layer.local.room.ReadLog;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.data_layer.remote.Remote;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
@@ -240,6 +242,15 @@ public class Repository {
     public List<Integer> getHizbQuaterStart() {
         return quranDB.ayahDAO().getHizbQuaterStart();
     }
+
+    public Set<Integer> getReadLogpagesByDate(long date) {
+        return quranDB.readLogDAO().getReadLogPagesByDate(date);
+    }
+
+    public ReadLog getLReadLogByDate(long currentDate) {
+        return quranDB.readLogDAO().getReadLogBydate(currentDate);
+    }
+
 
 
    /* public Call<String> getUsers() {
