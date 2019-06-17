@@ -133,7 +133,11 @@
     <string name="hizb_to_display">الحزب %d</string>
     <string name="part_to_display">%s  الحزب  %d</string>
     <string name="set">Set</string>
-    <string name="readlog">ReadLog</string>
+    <string name="readlog">سجل القراءة</string>
+    <string name="msg_deleted">تم الحذف بنجاح</string>
+    <string name="date">التاريخ</string>
+    <string name="no_pages">عددالصفحات</string>
+    <string name="pages_num">أرقام الصفحات</string>
     <array name="parts">
         <item>1/4</item>
         <item>1/2</item>

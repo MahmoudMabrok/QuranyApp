@@ -139,6 +139,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="readlog">ReadLog</string>
+    <string name="msg_deleted">Deleted</string>
+    <string name="date">Date</string>
+    <string name="no_pages">NO.Pages</string>
+    <string name="pages_num">Pages Num</string>
 
 
 </resources>

@@ -243,16 +243,24 @@ public class Repository {
         return quranDB.ayahDAO().getHizbQuaterStart();
     }
 
-    public Set<Integer> getReadLogpagesByDate(long date) {
-        return quranDB.readLogDAO().getReadLogPagesByDate(date);
-    }
-
     public ReadLog getLReadLogByDate(long currentDate) {
         return quranDB.readLogDAO().getReadLogBydate(currentDate);
     }
 
     public List<ReadLog> getReadLog() {
         return quranDB.readLogDAO().getAllReadLog();
+    }
+
+    public void addReadLog(ReadLog readLog) {
+        quranDB.readLogDAO().addReadLog(readLog);
+    }
+
+    public void updateReadLog(ReadLog readLog) {
+        quranDB.readLogDAO().updateReadLog(readLog);
+    }
+
+    public void deleteReadLog(ReadLog readLog) {
+        quranDB.readLogDAO().deleteReadLog(readLog);
     }
 
 

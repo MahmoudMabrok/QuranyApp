@@ -19,7 +19,7 @@ public class ReadLog {
     private String strDate;
 
     @ColumnInfo(name = "page_num")
-    private Set<Integer> pages = new ArraySet<>();
+    private ArraySet<Integer> pages ;
 
 
     public ReadLog() {
@@ -48,11 +48,12 @@ public class ReadLog {
         this.strDate = strDate;
     }
 
-    public Set<Integer> getPages() {
+
+    public ArraySet<Integer> getPages() {
         return pages;
     }
 
-    public void setPages(Set<Integer> pages) {
+    public void setPages(ArraySet<Integer> pages) {
         this.pages = pages;
     }
 }

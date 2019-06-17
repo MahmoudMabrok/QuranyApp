@@ -67,7 +67,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
      * hold num of pages that read today
      * will be update(in db) with every exit from activity
      */
-    Set<Integer> pagesReadLogNumber ;
+    ArraySet<Integer> pagesReadLogNumber ;
 
     /**
      * hold current date used to retrive pages and also with updating
@@ -84,13 +84,11 @@ public class ShowAyahsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_ayahs);
         ButterKnife.bind(this);
         repository = Repository.getInstance(getApplication());
-
         typeface = Typeface.createFromAsset(getAssets(), "me_quran.ttf");
-
         pos = getIntent().getIntExtra(Constants.SURAH_INDEX, 1);
-        Log.d(TAG, "onCreate: ** " + pos);
+      //  Log.d(TAG, "onCreate: ** " + pos);
         pos = getStartPageFromIndex(pos);
-        Log.d(TAG, "onCreate: *** " + pos);
+      //  Log.d(TAG, "onCreate: *** " + pos);
 
         //region Description
         if (getIntent().hasExtra(Constants.SURAH_GO_INDEX)) {
@@ -126,6 +124,8 @@ public class ShowAyahsActivity extends AppCompatActivity {
                         tvNoQuranData.setVisibility(View.GONE);
                         pageAdapter.setPageList(pageList);
                         rvAyahsPages.scrollToPosition(pos - 1);
+                        // pos represent Mushaf representation (i.e start from 1)
+                        addToReadLog(pos);
                         foundState();
                     } else {
                         notFound();
@@ -136,6 +136,10 @@ public class ShowAyahsActivity extends AppCompatActivity {
                 //endregion
             }
         };
+    }
+
+    private void addToReadLog(int pos) {
+        pagesReadLogNumber.add(pos);
     }
 
     private int getPosFromSurahAndAyah(int surah, int ayah) {
@@ -226,9 +230,11 @@ public class ShowAyahsActivity extends AppCompatActivity {
         pageAdapter.setiOnClick(new IOnClick() {
             @Override
             public void onClick(int pos) {
+                // pos represent page and need to be updated by 1 to be as recyclerview
+                // +2 to be as Mushaf
                 rvAyahsPages.scrollToPosition(pos+1);
                 Log.d(TAG, "onClickaaa : " + pos);
-                pagesReadLogNumber.add(Integer.valueOf(pos+1));
+                addToReadLog(pos + 2);
             }
         });
 
@@ -282,15 +288,18 @@ public class ShowAyahsActivity extends AppCompatActivity {
 
     private void loadPagesReadLoge() {
         currentDate = DateOperation.getCurrentDate().getTime();
-     //   pagesReadLogNumber = repository.getReadLogpagesByDate(currentDate);
         readLog = repository.getLReadLogByDate(currentDate);
         if (readLog == null){
             readLog = new ReadLog();
             readLog.setDate(currentDate);
             readLog.setStrDate(DateOperation.getStringDate(currentDate));
+            readLog.setPages(new ArraySet<>());
         }
-
         pagesReadLogNumber = readLog.getPages();
+
+        for(Integer integer: pagesReadLogNumber){
+            Log.d(TAG, "loadPagesReadLoge: "+ integer);
+        }
     }
 
     private void loadData() {
@@ -329,7 +338,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
      */
     private void generateListOfPagesStartWithHizbQurater() {
        quraterSStart = repository.getHizbQuaterStart();
-       logData(quraterSStart);
+      // logData(quraterSStart);
     }
 
     private void logData(List<Integer> quraterSStart) {
@@ -375,5 +384,14 @@ public class ShowAyahsActivity extends AppCompatActivity {
 
     private void saveReadLog() {
         readLog.setPages(pagesReadLogNumber);
+        try {
+            repository.addReadLog(readLog);
+            Log.d(TAG, "saveReadLog: added");
+        } catch (Exception e) {
+            repository.updateReadLog(readLog);
+            Log.d(TAG, "saveReadLog: updated");
+        }
+
+
     }
 }

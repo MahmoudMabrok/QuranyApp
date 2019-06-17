@@ -332,6 +332,7 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.actionReadLog:
                 goToReadLog();
+                break;
 
             case R.id.actionScore:
                 gotoScore();
@@ -350,7 +351,6 @@ public class HomeActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         ReadLogFragment logFragment = new ReadLogFragment();
         transaction.replace(homeContainer.getId(),logFragment).commit();
-
     }
 
     private void openSearch() {

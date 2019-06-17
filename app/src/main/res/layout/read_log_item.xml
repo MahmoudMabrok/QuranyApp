@@ -7,7 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/_8sdp">
+        android:padding="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_16sdp">
 
         <TextView
             android:id="@+id/readLogDate"
@@ -38,8 +39,6 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="testsssssssssssssssssssssssssssssssssss"/>
-
-
 
 
 

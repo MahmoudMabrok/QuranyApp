@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.local.room.ReadLog;
 
 public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> {
@@ -58,6 +59,15 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
         holder.readLogDate.setText(item.getStrDate());
         holder.readLogNPages.setText(String.valueOf(item.getPages().size()));
         holder.readLogPagesNum.setText(getNums(item.getPages()));
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String msg = getNums(item.getPages());
+                Util.getDialog(holder.itemView.getContext(),msg,item.getStrDate()).show();
+            }
+        });
     }
 
     private String getNums(Set<Integer> pages) {
@@ -72,6 +82,16 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public ReadLog getItem(int pos) {
+        return  list.get(pos);
+    }
+
+    public void deleteitem(int pos) {
+        list.remove((int)pos);
+        notifyItemRemoved(pos);
+        notifyItemRangeChanged(pos,list.size());
     }
 
     class Holder extends RecyclerView.ViewHolder {
