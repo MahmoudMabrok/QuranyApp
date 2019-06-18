@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +48,8 @@ public class ReadLogFragment extends Fragment {
         rvReadLog.setLayoutManager(linearLayoutManager);
         logAdapter = new ReadLogAdapter();
         rvReadLog.setAdapter(logAdapter);
+
+        rvReadLog.setItemAnimator(new DefaultItemAnimator());
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override

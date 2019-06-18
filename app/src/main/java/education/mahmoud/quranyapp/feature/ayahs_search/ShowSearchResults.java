@@ -1,11 +1,9 @@
 package education.mahmoud.quranyapp.feature.ayahs_search;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,11 +17,16 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.io.IOException;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
 
 public class ShowSearchResults extends AppCompatActivity {
 
@@ -111,7 +114,16 @@ public class ShowSearchResults extends AppCompatActivity {
             public void onPlayClick(AyahItem item) {
                 playAudio(item);
             }
+        });
 
+        adapter.setiOpenAyahInPage(new SearchResultsAdapter.IOpenAyahInPage() {
+            @Override
+            public void openPage(int index) {
+                Intent openAcivity = new Intent(ShowSearchResults.this, ShowAyahsActivity.class);
+                openAcivity.putExtra(Constants.PAGE_INDEX, index);
+                startActivity(openAcivity);
+                //    finish();
+            }
         });
 
     }

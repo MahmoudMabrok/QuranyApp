@@ -1,8 +1,6 @@
 package education.mahmoud.quranyapp.feature.ayahs_search;
 
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +13,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
@@ -26,6 +26,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
 
     IOnPlay iOnPlay;
+    IOpenAyahInPage iOpenAyahInPage;
     private List<AyahItem> list;
     private String wordSearched;
     private Typeface typeface;
@@ -37,6 +38,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     public void setiOnPlay(IOnPlay iOnPlay) {
         this.iOnPlay = iOnPlay;
+    }
+
+    public void setiOpenAyahInPage(IOpenAyahInPage iOpenAyahInPage) {
+        this.iOpenAyahInPage = iOpenAyahInPage;
     }
 
     public void setAyahItemList(List<AyahItem> newList, String word) {
@@ -56,7 +61,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_result_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_item, viewGroup, false);
         Holder holder = new Holder(view);
         return holder;
     }
@@ -92,6 +97,13 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 }
             }
         });
+
+        holder.tvSearchResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iOpenAyahInPage.openPage(item.getPageNum());
+            }
+        });
     }
 
     @Override
@@ -110,6 +122,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     interface IOnPlay {
         void onPlayClick(AyahItem item);
+    }
+
+    interface IOpenAyahInPage {
+        void openPage(int index);
     }
 
 

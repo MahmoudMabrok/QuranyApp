@@ -98,12 +98,10 @@ public class SettingActivity extends AppCompatActivity {
 
         setTitle(getString(R.string.setting));
 
-        Toast.makeText(this, "AA", Toast.LENGTH_SHORT).show();
     }
 
     private void defaultMode() {
         linearColor.setVisibility(View.VISIBLE);
-
     }
 
     private void nightMode() {

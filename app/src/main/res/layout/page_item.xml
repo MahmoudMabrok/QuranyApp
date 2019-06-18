@@ -29,7 +29,7 @@
             android:focusableInTouchMode="true"
             android:textColor="@color/ayas_color"
             android:textIsSelectable="false"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/ayahs_size"
             tools:text="Hellodsaasasasa" />
     </ScrollView>
 

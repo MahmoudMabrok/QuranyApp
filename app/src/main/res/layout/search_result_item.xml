@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/_16sdp"
@@ -16,12 +15,6 @@
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_5sdp">
 
-        <Button
-            android:id="@+id/btnShowTafseer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/back_edit_search"
-            android:text="@string/tafseerbtn" />
 
 
         <LinearLayout
@@ -30,55 +23,21 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvSearchSuraName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="@dimen/search_text_size"
-                android:textStyle="bold"
-                tools:text="aaa" />
-
-            <TextView
-                android:id="@+id/tvSearchAyahNum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textSize="@dimen/search_text_size"
-                tools:text="10" />
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btnShowTashkeel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/back_edit_search"
-            android:text="@string/tashkeel" />
+
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvSearchResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:textSize="@dimen/search_text_size"
-        tools:text="@tools:sample/lorem/random" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
 
-        <ImageButton
-            android:id="@+id/btnPlayInSearch"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/ic_play" />
-
 
     </LinearLayout>
+
+
 </LinearLayout>
