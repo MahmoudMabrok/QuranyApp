@@ -138,13 +138,11 @@
     <string name="date">التاريخ</string>
     <string name="no_pages">عددالصفحات</string>
     <string name="pages_num">أرقام الصفحات</string>
+    <string name="setting_updated">تم حفظ الاعدادات بنجاح</string>
     <array name="parts">
         <item>1/4</item>
         <item>1/2</item>
         <item>3/4</item>
     </array>
-
-
-
 
 </resources>

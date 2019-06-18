@@ -1,7 +1,6 @@
 package education.mahmoud.quranyapp.feature.setting;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
     Button btnSetColor;
 
 
-    int colorPosForBackground ;
+    int colorPosForBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +69,9 @@ public class SettingActivity extends AppCompatActivity {
                 } else {
                     defaultMode();
                 }
+
+                //// TODO: 6/18/2019 add Toast but handle it correctly
+                //   showMessage(getString(R.string.setting_updated));
             }
         });
 
@@ -84,7 +87,7 @@ public class SettingActivity extends AppCompatActivity {
                 Log.d(TAG, "onItemSelected: " + i + ":: " + l);
                 int pos = spColorReqularMode.getSelectedItemPosition();
                 Log.d(TAG, "onItemSelected: pos " + pos);
-                colorPosForBackground = pos ;
+                colorPosForBackground = pos;
             }
 
             @Override
@@ -110,5 +113,10 @@ public class SettingActivity extends AppCompatActivity {
     @OnClick(R.id.btnSetColor)
     public void onViewClicked() {
         repository.setBackColorState(colorPosForBackground);
+        showMessage(getString(R.string.setting_updated));
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

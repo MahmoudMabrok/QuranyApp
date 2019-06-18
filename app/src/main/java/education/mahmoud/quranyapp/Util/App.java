@@ -4,9 +4,6 @@ import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.instabug.library.Instabug;
-import com.instabug.library.invocation.InstabugInvocationEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +34,6 @@ public class App extends Application {
         } else {
             persistanscePages();
         }
-
-        new Instabug.Builder(this, "7cd38f30270b7b67a104d34f9b9d0b3a")
-                .setInvocationEvents(InstabugInvocationEvent.SHAKE, InstabugInvocationEvent.SCREENSHOT)
-                .build();
 
     }
 

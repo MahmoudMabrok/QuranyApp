@@ -16,10 +16,6 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
   - [V2](https://github.com/MahmoudMabrok/QuranyApp/blob/master/apk/appv2.apk).
  
   
-
-
-## App now is Feedbacked and crash reported by [InstaBug](https://github.com/apps/instabug)(Just shake your device). 
-
 # Features 
 - Go to specific sura by Scrolling and click.
 - Go to specific sura by its Num.
@@ -31,7 +27,8 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 - Repeat each ayas and repeat whole listening
 - Tafseer
 - Points for Tasmee3 
-- can report a bug, chat with app developer powered by InstaBug - explaned in demo video - (trial).
+- can report a bug, chat with app developer powered by InstaBug - explaned in demo video - (Not Available now).
+- ReadLog that store pages user read.
 
 # Challenges 
 - **Data** 
@@ -121,6 +118,7 @@ toasts was shown one after other and conflict user so solution was to check firs
 -dontwarn javax.annotation.**
 # Guarded by a NoClassDefFoundError try/catch and only used when on the classpath.
 -dontwarn kotlin.Unit
+
 ```
 
 - *baseUrl* of **retrofit** must end with / 
@@ -130,9 +128,10 @@ toasts was shown one after other and conflict user so solution was to check firs
 
 # ChangeLog
 
-- **V2.2.0**
-  - fix bugs[#](),[#](),[#]().
-
+- **V2.3.1**
+  - Add ReadLog that store pages user read.
+  - Improve UI for page switching.
+  - fix bugs [#13](https://github.com/MahmoudMabrok/QuranyApp/issues/13),[#24](https://github.com/MahmoudMabrok/QuranyApp/issues/24),[#34](https://github.com/MahmoudMabrok/QuranyApp/issues/34),[#43](https://github.com/MahmoudMabrok/QuranyApp/issues/43),[#44](https://github.com/MahmoudMabrok/QuranyApp/issues/44),[#46](https://github.com/MahmoudMabrok/QuranyApp/issues/46).
 
 
 
@@ -164,7 +163,6 @@ XML | 1.0
 Android Support Library | 28.0.0
 retrofit2 | 2.3.0
 Room| 1.1.1
-instabug | 8.4.0
 ButterKnife | 8.8.1
 crashreporter | 1.0.9
 gson | 2.8.5

@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +18,9 @@ import com.tjeannin.apprate.AppRate;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
@@ -46,7 +46,6 @@ import education.mahmoud.quranyapp.feature.show_sura_list.GoToSurah;
 import education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment;
 import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails;
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment;
-import education.mahmoud.quranyapp.feature.test_quran.TestQuranSound;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -273,8 +272,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void openTest() {
-      //  TestFragment fragment = new TestFragment();
-        TestQuranSound fragment = new TestQuranSound();
+        TestFragment fragment = new TestFragment();
+        //  TestQuranSound fragment = new TestQuranSound();
         FragmentTransaction a = getSupportFragmentManager().beginTransaction();
         a.replace(homeContainer.getId(), fragment).commit();
     }

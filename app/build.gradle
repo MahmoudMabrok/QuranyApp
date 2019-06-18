@@ -5,10 +5,10 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "education.mahmoud.quranyapp"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 20
-        versionName "2.2.0"
+        versionName "2.3.1"
 //        testInstrumentationRumannner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -77,7 +77,6 @@ dependencies {
     implementation 'com.github.FrangSierra:RxFirebase:1.5.6'
 */
 
-    implementation 'com.instabug.library:instabug:8.4.0'
 
     implementation 'androidx.annotation:annotation:1.0.2'
 

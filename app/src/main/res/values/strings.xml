@@ -143,6 +143,7 @@
     <string name="date">Date</string>
     <string name="no_pages">NO.Pages</string>
     <string name="pages_num">Pages Num</string>
+    <string name="setting_updated">Setting was saved Successfully</string>
 
 
 </resources>
