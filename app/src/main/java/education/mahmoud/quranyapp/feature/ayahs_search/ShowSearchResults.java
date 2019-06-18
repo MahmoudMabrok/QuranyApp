@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,9 +54,7 @@ public class ShowSearchResults extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_search_results);
         ButterKnife.bind(this);
-
         repository = Repository.getInstance(getApplication());
-
         initRv();
 
         edSearch.addTextChangedListener(new TextWatcher() {
@@ -72,6 +71,7 @@ public class ShowSearchResults extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 ayah = editable.toString();
+                ayah = ayah.replaceAll(" +", " ");
                 if (!TextUtils.isEmpty(ayah) && ayah.length() > 0) {
                     ayahItems = repository.getAyahByAyahText(ayah);
                     Log.d(TAG, "afterTextChanged: " + ayahItems.size());
@@ -144,16 +144,14 @@ public class ShowSearchResults extends AppCompatActivity {
             try {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                     mediaPlayer.release();
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setDataSource(item.getAudioPath());
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } else {
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setDataSource(item.getAudioPath());
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
+                    mediaPlayer = null;
                 }
+                mediaPlayer = new MediaPlayer();
+                WeakReference<MediaPlayer> mediaPlayerWeakReference = new WeakReference<>(mediaPlayer);
+                mediaPlayer.setDataSource(item.getAudioPath());
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+
 
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
