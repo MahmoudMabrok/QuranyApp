@@ -53,6 +53,9 @@ public class DateOperation {
         return calendar.getTime();
     }
 
+    public static String getCurrentDateAsString() {
+        return getStringDate(getCurrentDate());
+    }
     /**
      * @param year
      * @param month

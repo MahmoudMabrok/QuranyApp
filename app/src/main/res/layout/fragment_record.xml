@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,60 +13,106 @@
         android:layout_gravity="top"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spStartSuraRecordFragmet"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search" />
+            android:layout_marginBottom="@dimen/_16sdp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/start_from"
+                android:textColor="@color/whiteTextColor"
+                android:textSize="@dimen/_15ssp" />
+
+            <Spinner
+                android:id="@+id/spStartSuraRecordFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/back_edit_search" />
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edStartSuraAyahRecordFragmet"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edStartSuraAyahRecordFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/back_edit_search"
+                android:hint="@string/start_ayah"
+                android:inputType="number"
+                android:maxLines="1"
+                android:minHeight="@dimen/_10sdp"
+                android:padding="@dimen/_6sdp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search"
-            android:hint="@string/start_ayah"
-            android:inputType="number"
-            android:minHeight="@dimen/_10sdp"
-            android:padding="@dimen/_6sdp" />
+            android:layout_marginBottom="@dimen/_16sdp">
 
-        <Spinner
-            android:id="@+id/spEndSuraRecordFragmet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:text="@string/end_at"
+                android:textColor="@color/whiteTextColor"
+                android:textSize="@dimen/_15ssp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edEndSuraAyahRecordFragmet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search"
-            android:hint="@string/end_ayah"
-            android:inputType="number"
-            android:minHeight="@dimen/_10sdp"
-            android:padding="@dimen/_6sdp" />
+            <Spinner
+                android:id="@+id/spEndSuraRecordFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/back_edit_search" />
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edEndSuraAyahRecordFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/back_edit_search"
+                android:hint="@string/end_ayah"
+                android:inputType="number"
+                android:maxLines="1"
+                android:minHeight="@dimen/_10sdp"
+                android:padding="@dimen/_6sdp" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_35sdp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:gravity="center_horizontal"
+            android:text="@string/tap_to_record"
+            android:textSize="@dimen/_22ssp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnRecord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_mic_white_36dp"
-            app:fab_colorNormal="@color/primary" />
+            android:src="@drawable/ic_mic_white_36dp" />
 
     </LinearLayout>
 

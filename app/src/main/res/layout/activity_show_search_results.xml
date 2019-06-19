@@ -13,20 +13,21 @@
         android:id="@+id/edSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:background="@drawable/back_edit_search"
         android:hint="@string/ayah_to_search"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingTop="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_10sdp"
-        android:textSize="@dimen/_17ssp" />
+        android:drawableStart="@drawable/ic_search_white_24dp"
+        android:drawablePadding="@dimen/_10sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:textSize="@dimen/ayahs_size" />
 
     <TextView
         android:id="@+id/tvSearchCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:textColor="@color/font_results"
         android:textSize="@dimen/_17ssp"
         tools:text="ssdww" />

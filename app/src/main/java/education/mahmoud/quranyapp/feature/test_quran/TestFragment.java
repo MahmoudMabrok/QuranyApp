@@ -2,11 +2,8 @@ package education.mahmoud.quranyapp.feature.test_quran;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Spannable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,6 +36,7 @@ import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
+import education.mahmoud.quranyapp.feature.test_sound.TestSoundActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +71,8 @@ public class TestFragment extends Fragment {
     Activity activity;
     Unbinder unbinder;
     SaveTestAdapter adapter = new SaveTestAdapter();
+    @BindView(R.id.btnOpenTestSound)
+    Button btnOpenTestSound;
     private Repository repository;
     private SuraItem startSura;
     private SuraItem endSura;
@@ -187,7 +190,7 @@ public class TestFragment extends Fragment {
     public void onViewClicked() {
         checkInput();
         if (isInputValid) {
-            ayahsToTest = repository.getAyahSInRange(actualStart+1, actualEnd+1);
+            ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1);
             adapter.setAyahItemList(ayahsToTest);
             TestState();
         }
@@ -223,7 +226,7 @@ public class TestFragment extends Fragment {
                 }
                 Log.d(TAG, "onViewClicked: actual " + actualStart + " " + actualEnd);
                 // get ayas from db
-                ayahsToTest = repository.getAyahSInRange(actualStart+1, actualEnd+1);
+                ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1);
                 isInputValid = true;
                 // place data in UI
                 tvTestRange.setText(getString(R.string.rangeoftest, startSura.getName(), start, endSura.getName(), end));
@@ -298,7 +301,7 @@ public class TestFragment extends Fragment {
     public void onbtnTestSaveRandom() {
         checkInput();
         if (isInputValid) {
-            ayahsToTest = repository.getAyahSInRange(actualStart+1, actualEnd+1);
+            ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1);
             if (ayahsToTest.size() >= 3) {
                 int r = new Random().nextInt(ayahsToTest.size() - 1);
                 AyahItem ayahItem = ayahsToTest.get(r);
@@ -334,4 +337,9 @@ public class TestFragment extends Fragment {
     }
 
 
+    @OnClick(R.id.btnOpenTestSound)
+    public void onOpenTestSoundClicked() {
+        Intent openAcivity = new Intent(getContext(), TestSoundActivity.class);
+        startActivity(openAcivity);
+    }
 }

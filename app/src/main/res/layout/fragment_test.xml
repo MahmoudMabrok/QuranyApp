@@ -115,6 +115,18 @@
                 android:text="@string/btn_start_random"
                 android:textColor="@color/bg_white" />
 
+            <Button
+                android:id="@+id/btnOpenTestSound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:background="@drawable/back_search_res"
+                android:paddingStart="@dimen/_6sdp"
+                android:paddingEnd="@dimen/_6sdp"
+                android:text="@string/test_sound"
+                android:textColor="@color/bg_white" />
+
 
         </LinearLayout>
 

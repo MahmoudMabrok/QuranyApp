@@ -18,31 +18,31 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
-
+        <activity
+            android:name=".feature.test_sound.TestSoundActivity"
+            android:exported="true"
+            android:label="@string/title_activity_test_sound"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".feature.show_ayahs_from_pdf.ShowAyahsPDF"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".feature.show_sura_ayas.ShowAyahsActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".feature.home_Activity.HomeActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name">
-
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".feature.login.Login"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
