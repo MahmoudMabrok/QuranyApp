@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:padding="@dimen/_16sdp"
+    tools:context=".feature.test_sound.RecordFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spStartSuraRecordFragmet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search" />
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edStartSuraAyahRecordFragmet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search"
+            android:hint="@string/start_ayah"
+            android:inputType="number"
+            android:minHeight="@dimen/_10sdp"
+            android:padding="@dimen/_6sdp" />
+
+        <Spinner
+            android:id="@+id/spEndSuraRecordFragmet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edEndSuraAyahRecordFragmet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:background="@drawable/back_edit_search"
+            android:hint="@string/end_ayah"
+            android:inputType="number"
+            android:minHeight="@dimen/_10sdp"
+            android:padding="@dimen/_6sdp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_mic_white_36dp"
+            app:fab_colorNormal="@color/primary" />
+
+    </LinearLayout>
+
+</FrameLayout>

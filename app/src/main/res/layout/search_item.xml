@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/_10sdp"
+    android:background="@drawable/setting_border"
     android:layoutDirection="rtl">
 
     <LinearLayout
@@ -53,6 +54,8 @@
             android:background="@color/black_gradi"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
+            android:ellipsize="end"
+            android:maxLines="5"
             android:text="TextViewaaasa"
             android:textSize="@dimen/ayahs_size" />
 
@@ -65,7 +68,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/btnPlayInSearch"
