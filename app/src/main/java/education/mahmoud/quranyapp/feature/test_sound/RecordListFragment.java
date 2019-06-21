@@ -32,7 +32,7 @@ public class RecordListFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvRecordList.setLayoutManager(layoutManager);
 
-        RecorditemAdapter recorditemAdapter = new RecorditemAdapter();
+        RecordAdapter recorditemAdapter = new RecordAdapter();
         rvRecordList.setAdapter(recorditemAdapter);
     }
 

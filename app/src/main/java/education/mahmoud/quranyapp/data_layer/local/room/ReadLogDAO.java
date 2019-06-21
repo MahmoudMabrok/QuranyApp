@@ -1,9 +1,7 @@
 package education.mahmoud.quranyapp.data_layer.local.room;
 
 import java.util.List;
-import java.util.Set;
 
-import androidx.collection.ArraySet;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -23,7 +21,7 @@ public interface ReadLogDAO {
     public List<ReadLog> getAllReadLog();
 
     @Query("select * from readlog where date = :date")
-   ReadLog getReadLogBydate(long date);
+    ReadLog getReadLogBydate(long date);
 
     @Delete
     void deleteReadLog(ReadLog readLog);

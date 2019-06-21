@@ -2,6 +2,7 @@ package education.mahmoud.quranyapp.feature.test_sound;
 
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,9 +120,9 @@ public class RecordFragment extends Fragment {
                     edStartSuraAyahRecordFragment.setError(getString(R.string.outofrange, startSura.getNumOfAyahs()));
                     return;
                 }
-                end = Integer.parseInt(edStartSuraAyahRecordFragment.getText().toString());
+                end = Integer.parseInt(edEndSuraAyahRecordFragment.getText().toString());
                 if (end > endSura.getNumOfAyahs()) {
-                    edStartSuraAyahRecordFragment.setError(getString(R.string.outofrange, endSura.getNumOfAyahs()));
+                    edEndSuraAyahRecordFragment.setError(getString(R.string.outofrange, endSura.getNumOfAyahs()));
                     return;
                 }
                 // compute actual start , -1 because first ayah is 0 not 1 as user enter
@@ -163,14 +164,17 @@ public class RecordFragment extends Fragment {
         checkInput();
         if (isInputValid) {
             // process
-            String fileName = getFileName(actualStart, actualEnd);
-            Log.d(TAG, "btnRecord: " + fileName);
+            String fileName = getFileNameWithPath(actualStart + 1, actualEnd + 1);
+
+
         }
     }
 
-    private String getFileName(int actualStart, int actualEnd) {
+    private String getFileNameWithPath(int actualStart, int actualEnd) {
+        Log.d(TAG, "getFileNameWithPath: " + actualEnd);
         String pre = String.valueOf(new Random().nextInt());
-        return MessageFormat.format("{0}_{1}_{2}_{3}", pre, actualStart, actualEnd, DateOperation.getCurrentDateAsString());
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/QuranRecording/";
+        return MessageFormat.format("{0}{1}_{2}_{3}_{4}.mp3", path, pre, actualStart, actualEnd, DateOperation.getCurrentDateAsString());
     }
 
 

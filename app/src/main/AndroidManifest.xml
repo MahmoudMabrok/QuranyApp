@@ -18,11 +18,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+        <service
+            android:name=".feature.test_sound.RecordingService"
+            android:enabled="true"
+            android:exported="false"></service>
+
         <activity
             android:name=".feature.test_sound.TestSoundActivity"
             android:exported="true"
             android:label="@string/title_activity_test_sound"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".feature.show_ayahs_from_pdf.ShowAyahsPDF"
             android:exported="true"

@@ -2,15 +2,16 @@ package education.mahmoud.quranyapp.data_layer.local.room;
 
 import android.app.Application;
 
-import androidx.room.TypeConverters;
-import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
-import androidx.annotation.NonNull;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {AyahItem.class, SuraItem.class, BookmarkItem.class, ReadLog.class}, version = 6, exportSchema = false)
+@Database(entities = {AyahItem.class, SuraItem.class, BookmarkItem.class, ReadLog.class},
+        version = 7, exportSchema = false)
 @TypeConverters({PagesConverter.class})
 public abstract class QuranDB extends RoomDatabase {
 
