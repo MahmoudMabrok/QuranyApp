@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.feature.test_sound;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -25,9 +26,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.Util.Data;
 import education.mahmoud.quranyapp.Util.DateOperation;
 import education.mahmoud.quranyapp.data_layer.Repository;
+import education.mahmoud.quranyapp.data_layer.local.room.RecordItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -164,17 +167,23 @@ public class RecordFragment extends Fragment {
         checkInput();
         if (isInputValid) {
             // process
-            String fileName = getFileNameWithPath(actualStart + 1, actualEnd + 1);
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/QuranRecording/";
+            String fileName = getFileName(actualStart, actualEnd);
+            path += fileName;
+            RecordItem recordItem = new RecordItem(actualStart, actualEnd, fileName, path);
 
+            // start service
+            Intent intent = new Intent(getContext(), RecordingService.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constants.RECORD_ITEM, recordItem);
+            getActivity().startService(intent);
 
         }
     }
 
-    private String getFileNameWithPath(int actualStart, int actualEnd) {
-        Log.d(TAG, "getFileNameWithPath: " + actualEnd);
-        String pre = String.valueOf(new Random().nextInt());
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/QuranRecording/";
-        return MessageFormat.format("{0}{1}_{2}_{3}_{4}.mp3", path, pre, actualStart, actualEnd, DateOperation.getCurrentDateAsString());
+    private String getFileName(int actualStart, int actualEnd) {
+        int pre = new Random().nextInt(); // random pre-fix
+        return MessageFormat.format("{0}_{1}_{2}_{3}.mp3", pre, actualStart, actualEnd, DateOperation.getCurrentDateAsString());
     }
 
 

@@ -23,4 +23,5 @@ public interface Constants {
     String SURAH_GO_INDEX = "goSuraIndex";
     String AYAH_GO_INDEX = "ayahGo";
     int NA = -1;
+    String RECORD_ITEM = "record";
 }

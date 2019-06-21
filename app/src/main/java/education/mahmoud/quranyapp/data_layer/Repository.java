@@ -3,17 +3,17 @@ package education.mahmoud.quranyapp.data_layer;
 import android.app.Application;
 
 import java.util.List;
-import java.util.Set;
 
 import education.mahmoud.quranyapp.data_layer.local.LocalShared;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
 import education.mahmoud.quranyapp.data_layer.local.room.QuranDB;
 import education.mahmoud.quranyapp.data_layer.local.room.ReadLog;
+import education.mahmoud.quranyapp.data_layer.local.room.RecordItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
-import education.mahmoud.quranyapp.data_layer.remote.Remote;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
 import education.mahmoud.quranyapp.data_layer.model.tafseer_model.Tafseer;
+import education.mahmoud.quranyapp.data_layer.remote.Remote;
 import retrofit2.Call;
 
 public class Repository {
@@ -261,6 +261,10 @@ public class Repository {
 
     public void deleteReadLog(ReadLog readLog) {
         quranDB.readLogDAO().deleteReadLog(readLog);
+    }
+
+    public void addRecord(RecordItem recordItem) {
+        quranDB.recordDAO().addRecordItem(recordItem);
     }
 
 

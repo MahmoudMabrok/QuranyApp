@@ -45,4 +45,6 @@ public abstract class QuranDB extends RoomDatabase {
     public abstract SurahDAO surahDAO();
     public abstract BookmarkDAO bookmarkDao();
     public abstract ReadLogDAO readLogDAO();
+
+    public abstract RecordDAO recordDAO();
 }
