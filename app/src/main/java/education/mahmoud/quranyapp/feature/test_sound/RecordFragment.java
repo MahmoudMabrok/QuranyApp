@@ -123,6 +123,8 @@ public class RecordFragment extends Fragment {
      * check input of spinners and edit text if it valid a field is become true
      */
     private void checkInput() {
+        // intialize it
+        isInputValid = false;
         //region check inputs
         if (startSura != null && endSura != null) {
             try {
@@ -173,6 +175,7 @@ public class RecordFragment extends Fragment {
     @OnClick(R.id.btnRecord)
     public void onViewClicked() {
         checkInput();
+        Log.d(TAG, "onViewClicked: " + isInputValid + start + end);
         if (!isRecording && isInputValid) {
 
             int c = repository.getRecordCount() + 1;
