@@ -65,13 +65,11 @@ public class HomeActivity extends AppCompatActivity {
     BottomNavigationView navigation;
 
     Repository repository;
-
-
+    private boolean isPermissionAllowed;
     Handler handler;
     Dialog loadingDialog;
-
-
     int ahays;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -104,7 +102,6 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         }
     };
-    private boolean isPermissionAllowed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
         new AppRate(this).setMinLaunchesUntilPrompt(5)
                 .init();
 
-       Stetho.initializeWithDefaults(getApplication());
+        Stetho.initializeWithDefaults(getApplication());
 
         ahays = repository.getTotlaAyahs();
 

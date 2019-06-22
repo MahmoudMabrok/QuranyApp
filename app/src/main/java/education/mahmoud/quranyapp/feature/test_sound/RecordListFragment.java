@@ -11,19 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.data_layer.Repository;
 
 
 public class RecordListFragment extends Fragment {
 
     @BindView(R.id.rvRecordList)
     RecyclerView rvRecordList;
+    private RecordAdapter recorditemAdapter;
+    private Repository repository;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recorditem_list, container, false);
         ButterKnife.bind(this, view);
-
+        repository = Repository.getInstance(getActivity().getApplication());
         initRV();
         return view;
     }
@@ -31,9 +34,19 @@ public class RecordListFragment extends Fragment {
     private void initRV() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvRecordList.setLayoutManager(layoutManager);
-
-        RecordAdapter recorditemAdapter = new RecordAdapter();
+        recorditemAdapter = new RecordAdapter();
         rvRecordList.setAdapter(recorditemAdapter);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            loadData();
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+    private void loadData() {
+        recorditemAdapter.setRecordList(repository.getRecords());
+    }
 }

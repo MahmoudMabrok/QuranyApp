@@ -61,6 +61,8 @@ public class RecordFragment extends Fragment {
     private int actualEnd;
     private int end;
     private boolean isInputValid;
+    private boolean isRecording;
+    private Intent intent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,9 +131,9 @@ public class RecordFragment extends Fragment {
                     return;
                 }
                 // compute actual start , -1 because first ayah is 0 not 1 as user enter
-                actualStart = repository.getAyahByInSurahIndex(startSura.getIndex(), start).getAyahIndex() - 1;
+                actualStart = repository.getAyahByInSurahIndex(startSura.getIndex(), start).getAyahIndex();
                 // compute actual end
-                actualEnd = repository.getAyahByInSurahIndex(endSura.getIndex(), end).getAyahIndex() - 1;
+                actualEnd = repository.getAyahByInSurahIndex(endSura.getIndex(), end).getAyahIndex();
                 // check actualstart & actualEnd
                 if (actualEnd < actualStart) {
                     makeRangeError();
@@ -165,7 +167,7 @@ public class RecordFragment extends Fragment {
     @OnClick(R.id.btnRecord)
     public void onViewClicked() {
         checkInput();
-        if (isInputValid) {
+        if (!isRecording && isInputValid) {
             // process
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/QuranRecording/";
             String fileName = getFileName(actualStart, actualEnd);
@@ -173,12 +175,30 @@ public class RecordFragment extends Fragment {
             RecordItem recordItem = new RecordItem(actualStart, actualEnd, fileName, path);
 
             // start service
-            Intent intent = new Intent(getContext(), RecordingService.class);
+            intent = new Intent(getActivity(), RecordingService.class);
             Bundle bundle = new Bundle();
             bundle.putParcelable(Constants.RECORD_ITEM, recordItem);
+            intent.putExtras(bundle);
             getActivity().startService(intent);
+            isRecording = true;
 
+            recordState();
+        } else if (isRecording) {
+            stopRecord();
         }
+    }
+
+    private void recordState() {
+        Log.d(TAG, "recordState: ");
+        btnRecord.setBackgroundResource(R.drawable.ic_stop);
+    }
+
+
+    private void stopRecord() {
+        Log.d(TAG, "stopRecord: ");
+        btnRecord.setBackgroundResource(R.drawable.ic_mic_white_36dp);
+        isRecording = false;
+        getActivity().stopService(intent);
     }
 
     private String getFileName(int actualStart, int actualEnd) {

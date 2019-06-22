@@ -38,7 +38,7 @@ public class RecordingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        recordItem = intent.getBundleExtra("0").getParcelable(Constants.RECORD_ITEM);
+        recordItem = intent.getExtras().getParcelable(Constants.RECORD_ITEM);
         startRecording();
         // START_STICKY to run service independent and it finish when its work
         return START_STICKY;

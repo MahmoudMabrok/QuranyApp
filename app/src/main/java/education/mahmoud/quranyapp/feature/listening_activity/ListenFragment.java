@@ -6,7 +6,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -98,7 +98,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     int i = 1;
     Typeface typeface;
     SuraItem startSura, endSura;
-    int startDown, endDown;
     String downURL, path, filename;
     int index;
     int currentAyaAtAyasToListen = 0;

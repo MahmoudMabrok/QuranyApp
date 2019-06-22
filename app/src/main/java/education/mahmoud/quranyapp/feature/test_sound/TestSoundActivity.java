@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.test_sound;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,13 +19,19 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import education.mahmoud.quranyapp.R;
+import pub.devrel.easypermissions.EasyPermissions;
+import pub.devrel.easypermissions.PermissionRequest;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class TestSoundActivity extends AppCompatActivity {
 
+    private static final int RC_RECORD = 10002;
     List<Fragment> fragments = new ArrayList<>();
     List<String> titles = new ArrayList<>();
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    public boolean recordIsAllowed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,21 @@ public class TestSoundActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
 
+        acquiewPermission();
+    }
+
+    private void acquiewPermission() {
+        String[] perms = new String[]{Manifest.permission.RECORD_AUDIO};
+        EasyPermissions.requestPermissions(new PermissionRequest.Builder(this, RC_RECORD, perms).build());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == RC_RECORD && grantResults[0] == PERMISSION_GRANTED) {
+            recordIsAllowed = true;
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void initFragmets() {

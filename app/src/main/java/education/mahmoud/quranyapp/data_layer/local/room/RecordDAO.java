@@ -15,6 +15,6 @@ public interface RecordDAO {
     @Update
     public void updateRecordItem(RecordItem item);
 
-    @Query("select * from recorditem")
+    @Query("select * from records")
     public List<RecordItem> getAllRecordItem();
 }

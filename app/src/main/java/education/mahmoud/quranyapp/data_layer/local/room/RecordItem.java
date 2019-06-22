@@ -8,7 +8,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import education.mahmoud.quranyapp.Util.Constants;
 
-@Entity
+@Entity(tableName = "records")
 public class RecordItem implements Parcelable {
 
     public static final Parcelable.Creator<RecordItem> CREATOR = new Parcelable.Creator<RecordItem>() {

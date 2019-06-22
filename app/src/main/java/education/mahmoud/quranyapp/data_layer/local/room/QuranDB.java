@@ -10,7 +10,8 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {AyahItem.class, SuraItem.class, BookmarkItem.class, ReadLog.class},
+@Database(entities = {AyahItem.class, SuraItem.class,
+        BookmarkItem.class, ReadLog.class, RecordItem.class},
         version = 7, exportSchema = false)
 @TypeConverters({PagesConverter.class})
 public abstract class QuranDB extends RoomDatabase {
