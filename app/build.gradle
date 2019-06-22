@@ -7,7 +7,7 @@ android {
         applicationId "education.mahmoud.quranyapp"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 20
+        versionCode 21
         versionName "2.3.1"
 //        testInstrumentationRumannner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -89,6 +89,7 @@ dependencies {
     implementation 'com.daimajia.androidanimations:library:2.3@aar'
    */
 
+    implementation 'com.jpardogo.materialtabstrip:library:1.0.6'
 
 }
 

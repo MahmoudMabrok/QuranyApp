@@ -178,7 +178,7 @@ public class RecordFragment extends Fragment {
             int c = repository.getRecordCount() + 1;
             String fileName = c + "_" + DateOperation.getCurrentDateAsString();
             File folder = new File(Environment.getExternalStorageDirectory() + "/SoundRecorder");
-            String path = new File(folder, fileName).getAbsolutePath();
+            String path = new File(folder, fileName + ".mp4").getAbsolutePath();
             RecordItem recordItem = new RecordItem(actualStart, actualEnd, fileName, path);
             // start service
             intent = new Intent(getActivity(), RecordingService.class);
@@ -191,10 +191,10 @@ public class RecordFragment extends Fragment {
             // chromometer
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
-
-
             recordState();
         } else if (isRecording) {
+            // stop chromorter
+            chronometer.stop();
             stopRecord();
         }
     }

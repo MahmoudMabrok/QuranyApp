@@ -24,5 +24,6 @@
     <dimen name="signup_text_margin_top">10dp</dimen>
     <dimen name="tv_read_log">@dimen/_15ssp</dimen>
     <dimen name="ayahs_size">@dimen/_16ssp</dimen>
+    <dimen name="tab_indicator_height">5dp</dimen>
 
 </resources>

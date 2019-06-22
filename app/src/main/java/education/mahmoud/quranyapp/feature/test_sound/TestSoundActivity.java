@@ -6,7 +6,7 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.material.tabs.TabLayout;
+import com.astuetz.PagerSlidingTabStrip;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,11 +15,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
@@ -31,6 +32,8 @@ public class TestSoundActivity extends AppCompatActivity {
     private static final int RC_RECORD = 10002;
     List<Fragment> fragments = new ArrayList<>();
     List<String> titles = new ArrayList<>();
+    @BindView(R.id.tabs)
+    PagerSlidingTabStrip tabs;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     public boolean recordIsAllowed;
@@ -41,11 +44,7 @@ public class TestSoundActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_sound);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        ButterKnife.bind(this);
 
         initFragmets();
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments, titles);
@@ -54,10 +53,7 @@ public class TestSoundActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        tabs.setViewPager(mViewPager);
         acquiewPermission();
         makeDirForRecording();
 

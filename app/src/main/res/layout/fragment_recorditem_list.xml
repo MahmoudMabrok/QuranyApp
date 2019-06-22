@@ -1,12 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rvRecordList"
-    android:name="education.mahmoud.quranyapp.feature.test_sound.RecordListFragment"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
-    tools:context=".feature.test_sound.RecordListFragment"
-    tools:listitem="@layout/fragment_recorditem" />
+
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_5sdp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="ltr"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="Name"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+
+            <View
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/listDivider" />
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="NO.Ayahs"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+            <View
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/listDivider" />
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="Score"
+                android:textAppearance="?attr/textAppearanceListItem" />
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rvRecordList"
+        android:name="education.mahmoud.quranyapp.feature.test_sound.RecordListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".feature.test_sound.RecordListFragment"
+        tools:listitem="@layout/fragment_recorditem" />
+</LinearLayout>
