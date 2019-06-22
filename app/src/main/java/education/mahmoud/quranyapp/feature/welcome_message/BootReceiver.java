@@ -9,6 +9,6 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "HH", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Welcome, Don not forget read Quran", Toast.LENGTH_SHORT).show();
     }
 }

@@ -50,7 +50,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -86,13 +85,13 @@
             android:name=".feature.ayahs_search.ShowSearchResults"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-        <activity
-            android:name=".feature.show_sura_ayas.ShowSuarhAyas"
-            android:theme="@style/AppTheme.NoActionBar" />
+
 
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
+
+
     </application>
 
 </manifest>

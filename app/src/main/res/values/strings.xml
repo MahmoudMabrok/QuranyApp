@@ -151,6 +151,8 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="start_Record">Started ...</string>
+    <string name="finish_Record">Finish Recording</string>
 
 
 </resources>

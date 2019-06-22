@@ -271,6 +271,10 @@ public class Repository {
         return quranDB.recordDAO().getAllRecordItem();
     }
 
+    public int getRecordCount() {
+        return quranDB.recordDAO().getRecordCount();
+    }
+
 
 
    /* public Call<String> getUsers() {

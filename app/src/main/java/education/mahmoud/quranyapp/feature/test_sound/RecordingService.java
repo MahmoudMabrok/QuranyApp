@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -49,16 +50,22 @@ public class RecordingService extends Service {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
-        mRecorder.setAudioChannels(2);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mRecorder.setAudioChannels(1);
         mRecorder.setOutputFile(recordItem.getFilePath()); // path
+
+        mRecorder.setAudioSamplingRate(44100);
+        mRecorder.setAudioEncodingBitRate(192000);
+
 
         try {
             mRecorder.prepare();
             mRecorder.start();
             startedMillis = System.currentTimeMillis();
+            Log.d(TAG, "startRecording: startedMillis " + startedMillis);
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d(TAG, "startRecording: error not carry prepare");
         }
     }
 
@@ -66,7 +73,11 @@ public class RecordingService extends Service {
     public void onDestroy() {
         Log.d(TAG, "onDestroy: ");
         if (mRecorder != null) {
-            stopRecording();
+            try {
+                stopRecording();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         super.onDestroy();
@@ -79,6 +90,8 @@ public class RecordingService extends Service {
         mRecorder = null;
         mElapsedSecond = (System.currentTimeMillis() - startedMillis) / 1000;
         saveToDB();
+
+        Toast.makeText(this, "Saved to " + recordItem.getFilePath(), Toast.LENGTH_LONG).show();
     }
 
     private void saveToDB() {

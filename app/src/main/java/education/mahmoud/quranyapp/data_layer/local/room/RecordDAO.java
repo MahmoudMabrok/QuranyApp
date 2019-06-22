@@ -17,4 +17,7 @@ public interface RecordDAO {
 
     @Query("select * from records")
     public List<RecordItem> getAllRecordItem();
+
+    @Query("select count(*) from records")
+    int getRecordCount();
 }

@@ -2,11 +2,13 @@ package education.mahmoud.quranyapp.feature.test_sound;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class TestSoundActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     public boolean recordIsAllowed;
 
+    private static final String TAG = "TestSoundActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +58,21 @@ public class TestSoundActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-
         acquiewPermission();
+        makeDirForRecording();
+
+    }
+
+    public void makeDirForRecording() {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/SoundRecorder");
+        if (!folder.exists()) {
+            //folder /SoundRecorder doesn't exist, create the folder
+            folder.mkdir();
+        }
     }
 
     private void acquiewPermission() {
-        String[] perms = new String[]{Manifest.permission.RECORD_AUDIO};
+        String[] perms = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         EasyPermissions.requestPermissions(new PermissionRequest.Builder(this, RC_RECORD, perms).build());
     }
 

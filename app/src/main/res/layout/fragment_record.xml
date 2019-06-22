@@ -88,6 +88,24 @@
         </LinearLayout>
 
 
+        <FrameLayout
+            android:id="@+id/layoutDurationRecordFragemt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_32sdp">
+
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="64dp"
+                android:fontFamily="sans-serif-light"
+                android:textSize="60sp" />
+
+        </FrameLayout>
+
+
     </LinearLayout>
 
 
@@ -106,6 +124,7 @@
             android:gravity="center_horizontal"
             android:text="@string/tap_to_record"
             android:textSize="@dimen/_22ssp" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnRecord"

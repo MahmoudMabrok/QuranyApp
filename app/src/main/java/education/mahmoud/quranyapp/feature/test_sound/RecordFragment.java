@@ -4,22 +4,24 @@ package education.mahmoud.quranyapp.feature.test_sound;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Chronometer;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.text.MessageFormat;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
@@ -51,6 +53,10 @@ public class RecordFragment extends Fragment {
     TextInputEditText edEndSuraAyahRecordFragment;
     @BindView(R.id.btnRecord)
     FloatingActionButton btnRecord;
+    @BindView(R.id.chronometer)
+    Chronometer chronometer;
+    @BindView(R.id.layoutDurationRecordFragemt)
+    FrameLayout layoutDurationRecordFragemt;
 
 
     private Repository repository;
@@ -168,12 +174,12 @@ public class RecordFragment extends Fragment {
     public void onViewClicked() {
         checkInput();
         if (!isRecording && isInputValid) {
-            // process
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/QuranRecording/";
-            String fileName = getFileName(actualStart, actualEnd);
-            path += fileName;
-            RecordItem recordItem = new RecordItem(actualStart, actualEnd, fileName, path);
 
+            int c = repository.getRecordCount() + 1;
+            String fileName = c + "_" + DateOperation.getCurrentDateAsString();
+            File folder = new File(Environment.getExternalStorageDirectory() + "/SoundRecorder");
+            String path = new File(folder, fileName).getAbsolutePath();
+            RecordItem recordItem = new RecordItem(actualStart, actualEnd, fileName, path);
             // start service
             intent = new Intent(getActivity(), RecordingService.class);
             Bundle bundle = new Bundle();
@@ -181,6 +187,11 @@ public class RecordFragment extends Fragment {
             intent.putExtras(bundle);
             getActivity().startService(intent);
             isRecording = true;
+
+            // chromometer
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.start();
+
 
             recordState();
         } else if (isRecording) {
@@ -190,20 +201,20 @@ public class RecordFragment extends Fragment {
 
     private void recordState() {
         Log.d(TAG, "recordState: ");
-        btnRecord.setBackgroundResource(R.drawable.ic_stop);
+        btnRecord.setImageResource(R.drawable.ic_stop);
+        showMessage(getString(R.string.start_Record));
+        layoutDurationRecordFragemt.setVisibility(View.VISIBLE);
     }
 
 
     private void stopRecord() {
         Log.d(TAG, "stopRecord: ");
-        btnRecord.setBackgroundResource(R.drawable.ic_mic_white_36dp);
+        btnRecord.setImageResource(R.drawable.ic_mic_white_36dp);
         isRecording = false;
         getActivity().stopService(intent);
-    }
+        showMessage(getString(R.string.finish_Record));
 
-    private String getFileName(int actualStart, int actualEnd) {
-        int pre = new Random().nextInt(); // random pre-fix
-        return MessageFormat.format("{0}_{1}_{2}_{3}.mp3", pre, actualStart, actualEnd, DateOperation.getCurrentDateAsString());
+        layoutDurationRecordFragemt.setVisibility(View.INVISIBLE);
     }
 
 
