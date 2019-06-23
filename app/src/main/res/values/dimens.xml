@@ -9,7 +9,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="textRange">@dimen/_22ssp</dimen>
-    <dimen name="search_text_size">@dimen/_20ssp</dimen>
+    <dimen name="search_text_size">@dimen/_15ssp</dimen>
     <dimen name="width_seek">10dp</dimen>
     <dimen name="text_score_title">@dimen/_20sdp</dimen>
     <dimen name="score_value">@dimen/_25ssp</dimen>

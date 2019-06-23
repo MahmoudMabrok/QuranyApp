@@ -8,11 +8,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
@@ -26,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
@@ -59,6 +62,7 @@ public class ShowSearchResults extends AppCompatActivity {
         ButterKnife.bind(this);
         repository = Repository.getInstance(getApplication());
         initRv();
+        adapterListeners();
 
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -94,6 +98,60 @@ public class ShowSearchResults extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void setUpBottomSheet(AyahItem ayahItem) {
+        // bottom sheet
+        MenuSheetView menuSheetView =
+                new MenuSheetView(ShowSearchResults.this, MenuSheetView.MenuType.LIST, "Options", new MenuSheetView.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (bottomSearch.isSheetShowing()) {
+                            bottomSearch.dismissSheet();
+                        }
+                        switch (item.getItemId()) {
+                            case R.id.menuOpen:
+                                openPage(ayahItem.getPageNum());
+                                break;
+                            case R.id.menuPlaySound:
+                                playAudio(ayahItem);
+                                break;
+                            case R.id.menuTafser:
+                                showTafseer(ayahItem);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+        menuSheetView.inflateMenu(R.menu.menu_sheet_search);
+        bottomSearch.showWithSheetView(menuSheetView);
+    }
+
+    private void showTafseer(AyahItem ayahItem) {
+        if (ayahItem.getTafseer() != null) {
+            String title = this.
+                    getString(R.string.tafserr_info, ayahItem.getAyahInSurahIndex(), ayahItem.getPageNum(), ayahItem.getJuz());
+            Util.getDialog(this, ayahItem.getTafseer(), title).show();
+        } else {
+            Toast.makeText(this, this.getText(R.string.tafseer_not_down), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void adapterListeners() {
+        adapter.setiSearchItemClick(new SearchResultsAdapter.ISearchItemClick() {
+            @Override
+            public void onSearchItemClick(AyahItem item) {
+                setUpBottomSheet(item);
+                Log.d(TAG, "onSearchItemClick: ");
+            }
+        });
+    }
+
+    private void openPage(int pageNum) {
+        Intent openAcivity = new Intent(ShowSearchResults.this, ShowAyahsActivity.class);
+        openAcivity.putExtra(Constants.PAGE_INDEX, pageNum);
+        startActivity(openAcivity);
     }
 
     /**
@@ -111,23 +169,6 @@ public class ShowSearchResults extends AppCompatActivity {
         adapter = new SearchResultsAdapter(typeface);
         rvSearch.setAdapter(adapter);
         rvSearch.setHasFixedSize(true);
-
-        adapter.setiOnPlay(new SearchResultsAdapter.IOnPlay() {
-            @Override
-            public void onPlayClick(AyahItem item) {
-                playAudio(item);
-            }
-        });
-
-        adapter.setiOpenAyahInPage(new SearchResultsAdapter.IOpenAyahInPage() {
-            @Override
-            public void openPage(int index) {
-                Intent openAcivity = new Intent(ShowSearchResults.this, ShowAyahsActivity.class);
-                openAcivity.putExtra(Constants.PAGE_INDEX, index);
-                startActivity(openAcivity);
-                //    finish();
-            }
-        });
 
     }
 
@@ -185,7 +226,6 @@ public class ShowSearchResults extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
-
 
     }
 }

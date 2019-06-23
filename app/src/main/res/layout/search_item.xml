@@ -16,28 +16,25 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="@dimen/_8sdp">
+            android:padding="@dimen/_5sdp">
 
             <TextView
                 android:id="@+id/tvSearchSuraName"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_50sdp"
-                app:autoSizeTextType="uniform"
+                style="bold"
                 android:textAlignment="center"
+                android:layout_height="wrap_content"
                 android:textSize="@dimen/search_text_size"
-                android:textStyle="bold"
                 tools:text="aaa" />
 
             <TextView
                 android:id="@+id/tvSearchAyahNum"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 app:autoSizeTextType="uniform"
                 android:textSize="@dimen/search_text_size"
                 tools:text="10" />
@@ -53,14 +50,13 @@
         <TextView
             android:id="@+id/tvSearchResult"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_height="wrap_content"
             android:background="@color/black"
             android:textColor="@color/whiteTextColor"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
             android:ellipsize="end"
             android:maxLines="5"
-            app:autoSizeTextType="uniform"
             android:text="TextViewaaasa"
             android:textSize="@dimen/ayahs_size" />
 

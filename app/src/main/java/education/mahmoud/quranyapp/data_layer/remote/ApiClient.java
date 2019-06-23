@@ -16,7 +16,6 @@ public class ApiClient {
 
     private static Retrofit retrofitQuran = null;
 
-    private static Retrofit retrofitUser = null;
 
     public static Retrofit getRetroQuran() {
         if (retrofitQuran == null) {
