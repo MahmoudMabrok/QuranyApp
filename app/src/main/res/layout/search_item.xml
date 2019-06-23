@@ -12,19 +12,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="@dimen/_8sdp">
 
             <TextView
                 android:id="@+id/tvSearchSuraName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
                 app:autoSizeTextType="uniform"
                 android:textAlignment="center"
@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 app:autoSizeTextType="uniform"
                 android:textSize="@dimen/search_text_size"
                 tools:text="10" />
@@ -45,16 +46,14 @@
         </LinearLayout>
 
         <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
             android:background="?android:attr/listDivider" />
-
 
         <TextView
             android:id="@+id/tvSearchResult"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
-            android:layout_weight="3"
             android:background="@color/black"
             android:textColor="@color/whiteTextColor"
             android:gravity="center"
@@ -64,11 +63,6 @@
             app:autoSizeTextType="uniform"
             android:text="TextViewaaasa"
             android:textSize="@dimen/ayahs_size" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="?android:attr/listDivider" />
 
         <LinearLayout
             android:layout_width="wrap_content"

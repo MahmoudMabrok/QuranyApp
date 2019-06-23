@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/navigation_read"
         android:icon="@drawable/ic_read"
-        android:title="@string/read" />
+        android:title="@string/read"
+        app:showAsAction="withText" />
 
     <item
         android:id="@+id/navigation_tafseer"
         android:icon="@drawable/ic_tafseer"
-        android:title="@string/tafseerTap" />
+        android:title="@string/tafseerTap"
+        app:showAsAction="withText" />
     <item
         android:id="@+id/navigationListen"
         android:icon="@drawable/ic_sound"

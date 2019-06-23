@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
@@ -43,6 +44,8 @@ public class ShowSearchResults extends AppCompatActivity {
     TextView tvSearchCount;
 
     SearchResultsAdapter adapter;
+    @BindView(R.id.bottomSearch)
+    BottomSheetLayout bottomSearch;
     private Repository repository;
     private List<AyahItem> ayahItems;
     private String ayah;

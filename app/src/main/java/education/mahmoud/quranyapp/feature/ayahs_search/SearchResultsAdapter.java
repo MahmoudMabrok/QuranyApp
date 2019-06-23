@@ -50,6 +50,12 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         notifyDataSetChanged();
     }
 
+    private ISearchItemClick iSearchItemClick;
+
+    public void setiSearchItemClick(ISearchItemClick iSearchItemClick) {
+        this.iSearchItemClick = iSearchItemClick;
+    }
+
     public void clear() {
         list.clear();
         notifyDataSetChanged();
@@ -85,6 +91,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             }
         });
 
+
         holder.btnShowTafseer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,12 +105,15 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             }
         });
 
+        /*
         holder.tvSearchResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 iOpenAyahInPage.openPage(item.getPageNum());
             }
         });
+        */
+
     }
 
     @Override
@@ -126,6 +136,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     interface IOpenAyahInPage {
         void openPage(int index);
+    }
+
+    interface ISearchItemClick {
+        void onSearchItemClick(AyahItem item);
     }
 
 
@@ -152,6 +166,13 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
                 @Override
                 public void onClick(View view) {
                     iOnPlay.onPlayClick(list.get(getAdapterPosition()));
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    iSearchItemClick.onSearchItemClick(list.get(getAdapterPosition()));
                 }
             });
 
