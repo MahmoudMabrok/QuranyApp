@@ -3,16 +3,21 @@ package education.mahmoud.quranyapp.feature.home_Activity;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.facebook.stetho.Stetho;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tjeannin.apprate.AppRate;
 
@@ -32,7 +37,6 @@ import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Ayah;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
-import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults;
 import education.mahmoud.quranyapp.feature.bookmark_fragment.BookmarkFragment;
 import education.mahmoud.quranyapp.feature.download.DownloadActivity;
@@ -115,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
         new AppRate(this).setMinLaunchesUntilPrompt(5)
                 .init();
 
-        Stetho.initializeWithDefaults(getApplication());
+        // Stetho.initializeWithDefaults(getApplication());
 
         ahays = repository.getTotlaAyahs();
 
@@ -130,6 +134,41 @@ public class HomeActivity extends AppCompatActivity {
 
         openRead();
 
+        checkLastReadAndDisplayDialoge();
+
+    }
+
+    private void checkLastReadAndDisplayDialoge() {
+        int last = repository.getLatestRead();
+        Log.d(TAG, "checkLastReadAndDisplayDialoge: " + last);
+        if (last >= 0) {
+            displayDialoge(last);
+            Log.d(TAG, "checkLastReadAndDisplayDialoge: @@ ");
+        }
+    }
+
+    private void displayDialoge(int last) {
+        Log.d(TAG, "displayDialoge: ");
+        Dialog dialog = new Dialog(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.last_read_dialoge, null);
+        Button button = view.findViewById(R.id.btnOpenPage);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPage(last);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(view);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+    }
+
+    private void openPage(int last) {
+        gotoSuraa(last);
     }
 
     @Override
@@ -150,16 +189,6 @@ public class HomeActivity extends AppCompatActivity {
         loadingDialog.show();
     }
 
-    /**
-     * load quran and tafseer from json into database
-     */
-    public void loadData() {
-        if (ahays < 6200) {
-            startProgress();
-            loadQuran();
-            handler.sendEmptyMessage(0);
-        }
-    }
 
     /**
      * load quran from json into database
@@ -229,26 +258,6 @@ public class HomeActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void updateAyahsWithTafseer() {
-        AyahItem ayahItem = null ; 
-        CompleteTafseer completeTafseer = Util.getCompleteTafseer(this);
-        if (completeTafseer!= null){
-            List<education.mahmoud.quranyapp.data_layer.model.tafseer.Surah> surahs = completeTafseer.getData().getSurahs();
-            for(education.mahmoud.quranyapp.data_layer.model.tafseer.Surah surah1 : surahs){
-                for (education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah ayah:surah1.getAyahs()){
-                    ayahItem = repository.getAyahByIndex(ayah.getNumber());
-                    ayahItem.setTafseer(ayah.getText());
-                    try {
-                        repository.updateAyahItem(ayahItem);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                Log.d(TAG, "updateAyahsWithTafseer: ");
-            }
-        }
-    }
 
     private void openRead() {
         SuraListFragment fragment = new SuraListFragment();

@@ -16,6 +16,8 @@ public class ApiClient {
 
     private static Retrofit retrofitQuran = null;
 
+    private static final String MODEL_URL = "https://qurany.herokuapp.com/";
+
 
     public static Retrofit getRetroQuran() {
         if (retrofitQuran == null) {
@@ -26,4 +28,16 @@ public class ApiClient {
         return retrofitQuran;
     }
 
+    private static Retrofit model = null;
+
+    public static Retrofit getModel() {
+        if (model == null) {
+            model = new Retrofit.Builder()
+                    .baseUrl(MODEL_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+        }
+
+        return model;
+    }
 }

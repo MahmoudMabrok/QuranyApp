@@ -2,15 +2,19 @@ package education.mahmoud.quranyapp.data_layer.remote;
 
 import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
 import education.mahmoud.quranyapp.data_layer.model.tafseer_model.Tafseer;
+import education.mahmoud.quranyapp.data_layer.remote.services.MLModelService;
 import education.mahmoud.quranyapp.data_layer.remote.services.QuranService;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class Remote {
 
     private QuranService tafseerService;
+    private MLModelService modelService;
 
     public Remote() {
         tafseerService = ApiClient.getRetroQuran().create(QuranService.class);
+        modelService = ApiClient.getModel().create(MLModelService.class);
     }
 
     // Tafseer
@@ -19,9 +23,17 @@ public class Remote {
     }
 
     // Quran
-
     public Call<FullQuran> getQuran() {
         return tafseerService.getQuran();
+    }
+
+
+    public Call<ResponseBody> calcutaeSalary(String year) {
+        return modelService.calcutaeSalary(year);
+    }
+
+    public Call<ResponseBody> calcutaeSalary2(String years) {
+        return modelService.calcutaeSalary2(years);
     }
 
 /*

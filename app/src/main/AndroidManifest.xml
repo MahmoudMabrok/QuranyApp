@@ -19,10 +19,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+
         <receiver
             android:name=".feature.welcome_message.BootReceiver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="false" />
 
         <service
             android:name=".feature.test_sound.RecordingService"
@@ -86,6 +87,9 @@
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
+        <activity
+            android:name=".Util.testsomefeature.MainActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="google_analytics_adid_collection_enabled"

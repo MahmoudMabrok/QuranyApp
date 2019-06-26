@@ -1,35 +1,44 @@
 package education.mahmoud.quranyapp.Util.testsomefeature;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.google.gson.Gson;
+import com.github.ybq.android.spinkit.SpinKitView;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.model.Quran;
-import education.mahmoud.quranyapp.model.Sura;
+import education.mahmoud.quranyapp.data_layer.Repository;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    @BindView(R.id.rv)
-    RecyclerView rv;
-
     List<String> namesofFile = new ArrayList<>();
+    @BindView(R.id.tvYears)
+    EditText tvYears;
+    @BindView(R.id.btnCalculate)
+    Button btnCalculate;
+
+    Repository repository;
+    @BindView(R.id.spResults)
+    SpinKitView spResults;
+    @BindView(R.id.tvResult)
+    TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,56 +46,82 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        PageAdapter pageAdapter = new PageAdapter(this);
-        rv.setLayoutManager(linearLayoutManager);
-        rv.setAdapter(pageAdapter);
-        intializeList();
-        pageAdapter.setLsit(namesofFile);
+        repository = Repository.getInstance(getApplication());
 
-        parseJson();
+        onViewClicked();
 
     }
 
-    private void parseJson() {
-        try (InputStream fileIn = this.getAssets().open("data.json");
-             BufferedInputStream bufferedIn = new BufferedInputStream(fileIn);
-             Reader reader = new InputStreamReader(bufferedIn, StandardCharsets.UTF_8)) {
-            Quran quran = new Gson().fromJson(reader, Quran.class);
+    @OnClick(R.id.btnCalculate)
+    public void onViewClicked() {
+        startDialoge();
+        try {
+            String years = tvYears.getText().toString();
+            Log.d(TAG, "onViewClicked: years " + years);
 
-            Sura[] suras = quran.getSurahs();
-            StringBuilder sb = new StringBuilder();
-            String s = "String[] SURA_NAMES = new String[]{";
-            for (int i = 0; i < suras.length; i++) {
-                sb.append("\"" + suras[i].getName() + "\"");
-                if (i != suras.length - 1)
-                    sb.append(",");
+
+            try {
+                repository.calculteSaraly(years).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        closeDialoge();
+                        try {
+                            Log.d(TAG, "onResponse: call " + call.request().toString());
+                            Log.d(TAG, "onResponse:  res " + response.body().toString());
+                            tvResult.setText(response.body().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        closeDialoge();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            String res = s + sb.toString() + "};";
-            System.out.println(res);
+            try {
+                repository.calculteSaraly2(years).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Log.d(TAG, " @@ onResponse: " + response.raw().toString());
+                        try {
+                            Log.d(TAG, " @@$$ onResponse: body " + response.body().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        closeDialoge();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d(TAG, "onFailure: @@ " + t.getMessage());
+                        closeDialoge();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
-        } catch (Exception e) {
-            Log.d(TAG, "parseJson: " + '#');
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 
-    private void intializeList() {
-        int COUNT = 604;
-        namesofFile = new ArrayList<>();
-        for (int i = 1; i <= COUNT; i++) {
-            namesofFile.add(new String("prefix_" + getNumStr(i)));
-        }
+    private void closeDialoge() {
+        tvResult.setVisibility(View.VISIBLE);
+        btnCalculate.setVisibility(View.VISIBLE);
+        spResults.setVisibility(View.INVISIBLE);
     }
 
-    @org.jetbrains.annotations.NotNull
-    private String getNumStr(int i) {
-        String numStr = String.valueOf(i);
-        StringBuilder sb = new StringBuilder(numStr);
-        while (sb.length() < 4) {
-            sb.insert(0, '0');
-        }
-        return sb.toString();
+    private void startDialoge() {
+        btnCalculate.setVisibility(View.INVISIBLE);
+        spResults.setVisibility(View.VISIBLE);
+        tvResult.setVisibility(View.INVISIBLE);
     }
 }

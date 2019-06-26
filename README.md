@@ -125,6 +125,9 @@ toasts was shown one after other and conflict user so solution was to check firs
 
 - betwenen has upper bound **included** so if we want from 1 to 10 SQL will be between 1 and 10. 
 
+- while creating custome dialog I want to remove title so I use ``dialog.requestWindowFeature`` but
+it was called after ``dialoge.setContentView()``, it is error to call it after `setContentView`. 
+
 
 # ChangeLog
 

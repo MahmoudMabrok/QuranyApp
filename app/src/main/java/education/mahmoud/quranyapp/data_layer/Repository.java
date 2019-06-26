@@ -14,6 +14,7 @@ import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
 import education.mahmoud.quranyapp.data_layer.model.tafseer_model.Tafseer;
 import education.mahmoud.quranyapp.data_layer.remote.Remote;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class Repository {
@@ -273,6 +274,14 @@ public class Repository {
 
     public int getRecordCount() {
         return quranDB.recordDAO().getRecordCount();
+    }
+
+    public Call<ResponseBody> calculteSaraly(String years) {
+        return remote.calcutaeSalary(years);
+    }
+
+    public Call<ResponseBody> calculteSaraly2(String years) {
+        return remote.calcutaeSalary2(years);
     }
 
 
