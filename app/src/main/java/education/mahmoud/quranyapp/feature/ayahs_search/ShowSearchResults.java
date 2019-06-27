@@ -63,7 +63,11 @@ public class ShowSearchResults extends AppCompatActivity {
         repository = Repository.getInstance(getApplication());
         initRv();
         adapterListeners();
+        editWatcher();
 
+    }
+
+    private void editWatcher() {
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -97,7 +101,6 @@ public class ShowSearchResults extends AppCompatActivity {
 
             }
         });
-
 
     }
 

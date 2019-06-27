@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -164,20 +164,6 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
 
     @OnClick(R.id.btnDownloadTafseer)
     public void onViewClicked() {
-      /*  tafseerToDownload = repository.getLastDownloadedChapter();
-        Log.d(TAG, "onCreate: " + tafseerToDownload);
-        if (tafseerToDownload == 0) {
-            ++tafseerToDownload;
-        } else if (tafseerToDownload > 1) {
-            // to make sure if download non-complete previous download
-            tafseerToDownload -= 1;
-        }
-
-        downState();
-        loadTafseer();
-
-        */
-
         loadTafseerFromJson();
     }
 

@@ -16,7 +16,7 @@
         android:layout_marginBottom="@dimen/_16sdp"
         android:hint="Enter n Years to get Salary"
         android:inputType="number"
-        android:text="10"
+        android:text=""
         android:textSize="@dimen/_22ssp" />
 
     <Button

@@ -2,12 +2,13 @@ package education.mahmoud.quranyapp.feature.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+
+import com.github.paolorotolo.appintro.AppIntro2;
 
 import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity;
 
 
-public class Splash extends AppCompatActivity {
+public class Splash extends AppIntro2 {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

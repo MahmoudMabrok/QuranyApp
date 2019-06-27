@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +17,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tjeannin.apprate.AppRate;
 
@@ -49,6 +49,7 @@ import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
 import education.mahmoud.quranyapp.feature.show_sura_list.GoToSurah;
 import education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment;
 import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails;
+import education.mahmoud.quranyapp.feature.splash.Splash;
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
@@ -73,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     Handler handler;
     Dialog loadingDialog;
     int ahays;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -101,7 +103,6 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
 
 
-
             }
             return false;
         }
@@ -119,23 +120,18 @@ public class HomeActivity extends AppCompatActivity {
         new AppRate(this).setMinLaunchesUntilPrompt(5)
                 .init();
 
-        // Stetho.initializeWithDefaults(getApplication());
-
+        Stetho.initializeWithDefaults(getApplication());
         ahays = repository.getTotlaAyahs();
-
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                closeDialoge();
-
-            }
-        };
-
+        determineToOpenOrNotSplash();
         openRead();
-
         checkLastReadAndDisplayDialoge();
 
+    }
+
+    private void determineToOpenOrNotSplash() {
+        if (ahays == 0) {
+            goToSplash();
+        }
     }
 
     private void checkLastReadAndDisplayDialoge() {
@@ -179,34 +175,8 @@ public class HomeActivity extends AppCompatActivity {
         navigation.setSelectedItemId(id);
     }
 
-    private void closeDialoge() {
-        loadingDialog.dismiss();
-    }
-
-    private void startProgress() {
-        loadingDialog = Util.getLoadingDialog(this, "");
-        loadingDialog.setCancelable(false);
-        loadingDialog.show();
-    }
-
-
-    /**
-     * load quran from json into database
-     */
-    public void loadQuran() {
-        Log.d(TAG, "loadQuran: ");
-        List<Surah> surahs = Util.getFullQuranSurahs(this);
-        StoreInDb(surahs);
-    }
-
-    private void StoreInDb(List<Surah> surahs) {
-        new Thread(() -> {
-            Store(surahs);
-        }).start();
-    }
 
     private void Store(List<Surah> surahs) {
-
         SuraItem suraItem;
         AyahItem ayahItem;
 
@@ -258,7 +228,6 @@ public class HomeActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-
     private void openRead() {
         SuraListFragment fragment = new SuraListFragment();
         FragmentTransaction a = getSupportFragmentManager().beginTransaction();
@@ -296,19 +265,9 @@ public class HomeActivity extends AppCompatActivity {
         EasyPermissions.requestPermissions(new PermissionRequest.Builder(this, RC_STORAGE, perms).build());
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == RC_STORAGE && grantResults[0] == PERMISSION_GRANTED) {
-            isPermissionAllowed = true;
-            repository.setPermissionState(true);
-        } else if (requestCode == RC_STORAGE ) {
-            showMessage(getString(R.string.down_permission));
-            repository.setPermissionState(false);
-            openListen();
-        }
+    private void goToSplash() {
+        Intent openAcivity = new Intent(HomeActivity.this, Splash.class);
+        startActivity(openAcivity);
     }
 
 
@@ -320,42 +279,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.actionJump:
-                openGoToSura();
-                break;
-            case R.id.actionSearch:
-                openSearch();
-                break;
-            case R.id.actionSetting:
-                openSetting();
-                break;
-            case R.id.actionGoToLastRead:
-                gotoLastRead();
-                break;
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-            case R.id.actionReadLog:
-                goToReadLog();
-                break;
-
-            case R.id.actionScore:
-                gotoScore();
-                break;
-
-            case R.id.actionDownload:
-                gotoDownload();
-                break;
-
-
+        if (requestCode == RC_STORAGE && grantResults[0] == PERMISSION_GRANTED) {
+            isPermissionAllowed = true;
+            repository.setPermissionState(true);
+        } else if (requestCode == RC_STORAGE) {
+            showMessage(getString(R.string.down_permission));
+            repository.setPermissionState(false);
+            openListen();
         }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void goToReadLog() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        ReadLogFragment logFragment = new ReadLogFragment();
-        transaction.replace(homeContainer.getId(),logFragment).commit();
     }
 
     private void openSearch() {
@@ -404,5 +338,49 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(openAcivity);
     }
 
+    private void goToReadLog() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        ReadLogFragment logFragment = new ReadLogFragment();
+        transaction.replace(homeContainer.getId(), logFragment).commit();
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionJump:
+                openGoToSura();
+                break;
+            case R.id.actionSearch:
+                openSearch();
+                break;
+            case R.id.actionSetting:
+                openSetting();
+                break;
+            case R.id.actionGoToLastRead:
+                gotoLastRead();
+                break;
+
+            case R.id.actionReadLog:
+                goToReadLog();
+                break;
+
+            case R.id.actionScore:
+                gotoScore();
+                break;
+
+            case R.id.actionDownload:
+                gotoDownload();
+                break;
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // // TODO: 6/27/2019 message of exiting - n pages - . m
+
+    }
 }
