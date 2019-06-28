@@ -12,7 +12,7 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
   - [V2.0](https://www.youtube.com/watch?v=hzJV1lth958).
   - [V1.8](https://www.youtube.com/watch?v=-DbH0EKkAzw).
 - apk
-  -[v2.5.1](https://drive.google.com/open?id=1iU-WgufHMAELKOmClhW2Z18Miyef4f4v).
+  - [v2.5.1](https://drive.google.com/open?id=1iU-WgufHMAELKOmClhW2Z18Miyef4f4v).
 
   
 # Features 
@@ -138,7 +138,7 @@ it was called after ``dialoge.setContentView()``, it is error to call it after `
   - App start with Quran & Tafseer loaded.
   - Improve UI for bottom nav
      - add labels and it appear all the time.  
-    
+
 
 
 - **V2.3.1**
