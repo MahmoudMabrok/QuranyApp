@@ -13,6 +13,7 @@ import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Ayah;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
+import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
 
@@ -41,9 +42,11 @@ public class LoadDataQuranTafseer extends Service {
         Log.d(TAG, "loadQuranTafseer: before");
         Store(surahs);
         Log.d(TAG, "loadQuranTafseer: after");
+        updateAyahsWithTafseer();
         stopSelf();
     }
 
+    //<editor-fold desc="quran">
     private void Store(List<Surah> surahs) {
         SuraItem suraItem;
         AyahItem ayahItem;
@@ -86,5 +89,28 @@ public class LoadDataQuranTafseer extends Service {
                 }
             }
         }
+    }
+    //</editor-fold>
+
+    private void updateAyahsWithTafseer() {
+        AyahItem ayahItem = null;
+        CompleteTafseer completeTafseer = Util.getCompleteTafseer(this);
+        if (completeTafseer != null) {
+            List<education.mahmoud.quranyapp.data_layer.model.tafseer.Surah> surahs = completeTafseer.getData().getSurahs();
+            for (education.mahmoud.quranyapp.data_layer.model.tafseer.Surah surah1 : surahs) {
+                for (education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah ayah : surah1.getAyahs()) {
+                    ayahItem = repository.getAyahByIndex(ayah.getNumber());
+                    ayahItem.setTafseer(ayah.getText());
+                    try {
+                        repository.updateAyahItem(ayahItem);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Log.d(TAG, "updateAyahsWithTafseer: ");
+            }
+        }
+
     }
 }

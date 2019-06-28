@@ -40,7 +40,7 @@ public class Splash extends AppIntro2 {
     private void askPermissionForApp() {
         askForPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO}, getSlides().size());
+                Manifest.permission.RECORD_AUDIO}, 5);
     }
 
     private void initSlides() {
@@ -75,7 +75,7 @@ public class Splash extends AppIntro2 {
         sliderPage = new SliderPage();
         sliderPage.setTitle("Quran Test as text");
         sliderPage.setDescription("HollyQuranApp");
-        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
+        sliderPage.setImageDrawable(R.mipmap.jump);
         sliderPage.setBgColor(R.color.bg_green);
         addSlide(AppIntro2Fragment.newInstance(sliderPage));
 

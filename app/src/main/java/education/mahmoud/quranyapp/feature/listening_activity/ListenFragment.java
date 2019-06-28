@@ -384,7 +384,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
                 // actual end is updated with one as query return result excluded one item
                 ayahsToListen = repository.getAyahSInRange(actualStart+1, actualEnd+1);
                 Log.d(TAG, "onViewClicked: start log after first select "+ ayahsToListen.size());
-                 logAyahs();
+                logAyahs();
                 // traverse ayahs to check if it downloaded or not
                 for (AyahItem ayahItem : ayahsToListen) {
                     if (ayahItem.getAudioPath() == null) {
