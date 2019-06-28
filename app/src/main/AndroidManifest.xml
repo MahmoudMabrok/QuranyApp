@@ -19,15 +19,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+
+
         <service
             android:name=".feature.services.LoadDataQuranTafseer"
-            android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <receiver
             android:name=".feature.welcome_message.BootReceiver"
             android:enabled="true"
             android:exported="false">
+
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.AIRPLANE_MODE" />
@@ -69,7 +71,7 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".feature.splash.Splash"
-            android:theme="@style/SplashTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".feature.register.RegisterActivity"
             android:exported="true"

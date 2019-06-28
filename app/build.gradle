@@ -7,8 +7,8 @@ android {
         applicationId "education.mahmoud.quranyapp"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 21
-        versionName "2.4.0"
+        versionCode 23
+        versionName "2.5.1"
 //        testInstrumentationRumannner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -50,7 +50,6 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"
     implementation "com.balsikandar.android:crashreporter:1.0.9"
 
-    implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'

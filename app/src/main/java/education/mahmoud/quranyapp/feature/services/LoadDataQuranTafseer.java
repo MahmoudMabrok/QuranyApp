@@ -32,16 +32,15 @@ public class LoadDataQuranTafseer extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: ");
         repository = Repository.getInstance(getApplication());
-        loadQuranTafseer();
+        new Thread(this::loadQuranTafseer).start();
         return START_STICKY;
-
     }
 
     private void loadQuranTafseer() {
         List<Surah> surahs = Util.getFullQuranSurahs(this);
-        Log.d(TAG, "loadQuranTafseer: ");
+        Log.d(TAG, "loadQuranTafseer: before");
         Store(surahs);
-        Log.d(TAG, "loadQuranTafseer: ");
+        Log.d(TAG, "loadQuranTafseer: after");
         stopSelf();
     }
 

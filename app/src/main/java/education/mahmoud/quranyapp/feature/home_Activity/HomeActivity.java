@@ -113,6 +113,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
         ButterKnife.bind(this);
+        Log.d(TAG, "onCreate: start app");
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         repository = ((App) getApplication()).getRepository();
@@ -121,15 +122,19 @@ public class HomeActivity extends AppCompatActivity {
                 .init();
 
         Stetho.initializeWithDefaults(getApplication());
+        Log.d(TAG, "onCreate: n " + ahays);
         ahays = repository.getTotlaAyahs();
-        determineToOpenOrNotSplash();
+        Log.d(TAG, "onCreate: nn after  " + ahays);
         openRead();
         checkLastReadAndDisplayDialoge();
+        determineToOpenOrNotSplash();
 
     }
 
     private void determineToOpenOrNotSplash() {
+        Log.d(TAG, "determineToOpenOrNotSplash:  n " + ahays);
         if (ahays == 0) {
+            Log.d(TAG, "determineToOpenOrNotSplash: ok  " + ahays);
             goToSplash();
         }
     }
@@ -173,6 +178,11 @@ public class HomeActivity extends AppCompatActivity {
         // used to update UI
         int id = navigation.getSelectedItemId();
         navigation.setSelectedItemId(id);
+
+        // when return to read fragment from home
+        if (id == R.id.navigation_read) {
+            checkLastReadAndDisplayDialoge();
+        }
     }
 
 
@@ -266,6 +276,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void goToSplash() {
+        Log.d(TAG, "goToSplash:");
         Intent openAcivity = new Intent(HomeActivity.this, Splash.class);
         startActivity(openAcivity);
     }

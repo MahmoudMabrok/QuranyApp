@@ -2,7 +2,6 @@ package education.mahmoud.quranyapp.Util;
 
 import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         repository = Repository.getInstance(this);
-
         int ahays = repository.getTotlaAyahs();
+        Log.d(TAG, "onCreate:  nbbbbbb  ahyas" + ahays);
         if (ahays == 0) {
           //  loadQuran();
             persistanscePages();
@@ -128,9 +127,6 @@ public class App extends Application {
 
     }
 
-    private void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
 
     public Repository getRepository() {
         return repository;
@@ -140,10 +136,5 @@ public class App extends Application {
         return fullQuranPages;
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        showMessage("terminate");
-    }
 
 }
