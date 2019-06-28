@@ -12,9 +12,8 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
   - [V2.0](https://www.youtube.com/watch?v=hzJV1lth958).
   - [V1.8](https://www.youtube.com/watch?v=-DbH0EKkAzw).
 - apk
-  - [V2.1.3](https://github.com/MahmoudMabrok/QuranyApp/blob/master/apk/appv2_1_3.apk).
-  - [V2](https://github.com/MahmoudMabrok/QuranyApp/blob/master/apk/appv2.apk).
- 
+  -[v2.5.1](https://drive.google.com/open?id=1iU-WgufHMAELKOmClhW2Z18Miyef4f4v).
+
   
 # Features 
 - Go to specific sura by Scrolling and click.
@@ -29,6 +28,8 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 - Points for Tasmee3 
 - can report a bug, chat with app developer powered by InstaBug - explaned in demo video - (Not Available now).
 - ReadLog that store pages user read.
+- Continue reading when open app. 
+- App is Full Quran and Tafseer.
 
 # Challenges 
 - **Data** 
@@ -131,6 +132,15 @@ it was called after ``dialoge.setContentView()``, it is error to call it after `
 
 # ChangeLog
 
+- **V2.5.1**
+  - Add  awesome Intro
+  - Add continue reading feature that Ask user to go to last page to read.
+  - App start with Quran & Tafseer loaded.
+  - Improve UI for bottom nav
+     - add labels and it appear all the time.  
+    
+
+
 - **V2.3.1**
   - Add ReadLog that store pages user read.
   - Improve UI for page switching.
@@ -188,16 +198,12 @@ XML | 3498
 # Screens
 
 <ul>
-<li> <img src="images/1.png" width = 40%></li>
-<li> <img src="images/2.png" width = 40%></li>
-
-<li> <img src="images/3.png" width = 40%></li>
-<li> <img src="images/4.png" width = 40%></li>
-
-<li> <img src="images/5.png" width = 40%></li>
-<li> <img src="images/6.png" width = 40%></li>
-
-
+<li> <img src="images/home.png" width = 20%>
+ <img src="images/lastread.png" width = 20%>
+ <img src="images/listen.png" width = 20%>
+ <img src="images/quran.png" width = 20%>
+ <img src="images/readlog.png" width = 20%>
+ <img src="images/search.png" width = 20%></li>
 </ul>>
 
 

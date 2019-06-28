@@ -19,8 +19,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
-
-
+        <service
+            android:name=".feature.listening_activity.ListenServie"
+            android:exported="false"></service>
         <service
             android:name=".feature.services.LoadDataQuranTafseer"
             android:exported="false" />
@@ -29,7 +30,6 @@
             android:name=".feature.welcome_message.BootReceiver"
             android:enabled="true"
             android:exported="false">
-
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.AIRPLANE_MODE" />
@@ -45,7 +45,7 @@
             android:name=".feature.test_sound.TestSoundActivity"
             android:exported="true"
             android:label="@string/title_activity_test_sound"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".feature.show_ayahs_from_pdf.ShowAyahsPDF"
             android:exported="true"

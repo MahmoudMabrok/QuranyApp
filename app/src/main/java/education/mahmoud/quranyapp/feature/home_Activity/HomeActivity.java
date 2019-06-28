@@ -179,10 +179,6 @@ public class HomeActivity extends AppCompatActivity {
         int id = navigation.getSelectedItemId();
         navigation.setSelectedItemId(id);
 
-        // when return to read fragment from home
-        if (id == R.id.navigation_read) {
-            checkLastReadAndDisplayDialoge();
-        }
     }
 
 

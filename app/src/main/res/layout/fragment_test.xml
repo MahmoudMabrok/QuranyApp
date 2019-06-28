@@ -125,7 +125,8 @@
                 android:paddingStart="@dimen/_6sdp"
                 android:paddingEnd="@dimen/_6sdp"
                 android:text="@string/test_sound"
-                android:textColor="@color/bg_white" />
+                android:textColor="@color/bg_white"
+                android:visibility="gone" />
 
 
         </LinearLayout>
