@@ -1,8 +1,23 @@
 package education.mahmoud.quranyapp.feature.listening_activity;
 
 import android.app.IntentService;
-import android.content.Intent;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.IBinder;
+import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.text.MessageFormat;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.Util.Constants;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -11,18 +26,19 @@ import android.content.Context;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class ListenServie extends IntentService {
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_FOO = "education.mahmoud.quranyapp.feature.listening_activity.action.FOO";
-    private static final String ACTION_BAZ = "education.mahmoud.quranyapp.feature.listening_activity.action.BAZ";
+public class ListenServie extends Service {
 
-    // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "education.mahmoud.quranyapp.feature.listening_activity.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "education.mahmoud.quranyapp.feature.listening_activity.extra.PARAM2";
 
-    public ListenServie() {
-        super("ListenServie");
+    private static final String TAG = "ListenServie";
+    MediaPlayer player;
+    NotificationManager notificationManager;
+
+    public static Intent createService(Context context, String path, String name) {
+        Intent intent = new Intent(context, ListenServie.class);
+        intent.putExtra(Constants.AUDIO_PATH, path);
+        intent.putExtra(Constants.AUDIO_NAME, name);
+        context.startService(intent);
+        return intent;
     }
 
     /**
@@ -31,61 +47,102 @@ public class ListenServie extends IntentService {
      *
      * @see IntentService
      */
-    // TODO: Customize helper method
-    public static void startActionFoo(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, ListenServie.class);
-        intent.setAction(ACTION_FOO);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
-    }
 
-    /**
-     * Starts this service to perform action Baz with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionBaz(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, ListenServie.class);
-        intent.setAction(ACTION_BAZ);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.d(TAG, "onBind: ");
+        return null;
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_FOO.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
-            } else if (ACTION_BAZ.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionBaz(param1, param2);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand: start id " + startId + " flags " + flags);
+        String name = intent.getStringExtra(Constants.AUDIO_NAME);
+        String path = intent.getStringExtra(Constants.AUDIO_PATH);
+        Log.d(TAG, "onStartCommand: data " + MessageFormat.format("name:{0} ", name));
+        createNotification(name);
+        playSound(path);
+        return START_STICKY;
+    }
+
+    private void playSound(String path) {
+        if (path != null) {
+            try {
+                player = new MediaPlayer();
+                player.setDataSource(path);
+                player.prepareAsync();
+                player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.start();
+                    }
+                });
+
+                player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        mp.stop();
+                        mp.release();
+                        notificationManager.cancelAll();
+                        stopSelf();
+                        Log.d(TAG, "onCompletion: ");
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionFoo(String param1, String param2) {
-        // TODO: Handle action Foo
-        throw new UnsupportedOperationException("Not yet implemented");
+    private void createNotification(String name) {
+        // // TODO: 6/29/2019 add template
+        notificationManager = (NotificationManager) getApplicationContext()
+                .getSystemService(NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // create channel
+            String CHANNEL_ID = "101";
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Listen",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Listen state ");
+            notificationManager.createNotificationChannel(channel);
+
+            NotificationCompat.Builder builder = new NotificationCompat
+                    .Builder(getApplicationContext(), CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_sound)
+                    .setContentTitle("u r listing to ")
+                    .setContentText(name)
+                    .setOngoing(true);
+
+            notificationManager.notify(10, builder.build());
+
+
+        } else {
+            NotificationCompat.Builder builder = new NotificationCompat.
+                    Builder(getApplicationContext())
+                    .setContentTitle("u r listing to")
+                    .setContentText(name)
+                    .setAutoCancel(true)
+                    .setOngoing(true);
+            notificationManager.notify(10, builder.build());
+        }
     }
 
-    /**
-     * Handle action Baz in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionBaz(String param1, String param2) {
-        // TODO: Handle action Baz
-        throw new UnsupportedOperationException("Not yet implemented");
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: service");
+        if (player != null) {
+            //   player.stop();
+            player.release();
+            player = null;
+        }
+        EventBus.getDefault().post(new StopeedMessage());
+
     }
+
+
 }

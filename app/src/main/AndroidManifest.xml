@@ -21,7 +21,7 @@
         tools:ignore="UnusedAttribute">
         <service
             android:name=".feature.listening_activity.ListenServie"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name=".feature.services.LoadDataQuranTafseer"
             android:exported="false" />
@@ -32,7 +32,6 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.AIRPLANE_MODE" />
             </intent-filter>
         </receiver>
 

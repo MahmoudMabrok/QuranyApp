@@ -17,8 +17,11 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.MessageFormat;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,9 +31,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.Util.Data;
 import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.feature.listening_activity.ListenServie;
+import education.mahmoud.quranyapp.feature.listening_activity.StopeedMessage;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
 
 public class ShowSearchResults extends AppCompatActivity {
@@ -55,17 +61,7 @@ public class ShowSearchResults extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_search_results);
-        ButterKnife.bind(this);
-        repository = Repository.getInstance(getApplication());
-        initRv();
-        adapterListeners();
-        editWatcher();
-
-    }
+    boolean isRunning = false;
 
     private void editWatcher() {
         edSearch.addTextChangedListener(new TextWatcher() {
@@ -185,10 +181,46 @@ public class ShowSearchResults extends AppCompatActivity {
         tvNotFound.setVisibility(View.VISIBLE);
     }
 
+    Intent serviceIntent;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show_search_results);
+        ButterKnife.bind(this);
+        repository = Repository.getInstance(getApplication());
+        initRv();
+        adapterListeners();
+        editWatcher();
+
+        EventBus.getDefault().post(new StopeedMessage());
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onStopeedMessage(StopeedMessage message) {
+        Log.d(TAG, "onEvent: ");
+        isRunning = false;
+    }
+
     private void playAudio(AyahItem item) {
         if (item.getAudioPath() != null) {
-            Log.d(TAG, "playAudio: ");
-            try {
+            Log.d(TAG, "playAudio: isRunning  " + isRunning);
+            if (!isRunning) {
+                serviceIntent = ListenServie.createService(getApplicationContext(), item.getAudioPath(), getName(item));
+                isRunning = true;
+            } else {
+                /**
+                 * alt :- send event to release mediaPlayer
+                 */
+                // here kill service
+                stopService(serviceIntent);
+                //         playAudio(item); // call it to start check again
+            }
+
+
+            //    ListenServie.createService(getApplicationContext() , item.getAudioPath() ,getName(item) );
+            /*try {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                     mediaPlayer.release();
                     mediaPlayer = null;
@@ -198,7 +230,6 @@ public class ShowSearchResults extends AppCompatActivity {
                 mediaPlayer.setDataSource(item.getAudioPath());
                 mediaPlayer.prepare();
                 mediaPlayer.start();
-
 
                 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
@@ -211,24 +242,33 @@ public class ShowSearchResults extends AppCompatActivity {
                 e.printStackTrace();
                 showMessage("file " + item.getAyahIndex() + " is correupt ");
                 showMessage("Problem with file , contact us ,  " + e.getMessage());
-            }
+            }*/
         } else {
             showMessage(getString(R.string.not_downlod_audio));
         }
 
     }
 
+    private String getName(AyahItem item) {
+        String name = Data.SURA_NAMES[item.getSurahIndex() - 1]; // surah index start from 1 but arr from 0
+        return MessageFormat.format("{0},{1}.mp3", name, item.getAyahInSurahIndex());
+    }
+
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-        }
-
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
+
+
 }
