@@ -5,12 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.collection.ArraySet;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -21,8 +15,12 @@ import com.github.ybq.android.spinkit.SpinKitView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,7 +29,6 @@ import education.mahmoud.quranyapp.Util.App;
 import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.Util.Data;
 import education.mahmoud.quranyapp.Util.DateOperation;
-import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
@@ -156,17 +153,8 @@ public class ShowAyahsActivity extends AppCompatActivity {
 
     private void initRV() {
         prepareColors();
-        LinearLayoutManager manager = new LinearLayoutManager(this){
-            @Override
-            public boolean canScrollHorizontally() {
-                // disable scrolling
-                return false;
-            }
-        };
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-       /* GridLayoutManager manager1 = new GridLayoutManager(this, 2);
-       */
 
         rvAyahsPages.setLayoutManager(manager);
         rvAyahsPages.setHasFixedSize(true);

@@ -17,10 +17,6 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -36,7 +32,6 @@ import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie;
-import education.mahmoud.quranyapp.feature.listening_activity.StopeedMessage;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
 
 public class ShowSearchResults extends AppCompatActivity {
@@ -193,56 +188,17 @@ public class ShowSearchResults extends AppCompatActivity {
         adapterListeners();
         editWatcher();
 
-        EventBus.getDefault().post(new StopeedMessage());
-
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onStopeedMessage(StopeedMessage message) {
-        Log.d(TAG, "onEvent: ");
-        isRunning = false;
     }
 
     private void playAudio(AyahItem item) {
         if (item.getAudioPath() != null) {
             Log.d(TAG, "playAudio: isRunning  " + isRunning);
-            if (!isRunning) {
-                serviceIntent = ListenServie.createService(getApplicationContext(), item.getAudioPath(), getName(item));
-                isRunning = true;
-            } else {
-                /**
-                 * alt :- send event to release mediaPlayer
-                 */
-                // here kill service
+            if (serviceIntent != null) {
                 stopService(serviceIntent);
-                //         playAudio(item); // call it to start check again
             }
+            serviceIntent = ListenServie.createService(getApplicationContext(),
+                    item.getAudioPath(), getName(item));
 
-
-            //    ListenServie.createService(getApplicationContext() , item.getAudioPath() ,getName(item) );
-            /*try {
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                }
-                mediaPlayer = new MediaPlayer();
-                WeakReference<MediaPlayer> mediaPlayerWeakReference = new WeakReference<>(mediaPlayer);
-                mediaPlayer.setDataSource(item.getAudioPath());
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer1) {
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-                showMessage("file " + item.getAyahIndex() + " is correupt ");
-                showMessage("Problem with file , contact us ,  " + e.getMessage());
-            }*/
         } else {
             showMessage(getString(R.string.not_downlod_audio));
         }
@@ -251,24 +207,14 @@ public class ShowSearchResults extends AppCompatActivity {
 
     private String getName(AyahItem item) {
         String name = Data.SURA_NAMES[item.getSurahIndex() - 1]; // surah index start from 1 but arr from 0
-        return MessageFormat.format("{0},{1}.mp3", name, item.getAyahInSurahIndex());
+        return MessageFormat.format("{0},{1}",
+                name, item.getAyahInSurahIndex());
     }
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
 
 
 }

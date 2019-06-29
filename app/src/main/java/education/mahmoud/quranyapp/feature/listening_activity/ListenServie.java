@@ -10,8 +10,6 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.text.MessageFormat;
 
 import androidx.annotation.Nullable;
@@ -41,14 +39,6 @@ public class ListenServie extends Service {
         return intent;
     }
 
-    /**
-     * Starts this service to perform action Foo with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -56,9 +46,20 @@ public class ListenServie extends Service {
         return null;
     }
 
+  /*
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        Log.d(TAG, "onHandleIntent: ");
+        String name = intent.getStringExtra(Constants.AUDIO_NAME);
+        String path = intent.getStringExtra(Constants.AUDIO_PATH);
+        Log.d(TAG, "onHandleIntent: data " + MessageFormat.format("name:{0} ", name));
+        createNotification(name);
+        playSound(path);
+    }*/
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand: start id " + startId + " flags " + flags);
+        Log.d(TAG, String.valueOf(player == null) + " onStartCommand: start id " + startId + " flags " + flags);
         String name = intent.getStringExtra(Constants.AUDIO_NAME);
         String path = intent.getStringExtra(Constants.AUDIO_PATH);
         Log.d(TAG, "onStartCommand: data " + MessageFormat.format("name:{0} ", name));
@@ -68,15 +69,20 @@ public class ListenServie extends Service {
     }
 
     private void playSound(String path) {
+        Log.d(TAG, "playSound: !! ");
         if (path != null) {
             try {
                 player = new MediaPlayer();
                 player.setDataSource(path);
+                Log.d(TAG, "playSound: after data source");
                 player.prepareAsync();
+
+                Log.d(TAG, "playSound: after start");
                 player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         mp.start();
+                        Log.d(TAG, "onPrepared: ");
                     }
                 });
 
@@ -113,9 +119,8 @@ public class ListenServie extends Service {
             NotificationCompat.Builder builder = new NotificationCompat
                     .Builder(getApplicationContext(), CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_sound)
-                    .setContentTitle("u r listing to ")
-                    .setContentText(name)
-                    .setOngoing(true);
+                    .setContentTitle("")
+                    .setContentText(name);
 
             notificationManager.notify(10, builder.build());
 
@@ -123,10 +128,10 @@ public class ListenServie extends Service {
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.
                     Builder(getApplicationContext())
-                    .setContentTitle("u r listing to")
+                    .setContentTitle("")
+                    .setSmallIcon(R.drawable.ic_sound)
                     .setContentText(name)
-                    .setAutoCancel(true)
-                    .setOngoing(true);
+                    .setAutoCancel(true);
             notificationManager.notify(10, builder.build());
         }
     }
@@ -140,7 +145,6 @@ public class ListenServie extends Service {
             player.release();
             player = null;
         }
-        EventBus.getDefault().post(new StopeedMessage());
 
     }
 
