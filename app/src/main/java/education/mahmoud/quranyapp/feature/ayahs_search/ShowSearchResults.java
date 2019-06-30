@@ -33,6 +33,7 @@ import education.mahmoud.quranyapp.Util.Data;
 import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen;
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
 import education.mahmoud.quranyapp.model.Aya;
@@ -199,11 +200,14 @@ public class ShowSearchResults extends AppCompatActivity {
             List<AyahItem> ayahItems = new ArrayList<>();
             ayahItems.add(item);
 
+            AyahsListen ayahsListen = new AyahsListen();
+            ayahsListen.setAyahItemList(ayahItems);
+
             if (serviceIntent != null) {
                 stopService(serviceIntent);
             }
             serviceIntent = ListenServie.createService(getApplicationContext(),
-                    item.getAudioPath(),(ArrayList<? extends Parcelable>) ayahItems );
+                    ayahsListen );
 
         } else {
             showMessage(getString(R.string.not_downlod_audio));

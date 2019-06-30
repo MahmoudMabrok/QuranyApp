@@ -21,6 +21,7 @@ import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -36,9 +37,9 @@ public class ListenServie extends Service {
     MediaPlayer player;
     NotificationManager notificationManager;
 
-    public static Intent createService(Context context, String path, ArrayList<? extends Parcelable> name) {
+    public static Intent createService(Context context, AyahsListen items) {
         Intent intent = new Intent(context, ListenServie.class);
-        intent.putExtra(Constants.AUDIO_ITEMS, name);
+        intent.putExtra(Constants.AUDIO_ITEMS, items);
         context.startService(intent);
         return intent;
     }
@@ -50,35 +51,29 @@ public class ListenServie extends Service {
         return null;
     }
 
+    List<AyahItem> ayahsToListen ;
+    int currentAudio = 0 ;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-       String ayahsString = intent.
-                getStringExtra(Constants.AUDIO_ITEMS);
-
-        List<AyahItem> ayahsToListen = Util.fromStringToAyahItems(ayahsString);
-        if (ayahsToListen != null){
-            playAyahs(ayahsToListen);
+        AyahsListen ayahsListen = intent.getParcelableExtra(Constants.AUDIO_ITEMS);
+        ayahsToListen = new ArrayList<>(ayahsListen.getAyahItemList());
+        if (ayahsToListen.size() > 0 ){
+            playAyah(ayahsToListen.get(currentAudio));
         }
         return START_STICKY;
     }
 
-    private void playAyahs(List<AyahItem> ayahsToListen) {
-        for (AyahItem ayahItem:ayahsToListen){
-            playSound(ayahItem.getAudioPath());
-            createNotification(Util.getName(ayahItem));
-        }
-    }
-
-    private void playSound(String path) {
-        Log.d(TAG, "playSound: !! ");
+    private void playAyah(AyahItem ayahItem) {
+        Log.d(TAG, "playSound: !! " + ayahItem.getAyahInSurahIndex());
+        createNotification(Util.getName(ayahItem) , ayahItem.getText());
+        String path = ayahItem.getAudioPath();
         if (path != null) {
             try {
                 player = new MediaPlayer();
                 player.setDataSource(path);
-                Log.d(TAG, "playSound: after data source");
                 player.prepareAsync();
 
-                Log.d(TAG, "playSound: after start");
                 player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
@@ -90,11 +85,16 @@ public class ListenServie extends Service {
                 player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
-                        mp.stop();
-                        mp.release();
-                        notificationManager.cancelAll();
-                        stopSelf();
-                        Log.d(TAG, "onCompletion: ");
+                        player.release();
+                        player = null ;
+                        currentAudio++;
+                        try {
+                            playAyah(ayahsToListen.get(currentAudio));
+                        } catch (Exception e) {
+                            // if exception occuured so we finish all audios
+                            stopSelf();
+                            notificationManager.cancelAll();
+                        }
                     }
                 });
             } catch (Exception e) {
@@ -104,7 +104,7 @@ public class ListenServie extends Service {
         }
     }
 
-    private void createNotification(String name) {
+    private void createNotification(String name, String text) {
         // // TODO: 6/29/2019 add template
         notificationManager = (NotificationManager) getApplicationContext()
                 .getSystemService(NOTIFICATION_SERVICE);
@@ -120,8 +120,8 @@ public class ListenServie extends Service {
             NotificationCompat.Builder builder = new NotificationCompat
                     .Builder(getApplicationContext(), CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_sound)
-                    .setContentTitle("")
-                    .setContentText(name);
+                    .setContentTitle(name)
+                    .setContentText(text);
 
             notificationManager.notify(10, builder.build());
 
@@ -129,10 +129,11 @@ public class ListenServie extends Service {
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.
                     Builder(getApplicationContext())
-                    .setContentTitle("")
                     .setSmallIcon(R.drawable.ic_sound)
-                    .setContentText(name)
+                    .setContentTitle(name)
+                    .setContentText(text)
                     .setAutoCancel(true);
+
             notificationManager.notify(10, builder.build());
         }
     }
