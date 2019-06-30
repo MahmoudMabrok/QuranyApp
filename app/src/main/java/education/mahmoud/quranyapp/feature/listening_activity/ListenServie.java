@@ -8,14 +8,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.Util.Util;
+import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -31,10 +36,9 @@ public class ListenServie extends Service {
     MediaPlayer player;
     NotificationManager notificationManager;
 
-    public static Intent createService(Context context, String path, String name) {
+    public static Intent createService(Context context, String path, ArrayList<? extends Parcelable> name) {
         Intent intent = new Intent(context, ListenServie.class);
-        intent.putExtra(Constants.AUDIO_PATH, path);
-        intent.putExtra(Constants.AUDIO_NAME, name);
+        intent.putExtra(Constants.AUDIO_ITEMS, name);
         context.startService(intent);
         return intent;
     }
@@ -46,26 +50,23 @@ public class ListenServie extends Service {
         return null;
     }
 
-  /*
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        Log.d(TAG, "onHandleIntent: ");
-        String name = intent.getStringExtra(Constants.AUDIO_NAME);
-        String path = intent.getStringExtra(Constants.AUDIO_PATH);
-        Log.d(TAG, "onHandleIntent: data " + MessageFormat.format("name:{0} ", name));
-        createNotification(name);
-        playSound(path);
-    }*/
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, String.valueOf(player == null) + " onStartCommand: start id " + startId + " flags " + flags);
-        String name = intent.getStringExtra(Constants.AUDIO_NAME);
-        String path = intent.getStringExtra(Constants.AUDIO_PATH);
-        Log.d(TAG, "onStartCommand: data " + MessageFormat.format("name:{0} ", name));
-        createNotification(name);
-        playSound(path);
+       String ayahsString = intent.
+                getStringExtra(Constants.AUDIO_ITEMS);
+
+        List<AyahItem> ayahsToListen = Util.fromStringToAyahItems(ayahsString);
+        if (ayahsToListen != null){
+            playAyahs(ayahsToListen);
+        }
         return START_STICKY;
+    }
+
+    private void playAyahs(List<AyahItem> ayahsToListen) {
+        for (AyahItem ayahItem:ayahsToListen){
+            playSound(ayahItem.getAudioPath());
+            createNotification(Util.getName(ayahItem));
+        }
     }
 
     private void playSound(String path) {

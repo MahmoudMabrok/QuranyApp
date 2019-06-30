@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,6 +19,7 @@ import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +35,7 @@ import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
+import education.mahmoud.quranyapp.model.Aya;
 
 public class ShowSearchResults extends AppCompatActivity {
 
@@ -193,11 +196,14 @@ public class ShowSearchResults extends AppCompatActivity {
     private void playAudio(AyahItem item) {
         if (item.getAudioPath() != null) {
             Log.d(TAG, "playAudio: isRunning  " + isRunning);
+            List<AyahItem> ayahItems = new ArrayList<>();
+            ayahItems.add(item);
+
             if (serviceIntent != null) {
                 stopService(serviceIntent);
             }
             serviceIntent = ListenServie.createService(getApplicationContext(),
-                    item.getAudioPath(), getName(item));
+                    item.getAudioPath(),(ArrayList<? extends Parcelable>) ayahItems );
 
         } else {
             showMessage(getString(R.string.not_downlod_audio));
@@ -205,16 +211,8 @@ public class ShowSearchResults extends AppCompatActivity {
 
     }
 
-    private String getName(AyahItem item) {
-        String name = Data.SURA_NAMES[item.getSurahIndex() - 1]; // surah index start from 1 but arr from 0
-        return MessageFormat.format("{0},{1}",
-                name, item.getAyahInSurahIndex());
-    }
-
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
-
-
 
 }
