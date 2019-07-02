@@ -14,7 +14,16 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 - apk
   - [v2.5.1](https://drive.google.com/open?id=1iU-WgufHMAELKOmClhW2Z18Miyef4f4v).
 
-  
+# Screens
+<div>
+ <img src="images/home.png" width = 20%>
+ <img src="images/lastread.png" width = 20%>
+ <img src="images/listen.png" width = 20%>
+ <img src="images/quran.png" width = 20%>
+ <img src="images/readlog.png" width = 20%>
+ <img src="images/search.png" width = 20%>
+  </div>
+
 # Features 
 - Go to specific sura by Scrolling and click.
 - Go to specific sura by its Num.
@@ -194,23 +203,13 @@ Languages | Line of code (LOC)
 Java | 10494
 XML | 3498
 
-
-# Screens
-
-<ul>
-<li> <img src="images/home.png" width = 20%>
- <img src="images/lastread.png" width = 20%>
- <img src="images/listen.png" width = 20%>
- <img src="images/quran.png" width = 20%>
- <img src="images/readlog.png" width = 20%>
- <img src="images/search.png" width = 20%></li>
-</ul>>
-
+------ 
 
 # Contributors 
-
 - Thanks to [zularizal](https://github.com/zularizal) for awesome logo
 - Thanks to [izzysoft](https://github.com/IzzySoft) for providing another installion source.
+
+--------
 
 # App Testers 
 Thanks for your efforts for testing Qurany App, keep moving:
@@ -218,4 +217,4 @@ Thanks for your efforts for testing Qurany App, keep moving:
 - [XAMIR555](https://github.com/XAMIR555)
 - [44asad](https://github.com/44asad)
 - [facebook-786](https://github.com/facebook-786)
-
+- [sagorahmed](https://github.com/sagorahmed)
