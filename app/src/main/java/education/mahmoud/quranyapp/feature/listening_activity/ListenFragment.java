@@ -112,39 +112,8 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     private int ayahsRepeatCount;
     private int ayahsSetCount;
 
-    Handler handler ;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_listen, container, false);
-        unbinder = ButterKnife.bind(this, view);
-
-        repository = Repository.getInstance(getActivity().getApplication());
-
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "me_quran.ttf");
-
-        isPermissionAllowed = repository.getPermissionState();
-
-        serviceIntent = new Intent(getContext() , ListenServie.class);
-
-        initSpinners();
-
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if (mediaPlayer != null && isVisible()) {
-                    tvProgressAudio.setText(getString(R.string.time_progress, mediaPlayer.getCurrentPosition() / 1000
-                            , mediaPlayer.getDuration() / 1000));
-                    sbPosition.setProgress(mediaPlayer.getCurrentPosition());
-                }
-
-            }
-        };
-
-        return view;
-    }
+    Handler handler;
+    Intent serviceIntent;
 
     private void initSpinners() {
         List<String> suraNames = Arrays.asList(Data.SURA_NAMES);
@@ -266,13 +235,45 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     }
     //</editor-fold>
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_listen, container, false);
+        unbinder = ButterKnife.bind(this, view);
+
+        repository = Repository.getInstance(getActivity().getApplication());
+
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "me_quran.ttf");
+
+        isPermissionAllowed = repository.getPermissionState();
+
+        serviceIntent = new Intent(getContext(), ListenServie.class);
+
+        initSpinners();
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (mediaPlayer != null && isVisible()) {
+                    tvProgressAudio.setText(getString(R.string.time_progress, mediaPlayer.getCurrentPosition() / 1000
+                            , mediaPlayer.getDuration() / 1000));
+                    sbPosition.setProgress(mediaPlayer.getCurrentPosition());
+                }
+
+            }
+        };
+
+        return view;
+    }
+
     private void displayAyasState() {
-        Log.d(TAG, "displayAyasState: ");
+        Log.d(TAG, "display Ayas State: ");
         currentAyaAtAyasToListen = 0;
         // first reload ayahs from db
-        ayahsToListen = repository.getAyahSInRange(actualStart+1, actualEnd+1);
+        ayahsToListen = repository.getAyahSInRange(actualStart + 1, actualEnd + 1);
 
-        // repeatation formation
+        // repeation formation
         ayahsToListen = getAyahsEachOneRepreated(ayahsRepeatCount);
         ayahsToListen = getAllAyahsRepeated(ayahsSetCount);
 
@@ -282,7 +283,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         btnPlayPause.setBackgroundResource(R.drawable.ic_pause);
 
         // // TODO: 6/30/2019  bind serice with this.
-       //  displayAyahs();
+        //  displayAyahs();
 
         //<editor-fold desc="start audio service">
         AyahsListen ayahsListen = new AyahsListen();
@@ -291,12 +292,10 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
             getActivity().stopService(serviceIntent);
         }
         serviceIntent = ListenServie.createService(getContext(),
-                ayahsListen );
+                ayahsListen);
         //</editor-fold>
 
     }
-
-    Intent  serviceIntent ;
 
     private List<AyahItem> getAllAyahsRepeated(int ayahsSetCount) {
         List<AyahItem> ayahItems = new ArrayList<>();
@@ -332,8 +331,8 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         Log.d(TAG, "displayAyahs: " + currentAyaAtAyasToListen);
         AyahItem ayahItem = ayahsToListen.get(currentAyaAtAyasToListen);
         tvAyahToListen.setTypeface(typeface);
-        tvAyahToListen.setText(MessageFormat.format("{0} ﴿ {1} ﴾ " , ayahItem.getText() , ayahItem.getAyahInSurahIndex()));
-       // showMessage("size " + ayahsToListen.size());
+        tvAyahToListen.setText(MessageFormat.format("{0} ﴿ {1} ﴾ ", ayahItem.getText(), ayahItem.getAyahInSurahIndex()));
+        // showMessage("size " + ayahsToListen.size());
         playAudio();
     }
 
@@ -374,9 +373,9 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
                     return;
                 }
                 // compute actual start
-                actualStart = repository.getAyahByInSurahIndex(startSura.getIndex(), start).getAyahIndex()-1 ;
+                actualStart = repository.getAyahByInSurahIndex(startSura.getIndex(), start).getAyahIndex() - 1;
                 // compute actual end
-                actualEnd = repository.getAyahByInSurahIndex(endSura.getIndex(), end).getAyahIndex()-1;
+                actualEnd = repository.getAyahByInSurahIndex(endSura.getIndex(), end).getAyahIndex() - 1;
 
                 // check actualstart & actualEnd
                 if (actualEnd < actualStart) {
@@ -398,8 +397,8 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
 
                 // get ayahs from db,
                 // actual end is updated with one as query return result excluded one item
-                ayahsToListen = repository.getAyahSInRange(actualStart+1, actualEnd+1);
-                Log.d(TAG, "onViewClicked: start log after first select "+ ayahsToListen.size());
+                ayahsToListen = repository.getAyahSInRange(actualStart + 1, actualEnd + 1);
+                Log.d(TAG, "onViewClicked: start log after first select " + ayahsToListen.size());
                 logAyahs();
                 // traverse ayahs to check if it downloaded or not
                 for (AyahItem ayahItem : ayahsToListen) {
@@ -415,7 +414,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
 
             } catch (NumberFormatException e) {
                 makeRangeError();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -426,7 +425,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     }
 
     private void playAudio() {
-        Log.d(TAG, "playAudio:  current " + currentAyaAtAyasToListen );
+        Log.d(TAG, "playAudio:  current " + currentAyaAtAyasToListen);
         btnPlayPause.setEnabled(false);
         try {
             mediaPlayer = new MediaPlayer();
@@ -493,8 +492,8 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
                         Log.d(TAG, "@@  onCompletion: " + currentAyaAtAyasToListen);
                         displayAyahs();
                     } else {
-                        actualStart = -1 ;
-                        actualEnd = -1 ;
+                        actualStart = -1;
+                        actualEnd = -1;
                         backToSelectionState();
                     }
 
@@ -512,7 +511,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         edEndSuraAyah.clearFocus();
         edStartSuraAyah.clearFocus();
         lnPlayView.requestFocus();
-    //    Util.hideInputKeyboard(getContext());
+        //    Util.hideInputKeyboard(getContext());
     }
 
     private void makeRangeError() {
