@@ -287,4 +287,17 @@ public class Util {
     public static String removeTashkeel(String ayah) {
         return RemoveTashkeel.removeTashkeel(ayah);
     }
+
+    public static Dialog getTestResltDialoge(Context context, Spannable spannable) {
+        View view = LayoutInflater.from(context).inflate(R.layout.test_result_view_dialoge, null);
+        TextView textView = view.findViewById(R.id.tvShowResult);
+        textView.setText(spannable, TextView.BufferType.SPANNABLE);
+
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(view);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        return dialog;
+
+    }
 }

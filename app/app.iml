@@ -118,7 +118,6 @@
     <orderEntry type="library" name="Gradle: com.google.android.material:material:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.drawerlayout:drawerlayout:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.documentfile:documentfile:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.localbroadcastmanager:localbroadcastmanager:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.jakewharton:butterknife:10.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: pub.devrel:easypermissions:1.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.jpardogo.materialtabstrip:library:1.0.6@aar" level="project" />

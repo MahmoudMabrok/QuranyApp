@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -76,6 +77,8 @@ public class TestFragment extends Fragment {
     Button btnOpenTestSound;
     @BindView(R.id.edUserTextForAyahs)
     EditText edUserTextForAyahs;
+    @BindView(R.id.btnCheckTest)
+    Button btnCheckTest;
     private Repository repository;
     private SuraItem startSura;
     private SuraItem endSura;
@@ -85,6 +88,10 @@ public class TestFragment extends Fragment {
     private boolean isInputValid;
     private int start;
     private int end;
+    // Ayahs used to be compared with user input
+    private AyahItem ayahItemTobeTest;
+
+    private boolean isFullTest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -148,6 +155,7 @@ public class TestFragment extends Fragment {
     }
 
 
+    //region spinners
     /**
      * load data to spinners from db
      */
@@ -184,6 +192,7 @@ public class TestFragment extends Fragment {
         });
 
     }
+    //endregion
 
 
     /**
@@ -194,8 +203,11 @@ public class TestFragment extends Fragment {
         checkInput();
         if (isInputValid) {
             ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1);
+            // // TODO: 7/15/2019 make list
             adapter.setAyahItemList(ayahsToTest);
             TestState();
+
+            isFullTest = true;
         }
     }
 
@@ -307,13 +319,20 @@ public class TestFragment extends Fragment {
             ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1);
             if (ayahsToTest.size() >= 3) {
                 int r = new Random().nextInt(ayahsToTest.size() - 1);
-                AyahItem ayahItem = ayahsToTest.get(r);
-                tvAyahToTestAfter.setText(getString(R.string.ayahToTestRanom, ayahItem.getTextClean()));
-                ayahItem = ayahsToTest.get(r + 1);
+                ayahItemTobeTest = ayahsToTest.get(r);
+                tvAyahToTestAfter.setText(getString(R.string.ayahToTestRanom, ayahItemTobeTest.getTextClean()));
+                ayahItemTobeTest = ayahsToTest.get(r + 1);
                 ayahsToTest.clear();
-                ayahsToTest.add(ayahItem);
+                ayahsToTest.add(ayahItemTobeTest);
                 adapter.setAyahItemList(ayahsToTest);
+
+                // make list, used for Check
+                ayahsToTest = new ArrayList<>();
+                ayahsToTest.add(ayahItemTobeTest);
+
                 TestRandomState();
+
+                isFullTest = false;
             } else {
                 ayahsNotSufficentError();
             }
@@ -325,6 +344,9 @@ public class TestFragment extends Fragment {
         tvAyahToTestAfter.setVisibility(View.VISIBLE);
         lnSelectorAyahs.setVisibility(View.GONE);
         lnTestLayout.setVisibility(View.VISIBLE);
+
+        isFullTest = true;
+
     }
 
     private void ayahsNotSufficentError() {
@@ -339,6 +361,32 @@ public class TestFragment extends Fragment {
         unbinder.unbind();
     }
 
+    @OnClick(R.id.btnCheckTest)
+    public void onCheckClicked() {
+        String ayah = edUserTextForAyahs.getText().toString();
+        String ayahToTestStr = getAyah();
+        Spannable spannable = Util.getDiffSpannaled(ayahToTestStr, ayah);
+        updateTotalScore(Util.getTotalScore()); // Util.getTotalScore() -> score for yours Save test
+        edUserTextForAyahs.setText(spannable, TextView.BufferType.SPANNABLE);
+
+    }
+
+    private String getAyah() {
+        if (isFullTest) {
+            return concateAyahs();
+        } else {
+            return ayahsToTest.get(0).getTextClean();
+        }
+
+    }
+
+    private String concateAyahs() {
+        StringBuilder builder = new StringBuilder();
+        for (AyahItem ayahItem : ayahsToTest) {
+            builder.append(ayahItem.getTextClean());
+        }
+        return builder.toString();
+    }
 
     @OnClick(R.id.btnOpenTestSound)
     public void onOpenTestSoundClicked() {

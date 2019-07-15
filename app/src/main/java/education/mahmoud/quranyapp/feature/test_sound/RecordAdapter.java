@@ -73,7 +73,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.Holder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPlayRecordClick.onPlayRecord(item.getFilePath());
+                onPlayRecordClick.onPlayRecord(item);
             }
         });
 
@@ -85,7 +85,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.Holder> {
     }
 
     interface onPlayRecordClick {
-        void onPlayRecord(String path);
+        void onPlayRecord(RecordItem recordItem);
     }
 
 

@@ -42,7 +42,7 @@
     <string name="test">Test</string>
     <string name="bookmark">Bookmark</string>
     <string name="listen">Listen</string>
-    <string name="ayah">ayah</string>
+    <string name="ayah">Write Ayahs... </string>
     <string name="ayahSuffix">ayah</string>
     <string name="btn_listen">listen</string>
     <string name="rangeoftest">From %s ayah %d to %s ayah %d</string>
