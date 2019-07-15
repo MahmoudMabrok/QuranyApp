@@ -125,9 +125,7 @@
                 android:paddingStart="@dimen/_6sdp"
                 android:paddingEnd="@dimen/_6sdp"
                 android:text="@string/test_sound"
-                android:textColor="@color/bg_white"
-                android:visibility="gone" />
-
+                android:textColor="@color/bg_white" />
 
         </LinearLayout>
 
@@ -192,11 +190,23 @@
             android:textColor="@color/ayas_color"
             android:textSize="@dimen/_22ssp" />
 
+      <!--  place of test -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTestText"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/edUserTextForAyahs"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/whiteTextColor"
+            android:layout_margin="@dimen/_10sdp" />
+
+
 
     </LinearLayout>
 

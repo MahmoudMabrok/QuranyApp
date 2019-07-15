@@ -25,7 +25,7 @@
             android:layout_marginBottom="@dimen/_50sdp"
             android:gravity="center"
             android:text="AAAAAAAAAAA"
-            android:textColor="@color/ayas_color"
+            android:textColor="@color/ayas_color_night_mode"
             android:textSize="@dimen/_25ssp" />
 
 

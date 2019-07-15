@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".feature.read_log.ReadLogFragment"
     android:padding="@dimen/_8sdp"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
    <LinearLayout
@@ -19,6 +20,7 @@
           android:layout_weight="1"
           android:gravity="center_horizontal"
           android:textSize="@dimen/tv_read_log"
+          android:textColor="@color/tv_color"
           android:text="@string/date"/>
 
       <TextView
@@ -26,6 +28,7 @@
           android:layout_height="wrap_content"
           android:gravity="center_horizontal"
           android:layout_weight="1"
+          android:textColor="@color/tv_color"
           android:textSize="@dimen/tv_read_log"
           android:text="@string/no_pages"/>
 
@@ -34,6 +37,7 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="1"
+          android:textColor="@color/tv_color"
           android:gravity="center_horizontal"
           android:textSize="@dimen/tv_read_log"
           android:ellipsize="end"

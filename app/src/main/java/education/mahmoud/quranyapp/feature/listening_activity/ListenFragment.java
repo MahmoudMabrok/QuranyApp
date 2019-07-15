@@ -282,10 +282,10 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         lnPlayView.setVisibility(View.VISIBLE);
         btnPlayPause.setBackgroundResource(R.drawable.ic_pause);
 
-        // // TODO: 6/30/2019  bind serice with this.
-        //  displayAyahs();
+        // // TODO: 6/30/2019  bind service with this.
+        displayAyahs();
 
-        //<editor-fold desc="start audio service">
+        /*//<editor-fold desc="start audio service">
         AyahsListen ayahsListen = new AyahsListen();
         ayahsListen.setAyahItemList(ayahsToListen);
         if (serviceIntent != null) {
@@ -294,6 +294,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         serviceIntent = ListenServie.createService(getContext(),
                 ayahsListen);
         //</editor-fold>
+*/
 
     }
 

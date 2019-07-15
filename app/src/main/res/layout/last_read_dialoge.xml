@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:padding="@dimen/_16sdp">
 
@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_16sdp"
         android:gravity="center"
+        android:textColor="@color/tv_color"
         android:text="Do You want to continue reading from last page?"
         android:textSize="@dimen/_22ssp" />
 
@@ -18,7 +19,8 @@
         android:id="@+id/btnOpenPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#00ff00"
+        android:textColor="@color/tv_color"
+        android:background="@color/colorPrimaryDark"
         android:text="@string/continue_reading" />
 
 </LinearLayout>

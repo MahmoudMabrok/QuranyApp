@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -73,6 +74,8 @@ public class TestFragment extends Fragment {
     SaveTestAdapter adapter = new SaveTestAdapter();
     @BindView(R.id.btnOpenTestSound)
     Button btnOpenTestSound;
+    @BindView(R.id.edUserTextForAyahs)
+    EditText edUserTextForAyahs;
     private Repository repository;
     private SuraItem startSura;
     private SuraItem endSura;
