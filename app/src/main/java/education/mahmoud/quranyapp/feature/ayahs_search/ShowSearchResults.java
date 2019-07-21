@@ -58,8 +58,6 @@ public class ShowSearchResults extends AppCompatActivity {
     private List<AyahItem> ayahItems;
     private String ayah;
 
-    private MediaPlayer mediaPlayer;
-
     boolean isRunning = false;
 
     private void editWatcher() {

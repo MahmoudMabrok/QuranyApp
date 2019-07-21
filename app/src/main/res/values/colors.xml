@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8BC34A</color>
+
+    <!--<color name="colorPrimary">#8BC34A</color>
     <color name="colorPrimaryDark">#8BC34A</color>
     <color name="colorAccent">#83E610</color>
+    -->
+
+    <color name="colorPrimary">#6D6B6B</color>
+    <color name="colorPrimaryDark">#141313</color>
+    <color name="colorAccent">#DEE6DE</color>
+
+
+
     <color name="font_results">#ffffff</color>
     <color name="bg_show_ays">#ACA9A9</color>
 
@@ -19,7 +28,7 @@
     <color name="ayas_color">#000000</color>
 
 
-    <color name="ayas_color_night_mode">#ffffff</color>
+    <color name="ayas_color_night_mode">#FFFFFF</color>
     <color name="bg_ays_night_mode">#292829</color>
 
     <color name="bg_main">#A88BC34A</color>
@@ -43,6 +52,10 @@
     <color name="spin_color_ayahs">#03A9F4</color>
     <color name="black_gradi">#747171</color>
     <color name="tab_strip">#aaddaa</color>
+
+
+    <color name="bg_items">@color/colorPrimary</color>
+    <color name="tv_color">@color/whiteTextColor</color>
 
 
 </resources>

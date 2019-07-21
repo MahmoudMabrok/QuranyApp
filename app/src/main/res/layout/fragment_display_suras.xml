@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/_16sdp"
-    tools:context=".feature.home_Activity.Home$PlaceholderFragment">
+    android:paddingBottom="@dimen/_16sdp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSura"

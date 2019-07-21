@@ -17,12 +17,12 @@
         android:layout_marginTop="@dimen/_29sdp"
         android:layout_marginBottom="@dimen/_30sdp"
         android:background="@color/whiteCardColor"
-        android:padding="@dimen/_10sdp">
+        android:padding="@dimen/_5sdp">
 
         <TextView
             android:id="@+id/tvAyahs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:autoSizeTextType="uniform"
             android:gravity="center"
             android:isScrollContainer="true"
