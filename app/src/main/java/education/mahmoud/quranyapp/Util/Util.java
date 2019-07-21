@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -20,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -27,12 +27,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
 import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
@@ -47,6 +52,29 @@ public class Util {
     public static boolean checkInput(String input) {
         return !TextUtils.isEmpty(input) && input.replaceAll(" ", "").length() != 0;
     }
+
+    public static String getName(AyahItem item) {
+        String name = Data.SURA_NAMES[item.getSurahIndex() - 1]; // surah index start from 1 but arr from 0
+        return MessageFormat.format("{0},{1}",
+                name, item.getAyahInSurahIndex());
+    }
+
+    public static String ayahItemToString(List<AyahItem> ayahItems) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArraySet<Integer>>(){}.getType();
+        return gson.toJson(ayahItems, type);
+    }
+
+    public static List<AyahItem> fromStringToAyahItems(String ayahs){
+        if (ayahs == null){
+            return null;
+        }
+        Gson gson = new Gson();
+        Type type  =new TypeToken<List<AyahItem>>(){}.getType();
+        return gson.fromJson(ayahs,type);
+
+    }
+
 
     public static Spannable getSpannable(String text) {
 
@@ -102,11 +130,12 @@ public class Util {
 
     /**
      * parse tafseer file and return object
+     *
      * @param context
      * @return
      */
     public static CompleteTafseer getCompleteTafseer(Context context) {
-        InputStream inputStream  = null;
+        InputStream inputStream = null;
         BufferedInputStream stream = null;
         Reader reader = null;
 

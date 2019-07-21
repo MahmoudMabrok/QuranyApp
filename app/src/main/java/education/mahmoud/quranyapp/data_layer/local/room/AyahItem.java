@@ -1,11 +1,14 @@
 package education.mahmoud.quranyapp.data_layer.local.room;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "ayahs")
-public class AyahItem {
+public class AyahItem implements Parcelable {
 
     @PrimaryKey
     private int ayahIndex;
@@ -158,4 +161,52 @@ public class AyahItem {
     public void setAudioPath(String audioPath) {
         this.audioPath = audioPath;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.surahIndex);
+        dest.writeInt(this.ayahIndex);
+        dest.writeString(this.text);
+        dest.writeString(this.textClean);
+        dest.writeInt(this.pageNum);
+        dest.writeString(this.audioPath);
+        dest.writeInt(this.ayahInSurahIndex);
+        dest.writeInt(this.juz);
+        dest.writeInt(this.hizbQuarter);
+        dest.writeByte(this.sajda ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.manzil);
+        dest.writeString(this.tafseer);
+    }
+
+    protected AyahItem(Parcel in) {
+        this.surahIndex = in.readInt();
+        this.ayahIndex = in.readInt();
+        this.text = in.readString();
+        this.textClean = in.readString();
+        this.pageNum = in.readInt();
+        this.audioPath = in.readString();
+        this.ayahInSurahIndex = in.readInt();
+        this.juz = in.readInt();
+        this.hizbQuarter = in.readInt();
+        this.sajda = in.readByte() != 0;
+        this.manzil = in.readInt();
+        this.tafseer = in.readString();
+    }
+
+    public static final Parcelable.Creator<AyahItem> CREATOR = new Parcelable.Creator<AyahItem>() {
+        @Override
+        public AyahItem createFromParcel(Parcel source) {
+            return new AyahItem(source);
+        }
+
+        @Override
+        public AyahItem[] newArray(int size) {
+            return new AyahItem[size];
+        }
+    };
 }

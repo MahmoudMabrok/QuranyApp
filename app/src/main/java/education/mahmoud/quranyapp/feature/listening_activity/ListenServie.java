@@ -8,14 +8,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.Util.Util;
+import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -31,10 +37,9 @@ public class ListenServie extends Service {
     MediaPlayer player;
     NotificationManager notificationManager;
 
-    public static Intent createService(Context context, String path, String name) {
+    public static Intent createService(Context context, AyahsListen items) {
         Intent intent = new Intent(context, ListenServie.class);
-        intent.putExtra(Constants.AUDIO_PATH, path);
-        intent.putExtra(Constants.AUDIO_NAME, name);
+        intent.putExtra(Constants.AUDIO_ITEMS, items);
         context.startService(intent);
         return intent;
     }
@@ -46,38 +51,29 @@ public class ListenServie extends Service {
         return null;
     }
 
-  /*
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-        Log.d(TAG, "onHandleIntent: ");
-        String name = intent.getStringExtra(Constants.AUDIO_NAME);
-        String path = intent.getStringExtra(Constants.AUDIO_PATH);
-        Log.d(TAG, "onHandleIntent: data " + MessageFormat.format("name:{0} ", name));
-        createNotification(name);
-        playSound(path);
-    }*/
+    List<AyahItem> ayahsToListen ;
+    int currentAudio = 0 ;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, String.valueOf(player == null) + " onStartCommand: start id " + startId + " flags " + flags);
-        String name = intent.getStringExtra(Constants.AUDIO_NAME);
-        String path = intent.getStringExtra(Constants.AUDIO_PATH);
-        Log.d(TAG, "onStartCommand: data " + MessageFormat.format("name:{0} ", name));
-        createNotification(name);
-        playSound(path);
+        AyahsListen ayahsListen = intent.getParcelableExtra(Constants.AUDIO_ITEMS);
+        ayahsToListen = new ArrayList<>(ayahsListen.getAyahItemList());
+        if (ayahsToListen.size() > 0 ){
+            playAyah(ayahsToListen.get(currentAudio));
+        }
         return START_STICKY;
     }
 
-    private void playSound(String path) {
-        Log.d(TAG, "playSound: !! ");
+    private void playAyah(AyahItem ayahItem) {
+        Log.d(TAG, "playSound: !! " + ayahItem.getAyahInSurahIndex());
+        createNotification(Util.getName(ayahItem) , ayahItem.getText());
+        String path = ayahItem.getAudioPath();
         if (path != null) {
             try {
                 player = new MediaPlayer();
                 player.setDataSource(path);
-                Log.d(TAG, "playSound: after data source");
                 player.prepareAsync();
 
-                Log.d(TAG, "playSound: after start");
                 player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
@@ -89,11 +85,16 @@ public class ListenServie extends Service {
                 player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mp) {
-                        mp.stop();
-                        mp.release();
-                        notificationManager.cancelAll();
-                        stopSelf();
-                        Log.d(TAG, "onCompletion: ");
+                        player.release();
+                        player = null ;
+                        currentAudio++;
+                        try {
+                            playAyah(ayahsToListen.get(currentAudio));
+                        } catch (Exception e) {
+                            // if exception occuured so we finish all audios
+                            stopSelf();
+                            notificationManager.cancelAll();
+                        }
                     }
                 });
             } catch (Exception e) {
@@ -103,7 +104,7 @@ public class ListenServie extends Service {
         }
     }
 
-    private void createNotification(String name) {
+    private void createNotification(String name, String text) {
         // // TODO: 6/29/2019 add template
         notificationManager = (NotificationManager) getApplicationContext()
                 .getSystemService(NOTIFICATION_SERVICE);
@@ -119,8 +120,8 @@ public class ListenServie extends Service {
             NotificationCompat.Builder builder = new NotificationCompat
                     .Builder(getApplicationContext(), CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_sound)
-                    .setContentTitle("")
-                    .setContentText(name);
+                    .setContentTitle(name)
+                    .setContentText(text);
 
             notificationManager.notify(10, builder.build());
 
@@ -128,10 +129,11 @@ public class ListenServie extends Service {
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.
                     Builder(getApplicationContext())
-                    .setContentTitle("")
                     .setSmallIcon(R.drawable.ic_sound)
-                    .setContentText(name)
+                    .setContentTitle(name)
+                    .setContentText(text)
                     .setAutoCancel(true);
+
             notificationManager.notify(10, builder.build());
         }
     }

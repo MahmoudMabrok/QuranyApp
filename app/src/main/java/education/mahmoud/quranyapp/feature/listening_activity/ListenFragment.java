@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.feature.listening_activity;
 
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -124,6 +125,8 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         typeface = Typeface.createFromAsset(getActivity().getAssets(), "me_quran.ttf");
 
         isPermissionAllowed = repository.getPermissionState();
+
+        serviceIntent = new Intent(getContext() , ListenServie.class);
 
         initSpinners();
 
@@ -278,9 +281,22 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         lnPlayView.setVisibility(View.VISIBLE);
         btnPlayPause.setBackgroundResource(R.drawable.ic_pause);
 
-        displayAyahs();
+        // // TODO: 6/30/2019  bind serice with this.
+       //  displayAyahs();
+
+        //<editor-fold desc="start audio service">
+        AyahsListen ayahsListen = new AyahsListen();
+        ayahsListen.setAyahItemList(ayahsToListen);
+        if (serviceIntent != null) {
+            getActivity().stopService(serviceIntent);
+        }
+        serviceIntent = ListenServie.createService(getContext(),
+                ayahsListen );
+        //</editor-fold>
 
     }
+
+    Intent  serviceIntent ;
 
     private List<AyahItem> getAllAyahsRepeated(int ayahsSetCount) {
         List<AyahItem> ayahItems = new ArrayList<>();
@@ -413,11 +429,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         Log.d(TAG, "playAudio:  current " + currentAyaAtAyasToListen );
         btnPlayPause.setEnabled(false);
         try {
-           /* if (mediaPlayer != null) {
-                mediaPlayer.release();
-                mediaPlayer = null;
-            }
-*/
             mediaPlayer = new MediaPlayer();
             fileSource = ayahsToListen.get(currentAyaAtAyasToListen).getAudioPath();
             mediaPlayer.setDataSource(fileSource);

@@ -24,6 +24,5 @@ public interface Constants {
     String AYAH_GO_INDEX = "ayahGo";
     int NA = -1;
     String RECORD_ITEM = "record";
-    String AUDIO_PATH = "audioPath";
-    String AUDIO_NAME = "audioName";
+    String AUDIO_ITEMS = "ayahitems";
 }
