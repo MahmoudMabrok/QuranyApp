@@ -61,7 +61,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.Holder> {
     public void onBindViewHolder(@NonNull Holder holder, int i) {
         RecordItem item = list.get(i);
         holder.recordName.setText(item.getFileName());
-        holder.tvNAyahs.setText(String.valueOf(item.getEndIndex() - item.getStartIndex()));
+        holder.tvNAyahs.setText(String.valueOf(item.getEndIndex() - item.getStartIndex() + 1));
         int score = item.getResult();
 
         if (score == Constants.NA) {

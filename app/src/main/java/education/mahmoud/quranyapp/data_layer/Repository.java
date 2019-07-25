@@ -299,6 +299,10 @@ public class Repository {
         return remote.upload(filePart);
     }
 
+    public void updateRecordItem(RecordItem path) {
+        quranDB.recordDAO().updateRecordItem(path);
+    }
+
 
    /* public Call<String> getUsers() {
         return remote.getUsers();

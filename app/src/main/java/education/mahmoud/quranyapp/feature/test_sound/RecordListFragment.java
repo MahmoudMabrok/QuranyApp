@@ -44,6 +44,7 @@ public class RecordListFragment extends Fragment {
     RecyclerView rvRecordList;
     @BindView(R.id.recordlist_bottom_sheet)
     BottomSheetLayout recordlistBottomSheet;
+
     private RecordAdapter recorditemAdapter;
     private Repository repository;
     private MediaPlayer player;
@@ -84,6 +85,7 @@ public class RecordListFragment extends Fragment {
 
     }
 
+    //<editor-fold desc="bottom sheet">
     private void setupBottomSheet(RecordItem path) {
         // bottom sheet
         MenuSheetView menuSheetView =
@@ -107,6 +109,7 @@ public class RecordListFragment extends Fragment {
         menuSheetView.inflateMenu(R.menu.menu_sheet_recordlist);
         recordlistBottomSheet.showWithSheetView(menuSheetView);
     }
+    //</editor-fold>
 
     private void uploadFile(RecordItem path) {
         Log.d(TAG, "uploadFile: ");
@@ -143,7 +146,13 @@ public class RecordListFragment extends Fragment {
         String ayhasStr = concateAyahs(ayahItemList);
 
         Spannable spannable = Util.getDiffSpannaled(ayhasStr, resFromApi);
-        updateTotalScore(Util.getTotalScore()); // Util.getTotalScore() -> score for yours Save test
+
+        int score = (int) Util.getTotalScore();
+        path.setResult(score);
+
+        repository.updateRecordItem(path);
+
+        updateTotalScore(score); // Util.getTotalScore() -> score for yours Save test
 
         Util.getTestResltDialoge(getContext(), spannable).show();
 
@@ -159,7 +168,7 @@ public class RecordListFragment extends Fragment {
         cuurentTotalScore += totalScore; // update with new score
         repository.setScore(cuurentTotalScore); // set in db
 
-        Util.getDialog(getContext(), String.valueOf(cuurentTotalScore), getString(R.string.score)).show();
+        Util.getDialog(getContext(), String.valueOf(totalScore), getString(R.string.score)).show();
     }
 
 

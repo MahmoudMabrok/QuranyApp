@@ -23,6 +23,7 @@ public class RecordItem implements Parcelable {
         }
     };
     int result = Constants.NA;
+
     @PrimaryKey(autoGenerate = true)
     private long id;
     private int startIndex;
