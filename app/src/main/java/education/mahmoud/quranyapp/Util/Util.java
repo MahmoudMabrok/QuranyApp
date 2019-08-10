@@ -183,6 +183,34 @@ public class Util {
 
     }
 
+    public static Spannable getSpannable(String text) {
+
+        Spannable spannable = new SpannableString(text);
+
+        String REGEX = "لل";
+        Pattern p = Pattern.compile(REGEX);
+        Matcher m = p.matcher(text);
+
+        int start, end;
+
+        //region allah match
+        while (m.find()) {
+            start = m.start();
+            while (text.charAt(start) != ' ' && start != 0) {
+                start--;
+            }
+            end = m.end();
+            while (text.charAt(end) != ' ') {
+                end++;
+            }
+            spannable.setSpan(new ForegroundColorSpan(Color.RED), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        }
+        //endregion
+
+        return spannable;
+    }
+
     public static Spannable getDiffSpannaled(String original, String toCompStr) {
         testText = new TestText();
         testText.gitDiff(original, toCompStr);
