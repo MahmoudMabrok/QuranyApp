@@ -21,27 +21,27 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
                 android:text="@string/start_from"
-                android:textSize="@dimen/_15ssp"
                 android:textColor="@color/whiteTextColor"
-                android:layout_marginEnd="@dimen/_5sdp"/>
+                android:textSize="@dimen/_15ssp" />
 
             <Spinner
                 android:id="@+id/spStartSura"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
                 android:background="@drawable/back_edit_search" />
 
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edStartSuraAyah"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/back_edit_search"
                 android:hint="@string/start_ayah"
                 android:inputType="number"
@@ -58,27 +58,27 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
                 android:text="@string/end_at"
-                android:textSize="@dimen/_15ssp"
                 android:textColor="@color/whiteTextColor"
-                android:layout_marginEnd="@dimen/_5sdp"/>
+                android:textSize="@dimen/_15ssp" />
 
             <Spinner
                 android:id="@+id/spEndSura"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
                 android:background="@drawable/back_edit_search" />
 
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edEndSuraAyah"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@drawable/back_edit_search"
                 android:hint="@string/end_ayah"
                 android:inputType="number"
@@ -190,22 +190,29 @@
             android:textColor="@color/ayas_color"
             android:textSize="@dimen/_22ssp" />
 
-      <!--  place of test -->
+        <!--  place of test -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTestText"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/edUserTextForAyahs"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_weight="1"
-            android:textColor="@color/whiteTextColor"
-            android:layout_margin="@dimen/_10sdp" />
+            android:gravity="top"
+            android:hint="@string/ayah"
+            android:textColor="@color/whiteTextColor" />
 
+        <Button
+            android:id="@+id/btnCheckTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="check" />
 
 
     </LinearLayout>

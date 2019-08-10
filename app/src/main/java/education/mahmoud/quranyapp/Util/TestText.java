@@ -12,7 +12,7 @@ public class TestText {
     private List<Point> correctPoints;
     private String resString;
 
-    private int totalScore;
+    private int totalScore = 0;
 
 
     public void gitDiff(String src, String dst) {

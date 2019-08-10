@@ -2,6 +2,7 @@ package education.mahmoud.quranyapp.feature.test_sound;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.Spannable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import com.flipboard.bottomsheet.commons.MenuSheetView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +23,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
+import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.data_layer.local.room.RecordItem;
 import education.mahmoud.quranyapp.data_layer.remote.model.MLResponse;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -39,6 +44,7 @@ public class RecordListFragment extends Fragment {
     RecyclerView rvRecordList;
     @BindView(R.id.recordlist_bottom_sheet)
     BottomSheetLayout recordlistBottomSheet;
+
     private RecordAdapter recorditemAdapter;
     private Repository repository;
     private MediaPlayer player;
@@ -71,15 +77,16 @@ public class RecordListFragment extends Fragment {
 
         recorditemAdapter.setOnPlayRecordClick(new RecordAdapter.onPlayRecordClick() {
             @Override
-            public void onPlayRecord(String path) {
-                setupBottomSheet(path);
+            public void onPlayRecord(RecordItem recordItem) {
+                setupBottomSheet(recordItem);
             }
         });
 
 
     }
 
-    private void setupBottomSheet(String path) {
+    //<editor-fold desc="bottom sheet">
+    private void setupBottomSheet(RecordItem path) {
         // bottom sheet
         MenuSheetView menuSheetView =
                 new MenuSheetView(getContext(), MenuSheetView.MenuType.LIST, "Options", new MenuSheetView.OnMenuItemClickListener() {
@@ -102,12 +109,15 @@ public class RecordListFragment extends Fragment {
         menuSheetView.inflateMenu(R.menu.menu_sheet_recordlist);
         recordlistBottomSheet.showWithSheetView(menuSheetView);
     }
+    //</editor-fold>
 
-    private void uploadFile(String path) {
+    private void uploadFile(RecordItem path) {
         Log.d(TAG, "uploadFile: ");
+        String resFromApi = "الحمد ";
+        //<editor-fold desc="api">
         // make body
         MediaType MEDIA_TYPE_AUDIO = MediaType.parse("audio/*");
-        File file = new File(path);
+        File file = new File(path.getFilePath());
         Log.d(TAG, "uploadFile: " + file.exists());
 
         RequestBody requestBody = RequestBody.create(MEDIA_TYPE_AUDIO, file);
@@ -118,16 +128,56 @@ public class RecordListFragment extends Fragment {
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("title", "Square Logo")
                 .addFormDataPart("file", "aa.mp4",
-                        RequestBody.create(MEDIA_TYPE_AUDIO, new File(path)))
+                        RequestBody.create(MEDIA_TYPE_AUDIO, new File(path.getFilePath())))
                 .build();
 
-        // make call 
         // callUpload(requestBody);
 
+        //    upload3(file);
+        //</editor-fold>
+        // TODO: 7/15/2019  add it inside api (above)
+        handleResultFromApi(path, resFromApi);
+    }
 
-        upload3(file);
+    private void handleResultFromApi(RecordItem path, String resFromApi) {
+        // get ayahs
+        List<AyahItem> ayahItemList = repository.getAyahSInRange(path.getStartIndex(), path.getEndIndex());
+        // concatenate
+        String ayhasStr = concateAyahs(ayahItemList);
+
+        Spannable spannable = Util.getDiffSpannaled(ayhasStr, resFromApi);
+
+        int score = (int) Util.getTotalScore();
+        path.setResult(score);
+
+        repository.updateRecordItem(path);
+
+        updateTotalScore(score); // Util.getTotalScore() -> score for yours Save test
+
+        Util.getTestResltDialoge(getContext(), spannable).show();
+
+    }
+
+    /**
+     * called after finish test and used to update score in db and show score for current test
+     *
+     * @param totalScore
+     */
+    private void updateTotalScore(long totalScore) {
+        long cuurentTotalScore = repository.getScore(); // saved score
+        cuurentTotalScore += totalScore; // update with new score
+        repository.setScore(cuurentTotalScore); // set in db
+
+        Util.getDialog(getContext(), String.valueOf(totalScore), getString(R.string.score)).show();
+    }
 
 
+    private String concateAyahs(List<AyahItem> ayahItemList) {
+        StringBuilder builder = new StringBuilder();
+        for (AyahItem ayahItem : ayahItemList) {
+            builder.append(ayahItem.getTextClean());
+        }
+        return builder.toString();
     }
 
     private void callUpload2(RequestBody requestBody, File file) {
@@ -150,10 +200,6 @@ public class RecordListFragment extends Fragment {
         });
     }
 
-
-    private void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
 
     private void callUpload(RequestBody requestBody) {
         repository.upload(requestBody).enqueue(new Callback<MLResponse>() {
@@ -180,6 +226,7 @@ public class RecordListFragment extends Fragment {
         MultipartBody.Part filePart = MultipartBody.Part.createFormData
                 ("file", file.getName(),
                         RequestBody.create(MediaType.parse("audio/*"), file));
+
         repository.upload(filePart).enqueue(new Callback<MLResponse>() {
             @Override
             public void onResponse(Call<MLResponse> call, Response<MLResponse> response) {
@@ -200,7 +247,9 @@ public class RecordListFragment extends Fragment {
             }
         });
     }
-    private void playAudio(String path) {
+
+    //region play audio
+    private void playAudio(RecordItem path) {
         Log.d(TAG, "playAudio: path " + path);
         if (player != null) {
             player.stop();
@@ -209,13 +258,14 @@ public class RecordListFragment extends Fragment {
         }
         player = new MediaPlayer();
         try {
-            player.setDataSource(path);
+            player.setDataSource(path.getFilePath());
             player.prepare();
             player.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    //endregion
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -228,5 +278,9 @@ public class RecordListFragment extends Fragment {
     private void loadData() {
         recorditemAdapter.setRecordList(repository.getRecords());
         Log.d(TAG, "loadData: " + recorditemAdapter.getItemCount());
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

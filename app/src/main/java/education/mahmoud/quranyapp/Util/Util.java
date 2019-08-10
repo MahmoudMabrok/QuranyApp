@@ -76,36 +76,6 @@ public class Util {
     }
 
 
-    public static Spannable getSpannable(String text) {
-
-        Spannable spannable = new SpannableString(text);
-
-        String REGEX = "لل";
-        Pattern p = Pattern.compile(REGEX);
-        Matcher m = p.matcher(text);
-
-        int start, end;
-
-        //region allah match
-        while (m.find()) {
-            start = m.start();
-            while (text.charAt(start) != ' ' && start != 0) {
-                start--;
-            }
-            end = m.end();
-            while (text.charAt(end) != ' ') {
-                end++;
-            }
-            spannable.setSpan(new ForegroundColorSpan(Color.RED), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        }
-        //endregion
-
-
-        return spannable;
-
-    }
-
     public static Quran getQuranClean(Context context) {
         try (InputStream fileIn = context.getAssets().open("quran_clean.json");
              BufferedInputStream bufferedIn = new BufferedInputStream(fileIn);
@@ -286,5 +256,18 @@ public class Util {
 
     public static String removeTashkeel(String ayah) {
         return RemoveTashkeel.removeTashkeel(ayah);
+    }
+
+    public static Dialog getTestResltDialoge(Context context, Spannable spannable) {
+        View view = LayoutInflater.from(context).inflate(R.layout.test_result_view_dialoge, null);
+        TextView textView = view.findViewById(R.id.tvShowResult);
+        textView.setText(spannable, TextView.BufferType.SPANNABLE);
+
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(view);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        return dialog;
+
     }
 }
