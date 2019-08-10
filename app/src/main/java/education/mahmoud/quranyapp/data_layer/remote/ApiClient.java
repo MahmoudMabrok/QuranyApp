@@ -16,6 +16,7 @@ public class ApiClient {
     static Gson gson = new GsonBuilder()
             .setLenient()
             .create();
+
     static OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
             .connectTimeout(40, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)

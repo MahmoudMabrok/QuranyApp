@@ -121,7 +121,7 @@ public class HomeActivity extends AppCompatActivity {
         new AppRate(this).setMinLaunchesUntilPrompt(5)
                 .init();
 
-        Stetho.initializeWithDefaults(getApplication());
+        //    Stetho.initializeWithDefaults(getApplication());
         Log.d(TAG, "onCreate: n " + ahays);
         ahays = repository.getTotlaAyahs();
         Log.d(TAG, "onCreate: nn after  " + ahays);
