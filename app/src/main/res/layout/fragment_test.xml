@@ -124,6 +124,7 @@
                 android:background="@drawable/back_search_res"
                 android:paddingStart="@dimen/_6sdp"
                 android:paddingEnd="@dimen/_6sdp"
+                android:visibility="gone"
                 android:text="@string/test_sound"
                 android:textColor="@color/bg_white" />
 
