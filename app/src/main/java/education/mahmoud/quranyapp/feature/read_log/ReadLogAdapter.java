@@ -31,7 +31,6 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
         notifyItemRangeChanged(list.size() - 1, list.size());
     }
 
-
     public void setReadLogList(List<ReadLog> newList) {
         list = new ArrayList<>(newList);
         notifyDataSetChanged();

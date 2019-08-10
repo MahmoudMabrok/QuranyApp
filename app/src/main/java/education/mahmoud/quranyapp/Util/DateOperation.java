@@ -12,12 +12,12 @@ public class DateOperation {
 
     public static String getStringDate(Date date) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-
+        int month = getMonth(date);
         StringBuilder stringBuilder = new StringBuilder();
         calendar.setTime(date);
         stringBuilder.append(calendar.get(Calendar.DAY_OF_MONTH));
         stringBuilder.append("-");
-        stringBuilder.append(calendar.get(Calendar.MONTH) + 1); //here add 1 to display ( Jan is 0 )
+        stringBuilder.append(month); //here add 1 to display ( Jan is 0 )
         stringBuilder.append("-");
         stringBuilder.append(calendar.get(Calendar.YEAR));
 
@@ -31,14 +31,11 @@ public class DateOperation {
     }
 
 
-    public static Date getCurrentDate() {
+    public static Date getCurrentDateExact() {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
         int year = getCurrentYear();
         int month = getCurrentMonth();
-
-        Log.d(TAG, "getCurrentDate: " + month);
-
         int day = getCurrentDay();
         calendar.set(year, month, day);
 
@@ -49,8 +46,11 @@ public class DateOperation {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-
         return calendar.getTime();
+    }
+
+    public static Date getCurrentDate() {
+        return new Date();
     }
 
     public static String getCurrentDateAsString() {

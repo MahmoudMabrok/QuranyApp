@@ -64,7 +64,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
      * hold num of pages that read today
      * will be update(in db) with every exit from activity
      */
-    ArraySet<Integer> pagesReadLogNumber ;
+    ArraySet<Integer> pagesReadLogNumber;
 
     /**
      * hold current date used to retrive pages and also with updating
@@ -74,6 +74,23 @@ public class ShowAyahsActivity extends AppCompatActivity {
      * hold current readLog item used to retrive pages and also with updating
      */
     private ReadLog readLog;
+    Toast toast;
+
+    private void addToReadLog(int pos) {
+        pagesReadLogNumber.add(pos);
+    }
+
+    private int getPosFromSurahAndAyah(int surah, int ayah) {
+        return repository.getPageFromSurahAndAyah(surah, ayah);
+    }
+
+    private int getPageFromJuz(int pos) {
+        return repository.getPageFromJuz(pos);
+    }
+
+    private int getStartPageFromIndex(int pos) {
+        return repository.getSuraStartpage(pos);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +100,9 @@ public class ShowAyahsActivity extends AppCompatActivity {
         repository = Repository.getInstance(getApplication());
         typeface = Typeface.createFromAsset(getAssets(), "me_quran.ttf");
         pos = getIntent().getIntExtra(Constants.SURAH_INDEX, 1);
-      //  Log.d(TAG, "onCreate: ** " + pos);
+        //  Log.d(TAG, "onCreate: ** " + pos);
         pos = getStartPageFromIndex(pos);
-      //  Log.d(TAG, "onCreate: *** " + pos);
+        //  Log.d(TAG, "onCreate: *** " + pos);
 
         //region Description
         if (getIntent().hasExtra(Constants.SURAH_GO_INDEX)) {
@@ -99,7 +116,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
 
         } else if (getIntent().hasExtra(Constants.PAGE_INDEX)) {  // case bookmark
             pos = getIntent().getIntExtra(Constants.PAGE_INDEX, 1);
-         } else if (getIntent().hasExtra(Constants.JUZ_INDEX)) {
+        } else if (getIntent().hasExtra(Constants.JUZ_INDEX)) {
             pos = getIntent().getIntExtra(Constants.JUZ_INDEX, 1);
             pos = getPageFromJuz(pos);
         }
@@ -135,22 +152,6 @@ public class ShowAyahsActivity extends AppCompatActivity {
         };
     }
 
-    private void addToReadLog(int pos) {
-        pagesReadLogNumber.add(pos);
-    }
-
-    private int getPosFromSurahAndAyah(int surah, int ayah) {
-        return repository.getPageFromSurahAndAyah(surah, ayah);
-    }
-
-    private int getPageFromJuz(int pos) {
-        return repository.getPageFromJuz(pos);
-    }
-
-    private int getStartPageFromIndex(int pos) {
-        return repository.getSuraStartpage(pos);
-    }
-
     private void initRV() {
         prepareColors();
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -165,8 +166,11 @@ public class ShowAyahsActivity extends AppCompatActivity {
         pageAdapter.setPageShown(new PageAdapter.PageShown() {
             @Override
             public void onDiplayed(int pos, PageAdapter.Holder holder) {
-                // items start from 0 increase 1 to get real page num, will be used in bookmark
+                // items start from 0 increase 1 to get real page num,
+                // will be used in bookmark
                 lastpageShown = pos + 1;
+                // add page to read log
+                addToReadLog(lastpageShown);
 
                 holder.topLinear.setVisibility(View.INVISIBLE);
                 holder.BottomLinear.setVisibility(View.INVISIBLE);
@@ -175,18 +179,18 @@ public class ShowAyahsActivity extends AppCompatActivity {
                 Page page = pageAdapter.getPage(pos);
                 if (quraterSStart.contains(page.getPageNum())) {
                     // get last ayah to extract info from it
-                    AyahItem ayahItem = page.getAyahItems().get(page.getAyahItems().size()-1);
+                    AyahItem ayahItem = page.getAyahItems().get(page.getAyahItems().size() - 1);
                     int rub3Num = ayahItem.getHizbQuarter();
-                    rub3Num -- ; // as first one must be 0
-                    if (rub3Num % 8  == 0 ){
-                        showMessage(getString(R.string.juz_to_display , ayahItem.getJuz()));
-                    }else if (rub3Num % 4 == 0 ){
-                        showMessage(getString(R.string.hizb_to_display , rub3Num / 4));
-                    }else{
-                        int part = rub3Num % 4 ;
-                        part -- ; // 1/4 is first element which is 0
+                    rub3Num--; // as first one must be 0
+                    if (rub3Num % 8 == 0) {
+                        showMessage(getString(R.string.juz_to_display, ayahItem.getJuz()));
+                    } else if (rub3Num % 4 == 0) {
+                        showMessage(getString(R.string.hizb_to_display, rub3Num / 4));
+                    } else {
+                        int part = rub3Num % 4;
+                        part--; // 1/4 is first element which is 0
                         String[] parts = getResources().getStringArray(R.array.parts);
-                        showMessage(getString(R.string.part_to_display , parts[part], (rub3Num/4)+1));
+                        showMessage(getString(R.string.part_to_display, parts[part], (rub3Num / 4) + 1));
                     }
                 }
 
@@ -200,7 +204,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
                 BookmarkItem bookmarkItem = new BookmarkItem();
 
                 bookmarkItem.setTimemills(new Date().getTime());
-
+                // get ayah to retrieve info from it
                 AyahItem ayahItem = item.getAyahItems().get(0);
                 bookmarkItem.setSuraName(getSuraNameFromIndex(ayahItem.getSurahIndex()));
                 bookmarkItem.setPageNum(item.getPageNum());
@@ -213,6 +217,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
             }
         });
 
+        // to preserver quran direction from right to left
         rvAyahsPages.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
         pageAdapter.setiOnClick(new IOnClick() {
@@ -220,14 +225,30 @@ public class ShowAyahsActivity extends AppCompatActivity {
             public void onClick(int pos) {
                 // pos represent page and need to be updated by 1 to be as recyclerview
                 // +2 to be as Mushaf
-                rvAyahsPages.scrollToPosition(pos+1);
-                Log.d(TAG, "onClickaaa : " + pos);
-                addToReadLog(pos + 2);
+                rvAyahsPages.scrollToPosition(pos + 1);
+                //   addToReadLog(pos + 2);
             }
         });
 
     }
+    //</editor-fold>
 
+    /**
+     * @param surahIndex in quran
+     * @return
+     */
+    private String getSuraNameFromIndex(int surahIndex) {
+        return Data.SURA_NAMES[surahIndex - 1];
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+        loadPagesReadLoge();
+    }
+
+    //<editor-fold desc="prepare colors">
     private void prepareColors() {
         // check Night Mode
         if (repository.getNightModeState()) {
@@ -253,40 +274,6 @@ public class ShowAyahsActivity extends AppCompatActivity {
             }
 
 
-        }
-    }
-
-    /**
-     * @param surahIndex in quran
-     * @return
-     */
-    private String getSuraNameFromIndex(int surahIndex) {
-        return Data.SURA_NAMES[surahIndex - 1];
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-        loadPagesReadLoge();
-    }
-
-
-
-
-    private void loadPagesReadLoge() {
-        currentDate = DateOperation.getCurrentDate().getTime();
-        readLog = repository.getLReadLogByDate(currentDate);
-        if (readLog == null){
-            readLog = new ReadLog();
-            readLog.setDate(currentDate);
-            readLog.setStrDate(DateOperation.getStringDate(currentDate));
-            readLog.setPages(new ArraySet<>());
-        }
-        pagesReadLogNumber = readLog.getPages();
-
-        for(Integer integer: pagesReadLogNumber){
-            Log.d(TAG, "loadPagesReadLoge: "+ integer);
         }
     }
 
@@ -321,18 +308,28 @@ public class ShowAyahsActivity extends AppCompatActivity {
         new Thread(this::generateListOfPagesStartWithHizbQurater).start();
     }
 
+    private void loadPagesReadLoge() {
+        currentDate = DateOperation.getCurrentDateExact().getTime();
+        readLog = repository.getLReadLogByDate(currentDate);
+        if (readLog == null) {
+            readLog = new ReadLog();
+            readLog.setDate(currentDate);
+            readLog.setStrDate(DateOperation.getStringDate(currentDate));
+            readLog.setPages(new ArraySet<>());
+        }
+        pagesReadLogNumber = readLog.getPages();
+
+        for (Integer integer : pagesReadLogNumber) {
+            Log.d(TAG, "loadPagesReadLoge: " + integer);
+        }
+    }
+
     /**
      * retrieve list of pages that contain start of hizb Quaters.
      */
     private void generateListOfPagesStartWithHizbQurater() {
-       quraterSStart = repository.getHizbQuaterStart();
-      // logData(quraterSStart);
-    }
-
-    private void logData(List<Integer> quraterSStart) {
-        for(Integer integer : quraterSStart){
-            Log.d(TAG, "logData: " + integer);
-        }
+        quraterSStart = repository.getHizbQuaterStart();
+        // logData(quraterSStart);
     }
 
     private void foundState() {
@@ -347,12 +344,17 @@ public class ShowAyahsActivity extends AppCompatActivity {
         rvAyahsPages.setVisibility(View.GONE);
     }
 
-    Toast toast ;
+    private void logData(List<Integer> quraterSStart) {
+        for (Integer integer : quraterSStart) {
+            Log.d(TAG, "logData: " + integer);
+        }
+    }
+
     private void showMessage(String message) {
-        if (toast != null){
+        if (toast != null) {
             toast.cancel();
         }
-        toast = Toast.makeText(this , message, Toast.LENGTH_SHORT);
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
 
     }

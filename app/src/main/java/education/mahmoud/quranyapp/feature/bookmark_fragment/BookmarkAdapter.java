@@ -38,8 +38,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Holder
     }
 
     public void setIoBookmark(IOBookmark ioBookmark) {
-        this.ioBookmark = ioBookmark
-        ;
+        this.ioBookmark = ioBookmark;
     }
 
     public void setBookmarkItemList(List<BookmarkItem> newList) {
