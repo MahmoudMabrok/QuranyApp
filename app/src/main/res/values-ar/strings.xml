@@ -159,4 +159,9 @@
 
     <string name="continue_reading">استكمل القراءة</string>
 
+    <string name="page_num">رقم الصفحة </string>
+    <string name="go_by_page">فتح المصحف على الصفحة</string>
+    <string name="page_limit">Page must be 1-604</string>
+
+
 </resources>

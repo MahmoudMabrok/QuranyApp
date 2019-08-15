@@ -70,27 +70,20 @@ public class ShowAyahsActivity extends AppCompatActivity {
      * hold current date used to retrive pages and also with updating
      */
     private long currentDate;
+
+
+    /**
+     * hold current date used to retrive pages and also with updating
+     */
+    private String currentDateStr;
+
+
     /**
      * hold current readLog item used to retrive pages and also with updating
      */
     private ReadLog readLog;
     Toast toast;
 
-    private void addToReadLog(int pos) {
-        pagesReadLogNumber.add(pos);
-    }
-
-    private int getPosFromSurahAndAyah(int surah, int ayah) {
-        return repository.getPageFromSurahAndAyah(surah, ayah);
-    }
-
-    private int getPageFromJuz(int pos) {
-        return repository.getPageFromJuz(pos);
-    }
-
-    private int getStartPageFromIndex(int pos) {
-        return repository.getSuraStartpage(pos);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +93,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
         repository = Repository.getInstance(getApplication());
         typeface = Typeface.createFromAsset(getAssets(), "me_quran.ttf");
         pos = getIntent().getIntExtra(Constants.SURAH_INDEX, 1);
-        //  Log.d(TAG, "onCreate: ** " + pos);
         pos = getStartPageFromIndex(pos);
-        //  Log.d(TAG, "onCreate: *** " + pos);
 
         //region Description
         if (getIntent().hasExtra(Constants.SURAH_GO_INDEX)) {
@@ -114,7 +105,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
         } else if (getIntent().hasExtra(Constants.LAST_INDEX)) {
             pos = repository.getLatestRead(); // as it will be decreased
 
-        } else if (getIntent().hasExtra(Constants.PAGE_INDEX)) {  // case bookmark
+        } else if (getIntent().hasExtra(Constants.PAGE_INDEX)) {  // case bookmark, go to by page
             pos = getIntent().getIntExtra(Constants.PAGE_INDEX, 1);
         } else if (getIntent().hasExtra(Constants.JUZ_INDEX)) {
             pos = getIntent().getIntExtra(Constants.JUZ_INDEX, 1);
@@ -150,6 +141,22 @@ public class ShowAyahsActivity extends AppCompatActivity {
                 //endregion
             }
         };
+    }
+
+    private void addToReadLog(int pos) {
+        pagesReadLogNumber.add(pos);
+    }
+
+    private int getPosFromSurahAndAyah(int surah, int ayah) {
+        return repository.getPageFromSurahAndAyah(surah, ayah);
+    }
+
+    private int getPageFromJuz(int pos) {
+        return repository.getPageFromJuz(pos);
+    }
+
+    private int getStartPageFromIndex(int pos) {
+        return repository.getSuraStartpage(pos);
     }
 
     private void initRV() {
@@ -310,11 +317,13 @@ public class ShowAyahsActivity extends AppCompatActivity {
 
     private void loadPagesReadLoge() {
         currentDate = DateOperation.getCurrentDateExact().getTime();
-        readLog = repository.getLReadLogByDate(currentDate);
+        currentDateStr = DateOperation.getCurrentDateAsString();
+
+        readLog = repository.getLReadLogByDate(currentDateStr);
         if (readLog == null) {
             readLog = new ReadLog();
             readLog.setDate(currentDate);
-            readLog.setStrDate(DateOperation.getStringDate(currentDate));
+            readLog.setStrDate(currentDateStr);
             readLog.setPages(new ArraySet<>());
         }
         pagesReadLogNumber = readLog.getPages();
@@ -376,10 +385,10 @@ public class ShowAyahsActivity extends AppCompatActivity {
         readLog.setPages(pagesReadLogNumber);
         try {
             repository.addReadLog(readLog);
-            Log.d(TAG, "saveReadLog: added");
+            //       Log.d(TAG, "saveReadLog: added");
         } catch (Exception e) {
             repository.updateReadLog(readLog);
-            Log.d(TAG, "saveReadLog: updated");
+            //      Log.d(TAG, "saveReadLog: updated");
         }
 
 

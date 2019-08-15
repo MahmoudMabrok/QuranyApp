@@ -79,7 +79,31 @@
         android:layout_height="wrap_content"
         android:background="@drawable/back_search_res"
         android:text="@string/go_by_juz"
+        android:layout_marginBottom="@dimen/_16sdp"
         android:textColor="@color/ayas_color"
         android:textSize="@dimen/_15ssp" />
+
+
+    <EditText
+        android:id="@+id/edPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:background="@drawable/back_edit_search"
+        android:hint="@string/page_num"
+        android:inputType="numberDecimal"
+        android:padding="@dimen/_10sdp"
+        android:textSize="@dimen/_15ssp" />
+
+
+    <Button
+        android:id="@+id/btnGoToPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back_search_res"
+        android:text="@string/go_by_page"
+        android:textColor="@color/ayas_color"
+        android:textSize="@dimen/_15ssp" />
+
 
 </LinearLayout>

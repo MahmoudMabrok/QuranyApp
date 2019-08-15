@@ -251,6 +251,10 @@ public class Repository {
         return quranDB.readLogDAO().getReadLogBydate(currentDate);
     }
 
+    public ReadLog getLReadLogByDate(String currentDate) {
+        return quranDB.readLogDAO().getReadLogBydate(currentDate);
+    }
+
     public List<ReadLog> getReadLog() {
         return quranDB.readLogDAO().getAllReadLog();
     }

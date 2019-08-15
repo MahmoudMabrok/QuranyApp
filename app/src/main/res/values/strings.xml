@@ -154,6 +154,9 @@
     <string name="start_Record">Started ...</string>
     <string name="finish_Record">Finish Recording</string>
     <string name="continue_reading">Continue reading</string>
+    <string name="page_num">Page Num</string>
+    <string name="go_by_page">Go By Page</string>
+    <string name="page_limit">Page must be 1-604</string>
 
 
 </resources>

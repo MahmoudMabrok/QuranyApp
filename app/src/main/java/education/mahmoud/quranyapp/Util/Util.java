@@ -216,7 +216,6 @@ public class Util {
         testText.gitDiff(original, toCompStr);
         String res = testText.getResString();
         return getSpannable(res, testText.getCorrectPoints(), testText.getInsertionPoints(), testText.getDeletionPoints());
-
     }
 
     public static Spannable getSpannable(String text, List<Point> correctPoints, List<Point> insertPoints, List<Point> delePoint) {

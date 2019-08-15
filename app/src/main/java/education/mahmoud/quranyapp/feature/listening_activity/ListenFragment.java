@@ -188,6 +188,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         }
     }
 
+    //<editor-fold desc="download ">
     @Override
     public void onDownloadComplete() {
         Log.d(TAG, "onDownloadComplete: ");
@@ -227,6 +228,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         lnDownState.setVisibility(GONE);
         backToSelectionState();
     }
+    //</editor-fold>
 
     private void finishDownloadState() {
         showMessage(getString(R.string.finish));
@@ -285,7 +287,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         // // TODO: 6/30/2019  bind service with this.
         displayAyahs();
 
-        /*//<editor-fold desc="start audio service">
+        //<editor-fold desc="start audio service">
         AyahsListen ayahsListen = new AyahsListen();
         ayahsListen.setAyahItemList(ayahsToListen);
         if (serviceIntent != null) {
@@ -294,7 +296,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
         serviceIntent = ListenServie.createService(getContext(),
                 ayahsListen);
         //</editor-fold>
-*/
 
     }
 

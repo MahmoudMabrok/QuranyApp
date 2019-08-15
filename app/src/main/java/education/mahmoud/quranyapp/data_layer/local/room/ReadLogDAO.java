@@ -17,11 +17,14 @@ public interface ReadLogDAO {
     @Update
     public void updateReadLog(ReadLog item);
 
-    @Query("select * from readlog")
+    @Query("select * from readlog order by date desc")
     public List<ReadLog> getAllReadLog();
 
     @Query("select * from readlog where date = :date")
     ReadLog getReadLogBydate(long date);
+
+    @Query("select * from readlog where strDate = :currentDate")
+    ReadLog getReadLogBydate(String currentDate);
 
     @Delete
     void deleteReadLog(ReadLog readLog);

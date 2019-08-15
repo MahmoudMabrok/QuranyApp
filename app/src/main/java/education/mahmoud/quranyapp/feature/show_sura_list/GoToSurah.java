@@ -3,15 +3,15 @@ package education.mahmoud.quranyapp.feature.show_sura_list;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,6 +37,10 @@ public class GoToSurah extends DialogFragment {
     Button btnGoToJuz;
     @BindView(R.id.edSurahAyahNum)
     EditText edSurahAyahNum;
+    @BindView(R.id.edPage)
+    EditText edPage;
+    @BindView(R.id.btnGoToPage)
+    Button btnGoToPage;
 
     @NonNull
     @Override
@@ -125,5 +129,23 @@ public class GoToSurah extends DialogFragment {
         startActivity(intent);
         dismiss();
 
+    }
+
+    @OnClick(R.id.btnGoToPage)
+    public void onbtnGoToPage() {
+        try {
+            int page = Integer.parseInt(edPage.getText().toString());
+
+            if (page > 0 && page <= 604) {
+                Intent intent = new Intent(getActivity(), ShowAyahsActivity.class);
+                intent.putExtra(Constants.PAGE_INDEX, page);
+                startActivity(intent);
+                dismiss();
+            } else {
+                edPage.setError(getString(R.string.page_limit));
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
 }
