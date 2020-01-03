@@ -1,4 +1,5 @@
 # QuranyApp
+[![HitCount](http://hits.dwyl.io/mahmoudmabrok/QuranyApp.svg)](http://hits.dwyl.io/mahmoudmabrok/QuranyApp)
 
 <h1 align=center>
 <img src="logo/horizontal.png" width=60%>
