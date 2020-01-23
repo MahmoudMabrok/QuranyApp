@@ -17,12 +17,13 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 
 # Screens
 <div>
- <img src="images/home.png" width = 20%>
- <img src="images/lastread.png" width = 20%>
- <img src="images/listen.png" width = 20%>
- <img src="images/quran.png" width = 20%>
- <img src="images/readlog.png" width = 20%>
- <img src="images/search.png" width = 20%>
+ <img src="images/0.png" width = 20%>
+ <img src="images/1.png" width = 20%>
+ <img src="images/2.png" width = 20%>
+ <img src="images/3.png" width = 20%>
+ <img src="images/4.png" width = 20%>
+ <img src="images/5.png" width = 20%>
+ <img src="images/6.png" width = 20%>
   </div>
 
 # Features 
