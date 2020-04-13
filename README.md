@@ -206,7 +206,7 @@ Java | 10494
 XML | 3498
 
 - 31/3 / 13/4
-![Screen Shot 2020-04-13 at 2 30 35 PM](https://user-images.githubusercontent.com/13488900/79120712-d545b000-7d93-11ea-8a3a-1152887d9f28.png)
+![folow](https://user-images.githubusercontent.com/13488900/79120712-d545b000-7d93-11ea-8a3a-1152887d9f28.png)
 
 - 19/3 - 1/4
 ![folow](https://user-images.githubusercontent.com/13488900/78177161-f76b3400-745d-11ea-9277-d92771cc226c.png)
