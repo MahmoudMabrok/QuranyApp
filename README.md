@@ -13,7 +13,7 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
   - [V2.0](https://www.youtube.com/watch?v=hzJV1lth958).
   - [V1.8](https://www.youtube.com/watch?v=-DbH0EKkAzw).
 - apk
-  - [v2.5.1](https://drive.google.com/open?id=1iU-WgufHMAELKOmClhW2Z18Miyef4f4v).
+  - [latest](https://github.com/MahmoudMabrok/QuranyApp/releases/tag/2.6)
 
 # Screens
 <div>
@@ -205,7 +205,10 @@ Languages | Line of code (LOC)
 Java | 10494
 XML | 3498
 
-- 19/3 - 1/4 
+- 31/3 / 13/4
+![Screen Shot 2020-04-13 at 2 30 35 PM](https://user-images.githubusercontent.com/13488900/79120712-d545b000-7d93-11ea-8a3a-1152887d9f28.png)
+
+- 19/3 - 1/4
 ![folow](https://user-images.githubusercontent.com/13488900/78177161-f76b3400-745d-11ea-9277-d92771cc226c.png)
 
 - 28/2 - 12/3 
