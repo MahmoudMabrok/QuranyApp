@@ -1,4 +1,5 @@
 # QuranyApp
+[![HitCount](http://hits.dwyl.io/mahmoudmabrok/QuranyApp.svg)](http://hits.dwyl.io/mahmoudmabrok/QuranyApp)
 
 <h1 align=center>
 <img src="logo/horizontal.png" width=60%>
@@ -12,16 +13,17 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
   - [V2.0](https://www.youtube.com/watch?v=hzJV1lth958).
   - [V1.8](https://www.youtube.com/watch?v=-DbH0EKkAzw).
 - apk
-  - [v2.5.1](https://drive.google.com/open?id=1iU-WgufHMAELKOmClhW2Z18Miyef4f4v).
+  - [latest](https://github.com/MahmoudMabrok/QuranyApp/releases/tag/2.6)
 
 # Screens
 <div>
- <img src="images/home.png" width = 20%>
- <img src="images/lastread.png" width = 20%>
- <img src="images/listen.png" width = 20%>
- <img src="images/quran.png" width = 20%>
- <img src="images/readlog.png" width = 20%>
- <img src="images/search.png" width = 20%>
+ <img src="images/0.jpg" width = 20%>
+ <img src="images/1.jpg" width = 20%>
+ <img src="images/2.jpg" width = 20%>
+ <img src="images/3.jpg" width = 20%>
+ <img src="images/4.jpg" width = 20%>
+ <img src="images/5.jpg" width = 20%>
+ 
   </div>
 
 # Features 
@@ -202,6 +204,16 @@ Languages | Line of code (LOC)
 ---------- | -------
 Java | 10494
 XML | 3498
+
+- 31/3 / 13/4
+![folow](https://user-images.githubusercontent.com/13488900/79120712-d545b000-7d93-11ea-8a3a-1152887d9f28.png)
+
+- 19/3 - 1/4
+![folow](https://user-images.githubusercontent.com/13488900/78177161-f76b3400-745d-11ea-9277-d92771cc226c.png)
+
+- 28/2 - 12/3 
+![git flow](https://user-images.githubusercontent.com/13488900/76508469-17a76480-6457-11ea-9ce3-4e5a76496fc6.png)
+
 
 ------ 
 
