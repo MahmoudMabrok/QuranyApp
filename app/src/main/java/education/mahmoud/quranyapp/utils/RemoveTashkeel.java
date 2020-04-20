@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.Util;
+package education.mahmoud.quranyapp.utils;
 
 /**
  * created by mhashim6 (Muhammad Hashim) on 26/06/2017

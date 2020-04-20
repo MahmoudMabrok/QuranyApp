@@ -3,7 +3,7 @@ package education.mahmoud.quranyapp.data_layer.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.utils.Constants;
 
 public class LocalShared {
 

@@ -2,7 +2,6 @@ package education.mahmoud.quranyapp.feature.listening_activity;
 
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,8 +37,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.Util.Data;
-import education.mahmoud.quranyapp.Util.Util;
+import education.mahmoud.quranyapp.utils.Data;
+import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
@@ -97,7 +96,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     boolean isPermissionAllowed;
     int downloadID;
     int i = 1;
-    Typeface typeface;
     SuraItem startSura, endSura;
     String downURL, path, filename;
     int index;
@@ -245,7 +243,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
 
         repository = Repository.getInstance(getActivity().getApplication());
 
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/me_quran.ttf");
 
         isPermissionAllowed = repository.getPermissionState();
 
@@ -332,7 +329,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     private void displayAyahs() {
         Log.d(TAG, "displayAyahs: " + currentAyaAtAyasToListen);
         AyahItem ayahItem = ayahsToListen.get(currentAyaAtAyasToListen);
-        tvAyahToListen.setTypeface(typeface);
+
         tvAyahToListen.setText(MessageFormat.format("{0} ﴿ {1} ﴾ ", ayahItem.getText(), ayahItem.getAyahInSurahIndex()));
         // showMessage("size " + ayahsToListen.size());
         playAudio();

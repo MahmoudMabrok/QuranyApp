@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_2sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvSuraNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/_13ssp"
+            android:layout_margin="@dimen/_6sdp"
+            android:background="@color/skelton"
+            android:textColor="@color/whiteTextColor"
+            tools:text="@tools:sample/lorem" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@color/skelton"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSuraName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/whiteTextColor"
+                android:textSize="@dimen/_17ssp"
+                tools:text="@tools:sample/lorem" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvSuraRevolution"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/whiteTextColor"
+                    tools:text="@string/sura_rev_mackkia" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/seperator"
+                    android:textColor="@color/whiteTextColor"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    />
+
+                <TextView
+                    android:id="@+id/tvSuraAyahsNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/whiteTextColor"
+                    tools:text="@string/ayah_num" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvSuraPageNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_13ssp"
+            android:background="@color/skelton"
+            android:layout_margin="@dimen/_6sdp"
+            android:textColor="@color/whiteTextColor"
+            android:gravity="center_horizontal"
+            tools:text="551"/>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

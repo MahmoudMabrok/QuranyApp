@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
-import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.utils.Constants;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.RecordItem;
 

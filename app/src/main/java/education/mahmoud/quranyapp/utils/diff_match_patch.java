@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package education.mahmoud.quranyapp.Util;
+package education.mahmoud.quranyapp.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

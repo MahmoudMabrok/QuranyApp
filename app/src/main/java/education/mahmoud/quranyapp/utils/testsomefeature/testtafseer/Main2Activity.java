@@ -1,10 +1,7 @@
-package education.mahmoud.quranyapp.Util.testsomefeature.testtafseer;
+package education.mahmoud.quranyapp.utils.testsomefeature.testtafseer;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-
-import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.Repository;
 
 public class Main2Activity extends AppCompatActivity {
     private static final String TAG = "Main2Activity";

@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.utils.Constants;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
 
 public class GoToSurah extends DialogFragment {

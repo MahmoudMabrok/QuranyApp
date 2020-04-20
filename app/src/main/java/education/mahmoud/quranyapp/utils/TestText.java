@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.Util;
+package education.mahmoud.quranyapp.utils;
 
 import java.util.ArrayList;
 import java.util.List;

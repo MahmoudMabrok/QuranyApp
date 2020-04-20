@@ -12,6 +12,7 @@ android {
         targetSdkVersion 29
         versionCode 29
         versionName "3.0.0"
+        multiDexEnabled true
 //        testInstrumentationRumannner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -42,6 +43,8 @@ dependencies {
     implementation "androidx.vectordrawable:vectordrawable:$support_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core-ktx:1.2.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
 
 
     testImplementation 'junit:junit:4.12'

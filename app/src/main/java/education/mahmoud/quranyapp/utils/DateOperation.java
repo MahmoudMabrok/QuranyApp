@@ -1,6 +1,4 @@
-package education.mahmoud.quranyapp.Util;
-
-import android.util.Log;
+package education.mahmoud.quranyapp.utils;
 
 import java.util.Calendar;
 import java.util.Date;

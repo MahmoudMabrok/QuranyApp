@@ -54,6 +54,7 @@
 
     <color name="bg_items">@color/colorPrimary</color>
     <color name="tv_color">@color/whiteTextColor</color>
+    <color name="skelton">#858282</color>
 
 
 </resources>

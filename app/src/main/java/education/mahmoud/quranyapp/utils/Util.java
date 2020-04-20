@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.Util;
+package education.mahmoud.quranyapp.utils;
 
 
 import android.app.Dialog;

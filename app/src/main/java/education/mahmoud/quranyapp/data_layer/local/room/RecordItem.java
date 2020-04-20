@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import education.mahmoud.quranyapp.Util.Constants;
+import education.mahmoud.quranyapp.utils.Constants;
 
 @Entity(tableName = "records")
 public class RecordItem implements Parcelable {

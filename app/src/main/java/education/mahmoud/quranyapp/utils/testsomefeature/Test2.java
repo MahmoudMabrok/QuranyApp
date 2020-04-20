@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.Util.testsomefeature;
+package education.mahmoud.quranyapp.utils.testsomefeature;
 
 import education.mahmoud.quranyapp.model.Quran;
 

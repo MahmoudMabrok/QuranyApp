@@ -1,8 +1,6 @@
-package education.mahmoud.quranyapp.Util;
+package education.mahmoud.quranyapp.utils;
 
 import org.junit.Test;
-
-import java.util.Date;
 
 import static org.junit.Assert.*;
 
