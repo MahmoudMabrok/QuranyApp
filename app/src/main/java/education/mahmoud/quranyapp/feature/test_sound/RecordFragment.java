@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -23,17 +25,16 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.Constants;
-import education.mahmoud.quranyapp.utils.Data;
-import education.mahmoud.quranyapp.utils.DateOperation;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.RecordItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
+import education.mahmoud.quranyapp.utils.Constants;
+import education.mahmoud.quranyapp.utils.Data;
+import education.mahmoud.quranyapp.utils.DateOperation;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 

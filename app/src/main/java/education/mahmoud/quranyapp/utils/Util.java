@@ -18,6 +18,9 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -34,8 +37,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.collection.ArraySet;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;

@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.data_layer.local;
 
 import android.app.Application;
+
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;

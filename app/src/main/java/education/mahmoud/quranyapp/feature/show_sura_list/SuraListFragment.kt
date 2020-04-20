@@ -9,11 +9,9 @@ import butterknife.OnClick
 import com.ethanhua.skeleton.RecyclerViewSkeletonScreen
 import com.ethanhua.skeleton.Skeleton
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.utils.Constants
-import education.mahmoud.quranyapp.data_layer.Repository
-import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity
+import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,7 +19,6 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_sura_list.*
 import org.koin.android.ext.android.inject
-import java.util.*
 
 /**
  * Refactored to Kotlin

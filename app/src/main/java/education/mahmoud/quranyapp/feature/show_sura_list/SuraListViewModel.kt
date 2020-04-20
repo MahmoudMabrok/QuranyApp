@@ -5,7 +5,6 @@ import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.data_layer.Repository
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
 import education.mahmoud.quranyapp.utils.log
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo

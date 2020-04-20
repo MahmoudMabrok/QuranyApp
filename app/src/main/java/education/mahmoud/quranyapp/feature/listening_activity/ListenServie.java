@@ -10,15 +10,16 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.utils.Constants;
 import education.mahmoud.quranyapp.utils.Util;
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in

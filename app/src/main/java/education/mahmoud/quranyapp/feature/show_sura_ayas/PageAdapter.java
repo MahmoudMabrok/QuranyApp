@@ -3,8 +3,6 @@ package education.mahmoud.quranyapp.feature.show_sura_ayas;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.CountDownTimer;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.utils.Data;
 import education.mahmoud.quranyapp.utils.Util;
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 
 public class PageAdapter extends RecyclerView.Adapter<PageAdapter.Holder> {
 

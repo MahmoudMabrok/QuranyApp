@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.fragment.app.Fragment;
+
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntro2Fragment;
 import com.github.paolorotolo.appintro.model.SliderPage;
 
-import androidx.fragment.app.Fragment;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity;
 import education.mahmoud.quranyapp.feature.services.LoadDataQuranTafseer;

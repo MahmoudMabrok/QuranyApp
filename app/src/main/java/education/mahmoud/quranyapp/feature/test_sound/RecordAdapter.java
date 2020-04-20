@@ -5,16 +5,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.Constants;
 import education.mahmoud.quranyapp.data_layer.local.room.RecordItem;
+import education.mahmoud.quranyapp.utils.Constants;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.Holder> {
 

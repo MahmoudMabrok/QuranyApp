@@ -1,13 +1,12 @@
 package education.mahmoud.quranyapp.data_layer.local.room;
 
+import androidx.collection.ArraySet;
+import androidx.room.TypeConverter;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.List;
-
-import androidx.collection.ArraySet;
-import androidx.room.TypeConverter;
 
 public class PagesConverter {
 

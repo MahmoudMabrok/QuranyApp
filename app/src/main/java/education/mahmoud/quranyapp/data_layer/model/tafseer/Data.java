@@ -1,9 +1,10 @@
 
 package education.mahmoud.quranyapp.data_layer.model.tafseer;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Data {
 

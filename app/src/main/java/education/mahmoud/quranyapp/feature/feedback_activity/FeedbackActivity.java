@@ -1,9 +1,10 @@
 package education.mahmoud.quranyapp.feature.feedback_activity;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -11,8 +12,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
+import education.mahmoud.quranyapp.utils.Util;
 
 
 public class FeedbackActivity extends AppCompatActivity {

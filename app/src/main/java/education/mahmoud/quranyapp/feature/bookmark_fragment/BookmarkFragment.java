@@ -3,15 +3,16 @@ package education.mahmoud.quranyapp.feature.bookmark_fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,11 +22,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.Constants;
-import education.mahmoud.quranyapp.utils.Data;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
+import education.mahmoud.quranyapp.utils.Constants;
+import education.mahmoud.quranyapp.utils.Data;
 
 /**
  * A simple {@link Fragment} subclass.

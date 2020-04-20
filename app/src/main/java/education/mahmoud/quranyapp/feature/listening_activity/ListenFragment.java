@@ -19,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
@@ -31,18 +33,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.Data;
-import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity;
+import education.mahmoud.quranyapp.utils.Data;
+import education.mahmoud.quranyapp.utils.Util;
 
 import static android.view.View.GONE;
 

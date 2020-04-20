@@ -18,6 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -25,20 +29,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.Data;
-import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.feature.test_sound.TestSoundActivity;
+import education.mahmoud.quranyapp.utils.Data;
+import education.mahmoud.quranyapp.utils.Util;
 
 /**
  * A simple {@link Fragment} subclass.

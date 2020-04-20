@@ -10,30 +10,31 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.collection.ArraySet;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.App;
-import education.mahmoud.quranyapp.utils.Constants;
-import education.mahmoud.quranyapp.utils.Data;
-import education.mahmoud.quranyapp.utils.DateOperation;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
 import education.mahmoud.quranyapp.data_layer.local.room.ReadLog;
 import education.mahmoud.quranyapp.feature.download.DownloadActivity;
+import education.mahmoud.quranyapp.utils.App;
+import education.mahmoud.quranyapp.utils.Constants;
+import education.mahmoud.quranyapp.utils.Data;
+import education.mahmoud.quranyapp.utils.DateOperation;
 
 public class ShowAyahsActivity extends AppCompatActivity {
 

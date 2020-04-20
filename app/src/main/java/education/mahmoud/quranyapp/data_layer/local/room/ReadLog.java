@@ -1,15 +1,10 @@
 package education.mahmoud.quranyapp.data_layer.local.room;
 
-import java.util.List;
-import java.util.Set;
-
 import androidx.collection.ArraySet;
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
 @Entity(tableName = "readlog")
 public class ReadLog {

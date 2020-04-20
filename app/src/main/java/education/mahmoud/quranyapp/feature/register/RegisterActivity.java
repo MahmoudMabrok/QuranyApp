@@ -2,12 +2,13 @@ package education.mahmoud.quranyapp.feature.register;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -15,9 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.feature.login.Login;
+import education.mahmoud.quranyapp.utils.Util;
 
 public class RegisterActivity extends AppCompatActivity {
 

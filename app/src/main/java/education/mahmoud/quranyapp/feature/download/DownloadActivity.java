@@ -12,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
@@ -21,13 +24,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
@@ -38,6 +38,7 @@ import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
 import education.mahmoud.quranyapp.data_layer.model.tafseer_model.Tafseer;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
+import education.mahmoud.quranyapp.utils.Util;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 import retrofit2.Call;

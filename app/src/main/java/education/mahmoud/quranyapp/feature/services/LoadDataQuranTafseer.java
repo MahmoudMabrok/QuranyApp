@@ -7,7 +7,6 @@ import android.util.Log;
 
 import java.util.List;
 
-import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
@@ -16,6 +15,7 @@ import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
 import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
+import education.mahmoud.quranyapp.utils.Util;
 
 public class LoadDataQuranTafseer extends Service {
     private static final String TAG = "LoadDataQuranTafseer";
