@@ -1,4 +1,5 @@
 # QuranyApp
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f9f42c68a0764798869e714a215990cf)](https://app.codacy.com/manual/MahmoudMabrok/QuranyApp?utm_source=github.com&utm_medium=referral&utm_content=MahmoudMabrok/QuranyApp&utm_campaign=Badge_Grade_Dashboard)
 [![HitCount](http://hits.dwyl.io/mahmoudmabrok/QuranyApp.svg)](http://hits.dwyl.io/mahmoudmabrok/QuranyApp)
 
 <h1 align=center>
@@ -13,7 +14,7 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
   - [V2.0](https://www.youtube.com/watch?v=hzJV1lth958).
   - [V1.8](https://www.youtube.com/watch?v=-DbH0EKkAzw).
 - apk
-  - [v2.5.1](https://drive.google.com/open?id=1iU-WgufHMAELKOmClhW2Z18Miyef4f4v).
+  - [latest](https://github.com/MahmoudMabrok/QuranyApp/releases/tag/2.6)
 
 # Screens
 <div>
@@ -204,6 +205,16 @@ Languages | Line of code (LOC)
 ---------- | -------
 Java | 10494
 XML | 3498
+
+- 31/3 / 13/4
+![folow](https://user-images.githubusercontent.com/13488900/79120712-d545b000-7d93-11ea-8a3a-1152887d9f28.png)
+
+- 19/3 - 1/4
+![folow](https://user-images.githubusercontent.com/13488900/78177161-f76b3400-745d-11ea-9277-d92771cc226c.png)
+
+- 28/2 - 12/3 
+![git flow](https://user-images.githubusercontent.com/13488900/76508469-17a76480-6457-11ea-9ce3-4e5a76496fc6.png)
+
 
 ------ 
 
