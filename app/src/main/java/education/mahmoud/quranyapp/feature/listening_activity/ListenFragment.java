@@ -245,7 +245,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
 
         repository = Repository.getInstance(getActivity().getApplication());
 
-        typeface = Typeface.createFromAsset(getActivity().getAssets(), "me_quran.ttf");
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "font/me_quran.ttf");
 
         isPermissionAllowed = repository.getPermissionState();
 

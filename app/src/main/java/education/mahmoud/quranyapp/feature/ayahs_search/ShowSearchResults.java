@@ -2,9 +2,7 @@ package education.mahmoud.quranyapp.feature.ayahs_search;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,7 +16,6 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,14 +26,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.Util.Constants;
-import education.mahmoud.quranyapp.Util.Data;
 import education.mahmoud.quranyapp.Util.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen;
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie;
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
-import education.mahmoud.quranyapp.model.Aya;
 
 public class ShowSearchResults extends AppCompatActivity {
 
@@ -161,7 +156,7 @@ public class ShowSearchResults extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         rvSearch.setLayoutManager(manager);
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "me_quran.ttf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/me_quran.ttf");
         adapter = new SearchResultsAdapter(typeface);
         rvSearch.setAdapter(adapter);
         rvSearch.setHasFixedSize(true);

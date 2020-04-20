@@ -91,7 +91,7 @@ public class ShowAyahsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_ayahs);
         ButterKnife.bind(this);
         repository = Repository.getInstance(getApplication());
-        typeface = Typeface.createFromAsset(getAssets(), "me_quran.ttf");
+        typeface = Typeface.createFromAsset(getAssets(), "font/me_quran.ttf");
         pos = getIntent().getIntExtra(Constants.SURAH_INDEX, 1);
         pos = getStartPageFromIndex(pos);
 

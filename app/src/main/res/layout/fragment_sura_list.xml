@@ -3,16 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:paddingBottom="@dimen/_16sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/primaryColor"
     tools:context=".feature.show_sura_list.SuraListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSura"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_16sdp"
         android:visibility="gone"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/recycler_view_item" />
 
     <com.github.ybq.android.spinkit.SpinKitView
@@ -27,7 +28,7 @@
 
 
     <TextView
-        android:id="@+id/tv_no_quran_data"
+        android:id="@+id/tvNoQuranData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

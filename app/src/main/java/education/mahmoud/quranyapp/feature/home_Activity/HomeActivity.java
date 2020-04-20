@@ -75,7 +75,6 @@ public class HomeActivity extends AppCompatActivity {
     Dialog loadingDialog;
     int ahays;
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
