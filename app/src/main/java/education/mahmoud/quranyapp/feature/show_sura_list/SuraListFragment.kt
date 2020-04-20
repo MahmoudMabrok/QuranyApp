@@ -14,6 +14,7 @@ import education.mahmoud.quranyapp.data_layer.Repository
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity
+import education.mahmoud.quranyapp.utils.log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -28,16 +29,10 @@ import java.util.*
  */
 class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
 
-    var suraItems: List<SuraItem> = ArrayList()
     var suraAdapter: SuraAdapter = SuraAdapter()
-
-    var repository: Repository? = null
-
     val model: SuraListViewModel by inject()
     val bg = CompositeDisposable()
-
     private lateinit var screen:RecyclerViewSkeletonScreen
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,9 +45,11 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
         model.replay.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterNext {
+                    "accept".log()
                     hideLoading()
                 }
                 .subscribe {
+                    "add ${it.size}".log()
                     suraAdapter.setStringList(it)
                 }
                 .addTo(bg)

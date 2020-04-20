@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.data_layer.Repository
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
+import education.mahmoud.quranyapp.utils.log
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -16,9 +17,9 @@ class SuraListViewModel(private val repo: Repository) : ViewModel() {
 
     val bg = CompositeDisposable()
     fun loadSura() {
-        Single.timer(10 , TimeUnit.SECONDS)
+        Single.timer(5, TimeUnit.SECONDS)
                 .subscribe { _ ->
-
+                    "got data".log()
                     replay.accept(repo.suras)
                 }.addTo(bg)
 
