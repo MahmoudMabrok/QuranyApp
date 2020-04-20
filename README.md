@@ -1,4 +1,5 @@
 # QuranyApp
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f9f42c68a0764798869e714a215990cf)](https://app.codacy.com/manual/MahmoudMabrok/QuranyApp?utm_source=github.com&utm_medium=referral&utm_content=MahmoudMabrok/QuranyApp&utm_campaign=Badge_Grade_Dashboard)
 [![HitCount](http://hits.dwyl.io/mahmoudmabrok/QuranyApp.svg)](http://hits.dwyl.io/mahmoudmabrok/QuranyApp)
 
 <h1 align=center>
