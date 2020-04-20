@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.utils
+package education.mahmoud.quranyapp
 
 import android.app.Application
 import android.util.Log
@@ -8,13 +8,14 @@ import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah
 import education.mahmoud.quranyapp.di.dataModule
 import education.mahmoud.quranyapp.feature.show_sura_ayas.Page
+import education.mahmoud.quranyapp.utils.Util
 import org.koin.core.context.startKoin
 import java.util.*
 
 class App : Application() {
    lateinit var repository: Repository
 
-    var quranPages: List<Page>? = null
+    var quranPages: List<Page> = listOf()
 
     override fun onCreate() {
         super.onCreate()

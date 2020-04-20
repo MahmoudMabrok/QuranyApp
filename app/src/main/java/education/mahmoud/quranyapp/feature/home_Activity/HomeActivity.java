@@ -28,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import education.mahmoud.quranyapp.App;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
@@ -50,7 +51,6 @@ import education.mahmoud.quranyapp.feature.splash.Splash;
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
-import education.mahmoud.quranyapp.utils.App;
 import education.mahmoud.quranyapp.utils.Constants;
 import education.mahmoud.quranyapp.utils.Util;
 import pub.devrel.easypermissions.EasyPermissions;
