@@ -46,14 +46,14 @@ public class Splash extends AppIntro2 {
         SliderPage sliderPage = new SliderPage();
         sliderPage.setTitle("Home");
      //   sliderPage.setDescription("HollyQuranApp");
-        sliderPage.setImageDrawable(R.mipmap.home);
+        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
         sliderPage.setBgColor(R.color.bg_green);
         addSlide(AppIntro2Fragment.newInstance(sliderPage));
 
         sliderPage = new SliderPage();
         sliderPage.setTitle("Quran Read");
       //  sliderPage.setDescription("HollyQuranApp");
-        sliderPage.setImageDrawable(R.mipmap.quran);
+        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
         sliderPage.setBgColor(R.color.bg_green);
         addSlide(AppIntro2Fragment.newInstance(sliderPage));
 
@@ -67,14 +67,14 @@ public class Splash extends AppIntro2 {
         sliderPage = new SliderPage();
         sliderPage.setTitle("Quran Search");
        // sliderPage.setDescription("HollyQuranApp");
-        sliderPage.setImageDrawable(R.mipmap.search);
+        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
         sliderPage.setBgColor(R.color.bg_green);
         addSlide(AppIntro2Fragment.newInstance(sliderPage));
 
         sliderPage = new SliderPage();
         sliderPage.setTitle("Listen");
         // sliderPage.setDescription("HollyQuranApp");
-        sliderPage.setImageDrawable(R.mipmap.listen);
+        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
         sliderPage.setBgColor(R.color.bg_green);
         addSlide(AppIntro2Fragment.newInstance(sliderPage));
 
@@ -83,24 +83,22 @@ public class Splash extends AppIntro2 {
         sliderPage = new SliderPage();
         sliderPage.setTitle("Quran Test");
        // sliderPage.setDescription("HollyQuranApp");
-        sliderPage.setImageDrawable(R.mipmap.test);
+        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
         sliderPage.setBgColor(R.color.bg_green);
         addSlide(AppIntro2Fragment.newInstance(sliderPage));
 
         sliderPage = new SliderPage();
         sliderPage.setTitle("Jump");
         //sliderPage.setDescription("HollyQuranApp");
-        sliderPage.setImageDrawable(R.mipmap.jump);
+        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
         sliderPage.setBgColor(R.color.primaryTextColor);
         addSlide(AppIntro2Fragment.newInstance(sliderPage));
-
-
 
 
         sliderPage = new SliderPage();
         sliderPage.setTitle("Setting");
         // sliderPage.setDescription("HollyQuranApp");
-        sliderPage.setImageDrawable(R.mipmap.setting);
+        sliderPage.setImageDrawable(R.mipmap.ic_launcher);
         sliderPage.setBgColor(R.color.bg_green);
         addSlide(AppIntro2Fragment.newInstance(sliderPage));
 

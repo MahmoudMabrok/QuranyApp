@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--<color name="colorPrimary">#8BC34A</color>
-    <color name="colorPrimaryDark">#8BC34A</color>
-    <color name="colorAccent">#83E610</color>
-    -->
-
-    <color name="colorPrimary">#6D6B6B</color>
-    <color name="colorPrimaryDark">#141313</color>
-    <color name="colorAccent">#DEE6DE</color>
-
+    <color name="primaryColor">#7cb342</color>
+    <color name="primaryLightColor">#aee571</color>
+    <color name="primaryDarkColor">#4b830d</color>
+    <color name="secondaryColor">#81c784</color>
+    <color name="secondaryLightColor">#b2fab4</color>
+    <color name="secondaryDarkColor">#519657</color>
+    <color name="primaryTextColor">#283593</color>
+    <color name="secondaryTextColor">#512da8</color>
 
 
     <color name="font_results">#ffffff</color>
@@ -42,7 +41,6 @@
 
     <!--colors for modern ui-->
     <color name="whiteTextColor">#fff</color>
-    <color name="primaryTextColor">#03A9F4</color>
     <color name="loginBkColor">#f0f0f0</color>
     <!--colros for card-->
     <color name="whiteCardColor">#fff</color>
@@ -56,6 +54,7 @@
 
     <color name="bg_items">@color/colorPrimary</color>
     <color name="tv_color">@color/whiteTextColor</color>
+    <color name="skelton">#858282</color>
 
 
 </resources>

@@ -24,15 +24,11 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
     private SuraListner suraListner;
     private List<SuraItem> list;
 
-    private Typeface typeface;
 
     public SuraAdapter() {
         list = new ArrayList<>();
     }
 
-    public SuraAdapter(Typeface typeface) {
-        this.typeface = typeface;
-    }
 
     public void setSuraListner(SuraListner suraListner) {
         this.suraListner = suraListner;
@@ -64,7 +60,6 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
         SuraItem suraItem = list.get(i);
         holder.tvSuraName.setText(suraItem.getName());
         holder.tvSuraPageNum.setText(String.valueOf(suraItem.getStartIndex()));
-        holder.tvSuraName.setTypeface(typeface);
         holder.tvSuraNumber.setText(String.valueOf(suraItem.getIndex()));
 
         String ayahSuffix = holder.itemView.getContext().getString(R.string.ayahSuffix);

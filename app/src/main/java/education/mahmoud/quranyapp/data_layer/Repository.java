@@ -27,7 +27,7 @@ public class Repository {
     private static QuranDB quranDB;
     private static Remote remote;
 
-    private Repository() {
+    public Repository() {
     }
 
     public static Repository getInstance(Application context) {
@@ -308,21 +308,6 @@ public class Repository {
     }
 
 
-   /* public Call<String> getUsers() {
-        return remote.getUsers();
-    }
-    public Call<String> signUp(User user) {
-       return remote.signUp(user);
-    }
-    public Call<String> signUp(String name , String mail ,long score, int n_ayahs) {
-       return remote.signUp(name, mail, score, n_ayahs);
-    }
-
-    public Call<Void> sendFeedback(String pros, String cons, String suggs) {
-        return remote.sendFeedback(pros, cons, suggs);
-    }
-
-*/
 
 
 }

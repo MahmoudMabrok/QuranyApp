@@ -8,20 +8,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
-import android.os.Parcelable;
 import android.util.Log;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.Util.Constants;
-import education.mahmoud.quranyapp.Util.Util;
+import education.mahmoud.quranyapp.utils.Constants;
+import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
-import education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in

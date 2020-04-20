@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.facebook.stetho.Stetho;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tjeannin.apprate.AppRate;
 
@@ -29,9 +28,9 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.Util.App;
-import education.mahmoud.quranyapp.Util.Constants;
-import education.mahmoud.quranyapp.Util.Util;
+import education.mahmoud.quranyapp.utils.App;
+import education.mahmoud.quranyapp.utils.Constants;
+import education.mahmoud.quranyapp.utils.Util;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
@@ -74,7 +73,6 @@ public class HomeActivity extends AppCompatActivity {
     Handler handler;
     Dialog loadingDialog;
     int ahays;
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
