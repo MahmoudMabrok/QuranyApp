@@ -14,16 +14,16 @@ interface SurahDAO {
     fun updateSurah(suraItem: SuraItem?)
 
     @get:Query("select  * from surah ")
-    val allSurah: List<SuraItem?>?
+    val allSurah: List<SuraItem>
 
     @get:Query("select name from surah ")
-    val allSurahNames: List<String?>?
+    val allSurahNames: List<String>
 
     @Query("select  * from surah where `index` = :id")
-    fun getSurahByIndex(id: Int): SuraItem?
+    fun getSurahByIndex(id: Int): SuraItem
 
     @Query("select  * from surah where `name` = :name")
-    fun getSurahByName(name: String?): SuraItem?
+    fun getSurahByName(name: String): SuraItem
 
     @Query("select startIndex from surah where `index` = :index")
     fun getSuraStartpage(index: Int): Int

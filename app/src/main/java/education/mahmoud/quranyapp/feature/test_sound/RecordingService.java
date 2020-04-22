@@ -7,6 +7,8 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.io.IOException;
 
 import education.mahmoud.quranyapp.data_layer.Repository;
@@ -17,7 +19,7 @@ public class RecordingService extends Service {
     private static final String TAG = "RecordingService";
 
     RecordItem recordItem;
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private MediaRecorder mRecorder;
     private long startedMillis;
     private long mElapsedSecond;
@@ -29,7 +31,7 @@ public class RecordingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        repository = Repository.getInstance(getApplication());
+
     }
 
     @Override

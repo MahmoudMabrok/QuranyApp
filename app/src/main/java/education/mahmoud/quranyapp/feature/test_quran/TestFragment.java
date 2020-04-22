@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +82,7 @@ public class TestFragment extends Fragment {
     EditText edUserTextForAyahs;
     @BindView(R.id.btnCheckTest)
     Button btnCheckTest;
-    private Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private SuraItem startSura;
     private SuraItem endSura;
     private int actualStart;
@@ -100,9 +102,7 @@ public class TestFragment extends Fragment {
         // Inflate the layout for getContext() fragment
         View view = inflater.inflate(R.layout.fragment_test, container, false);
         activity = getActivity();
-        repository = Repository.getInstance(activity.getApplication());
         unbinder = ButterKnife.bind(this, view);
-
         initSpinners();
         initRV();
         return view;

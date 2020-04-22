@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +32,7 @@ public class SettingActivity extends AppCompatActivity {
     @BindView(R.id.cbNightMode)
     CheckBox cbNightMode;
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     @BindView(R.id.spColorReqularMode)
     Spinner spColorReqularMode;
     @BindView(R.id.linearColor)
@@ -51,7 +53,6 @@ public class SettingActivity extends AppCompatActivity {
                 , getString(R.string.yellow)
                 , getString(R.string.green)));
 
-        repository = Repository.getInstance(getApplication());
 
         cbNightMode.setChecked(repository.getNightModeState());
         if (cbNightMode.isChecked()) {

@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +36,7 @@ import education.mahmoud.quranyapp.utils.Data;
 public class BookmarkFragment extends Fragment {
 
     private static final String TAG = "BookmarkFragment";
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     BookmarkAdapter bookmarkAdapter;
     @BindView(R.id.rvBookmark)
     RecyclerView rvBookmark;
@@ -48,7 +50,7 @@ public class BookmarkFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bookmark, container, false);
         unbinder = ButterKnife.bind(this, view);
-        repository = Repository.getInstance(getActivity().getApplication());
+
         initRv();
         retriveBookmarks();
 

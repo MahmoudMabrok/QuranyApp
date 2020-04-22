@@ -64,7 +64,7 @@ val dataModule = module {
                 .build()
     }
 
-    single { Repository() }
+    single { Repository(get(), get(), get()) }
 
     viewModel { SuraListViewModel(get()) }
     viewModel { AyahsViewModel(get()) }

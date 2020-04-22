@@ -5,6 +5,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.koin.java.KoinJavaComponent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,7 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button buttonSignUp;
 
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
 
-        repository = Repository.getInstance(getApplication());
 
     }
 

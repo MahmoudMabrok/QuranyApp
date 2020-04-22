@@ -17,6 +17,8 @@ import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.github.ybq.android.spinkit.SpinKitView;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,7 +49,7 @@ public class Download extends AppCompatActivity implements OnDownloadListener {
     @BindView(R.id.btnDownloadSound)
     Button btnDownloadSound;
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
     private int tafseerToDownload = 1;
     private boolean isPermissionAllowed;
@@ -65,7 +67,7 @@ public class Download extends AppCompatActivity implements OnDownloadListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
         ButterKnife.bind(this);
-        repository = Repository.getInstance(getApplication());
+
         isPermissionAllowed = repository.getPermissionState();
 
         if (!isPermissionAllowed) {

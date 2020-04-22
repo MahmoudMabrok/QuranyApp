@@ -9,17 +9,24 @@ import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah
 import education.mahmoud.quranyapp.di.dataModule
 import education.mahmoud.quranyapp.feature.show_sura_ayas.Page
 import education.mahmoud.quranyapp.utils.Util
+import org.koin.android.ext.android.inject
 import org.koin.core.context.startKoin
 import java.util.*
 
 class App : Application() {
-   lateinit var repository: Repository
+    val repository: Repository by inject()
 
     var quranPages: List<Page> = listOf()
 
     override fun onCreate() {
         super.onCreate()
-        repository = Repository.getInstance(this)
+
+        startKoin {
+            this@App
+            modules(listOf(dataModule))
+        }
+
+
         val ahays = repository.totlaAyahs
         if (ahays == 0) {
             persistanscePages()
@@ -27,10 +34,6 @@ class App : Application() {
             persistanscePages()
         }
 
-        startKoin {
-            this@App
-            modules(listOf(dataModule))
-        }
     }
 
     private fun persistanscePages() {

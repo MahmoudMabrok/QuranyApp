@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +48,7 @@ public class TafseerDetails extends Fragment {
     TextView tvNoDataInTafseer;
 
     Unbinder unbinder;
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private SuraItem sura;
     private List<AyahItem> suraAyahsTafseer;
     private TafseerAdapter adapter;
@@ -69,7 +71,7 @@ public class TafseerDetails extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tafseer_details, container, false);
         unbinder = ButterKnife.bind(this, view);
-        repository = Repository.getInstance(getActivity().getApplication());
+
         fillSpinners();
         initRv();
         return view;

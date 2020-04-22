@@ -24,6 +24,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tjeannin.apprate.AppRate;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -69,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private boolean isPermissionAllowed;
     Handler handler;
     Dialog loadingDialog;

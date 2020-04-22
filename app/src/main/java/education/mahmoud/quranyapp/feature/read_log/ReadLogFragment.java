@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.koin.java.KoinJavaComponent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
@@ -29,7 +31,7 @@ public class ReadLogFragment extends Fragment {
     @BindView(R.id.rvReadLog)
     RecyclerView rvReadLog;
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private ReadLogAdapter logAdapter;
 
     @Override
@@ -38,7 +40,7 @@ public class ReadLogFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_read_log, container, false);
         ButterKnife.bind(this, view);
-        repository = Repository.getInstance(getActivity().getApplication());
+
         initRV();
         loadData();
         return view;

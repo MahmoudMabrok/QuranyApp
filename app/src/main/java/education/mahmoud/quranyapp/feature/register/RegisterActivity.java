@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 
+import org.koin.java.KoinJavaComponent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnResgister;
     @BindView(R.id.tvOpenLogin)
     TextView tvOpenLogin;
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     String name, email, password;
     @BindView(R.id.spRegister)
     SpinKitView spRegister;
@@ -45,7 +47,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
 
-        repository = Repository.getInstance(getApplication());
 
     }
 

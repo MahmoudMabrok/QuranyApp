@@ -27,6 +27,10 @@ import com.downloader.PRDownloader;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.koin.core.Koin;
+import org.koin.core.KoinApplication;
+import org.koin.java.KoinJavaComponent;
+
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -106,7 +110,7 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
     int actualStart, actualEnd;
     int currentIteration = 0, endIteration;
     private Unbinder unbinder;
-    private Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private List<AyahItem> ayahsToDownLoad;
     private int ayahsRepeatCount;
     private int ayahsSetCount;
@@ -241,8 +245,6 @@ public class ListenFragment extends Fragment implements OnDownloadListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_listen, container, false);
         unbinder = ButterKnife.bind(this, view);
-
-        repository = Repository.getInstance(getActivity().getApplication());
 
 
         isPermissionAllowed = repository.getPermissionState();

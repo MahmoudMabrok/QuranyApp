@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.MenuSheetView;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -47,7 +49,7 @@ public class RecordListFragment extends Fragment {
     BottomSheetLayout recordlistBottomSheet;
 
     private RecordAdapter recorditemAdapter;
-    private Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private MediaPlayer player;
 
     @Override
@@ -55,7 +57,7 @@ public class RecordListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recorditem_list, container, false);
         ButterKnife.bind(this, view);
-        repository = Repository.getInstance(getActivity().getApplication());
+
         initRV();
 
         loadData();

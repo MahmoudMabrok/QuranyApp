@@ -54,19 +54,19 @@ class Repository(private var localShared: LocalShared,
         }
 
     // suarh db operation
-    fun addSurah(suraItem: SuraItem?) {
+    fun addSurah(suraItem: SuraItem) {
         quranDB.surahDAO().addSurah(suraItem)
     }
 
-    val surasNames: List<String?>?
+    val surasNames: List<String>
         get() = quranDB.surahDAO().allSurahNames
 
-    fun getSuraByName(name: String?): SuraItem? {
+    fun getSuraByName(name: String): SuraItem {
         return quranDB.surahDAO().getSurahByName(name)
     }
 
     // ayah db operation
-    fun addAyah(item: AyahItem?) {
+    fun addAyah(item: AyahItem) {
         quranDB.ayahDAO().addAyah(item)
     }
 
@@ -81,7 +81,7 @@ class Repository(private var localShared: LocalShared,
         return quranDB.ayahDAO().getAyahSInRange(start, end)
     }
 
-    fun getAyahByAyahText(text: String?): List<AyahItem> {
+    fun getAyahByAyahText(text: String): List<AyahItem> {
         return quranDB.ayahDAO().getAyahByAyahText(text)
     }
 
@@ -96,7 +96,7 @@ class Repository(private var localShared: LocalShared,
         return quranDB.ayahDAO().getAyahByIndex(index)
     }
 
-    fun updateAyahItem(item: AyahItem?) {
+    fun updateAyahItem(item: AyahItem) {
         quranDB.ayahDAO().updateAyah(item)
     }
 
@@ -110,11 +110,11 @@ class Repository(private var localShared: LocalShared,
     val bookmarks: List<BookmarkItem>
         get() = quranDB.bookmarkDao().bookmarks
 
-    fun addBookmark(item: BookmarkItem?) {
+    fun addBookmark(item: BookmarkItem) {
         quranDB.bookmarkDao().addBookmark(item)
     }
 
-    fun deleteBookmark(item: BookmarkItem?) {
+    fun deleteBookmark(item: BookmarkItem) {
         quranDB.bookmarkDao().delteBookmark(item)
     }
 
@@ -131,17 +131,17 @@ class Repository(private var localShared: LocalShared,
     val currentUserUUID: String
         get() = localShared.userUUID
 
-    var userName: String?
+    var userName: String
         get() = localShared.userName
         set(userName) {
             localShared.userName = userName
         }
 
-    fun setUserUUID(uuid: String?) {
+    fun setUserUUID(uuid: String) {
         localShared.userUUID = uuid
     }
 
-    fun getAyahsOfSura(suraName: String?): List<AyahItem> {
+    fun getAyahsOfSura(suraName: String): List<AyahItem> {
         return quranDB.ayahDAO().getAllAyahOfSurahByName(suraName)
     }
 
@@ -149,8 +149,8 @@ class Repository(private var localShared: LocalShared,
         return quranDB.ayahDAO().getAyahsByPage(i)
     }
 
-    val suras: List<SuraItem?>?
-        get() = quranDB.surahDAO().allSurah
+    val suras: List<SuraItem> = quranDB.surahDAO().allSurah
+
 
     fun getSuraStartpage(index: Int): Int {
         return quranDB.ayahDAO().getSuraStartpage(index)
@@ -166,7 +166,7 @@ class Repository(private var localShared: LocalShared,
     val totalAudioDownloaded: Int
         get() = quranDB.ayahDAO().totalAudioDownloaded
 
-    fun getSuraByIndex(l: Long): SuraItem? {
+    fun getSuraByIndex(l: Long): SuraItem {
         return quranDB.surahDAO().getSurahByIndex(l.toInt())
     }
 
@@ -189,26 +189,26 @@ class Repository(private var localShared: LocalShared,
         return quranDB.readLogDAO().getReadLogBydate(currentDate)
     }
 
-    fun getLReadLogByDate(currentDate: String?): ReadLog {
+    fun getLReadLogByDate(currentDate: String): ReadLog {
         return quranDB.readLogDAO().getReadLogBydate(currentDate)
     }
 
     val readLog: List<ReadLog>
         get() = quranDB.readLogDAO().allReadLog
 
-    fun addReadLog(readLog: ReadLog?) {
+    fun addReadLog(readLog: ReadLog) {
         quranDB.readLogDAO().addReadLog(readLog)
     }
 
-    fun updateReadLog(readLog: ReadLog?) {
+    fun updateReadLog(readLog: ReadLog) {
         quranDB.readLogDAO().updateReadLog(readLog)
     }
 
-    fun deleteReadLog(readLog: ReadLog?) {
+    fun deleteReadLog(readLog: ReadLog) {
         quranDB.readLogDAO().deleteReadLog(readLog)
     }
 
-    fun addRecord(recordItem: RecordItem?) {
+    fun addRecord(recordItem: RecordItem) {
         quranDB.recordDAO().addRecordItem(recordItem)
     }
 
@@ -218,27 +218,27 @@ class Repository(private var localShared: LocalShared,
     val recordCount: Int
         get() = quranDB.recordDAO().recordCount
 
-    fun calculteSaraly(years: String?): Call<MLResponse> {
+    fun calculteSaraly(years: String): Call<MLResponse> {
         return remote.calcutaeSalary(years)
     }
 
-    fun calculteSaraly2(years: String?): Call<MLResponse> {
+    fun calculteSaraly2(years: String): Call<MLResponse> {
         return remote.calcutaeSalary2(years)
     }
 
-    fun upload(file: RequestBody?): Call<MLResponse> {
+    fun upload(file: RequestBody): Call<MLResponse> {
         return remote.upload(file)
     }
 
-    fun uploadFile(file: File?): Call<MLResponse> {
+    fun uploadFile(file: File): Call<MLResponse> {
         return remote.uploadFile(file)
     }
 
-    fun upload(filePart: MultipartBody.Part?): Call<MLResponse> {
+    fun upload(filePart: MultipartBody.Part): Call<MLResponse> {
         return remote.upload(filePart)
     }
 
-    fun updateRecordItem(path: RecordItem?) {
+    fun updateRecordItem(path: RecordItem) {
         quranDB.recordDAO().updateRecordItem(path)
     }
 

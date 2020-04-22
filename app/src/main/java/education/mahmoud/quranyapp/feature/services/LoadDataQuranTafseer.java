@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.List;
 
 import education.mahmoud.quranyapp.data_layer.Repository;
@@ -19,7 +21,7 @@ import education.mahmoud.quranyapp.utils.Util;
 
 public class LoadDataQuranTafseer extends Service {
     private static final String TAG = "LoadDataQuranTafseer";
-    private Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
 
     public LoadDataQuranTafseer() {
     }
@@ -32,7 +34,7 @@ public class LoadDataQuranTafseer extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: ");
-        repository = Repository.getInstance(getApplication());
+
         new Thread(this::loadQuranTafseer).start();
         return START_STICKY;
     }

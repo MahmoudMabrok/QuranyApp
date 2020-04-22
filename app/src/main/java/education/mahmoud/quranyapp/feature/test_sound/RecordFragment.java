@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -60,7 +62,7 @@ public class RecordFragment extends Fragment {
     FrameLayout layoutDurationRecordFragemt;
 
 
-    private Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private SuraItem startSura;
     private SuraItem endSura;
     private int start;
@@ -77,7 +79,7 @@ public class RecordFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_record, container, false);
         ButterKnife.bind(this, view);
-        repository = Repository.getInstance(getActivity().getApplication());
+
         initSpinners();
 
         return view;

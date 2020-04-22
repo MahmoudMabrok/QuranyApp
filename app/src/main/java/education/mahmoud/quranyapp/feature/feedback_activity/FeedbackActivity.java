@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.koin.java.KoinJavaComponent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,7 +31,7 @@ public class FeedbackActivity extends AppCompatActivity {
     @BindView(R.id.btnSendFeedback)
     Button btnSendFeedback;
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     String pros, cons, suggs;
 
 
@@ -39,7 +41,6 @@ public class FeedbackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feedback);
         ButterKnife.bind(this);
 
-        repository = Repository.getInstance(getApplication());
 
     }
 

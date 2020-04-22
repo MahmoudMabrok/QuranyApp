@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 
+import org.koin.java.KoinJavaComponent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btnCalculate)
     Button btnCalculate;
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
+
+
     @BindView(R.id.spResults)
     SpinKitView spResults;
     @BindView(R.id.tvResult)
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        repository = Repository.getInstance(getApplication());
+
 
         //    onViewClicked();
 
@@ -58,13 +62,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-          /*  try {
-                testing2(years);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-*/
 
         } catch (NumberFormatException e) {
             e.printStackTrace();

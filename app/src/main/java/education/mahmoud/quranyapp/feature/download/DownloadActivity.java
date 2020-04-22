@@ -21,6 +21,7 @@ import com.downloader.PRDownloader;
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.jetbrains.annotations.NotNull;
+import org.koin.java.KoinJavaComponent;
 
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     @BindView(R.id.btnDownloadSound)
     Button btnDownloadSound;
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     @BindView(R.id.btnDownloadQuran)
     Button btnDownloadQuran;
     @BindView(R.id.tvTotalQuranAyahs)
@@ -97,7 +98,7 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
         ButterKnife.bind(this);
-        repository = Repository.getInstance(getApplication());
+
         isPermissionAllowed = repository.getPermissionState();
         ahays = repository.getTotlaAyahs();
 

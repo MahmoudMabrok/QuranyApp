@@ -20,6 +20,8 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.commons.MenuSheetView;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class ShowSearchResults extends AppCompatActivity {
     SearchResultsAdapter adapter;
     @BindView(R.id.bottomSearch)
     BottomSheetLayout bottomSearch;
-    private Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private List<AyahItem> ayahItems;
     private String ayah;
 
@@ -181,7 +183,7 @@ public class ShowSearchResults extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_search_results);
         ButterKnife.bind(this);
-        repository = Repository.getInstance(getApplication());
+
         initRv();
         adapterListeners();
         editWatcher();

@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.koin.java.KoinJavaComponent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,7 +41,7 @@ public class Login extends AppCompatActivity {
     TextView tvGoToLogin;
     @BindView(R.id.spLogin)
     SpinKitView spLogin;
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     private String email;
     private String password;
 
@@ -48,8 +50,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        repository = Repository.getInstance(getApplication());
 
 
     }
