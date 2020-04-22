@@ -128,10 +128,10 @@ class Repository(private var localShared: LocalShared,
         get() = remote.quran
 
     // remote data
-    val currentUserUUID: String
+    val currentUserUUID: String?
         get() = localShared.userUUID
 
-    var userName: String
+    var userName: String?
         get() = localShared.userName
         set(userName) {
             localShared.userName = userName
