@@ -16,7 +16,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 @TypeConverters({PagesConverter.class})
 public abstract class QuranDB extends RoomDatabase {
 
-    static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+    public static final Migration MIGRATION_5_6 = new Migration(5, 6) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 

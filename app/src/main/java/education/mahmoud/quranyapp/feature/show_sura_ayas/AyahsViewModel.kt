@@ -45,7 +45,7 @@ class AyahsViewModel(private val repo: Repository) : ViewModel() {
     }
 
     fun getLatestRead(): Int {
-        return repo.getLatestRead()
+        return repo.latestRead
     }
 
     fun getPageFromSurahAndAyah(surah: Int, ayah: Int): Int {
