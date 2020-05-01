@@ -59,7 +59,6 @@ val dataModule = module {
     single {
         Room.databaseBuilder(get(), QuranDB::class.java, "quran")
                 .allowMainThreadQueries()
-                .addMigrations(QuranDB.MIGRATION_5_6)
                 .fallbackToDestructiveMigration()
                 .build()
     }

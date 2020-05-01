@@ -10,6 +10,7 @@ import education.mahmoud.quranyapp.di.dataModule
 import education.mahmoud.quranyapp.feature.show_sura_ayas.Page
 import education.mahmoud.quranyapp.utils.Util
 import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import java.util.*
 
@@ -22,7 +23,7 @@ class App : Application() {
         super.onCreate()
 
         startKoin {
-            this@App
+            androidContext(this@App)
             modules(listOf(dataModule))
         }
 

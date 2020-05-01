@@ -27,6 +27,10 @@ import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.feature.register.RegisterActivity;
 import education.mahmoud.quranyapp.utils.Util;
 
+
+/**
+ * Not Used
+ */
 public class ScoreActivity extends AppCompatActivity {
 
     private static final String TAG = "ScoreActivity";

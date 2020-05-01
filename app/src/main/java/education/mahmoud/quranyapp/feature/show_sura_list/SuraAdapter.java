@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,11 +50,11 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
         return list;
     }
 
+    @NotNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.sura_item, viewGroup, false);
-        Holder holder = new Holder(view);
-        return holder;
+        return new Holder(view);
     }
 
     @Override

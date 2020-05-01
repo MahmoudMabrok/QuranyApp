@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 
 android {
@@ -52,7 +53,7 @@ dependencies {
 
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"
-    implementation "com.balsikandar.android:crashreporter:1.0.9"
+ //   implementation "com.balsikandar.android:crashreporter:1.0.9"
 
     implementation 'com.google.code.gson:gson:2.8.5'
 
@@ -61,9 +62,12 @@ dependencies {
 
     implementation files('libs/AppRate_1.1.jar')
 
-    def room_version = '2.2.5'
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // Room
+    implementation 'androidx.room:room-runtime:2.0.0'
+    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+    kapt 'androidx.room:room-compiler:2.0.0'
+    implementation 'androidx.room:room-rxjava2:2.0.0'
+
 
 
     implementation 'pub.devrel:easypermissions:1.1.1'

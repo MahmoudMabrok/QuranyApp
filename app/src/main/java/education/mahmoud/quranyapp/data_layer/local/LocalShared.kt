@@ -1,10 +1,11 @@
 package education.mahmoud.quranyapp.data_layer.local
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import education.mahmoud.quranyapp.utils.Constants
 
-class LocalShared(context: Context) {
+class LocalShared(context: Application) {
     private val preferences: SharedPreferences = context.getSharedPreferences("quran_data", Context.MODE_PRIVATE)
 
     fun addLatestread(index: Int) {
