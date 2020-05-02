@@ -1,55 +1,65 @@
-package education.mahmoud.quranyapp
+package education.mahmoud.quranyapp.feature.splash
 
-import android.app.Application
-import android.util.Log
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.jakewharton.rxrelay2.PublishRelay
+import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
 import education.mahmoud.quranyapp.data_layer.Repository
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah
-import education.mahmoud.quranyapp.di.dataModule
-import education.mahmoud.quranyapp.feature.show_sura_ayas.Page
+import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity
 import education.mahmoud.quranyapp.utils.Util
 import education.mahmoud.quranyapp.utils.log
+import io.reactivex.rxkotlin.addTo
+import kotlinx.android.synthetic.main.activity_splash.*
 import org.koin.android.ext.android.inject
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
-import java.util.*
 
-class App : Application() {
-    val repository: Repository by inject()
-    var quranPages: List<Page> = listOf()
+class Splash : DataLoadingBaseFragment() {
 
-
+    private val repository: Repository by inject()
+    private val ayhasCount by lazy { repository.totlaAyahs }
     val relay = PublishRelay.create<Boolean>()
 
-
-    override fun onCreate() {
-        super.onCreate()
-
-        startKoin {
-            androidContext(this@App)
-            modules(listOf(dataModule))
-        }
-
-        val ahays = repository.totlaAyahs
-        //  persistanscePages()
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.activity_splash, container, false)
     }
 
-    private fun persistanscePages() {
-        Thread(Runnable {
-            try {
-                loadFullQuran()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }).start()
+    override fun initViews(view: View) {
+        super.initViews(view)
+
+        if (ayhasCount > 0) {
+            view.postDelayed({
+                (activity as? HomeActivity)?.afterSplash()
+            }, 3000)
+        } else {
+            progressBar.visibility = View.VISIBLE
+        }
+    }
+
+    override fun startLoadingData() {
+        super.startLoadingData()
+        if (ayhasCount == 0) {
+            loadQuran()
+        }
+    }
+
+    override fun startObserving() {
+        super.startObserving()
+
+
+        relay.doAfterNext {
+            "onNext relay".log()
+            (activity as? HomeActivity)?.afterSplash()
+        }?.subscribe()?.addTo(bg)
     }
 
     fun loadQuran() {
-        Log.d(TAG, "loadQuran: ")
-        val surahs = Util.getFullQuranSurahs(this)
+        "loadQuran".log()
+        val surahs = Util.getFullQuranSurahs(requireContext())
         StoreInDb(surahs)
     }
 
@@ -60,7 +70,7 @@ class App : Application() {
     private fun Store(surahs: List<Surah>) {
         var suraItem: SuraItem
         var ayahItem: AyahItem
-        val quran = Util.getQuranClean(this)
+        val quran = Util.getQuranClean(requireContext())
         val surahClean = quran.surahs
         var clean: String?
 
@@ -101,29 +111,6 @@ class App : Application() {
         }
         "finis".log()
 
-        relay.accept(true)
 
-
-    }
-
-    private fun loadFullQuran() {
-        val pages: MutableList<Page> = ArrayList()
-        var page: Page
-        var ayahItems: List<AyahItem>
-        for (i in 1..604) {
-            ayahItems = repository.getAyahsByPage(i)
-            if (ayahItems.size > 0) {
-                page = Page()
-                page.ayahItems = ayahItems
-                page.pageNum = i
-                page.juz = ayahItems[0].juz
-                pages.add(page)
-            }
-        }
-        quranPages = ArrayList(pages)
-    }
-
-    companion object {
-        private const val TAG = "App"
     }
 }

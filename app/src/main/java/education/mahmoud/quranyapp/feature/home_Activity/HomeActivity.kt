@@ -17,8 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.ButterKnife
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.tjeannin.apprate.AppRate
-import education.mahmoud.quranyapp.App
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.data_layer.Repository
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
@@ -37,15 +35,16 @@ import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment
 import education.mahmoud.quranyapp.utils.Constants
 import kotlinx.android.synthetic.main.activity_home2.*
-import org.koin.java.KoinJavaComponent
+import org.koin.android.ext.android.inject
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
 
 class HomeActivity : AppCompatActivity() {
 
     private var isPermissionAllowed: Boolean = false
-    private var repository = KoinJavaComponent.get(Repository::class.java)
+    private val repository: Repository by inject()
     var ahays = 0
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_read -> {
@@ -78,16 +77,20 @@ class HomeActivity : AppCompatActivity() {
         ButterKnife.bind(this)
         Log.d(TAG, "onCreate: start app")
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        repository = (application as App).repository
-        AppRate(this).setMinLaunchesUntilPrompt(5)
-                .init()
-        //    Stetho.initializeWithDefaults(getApplication());
-        Log.d(TAG, "onCreate: n $ahays")
+        goToSplash()
         ahays = repository.totlaAyahs
-        Log.d(TAG, "onCreate: nn after  $ahays")
+
+        toolbar?.let {
+            setSupportActionBar(it)
+        }
+
+
+    }
+
+    fun afterSplash() {
+        supportFragmentManager.popBackStack()
         openRead()
         checkLastReadAndDisplayDialoge()
-        determineToOpenOrNotSplash()
     }
 
     private fun determineToOpenOrNotSplash() {
@@ -172,10 +175,13 @@ class HomeActivity : AppCompatActivity() {
         EasyPermissions.requestPermissions(PermissionRequest.Builder(this, RC_STORAGE, *perms).build())
     }
 
-    private fun goToSplash() {
+    fun goToSplash() {
         Log.d(TAG, "goToSplash:")
-        val openAcivity = Intent(this@HomeActivity, Splash::class.java)
-        startActivity(openAcivity)
+
+        supportFragmentManager.beginTransaction()
+                .add(R.id.mainContainer, Splash())
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean { // Inflate the menu; this adds items to the action bar if it is present.
