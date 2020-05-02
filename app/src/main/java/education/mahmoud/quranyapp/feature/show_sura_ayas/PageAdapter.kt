@@ -15,12 +15,11 @@ import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.Util
 import java.text.MessageFormat
-import java.util.*
 
 class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adapter<PageAdapter.Holder>() {
     var vis = View.INVISIBLE
 
-    var list: List<Page> = ArrayList()
+    var list: ArrayList<Page> = arrayListOf()
 
     private var iOnClick: IOnClick? = null
     private var pageShown: PageShown? = null
@@ -37,8 +36,9 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         this.iOnClick = iOnClick
     }
 
-    fun setPageList(newList: List<Page>?) {
-        list = ArrayList(newList!!)
+    fun setPageList(newList: List<Page>) {
+        list.clear()
+        list.addAll(newList)
         notifyDataSetChanged()
     }
 
@@ -49,11 +49,11 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: Holder, index: Int) {
         val item = list[index]
-        holder.topLinear!!.visibility = View.VISIBLE
-        holder.BottomLinear!!.visibility = View.VISIBLE
+        holder.topLinear?.visibility = View.VISIBLE
+        holder.BottomLinear?.visibility = View.VISIBLE
         // set Colors
-        holder.tvAyahs!!.setTextColor(ayahsColor)
-        holder.scAyahsText!!.setBackgroundColor(scrollColor)
+        holder.tvAyahs?.setTextColor(ayahsColor)
+        holder.scAyahsText?.setBackgroundColor(scrollColor)
         //<editor-fold desc="Create Text">
         val builder = StringBuilder()
         var aya: String
@@ -88,17 +88,17 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
             builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ ", aya, ayahItem.ayahInSurahIndex))
         }
         //</editor-fold>
-        holder.tvAyahs!!.setText(Util.getSpannable(builder.toString()), TextView.BufferType.SPANNABLE)
+        holder.tvAyahs?.setText(Util.getSpannable(builder.toString()), TextView.BufferType.SPANNABLE)
         // text justifivation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            holder.tvAyahs!!.justificationMode = Layout.JUSTIFICATION_MODE_NONE
+            holder.tvAyahs?.justificationMode = Layout.JUSTIFICATION_MODE_NONE
         }
         // top - bottom details
-        holder.tvPageNumShowAyahs!!.text = item.pageNum.toString()
-        holder.tvSurahName!!.text = suraName
-        holder.tvJuz!!.text = item.juz.toString()
+        holder.tvPageNumShowAyahs?.text = item.pageNum.toString()
+        holder.tvSurahName?.text = suraName
+        holder.tvJuz?.text = item.juz.toString()
         //<editor-fold desc="listeners">
-        holder.imBookmark!!.setOnClickListener { iBookmark!!.onBookmarkClicked(item) }
+        holder.imBookmark?.setOnClickListener { iBookmark?.onBookmarkClicked(item) }
         /*holder.ayahsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,32 +106,32 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
                 flipState(holder);
             }
         });
-        */holder.btnNext!!.setOnClickListener { iOnClick!!.onClick(holder.adapterPosition) }
-        holder.btnPrev!!.setOnClickListener {
-            iOnClick!!.onClick(holder.adapterPosition - 2) // there will be update by one
+        */holder.btnNext?.setOnClickListener { iOnClick?.onClick(holder.adapterPosition) }
+        holder.btnPrev?.setOnClickListener {
+            iOnClick?.onClick(holder.adapterPosition - 2) // there will be update by one
         }
         //</editor-fold>
         //<editor-fold desc="configure next/prev buttons">
         if (index == 0) {
-            holder.btnNext!!.visibility = View.VISIBLE
-            holder.btnPrev!!.visibility = View.INVISIBLE
+            holder.btnNext?.visibility = View.VISIBLE
+            holder.btnPrev?.visibility = View.INVISIBLE
         } else if (index == 603) {
-            holder.btnNext!!.visibility = View.INVISIBLE
-            holder.btnPrev!!.visibility = View.VISIBLE
+            holder.btnNext?.visibility = View.INVISIBLE
+            holder.btnPrev?.visibility = View.VISIBLE
         } else {
-            holder.btnNext!!.visibility = View.VISIBLE
-            holder.btnPrev!!.visibility = View.VISIBLE
+            holder.btnNext?.visibility = View.VISIBLE
+            holder.btnPrev?.visibility = View.VISIBLE
         }
         //</editor-fold>
 
-        holder.tvAyahs!!.setOnClickListener { Log.d(TAG, "onClick: ") }
+        holder.tvAyahs?.setOnClickListener { Log.d(TAG, "onClick: ") }
     }
 
     private fun flipState(holder: Holder) {
-        vis = holder.topLinear!!.visibility
-        vis = if (vis == View.VISIBLE) View.INVISIBLE else View.VISIBLE
-        holder.BottomLinear!!.visibility = vis
-        holder.topLinear!!.visibility = vis
+        /*  vis = holder.topLinear?.visibility
+          vis = if (vis == View.VISIBLE) View.INVISIBLE else View.VISIBLE
+          holder.BottomLinear?.visibility = vis
+          holder.topLinear?.visibility = vis*/
     }
 
     /**
@@ -153,12 +153,12 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
             override fun onTick(l: Long) {}
             override fun onFinish() {
                 vis = View.VISIBLE
-                holder.BottomLinear!!.visibility = vis
-                holder.topLinear!!.visibility = vis
+                holder.BottomLinear?.visibility = vis
+                holder.topLinear?.visibility = vis
             }
         }.start()
         //</editor-fold>
-        pageShown!!.onDiplayed(holder.adapterPosition, holder)
+        pageShown?.onDiplayed(holder.adapterPosition, holder)
     }
 
     fun getPage(pos: Int): Page {

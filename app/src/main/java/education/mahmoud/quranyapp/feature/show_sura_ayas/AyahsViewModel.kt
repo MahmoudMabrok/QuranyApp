@@ -6,7 +6,6 @@ import education.mahmoud.quranyapp.data_layer.Repository
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem
 import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.data_layer.local.room.ReadLog
-import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
 import io.reactivex.disposables.CompositeDisposable
 
 class AyahsViewModel(private val repo: Repository) : ViewModel() {
@@ -15,7 +14,7 @@ class AyahsViewModel(private val repo: Repository) : ViewModel() {
     val nightModeState = repo.nightModeState
     val hizbQuaterStart: List<Int> = repo.hizbQuaterStart
 
-    val replay = PublishRelay.create<List<SuraItem>>()
+    val replay = PublishRelay.create<List<Page>>()
 
     val bg = CompositeDisposable()
 

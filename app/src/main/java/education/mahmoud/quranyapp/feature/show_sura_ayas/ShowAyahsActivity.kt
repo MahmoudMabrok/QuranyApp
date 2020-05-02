@@ -13,7 +13,6 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import education.mahmoud.quranyapp.App
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem
 import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.data_layer.local.room.ReadLog
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
@@ -22,6 +21,9 @@ import education.mahmoud.quranyapp.feature.show_sura_ayas.PageAdapter.PageShown
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
+import education.mahmoud.quranyapp.utils.show
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_show_ayahs.*
 import kotlinx.android.synthetic.main.fragment_sura_list.*
 import org.koin.android.ext.android.inject
@@ -86,6 +88,29 @@ class ShowAyahsActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate: $pos")
         initRV()
 
+        (application as? App)?.persistanscePages()
+        stratObserving()
+
+    }
+
+    private fun stratObserving() {
+        Log.d(TAG, "stratObserving:qw ")
+        (application as? App)?.relayPages
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({
+                    Log.d(TAG, "stratObserving: " + it.size)
+                    hideLoading()
+                    pageAdapter.setPageList(it)
+                    foundState()
+                }, {
+                    hideLoading()
+                    this.show("Error")
+                })
+                ?.addTo(model.bg)
+    }
+
+    private fun hideLoading() {
+        spShowAyahs.visibility = View.GONE
     }
 
     private fun addToReadLog(pos: Int) {
@@ -193,30 +218,6 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        pageList = (application as App).quranPages
-        if (pageList.size >= 50) {
-            // handler?.sendEmptyMessage(0)
-            Log.d(TAG, "loadData: %%% ")
-        } else {
-            Log.d(TAG, "loadData: @@@@")
-            Thread(Runnable {
-                val pages: MutableList<Page> = ArrayList()
-                var page: Page
-                var ayahItems: List<AyahItem>
-                for (i in 1..604) {
-                    ayahItems = model.getAyahsByPage(i)
-                    if (ayahItems.size > 0) {
-                        page = Page()
-                        page.ayahItems = ayahItems
-                        page.pageNum = i
-                        page.juz = ayahItems[0].juz
-                        pages.add(page)
-                    }
-                }
-                pageList = ArrayList(pages)
-                //  handler?.sendEmptyMessage(0)
-            }).start()
-        }
         Thread(Runnable { generateListOfPagesStartWithHizbQurater() }).start()
     }
 
@@ -289,6 +290,6 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "ShowAyahsActivity"
+        private const val TAG = "TestApp"
     }
 }

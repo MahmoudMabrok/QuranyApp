@@ -14,14 +14,12 @@ import education.mahmoud.quranyapp.utils.log
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import java.util.*
 
 class App : Application() {
     val repository: Repository by inject()
-    var quranPages: List<Page> = listOf()
-
-
+    var quranPages: ArrayList<Page> = arrayListOf()
     val relay = PublishRelay.create<Boolean>()
+    val relayPages = PublishRelay.create<ArrayList<Page>>()
 
 
     override fun onCreate() {
@@ -37,7 +35,7 @@ class App : Application() {
 
     }
 
-    private fun persistanscePages() {
+    fun persistanscePages() {
         Thread(Runnable {
             try {
                 loadFullQuran()
@@ -106,21 +104,28 @@ class App : Application() {
 
     }
 
-    private fun loadFullQuran() {
-        val pages: MutableList<Page> = ArrayList()
-        var page: Page
-        var ayahItems: List<AyahItem>
-        for (i in 1..604) {
-            ayahItems = repository.getAyahsByPage(i)
-            if (ayahItems.size > 0) {
-                page = Page()
-                page.ayahItems = ayahItems
-                page.pageNum = i
-                page.juz = ayahItems[0].juz
-                pages.add(page)
+    fun loadFullQuran() {
+        "loadFullQuran".log()
+        if (quranPages.isEmpty()) {
+            val pages: MutableList<Page> = ArrayList()
+            var page: Page
+            var ayahItems: List<AyahItem>
+            val start = System.currentTimeMillis()
+            for (i in 1..604) {
+                ayahItems = repository.getAyahsByPage(i)
+                if (ayahItems.size > 0) {
+                    page = Page()
+                    page.ayahItems = ayahItems
+                    page.pageNum = i
+                    page.juz = ayahItems[0].juz
+                    pages.add(page)
+                }
             }
+            val end = System.currentTimeMillis()
+            "tttime : ${(end - start)}ms ".log() // 18966ms
+            quranPages.addAll(pages)
         }
-        quranPages = ArrayList(pages)
+        relayPages.accept(quranPages)
     }
 
     companion object {
