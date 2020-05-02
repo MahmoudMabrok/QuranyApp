@@ -13,8 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 

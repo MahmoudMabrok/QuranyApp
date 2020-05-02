@@ -27,8 +27,6 @@ import com.downloader.PRDownloader;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.koin.core.Koin;
-import org.koin.core.KoinApplication;
 import org.koin.java.KoinJavaComponent;
 
 import java.io.IOException;

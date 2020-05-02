@@ -107,7 +107,6 @@ dependencies {
     def koinVersion = "2.0.1"
     implementation "org.koin:koin-androidx-scope:$koinVersion"
     implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
-    implementation "org.koin:koin-java:$koinVersion"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

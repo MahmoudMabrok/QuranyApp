@@ -35,16 +35,8 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".feature.test_sound.RecordingService"
-            android:enabled="true"
-            android:exported="false" />
 
-        <activity
-            android:name=".feature.test_sound.TestSoundActivity"
-            android:exported="true"
-            android:label="@string/title_activity_test_sound"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".feature.show_ayahs_from_pdf.ShowAyahsPDF"
             android:exported="true"
@@ -65,41 +57,45 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".feature.login.Login"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+
         <activity
             android:name=".feature.splash.Splash"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".feature.register.RegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".feature.download.DownloadActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".feature.scores.ScoreActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
         <activity
             android:name=".feature.profile.ProfileActivity"
             android:exported="true" />
+
         <activity
             android:name=".feature.feedback_activity.FeedbackActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".feature.setting.SettingActivity" />
+
         <activity
             android:name=".feature.ayahs_search.ShowSearchResults"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-        <activity
-            android:name=".utils.testsomefeature.MainActivity"
-            android:exported="true" />
+
 
         <meta-data
             android:name="google_analytics_adid_collection_enabled"

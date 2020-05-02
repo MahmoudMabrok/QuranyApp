@@ -107,7 +107,7 @@ class Repository(private var localShared: LocalShared,
     }
 
     fun deleteBookmark(item: BookmarkItem) {
-        quranDB.bookmarkDao().delteBookmark(item)
+        quranDB.bookmarkDao().deleteBookmark(item)
     }
 
     // remote data
