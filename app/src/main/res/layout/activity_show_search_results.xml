@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:background="@color/colorPrimary"
-            android:drawableStart="@drawable/ic_search_white_24dp"
+
             android:drawablePadding="@dimen/_10sdp"
             android:hint="@string/ayah_to_search"
             android:textColor="@color/tv_color"

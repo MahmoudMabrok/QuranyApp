@@ -85,20 +85,26 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
 
     class Holder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tvSuraNumber)
+
         TextView tvSuraNumber;
-        @BindView(R.id.tvSuraName)
+
         TextView tvSuraName;
-        @BindView(R.id.tvSuraRevolution)
+
         TextView tvSuraRevolution;
-        @BindView(R.id.tvSuraAyahsNum)
+
         TextView tvSuraAyahsNum;
-        @BindView(R.id.tvSuraPageNum)
+
         TextView tvSuraPageNum;
 
-        public Holder(@NonNull View itemView) {
+        Holder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            tvSuraNumber = itemView.findViewById(R.id.tvSuraNumber);
+            tvSuraName = itemView.findViewById(R.id.tvSuraName);
+            tvSuraRevolution = itemView.findViewById(R.id.tvSuraRevolution);
+            tvSuraAyahsNum = itemView.findViewById(R.id.tvSuraAyahsNum);
+            tvSuraPageNum = itemView.findViewById(R.id.tvSuraPageNum);
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

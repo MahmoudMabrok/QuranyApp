@@ -21,14 +21,10 @@ import com.tjeannin.apprate.AppRate
 import education.mahmoud.quranyapp.App
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.data_layer.Repository
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem
-import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
-import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
 import education.mahmoud.quranyapp.feature.bookmark_fragment.BookmarkFragment
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import education.mahmoud.quranyapp.feature.feedback_activity.FeedbackActivity
-import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity
 import education.mahmoud.quranyapp.feature.listening_activity.ListenFragment
 import education.mahmoud.quranyapp.feature.read_log.ReadLogFragment
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity
@@ -40,7 +36,6 @@ import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails
 import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment
 import education.mahmoud.quranyapp.utils.Constants
-import education.mahmoud.quranyapp.utils.Util
 import kotlinx.android.synthetic.main.activity_home2.*
 import org.koin.java.KoinJavaComponent
 import pub.devrel.easypermissions.EasyPermissions
@@ -134,8 +129,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // used to update UI
-        val id: Int = navigation.getSelectedItemId()
-        navigation.setSelectedItemId(id)
+        val id: Int = navigation.selectedItemId
+        navigation.selectedItemId = id
     }
 
     private fun showMessage(message: String) {
@@ -162,7 +157,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun openTest() {
         val fragment = TestFragment()
-        //  TestQuranSound fragment = new TestQuranSound();
         val a = supportFragmentManager.beginTransaction()
         a.replace(homeContainer.getId(), fragment).commit()
     }
@@ -264,11 +258,6 @@ class HomeActivity : AppCompatActivity() {
             R.id.actionDownload -> gotoDownload()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // // TODO: 6/27/2019 message of exiting - n pages - . m
     }
 
     companion object {

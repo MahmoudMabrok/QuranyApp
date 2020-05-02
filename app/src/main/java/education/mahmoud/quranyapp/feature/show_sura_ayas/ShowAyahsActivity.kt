@@ -74,7 +74,6 @@ class ShowAyahsActivity : AppCompatActivity() {
             val ayah = intent.getIntExtra(Constants.AYAH_GO_INDEX, 1)
             Log.d(TAG, "onCreate: ayah  $ayah")
             pos = getPosFromSurahAndAyah(surah, ayah)
-            //       showMessage(String.valueOf(pos));D
         } else if (intent.hasExtra(Constants.LAST_INDEX)) {
             pos = model.getLatestRead() // as it will be decreased
         } else if (intent.hasExtra(Constants.PAGE_INDEX)) { // case bookmark, go to by page
@@ -86,28 +85,7 @@ class ShowAyahsActivity : AppCompatActivity() {
         //endregion
         Log.d(TAG, "onCreate: $pos")
         initRV()
-        /*   handler = object : Handler() {
-               override fun handleMessage(msg: Message) {
-                   super.handleMessage(msg)
-                   //region handle
-                   if (pageList != null) {
-                       if (pageList.size > 0) {
-                           rvAyahsPages.visibility = View.VISIBLE
-                           tvNoQuranData.visibility = View.GONE
-                           pageAdapter.setPageList(pageList)
-                           rvAyahsPages.scrollToPosition(pos - 1)
-                           // pos represent Mushaf representation (i.e start from 1)
-                           addToReadLog(pos)
-                           foundState()
-                       } else {
-                           notFound()
-                       }
-                   } else {
-                       finish()
-                   }
-                   //endregion
-               }
-           }*/
+
     }
 
     private fun addToReadLog(pos: Int) {
