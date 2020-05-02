@@ -22,7 +22,7 @@ public class TestText {
         deletionPoints = new ArrayList<>();
         correctPoints = new ArrayList<>();
 
-        resString = new String();
+        resString = "";
 
         StringBuilder builder = new StringBuilder();
 

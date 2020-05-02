@@ -73,7 +73,7 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
     private String getNums(Set<Integer> pages) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Integer integer:pages){
-            stringBuilder.append(String.valueOf(integer));
+            stringBuilder.append(integer);
             stringBuilder.append(",");
         }
         return stringBuilder.toString();

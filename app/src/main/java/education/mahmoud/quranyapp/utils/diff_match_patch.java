@@ -558,7 +558,7 @@ public class diff_match_patch {
             line = text.substring(lineStart, lineEnd + 1);
 
             if (lineHash.containsKey(line)) {
-                chars.append(String.valueOf((char) (int) lineHash.get(line)));
+                chars.append((char) (int) lineHash.get(line));
             } else {
                 if (lineArray.size() == maxLines) {
                     // Bail out at 65535 because
@@ -568,7 +568,7 @@ public class diff_match_patch {
                 }
                 lineArray.add(line);
                 lineHash.put(line, lineArray.size() - 1);
-                chars.append(String.valueOf((char) (lineArray.size() - 1)));
+                chars.append((char) (lineArray.size() - 1));
             }
             lineStart = lineEnd + 1;
         }
@@ -2441,13 +2441,8 @@ public class diff_match_patch {
                 return false;
             }
             if (text == null) {
-                if (other.text != null) {
-                    return false;
-                }
-            } else if (!text.equals(other.text)) {
-                return false;
-            }
-            return true;
+                return other.text == null;
+            } else return text.equals(other.text);
         }
     }
 

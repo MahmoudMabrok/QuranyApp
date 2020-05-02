@@ -20,7 +20,6 @@ import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.github.ybq.android.spinkit.SpinKitView;
 
-import org.jetbrains.annotations.NotNull;
 import org.koin.java.KoinJavaComponent;
 
 import java.util.List;
@@ -33,18 +32,13 @@ import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Ayah;
-import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
 import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
 import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
-import education.mahmoud.quranyapp.data_layer.model.tafseer_model.Tafseer;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
 import education.mahmoud.quranyapp.utils.Util;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -192,9 +186,9 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         AyahItem ayahItem = null;
         CompleteTafseer completeTafseer = Util.getCompleteTafseer(this);
         if (completeTafseer != null) {
-            List<education.mahmoud.quranyapp.data_layer.model.tafseer.Surah> surahs = completeTafseer.getData().getSurahs();
-            for (education.mahmoud.quranyapp.data_layer.model.tafseer.Surah surah1 : surahs) {
-                for (education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah ayah : surah1.getAyahs()) {
+            List<Surah> surahs = completeTafseer.getData().getSurahs();
+            for (Surah surah1 : surahs) {
+                for (Ayah ayah : surah1.getAyahs()) {
                     ayahItem = repository.getAyahByIndex(ayah.getNumber());
                     ayahItem.setTafseer(ayah.getText());
                     try {
@@ -213,17 +207,6 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
 
     //<editor-fold desc="Tafseer net">
 
-    /**
-     * load tafseer from internet
-     */
-    private void loadTafseer() {
-        setUI(tafseerToDownload, max_Tafseer);
-        showMessage(String.valueOf(tafseerToDownload));
-        if (tafseerToDownload <= 114)
-            loadChapter();
-        defaultState();
-    }
-
     private void downState() {
         lnDown.setVisibility(View.VISIBLE);
         btnDownloadTafseer.setVisibility(View.GONE);
@@ -239,38 +222,6 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         tvDownStatePercentage.setText(getString(R.string.downState, current, max));
     }
 
-    private void loadChapter() {
-        repository.getChapterTafser(tafseerToDownload).enqueue(new Callback<Tafseer>() {
-            @Override
-            public void onResponse(Call<Tafseer> call, Response<Tafseer> response) {
-                try {
-                    Tafseer tafseer = response.body();
-                    List<education.mahmoud.quranyapp.data_layer.model.tafseer_model.Ayah> ayahs = tafseer.getData().getAyahs();
-                    for (education.mahmoud.quranyapp.data_layer.model.tafseer_model.Ayah ayah : ayahs) {
-                        // get ayah from db to update it by supply tafseer
-                        AyahItem ayahItem = repository.getAyahByIndex(ayah.getNumber());
-                        // set  it with  new data
-                        ayahItem.setJuz(ayah.getJuz());
-                        ayahItem.setPageNum(ayah.getPage());
-                        ayahItem.setTafseer(ayah.getText());
-                        // update in db
-                        repository.updateAyahItem(ayahItem);
-                    }
-                    tafseerToDownload++;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                loadTafseer();
-            }
-
-            @Override
-            public void onFailure(Call<Tafseer> call, Throwable t) {
-                showMessage("Error , try again");
-                Log.d(TAG, "onFailure: " + t.getMessage());
-                defaultState();
-            }
-        });
-    }
 
     private void defaultState() {
         lnDown.setVisibility(View.GONE);
@@ -395,26 +346,6 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         downState();
     }
 
-    private void downloadQuran() {
-        repository.getQuran().enqueue(new Callback<FullQuran>() {
-            @Override
-            public void onResponse(Call<FullQuran> call, @NotNull Response<FullQuran> response) {
-                tvDownStatePercentage.setVisibility(View.VISIBLE);
-                List<Surah> surahs = response.body().getData().getSurahs();
-                StoreInDb(surahs);
-            }
-
-            @Override
-            public void onFailure(Call<FullQuran> call, Throwable t) {
-                runOnUiThread(() -> {
-                    defaultState();
-                    showMessage(t.getMessage());
-                    Log.d(TAG, "onFailure: " + t.getMessage());
-                });
-
-            }
-        });
-    }
 
     private void StoreInDb(List<Surah> surahs) {
         new Thread(() -> {

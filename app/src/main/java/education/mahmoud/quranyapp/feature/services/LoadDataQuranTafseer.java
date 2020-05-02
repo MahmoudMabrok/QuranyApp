@@ -98,9 +98,9 @@ public class LoadDataQuranTafseer extends Service {
         AyahItem ayahItem = null;
         CompleteTafseer completeTafseer = Util.getCompleteTafseer(this);
         if (completeTafseer != null) {
-            List<education.mahmoud.quranyapp.data_layer.model.tafseer.Surah> surahs = completeTafseer.getData().getSurahs();
-            for (education.mahmoud.quranyapp.data_layer.model.tafseer.Surah surah1 : surahs) {
-                for (education.mahmoud.quranyapp.data_layer.model.tafseer.Ayah ayah : surah1.getAyahs()) {
+            List<Surah> surahs = completeTafseer.getData().getSurahs();
+            for (Surah surah1 : surahs) {
+                for (Ayah ayah : surah1.getAyahs()) {
                     ayahItem = repository.getAyahByIndex(ayah.getNumber());
                     ayahItem.setTafseer(ayah.getText());
                     try {

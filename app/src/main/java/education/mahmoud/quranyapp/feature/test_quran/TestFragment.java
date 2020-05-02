@@ -2,7 +2,6 @@ package education.mahmoud.quranyapp.feature.test_quran;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.util.Log;
@@ -39,7 +38,6 @@ import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
-import education.mahmoud.quranyapp.feature.test_sound.TestSoundActivity;
 import education.mahmoud.quranyapp.utils.Data;
 import education.mahmoud.quranyapp.utils.Util;
 
@@ -76,8 +74,7 @@ public class TestFragment extends Fragment {
     Activity activity;
     Unbinder unbinder;
     SaveTestAdapter adapter = new SaveTestAdapter();
-    @BindView(R.id.btnOpenTestSound)
-    Button btnOpenTestSound;
+
     @BindView(R.id.edUserTextForAyahs)
     EditText edUserTextForAyahs;
     @BindView(R.id.btnCheckTest)
@@ -389,9 +386,5 @@ public class TestFragment extends Fragment {
         return builder.toString();
     }
 
-    @OnClick(R.id.btnOpenTestSound)
-    public void onOpenTestSoundClicked() {
-        Intent openAcivity = new Intent(getContext(), TestSoundActivity.class);
-        startActivity(openAcivity);
-    }
+
 }

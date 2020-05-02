@@ -68,7 +68,6 @@ public class BookmarkFragment extends Fragment {
             @Override
             public void onBookmarkClick(BookmarkItem item) {
                 Intent openAcivity = new Intent(getContext(), ShowAyahsActivity.class);
-                ;
                 openAcivity.putExtra(Constants.PAGE_INDEX, item.getPageNum());
                 startActivity(openAcivity);
             }

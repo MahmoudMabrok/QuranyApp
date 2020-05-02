@@ -72,7 +72,7 @@ class App : Application() {
             suraItem.index = surah.number
             suraItem.startIndex = surah.ayahs[0].page
             try {
-                repository!!.addSurah(suraItem)
+                repository.addSurah(suraItem)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -90,7 +90,7 @@ class App : Application() {
                     ayahItem.textClean = Util.removeTashkeel(ayahItem.text)
                 }
                 try {
-                    repository!!.addAyah(ayahItem)
+                    repository.addAyah(ayahItem)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -103,7 +103,7 @@ class App : Application() {
         var page: Page
         var ayahItems: List<AyahItem>
         for (i in 1..604) {
-            ayahItems = repository!!.getAyahsByPage(i)
+            ayahItems = repository.getAyahsByPage(i)
             if (ayahItems.size > 0) {
                 page = Page()
                 page.ayahItems = ayahItems

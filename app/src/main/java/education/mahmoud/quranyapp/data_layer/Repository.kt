@@ -2,18 +2,10 @@ package education.mahmoud.quranyapp.data_layer
 
 import education.mahmoud.quranyapp.data_layer.local.LocalShared
 import education.mahmoud.quranyapp.data_layer.local.room.*
-import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran
-import education.mahmoud.quranyapp.data_layer.model.tafseer_model.Tafseer
-import education.mahmoud.quranyapp.data_layer.remote.Remote
-import education.mahmoud.quranyapp.data_layer.remote.model.MLResponse
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.Call
-import java.io.File
+
 
 class Repository(private var localShared: LocalShared,
-                 private var quranDB: QuranDB,
-                 private var remote: Remote) {
+                 private var quranDB: QuranDB) {
     // shared
     fun addLatestread(index: Int) {
         localShared.addLatestread(index)
@@ -118,15 +110,6 @@ class Repository(private var localShared: LocalShared,
         quranDB.bookmarkDao().delteBookmark(item)
     }
 
-    // tafseer
-    fun getChapterTafser(id: Int): Call<Tafseer> {
-        return remote.getChapterTafser(id)
-    }
-
-    // quran remote
-    val quran: Call<FullQuran>
-        get() = remote.quran
-
     // remote data
     val currentUserUUID: String?
         get() = localShared.userUUID
@@ -218,25 +201,6 @@ class Repository(private var localShared: LocalShared,
     val recordCount: Int
         get() = quranDB.recordDAO().recordCount
 
-    fun calculteSaraly(years: String): Call<MLResponse> {
-        return remote.calcutaeSalary(years)
-    }
-
-    fun calculteSaraly2(years: String): Call<MLResponse> {
-        return remote.calcutaeSalary2(years)
-    }
-
-    fun upload(file: RequestBody): Call<MLResponse> {
-        return remote.upload(file)
-    }
-
-    fun uploadFile(file: File): Call<MLResponse> {
-        return remote.uploadFile(file)
-    }
-
-    fun upload(filePart: MultipartBody.Part): Call<MLResponse> {
-        return remote.upload(filePart)
-    }
 
     fun updateRecordItem(path: RecordItem) {
         quranDB.recordDAO().updateRecordItem(path)

@@ -12,16 +12,16 @@ import java.util.List;
 public interface BookmarkDAO {
 
     @Insert
-    public void addBookmark(BookmarkItem item);
+    void addBookmark(BookmarkItem item);
 
     @Update
-    public void updateBookmark(BookmarkItem item);
+    void updateBookmark(BookmarkItem item);
 
     @Delete
-    public void delteBookmark(BookmarkItem item);
+    void delteBookmark(BookmarkItem item);
 
     @Query("select * from bookmark")
-    public List<BookmarkItem> getBookmarks();
+    List<BookmarkItem> getBookmarks();
 
 
 }

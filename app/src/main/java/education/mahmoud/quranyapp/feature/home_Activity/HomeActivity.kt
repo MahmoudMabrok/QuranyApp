@@ -140,31 +140,31 @@ class HomeActivity : AppCompatActivity() {
     private fun openRead() {
         val fragment = SuraListFragment()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.getId(), fragment).commit()
+        a.replace(homeContainer.id, fragment).commit()
     }
 
     private fun openTafseer() {
         val fragment = TafseerDetails()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.getId(), fragment).commit()
+        a.replace(homeContainer.id, fragment).commit()
     }
 
     private fun openListen() {
         val fragment = ListenFragment()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.getId(), fragment).commit()
+        a.replace(homeContainer.id, fragment).commit()
     }
 
     private fun openTest() {
         val fragment = TestFragment()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.getId(), fragment).commit()
+        a.replace(homeContainer.id, fragment).commit()
     }
 
     private fun openBookmark() {
         val fragment = BookmarkFragment()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.getId(), fragment).commit()
+        a.replace(homeContainer.id, fragment).commit()
     }
 
     fun acquirePermission() {
@@ -244,7 +244,7 @@ class HomeActivity : AppCompatActivity() {
     private fun goToReadLog() {
         val transaction = supportFragmentManager.beginTransaction()
         val logFragment = ReadLogFragment()
-        transaction.replace(homeContainer.getId(), logFragment).commit()
+        transaction.replace(homeContainer.id, logFragment).commit()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

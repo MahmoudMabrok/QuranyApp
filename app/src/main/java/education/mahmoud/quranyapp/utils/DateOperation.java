@@ -111,7 +111,7 @@ public class DateOperation {
     }
 
     public static int[] getYesterDayMetric(Date date) {
-        int ints[] = new int[3];
+        int[] ints = new int[3];
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         ints[0] = getDay(calendar.getTime());
@@ -127,7 +127,7 @@ public class DateOperation {
     }
 
     public static int[] getPreviousWeekMetric(Date date) {
-        int ints[] = new int[3];
+        int[] ints = new int[3];
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.add(Calendar.DAY_OF_MONTH, -7);
         ints[0] = getDay(calendar.getTime());
