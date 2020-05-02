@@ -56,7 +56,7 @@ class ShowAyahsActivity : AppCompatActivity() {
     /**
      * hold current readLog item used to retrive pages and also with updating
      */
-    private lateinit var readLog: ReadLog
+    var readLog: ReadLog? = null
 
     private lateinit var toast: Toast
 
@@ -224,10 +224,10 @@ class ShowAyahsActivity : AppCompatActivity() {
         currentDate = DateOperation.getCurrentDateExact().time
         currentDateStr = DateOperation.getCurrentDateAsString()
         readLog = model.getLReadLogByDate(currentDateStr)
-        pagesReadLogNumber = readLog.pages
-        for (integer in pagesReadLogNumber) {
-            Log.d(TAG, "loadPagesReadLoge: $integer")
+        readLog?.let {
+            pagesReadLogNumber = it.pages
         }
+
     }
 
     /**
@@ -277,11 +277,14 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun saveReadLog() {
-        readLog.pages = pagesReadLogNumber
-        try {
-            model.addReadLog(readLog)
-        } catch (e: Exception) {
-            model.updateReadLog(readLog)
+        readLog?.let {
+            it.pages = pagesReadLogNumber
+            // exception used to indicate its update or add case when update it will make exception as there is item in db
+            try {
+                model.addReadLog(it)
+            } catch (e: Exception) {
+                model.updateReadLog(it)
+            }
         }
     }
 

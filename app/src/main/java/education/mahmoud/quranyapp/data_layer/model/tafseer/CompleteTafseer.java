@@ -4,6 +4,8 @@ package education.mahmoud.quranyapp.data_layer.model.tafseer;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import education.mahmoud.quranyapp.data_layer.model.full_quran.Data;
+
 public class CompleteTafseer {
 
     @SerializedName("code")

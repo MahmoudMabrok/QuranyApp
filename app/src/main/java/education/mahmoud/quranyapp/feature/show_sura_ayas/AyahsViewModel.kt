@@ -19,10 +19,7 @@ class AyahsViewModel(private val repo: Repository) : ViewModel() {
 
     val bg = CompositeDisposable()
 
-    override fun onCleared() {
-        super.onCleared()
-        bg.clear()
-    }
+
 
     fun addLatestread(lastpageShown: Int) {
         repo.addLatestread(lastpageShown)
@@ -36,7 +33,7 @@ class AyahsViewModel(private val repo: Repository) : ViewModel() {
         repo.updateReadLog(readLog)
     }
 
-    fun getLReadLogByDate(currentDateStr: String): ReadLog {
+    fun getLReadLogByDate(currentDateStr: String): ReadLog? {
         return repo.getLReadLogByDate(currentDateStr)
     }
 
@@ -62,6 +59,11 @@ class AyahsViewModel(private val repo: Repository) : ViewModel() {
 
     fun addBookmark(bookmarkItem: BookmarkItem) {
         repo.addBookmark(bookmarkItem)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        bg.clear()
     }
 
 }

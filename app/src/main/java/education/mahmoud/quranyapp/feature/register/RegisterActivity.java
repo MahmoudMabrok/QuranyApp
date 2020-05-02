@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.data_layer.Repository;
-import education.mahmoud.quranyapp.feature.login.Login;
 import education.mahmoud.quranyapp.utils.Util;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -83,14 +82,14 @@ public class RegisterActivity extends AppCompatActivity {
         spRegister.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.tvOpenLogin)
+    /*@OnClick(R.id.tvOpenLogin)
     public void onTvOpenLoginClicked() {
         Intent openAcivity = new Intent(RegisterActivity.this, Login.class);
         //  openAcivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(openAcivity);
         finish();
     }
-
+*/
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

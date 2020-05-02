@@ -61,7 +61,7 @@ class Repository(private var localShared: LocalShared,
     val surasNames: List<String>
         get() = quranDB.surahDAO().allSurahNames
 
-    fun getSuraByName(name: String): SuraItem {
+    fun getSuraByName(name: String): SuraItem? {
         return quranDB.surahDAO().getSurahByName(name)
     }
 
@@ -88,11 +88,11 @@ class Repository(private var localShared: LocalShared,
     val ayahNumberNotAudioDownloaded: List<Int>
         get() = quranDB.ayahDAO().ayahNumberNotAudioDownloaded
 
-    fun getAyahByInSurahIndex(index: Int, ayahIndex: Int): AyahItem {
+    fun getAyahByInSurahIndex(index: Int, ayahIndex: Int): AyahItem? {
         return quranDB.ayahDAO().getAyahByInSurahIndex(index, ayahIndex)
     }
 
-    fun getAyahByIndex(index: Int): AyahItem {
+    fun getAyahByIndex(index: Int): AyahItem? {
         return quranDB.ayahDAO().getAyahByIndex(index)
     }
 
@@ -185,11 +185,11 @@ class Repository(private var localShared: LocalShared,
     val hizbQuaterStart: List<Int>
         get() = quranDB.ayahDAO().hizbQuaterStart
 
-    fun getLReadLogByDate(currentDate: Long): ReadLog {
+    fun getLReadLogByDate(currentDate: Long): ReadLog? {
         return quranDB.readLogDAO().getReadLogBydate(currentDate)
     }
 
-    fun getLReadLogByDate(currentDate: String): ReadLog {
+    fun getLReadLogByDate(currentDate: String): ReadLog? {
         return quranDB.readLogDAO().getReadLogBydate(currentDate)
     }
 

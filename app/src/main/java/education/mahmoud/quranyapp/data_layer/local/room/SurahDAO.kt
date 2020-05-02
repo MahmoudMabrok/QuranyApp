@@ -23,7 +23,7 @@ interface SurahDAO {
     fun getSurahByIndex(id: Int): SuraItem
 
     @Query("select  * from surah where `name` = :name")
-    fun getSurahByName(name: String): SuraItem
+    fun getSurahByName(name: String): SuraItem?
 
     @Query("select startIndex from surah where `index` = :index")
     fun getSuraStartpage(index: Int): Int

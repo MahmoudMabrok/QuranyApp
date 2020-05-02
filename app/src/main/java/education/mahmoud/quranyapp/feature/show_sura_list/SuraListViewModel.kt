@@ -16,7 +16,7 @@ class SuraListViewModel(private val repo: Repository) : ViewModel() {
 
     val bg = CompositeDisposable()
     fun loadSura() {
-        Single.timer(5, TimeUnit.SECONDS)
+        Single.timer(2, TimeUnit.SECONDS)
                 .subscribe { _ ->
                     "got data".log()
                     replay.accept(repo.suras)
