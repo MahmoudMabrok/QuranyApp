@@ -3,11 +3,11 @@ package education.mahmoud.quranyapp.base
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.ethanhua.skeleton.ViewSkeletonScreen
+import com.ethanhua.skeleton.SkeletonScreen
 
 abstract class BaseFragment : Fragment() {
 
-    private val skeletonList by lazy { arrayListOf<ViewSkeletonScreen>() }
+    private val skeletonList by lazy { arrayListOf<SkeletonScreen>() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,6 +30,11 @@ abstract class BaseFragment : Fragment() {
         skeletonList.forEach {
             it.hide()
         }
+    }
+
+
+    fun addSketlon(item: SkeletonScreen) {
+        skeletonList.add(item)
     }
 
     open fun cleanUp() {

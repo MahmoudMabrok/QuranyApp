@@ -5,16 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import com.ethanhua.skeleton.Skeleton
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
 import education.mahmoud.quranyapp.data_layer.Repository
 import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
-import education.mahmoud.quranyapp.utils.Data
+import education.mahmoud.quranyapp.utils.bind
+import education.mahmoud.quranyapp.utils.show
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_bookmark.*
 import org.koin.android.ext.android.inject
-import java.util.*
 
 
 class BookmarkFragment : DataLoadingBaseFragment() {
@@ -22,15 +23,13 @@ class BookmarkFragment : DataLoadingBaseFragment() {
     private val bookmarkAdapter by lazy { BookmarkAdapter() }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_bookmark, container, false)
     }
 
     override fun initViews(view: View) {
         super.initViews(view)
         initRv()
-        retriveBookmarks()
     }
 
     private fun initRv() {
@@ -43,46 +42,42 @@ class BookmarkFragment : DataLoadingBaseFragment() {
         bookmarkAdapter.setIoBookmarkDelete { item ->
             repository.deleteBookmark(item)
             bookmarkAdapter.deleteItem(item)
-            Toast.makeText(context, R.string.deleted, Toast.LENGTH_SHORT).show()
+            context?.show(getString(R.string.deleted))
         }
+
+        Skeleton.bind(rvBookmark)
+                .adapter(bookmarkAdapter)
+                .load(R.layout.bookmark_skelton)
+                .show()
+                .apply {
+                    hide()
+                    addSketlon(this)
+                }
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser && rvBookmark != null) {
-            bookmarkAdapter.setBookmarkItemList(repository.bookmarks)
-            if (bookmarkAdapter.itemCount > 0) {
-                availbaleData()
-            } else {
-                noData()
-            }
-        }
+
+    override fun startLoadingData() {
+        super.startLoadingData()
+        repository.bookmarks.bind()
+                .doAfterNext {
+                    hideLoad()
+                }
+                .subscribe({
+                    if (it.isEmpty())
+                        noDataState()
+                    bookmarkAdapter.setBookmarkItemList(it)
+                }, {
+                    val msg = it.message ?: "Error "
+                    context?.show(msg)
+                })
+                .addTo(bg)
     }
 
-    private fun noData() {
+    override fun noDataState() {
+        super.noDataState()
         rvBookmark.visibility = View.GONE
         tvNoBookMark.visibility = View.VISIBLE
     }
-
-    private fun availbaleData() {
-        rvBookmark.visibility = View.VISIBLE
-        tvNoBookMark.visibility = View.GONE
-    }
-
-    private fun getIndexOfString(suraName: String): Int {
-        val list: List<String> = ArrayList(Arrays.asList(*Data.SURA_NAMES))
-        return list.indexOf(suraName)
-    }
-
-    private fun retriveBookmarks() {
-        bookmarkAdapter.setBookmarkItemList(repository.bookmarks)
-        if (bookmarkAdapter.itemCount > 0) {
-            availbaleData()
-        } else {
-            noData()
-        }
-    }
-
 
     companion object {
         private const val TAG = "BookmarkFragment"

@@ -2,6 +2,7 @@ package education.mahmoud.quranyapp.data_layer
 
 import education.mahmoud.quranyapp.data_layer.local.LocalShared
 import education.mahmoud.quranyapp.data_layer.local.room.*
+import io.reactivex.Flowable
 
 
 class Repository(private var localShared: LocalShared,
@@ -99,8 +100,8 @@ class Repository(private var localShared: LocalShared,
         get() = quranDB.ayahDAO().lastDownloadedAyahAudio
 
     // bookmark
-    val bookmarks: List<BookmarkItem>
-        get() = quranDB.bookmarkDao().bookmarks
+    val bookmarks: Flowable<List<BookmarkItem>>
+        get() = quranDB.bookmarkDao().loadBookmarks()
 
     fun addBookmark(item: BookmarkItem) {
         quranDB.bookmarkDao().addBookmark(item)
