@@ -10,9 +10,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@android:color/white"></androidx.appcompat.widget.Toolbar>
+        app:titleTextColor="@android:color/white" />
 
     <FrameLayout
         android:id="@+id/homeContainer"
@@ -32,19 +33,22 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:background="@drawable/bn_bg"
+        app:elevation="1dp"
+        app:itemBackground="@drawable/bn_item__bg"
+        app:itemIconTint="@color/secondaryTextColor"
+        app:itemTextColor="@color/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
 
     <FrameLayout
         android:id="@+id/mainContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="5dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:elevation="10dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +59,4 @@
 
 
     <!--
-    android:background="@drawable/bn_bg"
-    app:itemBackground="@drawable/bn_item__bg"
-    app:itemIconTint="@color/secondaryTextColor"
-    app:itemTextColor="@color/primaryTextColor"-->
+ -->

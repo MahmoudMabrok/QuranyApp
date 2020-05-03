@@ -15,7 +15,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import butterknife.ButterKnife
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.data_layer.Repository
@@ -74,7 +73,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home2)
-        ButterKnife.bind(this)
         Log.d(TAG, "onCreate: start app")
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         goToSplash()
@@ -83,7 +81,6 @@ class HomeActivity : AppCompatActivity() {
         toolbar?.let {
             setSupportActionBar(it)
         }
-
 
     }
 
