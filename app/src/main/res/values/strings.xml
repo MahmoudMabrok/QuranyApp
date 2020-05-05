@@ -158,5 +158,7 @@
     <string name="go_by_page">Go By Page</string>
     <string name="page_limit">Page must be 1-604</string>
 
+    <string name="justified"><html><body style="text-align:justify"> %s </body></html></string>
+
 
 </resources>

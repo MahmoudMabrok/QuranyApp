@@ -7,15 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.Util
@@ -57,8 +53,8 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.topLinear?.visibility = View.VISIBLE
         holder.BottomLinear?.visibility = View.VISIBLE
         // set Colors
-        holder.tvAyahs?.setTextColor(ayahsColor)
-        holder.scAyahsText?.setBackgroundColor(scrollColor)
+        /*   holder.tvAyahs?.setTextColor(ayahsColor)
+           holder.scAyahsText?.setBackgroundColor(scrollColor)*/
         // <editor-fold desc="Create Text">
         val builder = StringBuilder()
         var aya: String
@@ -71,7 +67,8 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
             // add sura name
             if (ayahItem.ayahInSurahIndex == 1) {
                 tempSuraName = getSuraNameFromIndex(ayahItem.surahIndex)
-                if (isFirst) { // handle first name in page that not need a previous new line
+                if (isFirst) {
+                    // handle first name in page that not need a previous new line
                     builder.append(tempSuraName + "\n")
                 } else {
                     builder.append("\n" + tempSuraName + "\n")
@@ -90,10 +87,13 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
                 }
             }
             isFirst = false
-            builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ ", aya, ayahItem.ayahInSurahIndex))
+            builder.append(MessageFormat.format("{0}  ({1})", aya, ayahItem.ayahInSurahIndex))
+//            "ayah $aya".log()
         }
         // </editor-fold>
         holder.tvAyahs?.setText(Util.getSpannable(builder.toString()), TextView.BufferType.SPANNABLE)
+
+
         // text justifivation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             holder.tvAyahs?.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
@@ -186,43 +186,19 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        @JvmField
-        @BindView(R.id.tvAyahs)
-        var tvAyahs: TextView? = null
-        @JvmField
-        @BindView(R.id.sc_ayahs_text)
-        var scAyahsText: ScrollView? = null
-        @JvmField
-        @BindView(R.id.tvSurahName)
-        var tvSurahName: TextView? = null
-        @JvmField
-        @BindView(R.id.tvJuz)
-        var tvJuz: TextView? = null
-        @JvmField
-        @BindView(R.id.imBookmark)
-        var imBookmark: ImageView? = null
-        @JvmField
-        @BindView(R.id.topLinear)
-        var topLinear: LinearLayout? = null
-        @JvmField
-        @BindView(R.id.btnNext)
-        var btnNext: ImageButton? = null
-        @JvmField
-        @BindView(R.id.tvPageNumShowAyahs)
-        var tvPageNumShowAyahs: TextView? = null
-        @JvmField
-        @BindView(R.id.btnPrev)
-        var btnPrev: ImageButton? = null
-        @JvmField
-        @BindView(R.id.BottomLinear)
-        var BottomLinear: LinearLayout? = null
-        @JvmField
-        @BindView(R.id.ayahsLayout)
-        var ayahsLayout: FrameLayout? = null
 
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        var tvAyahs: TextView? = itemView.findViewById(R.id.tvAyahs)
+        var tvSurahName: TextView? = itemView.findViewById(R.id.tvSurahName)
+        var tvJuz: TextView? = itemView.findViewById(R.id.tvJuz)
+        var tvPageNumShowAyahs: TextView? = itemView.findViewById(R.id.tvPageNumShowAyahs)
+        var btnNext: ImageButton? = itemView.findViewById(R.id.btnNext)
+        var btnPrev: ImageButton? = itemView.findViewById(R.id.btnPrev)
+        var imBookmark: ImageView? = itemView.findViewById(R.id.imBookmark)
+
+        var topLinear: LinearLayout? = itemView.findViewById(R.id.topLinear)
+        var BottomLinear: LinearLayout? = itemView.findViewById(R.id.BottomLinear)
+
+
     }
 
     companion object {

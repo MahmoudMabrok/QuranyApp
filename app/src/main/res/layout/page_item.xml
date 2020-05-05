@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ayahsLayout"
@@ -10,36 +10,33 @@
     android:layout_marginEnd="@dimen/_6sdp"
     tools:context=".feature.showSuraAyas.ShowAyahsActivity">
 
-    <ScrollView
-        android:id="@+id/sc_ayahs_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_29sdp"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:background="@color/whiteCardColor"
-        android:padding="@dimen/_5sdp">
-
-        <TextView
-            android:id="@+id/tvAyahs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:fontFamily="@font/kfgqp"
-            android:isScrollContainer="true"
-            android:scrollbars="vertical"
-            android:focusableInTouchMode="true"
-            android:textColor="@color/ayas_color"
-            android:textIsSelectable="false"
-            android:textSize="@dimen/ayahs_size"
-            tools:text="Hellodsaasasasa" />
-    </ScrollView>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAyahs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusableInTouchMode="true"
+        android:fontFamily="@font/amiri_regular"
+        android:gravity="center_horizontal"
+        android:isScrollContainer="true"
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        android:text="Hellodsaasdsdsdsdsdsdsdsdeweweweweasasa"
+        android:textColor="@color/whiteTextColor"
+        android:textIsSelectable="false"
+        app:autoSizeMaxTextSize="25sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@id/BottomLinear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topLinear" />
 
 
     <LinearLayout
         android:id="@+id/topLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_gravity="top"
         android:alpha="0.9"
         android:layoutDirection="locale"
@@ -84,6 +81,8 @@
         android:id="@+id/BottomLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_gravity="bottom"
         android:alpha="0.9"
         android:background="@color/black_gradi"
@@ -120,4 +119,4 @@
     </LinearLayout>
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

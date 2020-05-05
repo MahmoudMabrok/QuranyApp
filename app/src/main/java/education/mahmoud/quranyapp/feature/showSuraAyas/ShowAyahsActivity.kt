@@ -139,8 +139,6 @@ class ShowAyahsActivity : AppCompatActivity() {
                 lastpageShown = pos + 1
                 // add page to read log
                 addToReadLog(lastpageShown)
-                /*    holder.topLinear.visibility = View.INVISIBLE
-                    holder.BottomLinear.visibility = View.INVISIBLE*/
                 // calculate Hizb info.
                 val page = pageAdapter.getPage(pos)
                 if (quraterSStart.contains(page.pageNum)) { // get last ayah to extract info from it
@@ -177,7 +175,7 @@ class ShowAyahsActivity : AppCompatActivity() {
         rvAyahsPages.layoutDirection = View.LAYOUT_DIRECTION_RTL
         pageAdapter.setiOnClick(IOnClick { pos ->
             // pos represent page and need to be updated by 1 to be as recyclerview
-// +2 to be as Mushaf
+            // +2 to be as Mushaf
             rvAyahsPages.scrollToPosition(pos + 1)
             //   addToReadLog(pos + 2);
         })
@@ -245,6 +243,7 @@ class ShowAyahsActivity : AppCompatActivity() {
         spShowAyahs?.visibility = View.GONE
         tvNoQuranData?.visibility = View.GONE
         rvAyahsPages?.visibility = View.VISIBLE
+        "$rvAyahsPages $spShowAyahs".log()
     }
 
     private fun notFound() {
