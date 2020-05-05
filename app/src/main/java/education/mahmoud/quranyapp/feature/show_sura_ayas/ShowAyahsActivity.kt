@@ -1,27 +1,25 @@
 package education.mahmoud.quranyapp.feature.show_sura_ayas
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArraySet
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearSnapHelper
 import butterknife.ButterKnife
-import butterknife.OnClick
 import education.mahmoud.quranyapp.App
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem
-import education.mahmoud.quranyapp.data_layer.local.room.ReadLog
-import education.mahmoud.quranyapp.feature.download.DownloadActivity
+import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
+import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
 import education.mahmoud.quranyapp.feature.show_sura_ayas.PageAdapter.IBookmark
 import education.mahmoud.quranyapp.feature.show_sura_ayas.PageAdapter.PageShown
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
-import education.mahmoud.quranyapp.utils.show
+import education.mahmoud.quranyapp.utils.log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_show_ayahs.*
@@ -46,7 +44,7 @@ class ShowAyahsActivity : AppCompatActivity() {
      * hold num of pages that read today
      * will be update(in db) with every exit from activity
      */
-    lateinit var pagesReadLogNumber: ArraySet<Int>
+    val pagesReadLogNumber = mutableSetOf<Int>()
     /**
      * hold current date used to retrive pages and also with updating
      */
@@ -60,13 +58,12 @@ class ShowAyahsActivity : AppCompatActivity() {
      */
     var readLog: ReadLog? = null
 
-    private lateinit var toast: Toast
+    private var toast: Toast? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_ayahs)
         ButterKnife.bind(this)
-
 
         pos = intent.getIntExtra(Constants.SURAH_INDEX, 1)
         pos = getStartPageFromIndex(pos)
@@ -90,7 +87,6 @@ class ShowAyahsActivity : AppCompatActivity() {
 
         (application as? App)?.persistanscePages()
         stratObserving()
-
     }
 
     private fun stratObserving() {
@@ -104,7 +100,8 @@ class ShowAyahsActivity : AppCompatActivity() {
                     foundState()
                 }, {
                     hideLoading()
-                    this.show("Error")
+                    "error ${it.message}".log()
+                    // this.show("Error ${it.message}")
                 })
                 ?.addTo(model.bg)
     }
@@ -185,7 +182,7 @@ class ShowAyahsActivity : AppCompatActivity() {
             //   addToReadLog(pos + 2);
         })
     }
-    //</editor-fold>
+    // </editor-fold>
     /**
      * @param surahIndex in quran
      * @return
@@ -200,21 +197,25 @@ class ShowAyahsActivity : AppCompatActivity() {
         loadPagesReadLoge()
     }
 
-    //<editor-fold desc="prepare colors">
-    private fun prepareColors() { // check Night Mode
-        if (model.nightModeState) { //            tvSuraNameShowAyas.setTextColor(getResources().getColor(R.color.ayas_color_night_mode));
-            ayahsColor = resources.getColor(R.color.ayas_color_night_mode)
-            scrollorColor = resources.getColor(R.color.bg_ays_night_mode)
-        } else { //            tvSuraNameShowAyas.setTextColor(getResources().getColor(R.color.ayas_color));
-            ayahsColor = resources.getColor(R.color.ayas_color)
+    // <editor-fold desc="prepare colors">
+    private fun prepareColors() {
+        // check Night Mode
+        if (model.nightModeState) {
+            // tvSuraNameShowAyas.setTextColor(getResources().getColor(R.color.ayas_color_night_mode));
+            ayahsColor = ContextCompat.getColor(this, R.color.ayas_color_night_mode)
+            scrollorColor = ContextCompat.getColor(this, R.color.bg_ays_night_mode)
+
+        } else {
+            // tvSuraNameShowAyas.setTextColor(getResources().getColor(R.color.ayas_color));
+            ayahsColor = ContextCompat.getColor(this, R.color.ayas_color)
             // check usesr color for background
-            val col = model.backColorState
-            when (col) {
-                Constants.GREEN -> scrollorColor = resources.getColor(R.color.bg_green)
-                Constants.WHITE -> scrollorColor = resources.getColor(R.color.bg_white)
-                Constants.YELLOW -> scrollorColor = resources.getColor(R.color.bg_yellow)
+            when (model.backColorState) {
+                Constants.GREEN -> scrollorColor = ContextCompat.getColor(this, R.color.bg_green)
+                Constants.WHITE -> scrollorColor = ContextCompat.getColor(this, R.color.bg_white)
+                Constants.YELLOW -> scrollorColor = ContextCompat.getColor(this, R.color.bg_yellow)
             }
         }
+        ayahsColor = ContextCompat.getColor(this, R.color.bg_ays_night_mode)
     }
 
     private fun loadData() {
@@ -226,9 +227,11 @@ class ShowAyahsActivity : AppCompatActivity() {
         currentDateStr = DateOperation.getCurrentDateAsString()
         readLog = model.getLReadLogByDate(currentDateStr)
         readLog?.let {
-            pagesReadLogNumber = it.pages
+            pagesReadLogNumber.apply {
+                clear()
+                addAll(it.pages)
+            }
         }
-
     }
 
     /**
@@ -240,9 +243,9 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun foundState() {
-        spShowAyahs.visibility = View.GONE
-        tvNoQuranData.visibility = View.GONE
-        rvAyahsPages.visibility = View.VISIBLE
+        spShowAyahs?.visibility = View.GONE
+        tvNoQuranData?.visibility = View.GONE
+        rvAyahsPages?.visibility = View.VISIBLE
     }
 
     private fun notFound() {
@@ -258,17 +261,9 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun showMessage(message: String) {
-        if (toast != null) {
-            //    toast.cancel()
-        }
+        toast?.cancel()
         toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
-        //  toast.show()
-    }
-
-    @OnClick(R.id.tv_no_quran_data)
-    fun onBOClicked() {
-        val openAcivity = Intent(this@ShowAyahsActivity, DownloadActivity::class.java)
-        startActivity(openAcivity)
+        toast?.show()
     }
 
     override fun onStop() {
@@ -279,7 +274,7 @@ class ShowAyahsActivity : AppCompatActivity() {
 
     private fun saveReadLog() {
         readLog?.let {
-            it.pages = pagesReadLogNumber
+            it.pages = ArraySet<Int>().apply { addAll(pagesReadLogNumber) }
             // exception used to indicate its update or add case when update it will make exception as there is item in db
             try {
                 model.addReadLog(it)

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 
 public class AyahsListen implements Parcelable {
 

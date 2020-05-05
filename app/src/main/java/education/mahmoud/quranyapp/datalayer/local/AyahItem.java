@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.data_layer.local;
+package education.mahmoud.quranyapp.datalayer.local;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;

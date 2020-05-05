@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 import education.mahmoud.quranyapp.utils.Constants;
 import education.mahmoud.quranyapp.utils.Util;
 

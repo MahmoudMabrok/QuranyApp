@@ -2,10 +2,10 @@ package education.mahmoud.quranyapp.feature.show_sura_ayas
 
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
-import education.mahmoud.quranyapp.data_layer.Repository
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem
-import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem
-import education.mahmoud.quranyapp.data_layer.local.room.ReadLog
+import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
+import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
+import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
 import io.reactivex.disposables.CompositeDisposable
 
 class AyahsViewModel(private val repo: Repository) : ViewModel() {
@@ -17,8 +17,6 @@ class AyahsViewModel(private val repo: Repository) : ViewModel() {
     val replay = PublishRelay.create<List<Page>>()
 
     val bg = CompositeDisposable()
-
-
 
     fun addLatestread(lastpageShown: Int) {
         repo.addLatestread(lastpageShown)
@@ -64,5 +62,4 @@ class AyahsViewModel(private val repo: Repository) : ViewModel() {
         super.onCleared()
         bg.clear()
     }
-
 }

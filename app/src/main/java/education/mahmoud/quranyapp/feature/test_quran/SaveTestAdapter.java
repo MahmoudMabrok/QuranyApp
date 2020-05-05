@@ -17,7 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 
 public class SaveTestAdapter extends RecyclerView.Adapter<SaveTestAdapter.Holder> {
 

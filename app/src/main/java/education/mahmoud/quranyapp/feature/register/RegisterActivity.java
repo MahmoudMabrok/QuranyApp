@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.Repository;
+import education.mahmoud.quranyapp.datalayer.Repository;
 import education.mahmoud.quranyapp.utils.Util;
 
 public class RegisterActivity extends AppCompatActivity {

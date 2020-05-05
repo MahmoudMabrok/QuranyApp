@@ -3,10 +3,10 @@ package education.mahmoud.quranyapp
 import android.app.Application
 import android.util.Log
 import com.jakewharton.rxrelay2.PublishRelay
-import education.mahmoud.quranyapp.data_layer.Repository
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem
-import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
-import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah
+import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
+import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
+import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah
 import education.mahmoud.quranyapp.di.dataModule
 import education.mahmoud.quranyapp.feature.show_sura_ayas.Page
 import education.mahmoud.quranyapp.utils.Util
@@ -21,7 +21,6 @@ class App : Application() {
     val relay = PublishRelay.create<Boolean>()
     val relayPages = PublishRelay.create<ArrayList<Page>>()
 
-
     override fun onCreate() {
         super.onCreate()
 
@@ -32,7 +31,6 @@ class App : Application() {
 
         val ahays = repository.totlaAyahs
         //  persistanscePages()
-
     }
 
     fun persistanscePages() {
@@ -65,10 +63,7 @@ class App : Application() {
         "start".log()
 
         for (surah in surahs) {
-            suraItem = SuraItem(surah.number
-                    , surah.ayahs.size
-                    , surah.name, surah.englishName
-                    , surah.englishNameTranslation, surah.revelationType)
+            suraItem = SuraItem(surah.number, surah.ayahs.size, surah.name, surah.englishName, surah.englishNameTranslation, surah.revelationType)
             // add start page
             suraItem.index = surah.number
             suraItem.startIndex = surah.ayahs[0].page
@@ -78,11 +73,7 @@ class App : Application() {
                 e.printStackTrace()
             }
             for (ayah in surah.ayahs) {
-                ayahItem = AyahItem(ayah.number, surah.number
-                        , ayah.page, ayah.juz
-                        , ayah.hizbQuarter, false
-                        , ayah.numberInSurah, ayah.text
-                        , ayah.text)
+                ayahItem = AyahItem(ayah.number, surah.number, ayah.page, ayah.juz, ayah.hizbQuarter, false, ayah.numberInSurah, ayah.text, ayah.text)
 
                 if (surahClean != null) {
                     clean = surahClean[surah.number - 1].ayahs[ayahItem.ayahInSurahIndex - 1].text
@@ -100,8 +91,6 @@ class App : Application() {
         "finis".log()
 
         relay.accept(true)
-
-
     }
 
     fun loadFullQuran() {

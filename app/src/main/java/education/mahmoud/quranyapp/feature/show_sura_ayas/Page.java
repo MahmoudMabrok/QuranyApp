@@ -2,7 +2,7 @@ package education.mahmoud.quranyapp.feature.show_sura_ayas;
 
 import java.util.List;
 
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 
 public class Page {
     private List<AyahItem> ayahItems;

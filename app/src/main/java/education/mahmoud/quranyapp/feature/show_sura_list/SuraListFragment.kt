@@ -29,7 +29,7 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
     var suraAdapter: SuraAdapter = SuraAdapter()
     val model: SuraListViewModel by inject()
     val bg = CompositeDisposable()
-    private lateinit var screen:RecyclerViewSkeletonScreen
+    private lateinit var screen: RecyclerViewSkeletonScreen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,12 +65,11 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
             Log.d(TAG, "onSura: $pos")
         }
 
-        screen  = Skeleton.bind(rvSura)
+        screen = Skeleton.bind(rvSura)
                 .adapter(suraAdapter)
                 .count(12)
                 .load(R.layout.sura_item_skelton)
                 .show()
-
     }
 
     private fun loadSuraList() {
@@ -89,8 +88,6 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
         val openAcivity = Intent(context, DownloadActivity::class.java)
         context?.startActivity(openAcivity)
     }
-
-
 
     companion object {
         private const val TAG = "SuraListFragment"

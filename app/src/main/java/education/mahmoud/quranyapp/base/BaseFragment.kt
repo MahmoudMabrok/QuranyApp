@@ -32,7 +32,6 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
-
     fun addSketlon(item: SkeletonScreen) {
         skeletonList.add(item)
     }
@@ -45,5 +44,4 @@ abstract class BaseFragment : Fragment() {
         super.onDestroyView()
         cleanUp()
     }
-
 }

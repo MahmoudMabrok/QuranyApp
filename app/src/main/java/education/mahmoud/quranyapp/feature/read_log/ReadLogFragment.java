@@ -19,8 +19,8 @@ import org.koin.java.KoinJavaComponent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.Repository;
-import education.mahmoud.quranyapp.data_layer.local.room.ReadLog;
+import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.local.room.ReadLog;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.data_layer.local.room;
+package education.mahmoud.quranyapp.datalayer.local.room;
 
 import androidx.collection.ArraySet;
 import androidx.room.TypeConverter;

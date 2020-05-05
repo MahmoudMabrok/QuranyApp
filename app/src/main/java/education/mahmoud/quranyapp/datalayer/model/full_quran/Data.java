@@ -1,5 +1,5 @@
 
-package education.mahmoud.quranyapp.data_layer.model.full_quran;
+package education.mahmoud.quranyapp.datalayer.model.full_quran;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -13,9 +13,9 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.BaseFragment
-import education.mahmoud.quranyapp.data_layer.Repository
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem
-import education.mahmoud.quranyapp.data_layer.local.room.SuraItem
+import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
+import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import education.mahmoud.quranyapp.utils.Data
 import kotlinx.android.synthetic.main.fragment_tafseer_details.*
@@ -43,7 +43,6 @@ class TafseerDetails : BaseFragment() {
         adapter = TafseerAdapter()
         rvTafeer.setHasFixedSize(true)
         rvTafeer.setAdapter(adapter)
-
     }
 
     private fun fillSpinners() {
@@ -101,7 +100,6 @@ class TafseerDetails : BaseFragment() {
         spAyahTafser.setVisibility(View.INVISIBLE)
         tvNoDataInTafseer.setVisibility(View.VISIBLE)
     }
-
 
     @OnClick(R.id.tvNoDataInTafseer)
     fun onViewClicked() {

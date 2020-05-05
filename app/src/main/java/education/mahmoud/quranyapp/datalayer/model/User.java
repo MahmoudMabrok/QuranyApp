@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.data_layer.model;
+package education.mahmoud.quranyapp.datalayer.model;
 
 import androidx.annotation.Keep;
 

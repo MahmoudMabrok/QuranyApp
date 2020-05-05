@@ -17,7 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.data_layer.Repository
+import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
 import education.mahmoud.quranyapp.feature.bookmark_fragment.BookmarkFragment
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
@@ -33,7 +33,7 @@ import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails
 import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment
 import education.mahmoud.quranyapp.utils.Constants
-import kotlinx.android.synthetic.main.activity_home2.*
+import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.android.ext.android.inject
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
@@ -72,7 +72,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home2)
+        setContentView(R.layout.activity_home)
         Log.d(TAG, "onCreate: start app")
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         goToSplash()
@@ -81,11 +81,10 @@ class HomeActivity : AppCompatActivity() {
         toolbar?.let {
             setSupportActionBar(it)
         }
-
     }
 
     fun afterSplash() {
-        supportFragmentManager.popBackStack()
+        supportFragmentManager.popBackStackImmediate()
         openRead()
         checkLastReadAndDisplayDialoge()
     }
@@ -128,9 +127,10 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // used to update UI
-        val id: Int = navigation.selectedItemId
-        navigation.selectedItemId = id
+        /* // used to update UI
+         val id: Int = navigation.selectedItemId
+         // reopen fragment
+         navigation.selectedItemId = id*/
     }
 
     private fun showMessage(message: String) {

@@ -54,7 +54,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         // set Colors
         holder.tvAyahs?.setTextColor(ayahsColor)
         holder.scAyahsText?.setBackgroundColor(scrollColor)
-        //<editor-fold desc="Create Text">
+        // <editor-fold desc="Create Text">
         val builder = StringBuilder()
         var aya: String
         var suraName = ""
@@ -87,7 +87,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
             isFirst = false
             builder.append(MessageFormat.format("{0} ﴿ {1} ﴾ ", aya, ayahItem.ayahInSurahIndex))
         }
-        //</editor-fold>
+        // </editor-fold>
         holder.tvAyahs?.setText(Util.getSpannable(builder.toString()), TextView.BufferType.SPANNABLE)
         // text justifivation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -97,7 +97,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.tvPageNumShowAyahs?.text = item.pageNum.toString()
         holder.tvSurahName?.text = suraName
         holder.tvJuz?.text = item.juz.toString()
-        //<editor-fold desc="listeners">
+        // <editor-fold desc="listeners">
         holder.imBookmark?.setOnClickListener { iBookmark?.onBookmarkClicked(item) }
         /*holder.ayahsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,8 +110,8 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.btnPrev?.setOnClickListener {
             iOnClick?.onClick(holder.adapterPosition - 2) // there will be update by one
         }
-        //</editor-fold>
-        //<editor-fold desc="configure next/prev buttons">
+        // </editor-fold>
+        // <editor-fold desc="configure next/prev buttons">
         if (index == 0) {
             holder.btnNext?.visibility = View.VISIBLE
             holder.btnPrev?.visibility = View.INVISIBLE
@@ -122,7 +122,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
             holder.btnNext?.visibility = View.VISIBLE
             holder.btnPrev?.visibility = View.VISIBLE
         }
-        //</editor-fold>
+        // </editor-fold>
 
         holder.tvAyahs?.setOnClickListener { Log.d(TAG, "onClick: ") }
     }
@@ -148,7 +148,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
 
     override fun onViewAttachedToWindow(holder: Holder) {
         super.onViewAttachedToWindow(holder)
-        //<editor-fold desc="timer to hide">
+        // <editor-fold desc="timer to hide">
         object : CountDownTimer(50, 100) {
             override fun onTick(l: Long) {}
             override fun onFinish() {
@@ -157,7 +157,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
                 holder.topLinear?.visibility = vis
             }
         }.start()
-        //</editor-fold>
+        // </editor-fold>
         pageShown?.onDiplayed(holder.adapterPosition, holder)
     }
 
@@ -216,5 +216,4 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
     companion object {
         private const val TAG = "PageAdapter"
     }
-
 }

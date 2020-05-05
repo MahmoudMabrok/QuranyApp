@@ -1,12 +1,10 @@
 
-package education.mahmoud.quranyapp.data_layer.model.tafseer;
+package education.mahmoud.quranyapp.datalayer.model.full_quran;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import education.mahmoud.quranyapp.data_layer.model.full_quran.Data;
-
-public class CompleteTafseer {
+public class FullQuran {
 
     @SerializedName("code")
     @Expose
@@ -20,18 +18,16 @@ public class CompleteTafseer {
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public CompleteTafseer() {
+    public FullQuran() {
     }
 
     /**
-     * 
      * @param status
      * @param data
      * @param code
      */
-    public CompleteTafseer(int code, String status, Data data) {
+    public FullQuran(int code, String status, Data data) {
         super();
         this.code = code;
         this.status = status;

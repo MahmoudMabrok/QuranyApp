@@ -10,9 +10,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/white" />
 
     <FrameLayout
@@ -29,19 +29,29 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/navigation" />
+        app:layout_constraintTop_toTopOf="@id/navigationContainer" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/navigationContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bn_bg"
-        app:elevation="1dp"
-        app:itemBackground="@drawable/bn_item__bg"
-        app:itemIconTint="@color/secondaryTextColor"
-        app:itemTextColor="@color/primaryTextColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/navigation" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bn_bg"
+            app:elevation="1dp"
+            app:itemBackground="@drawable/bn_item__bg"
+            app:itemIconTint="@color/secondaryTextColor"
+            app:itemTextColor="@color/primaryTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/navigation" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <FrameLayout
         android:id="@+id/mainContainer"

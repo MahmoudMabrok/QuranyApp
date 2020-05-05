@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.data_layer.local
+package education.mahmoud.quranyapp.datalayer.local
 
 import android.app.Application
 import android.content.Context
@@ -57,5 +57,4 @@ class LocalShared(context: Application) {
         set(uuid) {
             preferences.edit().putString(Constants.USER_UUID, uuid).apply()
         }
-
 }

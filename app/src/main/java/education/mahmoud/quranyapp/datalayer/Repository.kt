@@ -1,12 +1,13 @@
-package education.mahmoud.quranyapp.data_layer
+package education.mahmoud.quranyapp.datalayer
 
-import education.mahmoud.quranyapp.data_layer.local.LocalShared
-import education.mahmoud.quranyapp.data_layer.local.room.*
+import education.mahmoud.quranyapp.datalayer.local.LocalShared
+import education.mahmoud.quranyapp.datalayer.local.room.*
 import io.reactivex.Flowable
 
-
-class Repository(private var localShared: LocalShared,
-                 private var quranDB: QuranDB) {
+class Repository(
+        private var localShared: LocalShared,
+        private var quranDB: QuranDB
+) {
     // shared
     fun addLatestread(index: Int) {
         localShared.addLatestread(index)
@@ -135,7 +136,6 @@ class Repository(private var localShared: LocalShared,
 
     val suras: List<SuraItem> = quranDB.surahDAO().allSurah
 
-
     fun getSuraStartpage(index: Int): Int {
         return quranDB.ayahDAO().getSuraStartpage(index)
     }
@@ -202,9 +202,7 @@ class Repository(private var localShared: LocalShared,
     val recordCount: Int
         get() = quranDB.recordDAO().recordCount
 
-
     fun updateRecordItem(path: RecordItem) {
         quranDB.recordDAO().updateRecordItem(path)
     }
-
 }

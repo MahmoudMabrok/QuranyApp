@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
+import education.mahmoud.quranyapp.datalayer.local.room.SuraItem;
 
 public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
 

@@ -23,11 +23,9 @@ abstract class DataLoadingBaseFragment : BaseFragment() {
     open fun defaultState() {}
     open fun noDataState() {}
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         cleanUp()
         bg.clear()
     }
-
 }

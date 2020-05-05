@@ -9,12 +9,12 @@ import org.koin.java.KoinJavaComponent;
 
 import java.util.List;
 
-import education.mahmoud.quranyapp.data_layer.Repository;
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
-import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
-import education.mahmoud.quranyapp.data_layer.model.full_quran.Ayah;
-import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
-import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
+import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
+import education.mahmoud.quranyapp.datalayer.local.room.SuraItem;
+import education.mahmoud.quranyapp.datalayer.model.full_quran.Ayah;
+import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah;
+import education.mahmoud.quranyapp.datalayer.model.tafseer.CompleteTafseer;
 import education.mahmoud.quranyapp.model.Quran;
 import education.mahmoud.quranyapp.model.Sura;
 import education.mahmoud.quranyapp.utils.Util;

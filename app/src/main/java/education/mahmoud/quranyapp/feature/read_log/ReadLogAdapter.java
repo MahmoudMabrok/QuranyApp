@@ -15,7 +15,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.local.room.ReadLog;
+import education.mahmoud.quranyapp.datalayer.local.room.ReadLog;
 import education.mahmoud.quranyapp.utils.Util;
 
 public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> {

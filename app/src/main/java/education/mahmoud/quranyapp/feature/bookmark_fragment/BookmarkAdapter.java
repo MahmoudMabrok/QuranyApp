@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
+import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem;
 
 public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Holder> {
 
