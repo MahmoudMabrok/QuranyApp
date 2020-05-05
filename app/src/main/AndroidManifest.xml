@@ -42,7 +42,7 @@
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".feature.show_sura_ayas.ShowAyahsActivity"
+            android:name=".feature.showSuraAyas.ShowAyahsActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

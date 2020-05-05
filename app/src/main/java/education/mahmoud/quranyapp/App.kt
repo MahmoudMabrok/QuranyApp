@@ -8,7 +8,7 @@ import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah
 import education.mahmoud.quranyapp.di.dataModule
-import education.mahmoud.quranyapp.feature.show_sura_ayas.Page
+import education.mahmoud.quranyapp.feature.showSuraAyas.Page
 import education.mahmoud.quranyapp.utils.Util
 import education.mahmoud.quranyapp.utils.log
 import org.koin.android.ext.android.inject

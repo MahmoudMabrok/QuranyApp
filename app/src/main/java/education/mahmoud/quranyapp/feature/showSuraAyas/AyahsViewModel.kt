@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.feature.show_sura_ayas
+package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay

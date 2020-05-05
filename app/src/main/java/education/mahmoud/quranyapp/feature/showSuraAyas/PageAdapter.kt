@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.feature.show_sura_ayas
+package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import android.os.Build
 import android.os.CountDownTimer
@@ -7,7 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -91,7 +96,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.tvAyahs?.setText(Util.getSpannable(builder.toString()), TextView.BufferType.SPANNABLE)
         // text justifivation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            holder.tvAyahs?.justificationMode = Layout.JUSTIFICATION_MODE_NONE
+            holder.tvAyahs?.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
         }
         // top - bottom details
         holder.tvPageNumShowAyahs?.text = item.pageNum.toString()
@@ -99,6 +104,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.tvJuz?.text = item.juz.toString()
         // <editor-fold desc="listeners">
         holder.imBookmark?.setOnClickListener { iBookmark?.onBookmarkClicked(item) }
+
         /*holder.ayahsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,21 +112,27 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
                 flipState(holder);
             }
         });
-        */holder.btnNext?.setOnClickListener { iOnClick?.onClick(holder.adapterPosition) }
+        */
+
+        holder.btnNext?.setOnClickListener { iOnClick?.onClick(holder.adapterPosition) }
         holder.btnPrev?.setOnClickListener {
             iOnClick?.onClick(holder.adapterPosition - 2) // there will be update by one
         }
         // </editor-fold>
         // <editor-fold desc="configure next/prev buttons">
-        if (index == 0) {
-            holder.btnNext?.visibility = View.VISIBLE
-            holder.btnPrev?.visibility = View.INVISIBLE
-        } else if (index == 603) {
-            holder.btnNext?.visibility = View.INVISIBLE
-            holder.btnPrev?.visibility = View.VISIBLE
-        } else {
-            holder.btnNext?.visibility = View.VISIBLE
-            holder.btnPrev?.visibility = View.VISIBLE
+        when (index) {
+            0 -> {
+                holder.btnNext?.visibility = View.VISIBLE
+                holder.btnPrev?.visibility = View.INVISIBLE
+            }
+            603 -> {
+                holder.btnNext?.visibility = View.INVISIBLE
+                holder.btnPrev?.visibility = View.VISIBLE
+            }
+            else -> {
+                holder.btnNext?.visibility = View.VISIBLE
+                holder.btnPrev?.visibility = View.VISIBLE
+            }
         }
         // </editor-fold>
 

@@ -1,4 +1,4 @@
-package education.mahmoud.quranyapp.feature.show_sura_ayas
+package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import android.os.Bundle
 import android.util.Log
@@ -14,8 +14,8 @@ import education.mahmoud.quranyapp.App
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
-import education.mahmoud.quranyapp.feature.show_sura_ayas.PageAdapter.IBookmark
-import education.mahmoud.quranyapp.feature.show_sura_ayas.PageAdapter.PageShown
+import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
+import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.PageShown
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
@@ -204,7 +204,6 @@ class ShowAyahsActivity : AppCompatActivity() {
             // tvSuraNameShowAyas.setTextColor(getResources().getColor(R.color.ayas_color_night_mode));
             ayahsColor = ContextCompat.getColor(this, R.color.ayas_color_night_mode)
             scrollorColor = ContextCompat.getColor(this, R.color.bg_ays_night_mode)
-
         } else {
             // tvSuraNameShowAyas.setTextColor(getResources().getColor(R.color.ayas_color));
             ayahsColor = ContextCompat.getColor(this, R.color.ayas_color)

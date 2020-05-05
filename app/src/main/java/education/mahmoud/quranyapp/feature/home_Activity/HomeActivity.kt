@@ -26,7 +26,7 @@ import education.mahmoud.quranyapp.feature.listening_activity.ListenFragment
 import education.mahmoud.quranyapp.feature.read_log.ReadLogFragment
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity
 import education.mahmoud.quranyapp.feature.setting.SettingActivity
-import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity
+import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.feature.show_sura_list.GoToSurah
 import education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment
 import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails

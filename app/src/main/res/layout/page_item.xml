@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/_6sdp"
     android:layout_marginEnd="@dimen/_6sdp"
-    tools:context=".feature.show_sura_ayas.ShowAyahsActivity">
+    tools:context=".feature.showSuraAyas.ShowAyahsActivity">
 
     <ScrollView
         android:id="@+id/sc_ayahs_text"

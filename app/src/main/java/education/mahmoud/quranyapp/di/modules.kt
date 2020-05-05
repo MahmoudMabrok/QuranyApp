@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder
 import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.datalayer.local.LocalShared
 import education.mahmoud.quranyapp.datalayer.local.room.QuranDB
-import education.mahmoud.quranyapp.feature.show_sura_ayas.AyahsViewModel
+import education.mahmoud.quranyapp.feature.showSuraAyas.AyahsViewModel
 import education.mahmoud.quranyapp.feature.show_sura_list.SuraListViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel

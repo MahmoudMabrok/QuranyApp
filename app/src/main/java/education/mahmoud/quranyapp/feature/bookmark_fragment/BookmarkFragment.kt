@@ -9,7 +9,7 @@ import com.ethanhua.skeleton.Skeleton
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
-import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity
+import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.bind
 import education.mahmoud.quranyapp.utils.show

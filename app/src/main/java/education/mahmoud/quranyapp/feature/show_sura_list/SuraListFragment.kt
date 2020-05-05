@@ -10,7 +10,7 @@ import com.ethanhua.skeleton.RecyclerViewSkeletonScreen
 import com.ethanhua.skeleton.Skeleton
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
-import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity
+import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.log
 import io.reactivex.android.schedulers.AndroidSchedulers

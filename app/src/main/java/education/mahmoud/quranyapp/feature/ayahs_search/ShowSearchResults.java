@@ -32,7 +32,7 @@ import education.mahmoud.quranyapp.datalayer.Repository;
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen;
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie;
-import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
+import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity;
 import education.mahmoud.quranyapp.utils.Constants;
 import education.mahmoud.quranyapp.utils.Util;
 

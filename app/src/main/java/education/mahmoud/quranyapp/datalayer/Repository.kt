@@ -1,13 +1,15 @@
 package education.mahmoud.quranyapp.datalayer
 
 import education.mahmoud.quranyapp.datalayer.local.LocalShared
-import education.mahmoud.quranyapp.datalayer.local.room.*
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
+import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
+import education.mahmoud.quranyapp.datalayer.local.room.QuranDB
+import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
+import education.mahmoud.quranyapp.datalayer.local.room.RecordItem
+import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import io.reactivex.Flowable
 
-class Repository(
-        private var localShared: LocalShared,
-        private var quranDB: QuranDB
-) {
+class Repository(private var localShared: LocalShared, private var quranDB: QuranDB) {
     // shared
     fun addLatestread(index: Int) {
         localShared.addLatestread(index)
