@@ -10,11 +10,12 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 
 - [Google Play Link ](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
 - [F-Droid link](https://apt.izzysoft.de/fdroid/index/apk/education.mahmoud.quranyapp) 
-- Youtube Demo
-  - [V2.0](https://www.youtube.com/watch?v=hzJV1lth958).
-  - [V1.8](https://www.youtube.com/watch?v=-DbH0EKkAzw).
+- App Reviews 
+  - [Youtube Playsit, Journey with App](https://www.youtube.com/watch?v=L4ElhxFyjKA&list=PL7ZA5t6QDessHFv0JplnjqyCb066QCIyc).
+  - [Versions Demos](https://www.youtube.com/watch?v=BrAeS9-woW0&list=PL7ZA5t6QDesvQGUUa0NxfAog0GwYc0g7T).
 - apk
   - [latest](https://github.com/MahmoudMabrok/QuranyApp/releases/tag/2.6)
+- [My Journey to build App in Arabic](https://www.linkedin.com/pulse/%D8%B1%D8%AD%D9%84%D8%AA%D9%89-%D9%84%D8%A8%D9%86%D8%A7%D8%A1-%D8%AA%D8%B7%D8%A8%D9%8A%D9%82-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85-mahmoud-mabrouk-fouad/)  
 
 # Screens
 <div>
