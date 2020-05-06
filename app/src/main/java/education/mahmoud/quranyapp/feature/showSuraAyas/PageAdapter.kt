@@ -87,7 +87,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
                 }
             }
             isFirst = false
-            builder.append(MessageFormat.format("{0}  ({1})", aya, ayahItem.ayahInSurahIndex))
+            builder.append(MessageFormat.format("{0}  ({1}) ", aya, ayahItem.ayahInSurahIndex))
 //            "ayah $aya".log()
         }
         // </editor-fold>

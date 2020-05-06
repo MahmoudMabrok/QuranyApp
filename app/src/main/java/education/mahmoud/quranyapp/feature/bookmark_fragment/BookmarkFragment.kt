@@ -12,6 +12,7 @@ import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.bind
+import education.mahmoud.quranyapp.utils.log
 import education.mahmoud.quranyapp.utils.show
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_bookmark.*
@@ -60,6 +61,7 @@ class BookmarkFragment : DataLoadingBaseFragment() {
                     hideLoad()
                 }
                 .subscribe({
+                    "$it".log()
                     if (it.isEmpty())
                         noDataState()
                     bookmarkAdapter.setBookmarkItemList(it)
