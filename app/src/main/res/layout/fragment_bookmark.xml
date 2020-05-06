@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/primaryColor"
     tools:context=".feature.bookmark_fragment.BookmarkFragment">
 
     <androidx.recyclerview.widget.RecyclerView
