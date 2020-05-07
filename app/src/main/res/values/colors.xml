@@ -52,9 +52,10 @@
     <color name="tab_strip">#aaddaa</color>
 
 
-    <color name="bg_items">@color/colorPrimary</color>
+    <color name="bg_items">@color/primaryColor</color>
     <color name="tv_color">@color/whiteTextColor</color>
     <color name="skelton">#858282</color>
+    <color name="fragment_bg">@color/primaryColor</color>
 
 
 </resources>
