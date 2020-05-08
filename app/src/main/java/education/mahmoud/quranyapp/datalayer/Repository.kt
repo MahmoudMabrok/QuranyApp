@@ -84,11 +84,11 @@ class Repository(private var localShared: LocalShared, private var quranDB: Qura
     val ayahNumberNotAudioDownloaded: List<Int>
         get() = quranDB.ayahDAO().ayahNumberNotAudioDownloaded
 
-    fun getAyahByInSurahIndex(index: Int, ayahIndex: Int): AyahItem? {
+    fun getAyahByInSurahIndex(index: Int, ayahIndex: Int): AyahItem {
         return quranDB.ayahDAO().getAyahByInSurahIndex(index, ayahIndex)
     }
 
-    fun getAyahByIndex(index: Int): AyahItem? {
+    fun getAyahByIndex(index: Int): AyahItem {
         return quranDB.ayahDAO().getAyahByIndex(index)
     }
 

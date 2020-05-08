@@ -86,10 +86,10 @@ dependencies {
 
     implementation 'com.flipboard:bottomsheet-core:1.5.3'
     implementation 'com.flipboard:bottomsheet-commons:1.5.3'
-    implementation 'com.github.AppIntro:AppIntro:5.1.0'
 
     implementation 'org.greenrobot:eventbus:3.1.1'
 
+    // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     //rx
@@ -111,6 +111,9 @@ dependencies {
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    // flex
+    implementation 'com.google.android:flexbox:2.0.1'
 
 
 }

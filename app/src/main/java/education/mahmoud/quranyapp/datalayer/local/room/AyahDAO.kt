@@ -20,7 +20,7 @@ interface AyahDAO {
     fun getAyahSInRange(start: Int, end: Int): List<AyahItem>
 
     @Query("select  * from ayahs where `ayahIndex` = :id")
-    fun getAyahByIndex(id: Int): AyahItem?
+    fun getAyahByIndex(id: Int): AyahItem
 
     @Query("select  * from ayahs where textClean like  '%' || :txt || '%' ")
     fun getAyahByAyahText(txt: String?): List<AyahItem>
@@ -35,7 +35,7 @@ interface AyahDAO {
     val lastChapter: Int
 
     @Query("select  * from ayahs where `surahIndex` = :index  and ayahInSurahIndex = :ayahIndex")
-    fun getAyahByInSurahIndex(index: Int, ayahIndex: Int): AyahItem?
+    fun getAyahByInSurahIndex(index: Int, ayahIndex: Int): AyahItem
 
     @get:Query("select max(ayahIndex) from ayahs where audioPath is not null ")
     val lastDownloadedAyahAudio: Int

@@ -1,6 +1,5 @@
 package education.mahmoud.quranyapp.feature.ayahs_search;
 
-import android.graphics.Typeface;
 import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +28,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     IOpenAyahInPage iOpenAyahInPage;
     private List<AyahItem> list;
     private String wordSearched;
-    private Typeface typeface;
 
-    public SearchResultsAdapter(Typeface typeface) {
+
+    public SearchResultsAdapter() {
         list = new ArrayList<>();
-        this.typeface = typeface;
     }
 
     public void setiOnPlay(IOnPlay iOnPlay) {
@@ -81,8 +79,6 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         holder.tvSearchAyahNum.setText("" + item.getAyahInSurahIndex());
         holder.tvSearchSuraName.setText("" + Data.SURA_NAMES[item.getSurahIndex() - 1]);
 
-        holder.tvSearchResult.setTypeface(typeface);
-        holder.tvSearchSuraName.setTypeface(typeface);
 
         holder.btnShowTashkeel.setOnClickListener(new View.OnClickListener() {
             @Override

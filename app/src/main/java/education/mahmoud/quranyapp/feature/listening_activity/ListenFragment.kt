@@ -4,7 +4,6 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,13 +37,15 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 class ListenFragment : Fragment(), OnDownloadListener {
+
     var mediaPlayer: MediaPlayer? = null
+
     var url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/"
     var isPermissionAllowed = false
     var downloadID = 0
     var i = 1
-    var startSura: SuraItem? = null
-    var endSura: SuraItem? = null
+    var startSura: SuraItem = SuraItem()
+    var endSura: SuraItem = SuraItem()
     var downURL: String? = null
     var path: String? = null
     var filename: String? = null
@@ -63,6 +64,8 @@ class ListenFragment : Fragment(), OnDownloadListener {
     private var ayahsSetCount = 0
     var handler: Handler? = null
     var serviceIntent: Intent? = null
+
+
     private fun initSpinners() {
         val suraNames = repository.surasNames
         val startAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
@@ -78,7 +81,9 @@ class ListenFragment : Fragment(), OnDownloadListener {
                 }
             }
 
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+
+            }
         }
         spEndSura.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, index: Long) {
@@ -106,9 +111,9 @@ class ListenFragment : Fragment(), OnDownloadListener {
         //start downloading
         PRDownloader.download(downURL, path, filename).build().start(this)
         // set text on screen downloaded / todownled
-// second is show name of current file to download
-        tvDownCurrentFile.setText(getString(R.string.now_down, filename))
-        tvDownStatePercentage.setText(getString(R.string.downState, currentIteration, endIteration))
+        // second is show name of current file to download
+        tvDownCurrentFile.text = getString(R.string.now_down, filename)
+        tvDownStatePercentage.text = getString(R.string.downState, currentIteration, endIteration)
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -125,20 +130,24 @@ class ListenFragment : Fragment(), OnDownloadListener {
         Log.d(TAG, "onDownloadComplete: ")
         // store storage path in db to use in media player
         val ayahItem = repository.getAyahByIndex(index) // first get ayah to edit it with storage path
-        val storagePath = "$path/$filename"
-        ayahItem?.audioPath = storagePath // set path
-        repository.updateAyahItem(ayahItem)
-        // update currentIteration to indicate complete of download
-        currentIteration++
-        Log.d(TAG, "onDownloadComplete:  end $endIteration")
-        Log.d(TAG, "onDownloadComplete:  current $currentIteration")
-        if (currentIteration < endIteration) { // still files to download
-            downloadAudio()
-        } else { // here i finish download all ayas
-// start to display
-            finishDownloadState()
-            displayAyasState()
+        ayahItem?.let {
+            val storagePath = "$path/$filename"
+            ayahItem.audioPath = storagePath // set path
+            repository.updateAyahItem(ayahItem)
+            // update currentIteration to indicate complete of download
+            currentIteration++
+            Log.d(TAG, "onDownloadComplete:  end $endIteration")
+            Log.d(TAG, "onDownloadComplete:  current $currentIteration")
+            if (currentIteration < endIteration) { // still files to download
+                downloadAudio()
+            } else { // here i finish download all ayas
+                // start to display
+                finishDownloadState()
+                displayAyasState()
+            }
+
         }
+
     }
 
     override fun onError(error: Error) {
@@ -149,15 +158,15 @@ class ListenFragment : Fragment(), OnDownloadListener {
         } else {
             showMessage("Error $error")
         }
-        lnDownState.setVisibility(View.GONE)
+        lnDownState.visibility = View.GONE
         backToSelectionState()
     }
 
     //</editor-fold>
     private fun finishDownloadState() {
         showMessage(getString(R.string.finish))
-        btnStartListening.setVisibility(View.VISIBLE)
-        lnDownState.setVisibility(View.GONE)
+        btnStartListening.visibility = View.VISIBLE
+        lnDownState.visibility = View.GONE
     }
 
     //</editor-fold>
@@ -168,16 +177,13 @@ class ListenFragment : Fragment(), OnDownloadListener {
         isPermissionAllowed = repository.permissionState
         serviceIntent = Intent(context, ListenServie::class.java)
         initSpinners()
-        handler = object : Handler() {
-            override fun handleMessage(msg: Message) {
-                super.handleMessage(msg)
-                if (mediaPlayer != null && isVisible) {
-                    tvProgressAudio.setText(getString(R.string.time_progress, mediaPlayer.currentPosition / 1000
-                            , mediaPlayer.duration / 1000))
-                    sbPosition.setProgress(mediaPlayer.currentPosition)
-                }
-            }
-        }
+
+        /*   mediaPlayer?.let {
+                      tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000
+                              , mediaPlayer.duration / 1000)
+                      sbPosition.progress = mediaPlayer.currentPosition
+                  }*/
+
         return view
     }
 
@@ -190,19 +196,23 @@ class ListenFragment : Fragment(), OnDownloadListener {
         ayahsToListen = getAyahsEachOneRepreated(ayahsRepeatCount)
         ayahsToListen = getAllAyahsRepeated(ayahsSetCount)
         // control visibility
-        lnSelectorAyahs.setVisibility(View.GONE)
-        lnPlayView.setVisibility(View.VISIBLE)
+        lnSelectorAyahs.visibility = View.GONE
+        lnPlayView.visibility = View.VISIBLE
         btnPlayPause.setBackgroundResource(R.drawable.ic_pause)
-        // // TODO: 6/30/2019  bind service with this.
+
+        // TODO: 6/30/2019  bind service with this.
         displayAyahs()
-        //<editor-fold desc="start audio service">
+
         val ayahsListen = AyahsListen()
-        ayahsListen.setAyahItemList(ayahsToListen)
-        if (serviceIntent != null) {
-            activity.stopService(serviceIntent)
+        ayahsListen.ayahItemList = ayahsToListen
+
+        // delay work with service
+        /* if (serviceIntent != null) {
+            activity?.stopService(serviceIntent)
         }
-        serviceIntent = ListenServie.createService(context, ayahsListen)
-        //</editor-fold>
+        */
+        //  serviceIntent = ListenServie.createService(context, ayahsListen)
+
     }
 
     private fun getAllAyahsRepeated(ayahsSetCount: Int): List<AyahItem> {
@@ -237,7 +247,7 @@ class ListenFragment : Fragment(), OnDownloadListener {
     private fun displayAyahs() {
         Log.d(TAG, "displayAyahs: $currentAyaAtAyasToListen")
         val ayahItem = ayahsToListen[currentAyaAtAyasToListen]
-        tvAyahToListen.setText(MessageFormat.format("{0} ﴿ {1} ﴾ ", ayahItem.text, ayahItem.ayahInSurahIndex))
+        tvAyahToListen.text = MessageFormat.format("{0} ﴿ {1} ﴾ ", ayahItem.text, ayahItem.ayahInSurahIndex)
         // showMessage("size " + ayahsToListen.size());
         playAudio()
     }
@@ -245,34 +255,34 @@ class ListenFragment : Fragment(), OnDownloadListener {
     @OnClick(R.id.btnPlayPause)
     fun onBtnPlayPauseClicked() {
         Log.d(TAG, "onBtnPlayPauseClicked: ")
-        if (mediaPlayer != null) {
-            if (!mediaPlayer.isPlaying) {
-                mediaPlayer.start()
+        mediaPlayer?.let {
+            val mp = it as MediaPlayer
+            if (!mp.isPlaying) {
+                mp.start()
                 Log.d(TAG, "onBtnPlayPauseClicked: ")
-                //     btnPlayPause.setBackground(getDrawable(R.drawable.ic_pause));
                 btnPlayPause.setBackgroundResource(R.drawable.ic_pause)
-            } else { //    btnPlayPause.setBackground(getDrawable(R.drawable.ic_play));
+            } else {
                 btnPlayPause.setBackgroundResource(R.drawable.ic_play)
-                mediaPlayer.pause()
+                mp.pause()
             }
         }
+
     }
 
     @OnClick(R.id.btnStartListening)
     fun onViewClicked() {
-        ayahsToDownLoad = ArrayList()
         ayahsToListen = ArrayList()
         //region check inputs
-        if (startSura != null && endSura != null) {
+        if (startSura.name.isNotEmpty() && endSura.name.isNotEmpty()) {
             try {
-                val start: Int = edStartSuraAyah.getText().toString().toInt()
+                val start: Int = edStartSuraAyah.text.toString().toInt()
                 if (start > startSura.numOfAyahs) {
-                    edStartSuraAyah.setError(getString(R.string.outofrange, startSura.numOfAyahs))
+                    edStartSuraAyah.error = getString(R.string.outofrange, startSura.numOfAyahs)
                     return
                 }
-                val end: Int = edEndSuraAyah.getText().toString().toInt()
+                val end: Int = edEndSuraAyah.text.toString().toInt()
                 if (end > endSura.numOfAyahs) {
-                    edEndSuraAyah.setError(getString(R.string.outofrange, endSura.numOfAyahs))
+                    edEndSuraAyah.error = getString(R.string.outofrange, endSura.numOfAyahs)
                     return
                 }
                 // compute actual start
@@ -286,26 +296,22 @@ class ListenFragment : Fragment(), OnDownloadListener {
                 }
                 Log.d(TAG, "onViewClicked: actual $actualStart $actualEnd")
                 ayahsSetCount = try {
-                    edRepeatSet.getText().toString().toInt()
+                    edRepeatSet.text.toString().toInt()
                 } catch (e: NumberFormatException) {
                     1
                 }
                 ayahsRepeatCount = try {
-                    edRepeatAyah.getText().toString().toInt()
+                    edRepeatAyah.text.toString().toInt()
                 } catch (e: NumberFormatException) {
                     1
                 }
                 // get ayahs from db,
-// actual end is updated with one as query return result excluded one item
+                // actual end is updated with one as query return result excluded one item
                 ayahsToListen = repository.getAyahSInRange(actualStart + 1, actualEnd + 1)
                 Log.d(TAG, "onViewClicked: start log after first select " + ayahsToListen.size)
-                logAyahs()
-                // traverse ayahs to check if it downloaded or not
-                for (ayahItem in ayahsToListen) {
-                    if (ayahItem.audioPath == null) {
-                        ayahsToDownLoad.add(ayahItem)
-                    }
-                }
+                // logAyahs()
+                ayahsToDownLoad = ayahsToListen.filter { it.audioPath == null }
+
                 // close keyboard
                 closeKeyboard()
                 checkAyahsToDownloadIt()
@@ -322,31 +328,32 @@ class ListenFragment : Fragment(), OnDownloadListener {
 
     private fun playAudio() {
         Log.d(TAG, "playAudio:  current $currentAyaAtAyasToListen")
-        btnPlayPause.setEnabled(false)
+        btnPlayPause.isEnabled = false
         try {
             mediaPlayer = MediaPlayer()
             fileSource = ayahsToListen[currentAyaAtAyasToListen].audioPath
-            mediaPlayer.setDataSource(fileSource)
+            mediaPlayer?.setDataSource(fileSource)
             Log.d(TAG, "playAudio: file source $fileSource")
-            mediaPlayer.prepare()
-            mediaPlayer.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
-            sbPosition.setMax(mediaPlayer.duration)
+            mediaPlayer?.prepare()
+            mediaPlayer?.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
+            sbPosition.max = mediaPlayer!!.duration
             Thread(Runnable {
                 while (mediaPlayer != null) {
                     try {
-                        handler.sendEmptyMessage(0)
+                        handler?.sendEmptyMessage(0)
                         Thread.sleep(750)
                     } catch (e: InterruptedException) {
                         e.printStackTrace()
                     }
                 }
             }).start()
+
             sbPosition.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
                     if (b) {
                         if (mediaPlayer != null) {
-                            mediaPlayer.seekTo(progress)
-                            sbPosition.setProgress(progress)
+                            mediaPlayer?.seekTo(progress)
+                            sbPosition.progress = progress
                         }
                     }
                 }
@@ -354,10 +361,10 @@ class ListenFragment : Fragment(), OnDownloadListener {
                 override fun onStartTrackingTouch(seekBar: SeekBar) {}
                 override fun onStopTrackingTouch(seekBar: SeekBar) {}
             })
-            mediaPlayer.setOnCompletionListener {
-                mediaPlayer.release()
+            mediaPlayer?.setOnCompletionListener {
+                mediaPlayer?.release()
                 mediaPlayer = null
-                btnPlayPause.setEnabled(true)
+                btnPlayPause.isEnabled = true
                 currentAyaAtAyasToListen++
                 if (currentAyaAtAyasToListen < ayahsToListen.size) {
                     Log.d(TAG, "@@  onCompletion: $currentAyaAtAyasToListen")
@@ -383,14 +390,14 @@ class ListenFragment : Fragment(), OnDownloadListener {
     }
 
     private fun makeRangeError() {
-        edStartSuraAyah.setError("Start must be before end ")
-        edEndSuraAyah.setError("End must be after start")
+        edStartSuraAyah.error = "Start must be before end "
+        edEndSuraAyah.error = "End must be after start"
     }
 
     private fun checkAyahsToDownloadIt() {
         Log.d(TAG, "checkAyahsToDownloadIt: " + ayahsToDownLoad.size)
         currentIteration = 0
-        if (ayahsToDownLoad != null && ayahsToDownLoad.size > 0) {
+        if (ayahsToDownLoad.isNotEmpty()) {
             endIteration = ayahsToDownLoad.size
             downloadAyahs()
         } else {
@@ -401,7 +408,7 @@ class ListenFragment : Fragment(), OnDownloadListener {
     private fun downloadAyahs() {
         Log.d(TAG, "downloadAyahs: ")
         if (!isPermissionAllowed) {
-            (activity as HomeActivity?).acquirePermission()
+            (activity as HomeActivity?)?.acquirePermission()
         }
         downloadState()
         downloadAudio()
@@ -409,32 +416,27 @@ class ListenFragment : Fragment(), OnDownloadListener {
 
     private fun downloadState() {
         showMessage(getString(R.string.downloading))
-        btnStartListening.setVisibility(View.GONE)
-        lnDownState.setVisibility(View.VISIBLE)
+        btnStartListening.visibility = View.GONE
+        lnDownState.visibility = View.VISIBLE
     }
 
     private fun backToSelectionState() {
         if (mediaPlayer != null) {
-            mediaPlayer.release()
-            mediaPlayer = null
+            mediaPlayer?.release()
+            
         }
         // control visibility
-        lnPlayView.setVisibility(View.GONE)
-        lnSelectorAyahs.setVisibility(View.VISIBLE)
-        btnStartListening.setVisibility(View.VISIBLE)
-        lnDownState.setVisibility(View.GONE)
+        lnPlayView.visibility = View.GONE
+        lnSelectorAyahs.visibility = View.VISIBLE
+        btnStartListening.visibility = View.VISIBLE
+        lnDownState.visibility = View.GONE
         // clear inputs
-        edEndSuraAyah.setText(null)
-        edStartSuraAyah.setText(null)
-        edEndSuraAyah.setError(null)
-        edStartSuraAyah.setError(null)
-        edRepeatAyah.setText(null)
-        edRepeatSet.setText(null)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder.unbind()
+        edEndSuraAyah.text = null
+        edStartSuraAyah.text = null
+        edEndSuraAyah.error = null
+        edStartSuraAyah.error = null
+        edRepeatAyah.text = null
+        edRepeatSet.text = null
     }
 
     companion object {
