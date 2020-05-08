@@ -1,9 +1,7 @@
 package education.mahmoud.quranyapp.feature.listening_activity
 
-import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,29 +12,30 @@ import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Unbinder
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity
 import education.mahmoud.quranyapp.utils.Util
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_listen.*
 import org.koin.java.KoinJavaComponent
 import java.io.IOException
 import java.text.MessageFormat
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- */
-class ListenFragment : Fragment(), OnDownloadListener {
+
+class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
+
+    val relay = PublishRelay.create<Boolean>()
 
     var mediaPlayer: MediaPlayer? = null
 
@@ -62,9 +61,37 @@ class ListenFragment : Fragment(), OnDownloadListener {
     private var ayahsToDownLoad = listOf<AyahItem>()
     private var ayahsRepeatCount = 0
     private var ayahsSetCount = 0
-    var handler: Handler? = null
-    var serviceIntent: Intent? = null
 
+    //</editor-fold>
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_listen, container, false)
+    }
+
+
+    override fun initViews(view: View) {
+        super.initViews(view)
+        isPermissionAllowed = repository.permissionState
+        initSpinners()
+
+    }
+
+
+    override fun startObserving() {
+        super.startObserving()
+
+        relay.subscribe({
+            mediaPlayer?.let { mediaPlayer ->
+                tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000
+                        , mediaPlayer.duration / 1000)
+                sbPosition.progress = mediaPlayer.currentPosition
+            }
+
+        }, {
+
+        }).addTo(bg)
+
+    }
 
     private fun initSpinners() {
         val suraNames = repository.surasNames
@@ -72,6 +99,11 @@ class ListenFragment : Fragment(), OnDownloadListener {
         spStartSura.adapter = startAdapter
         val endAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
         spEndSura.adapter = endAdapter
+
+    }
+
+    override fun setClickListeners() {
+        super.setClickListeners()
         spStartSura.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, index: Long) {
                 try {
@@ -96,6 +128,7 @@ class ListenFragment : Fragment(), OnDownloadListener {
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
+
     }
 
     //<editor-fold desc="downolad">
@@ -169,23 +202,7 @@ class ListenFragment : Fragment(), OnDownloadListener {
         lnDownState.visibility = View.GONE
     }
 
-    //</editor-fold>
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_listen, container, false)
-        unbinder = ButterKnife.bind(this, view)
-        isPermissionAllowed = repository.permissionState
-        serviceIntent = Intent(context, ListenServie::class.java)
-        initSpinners()
 
-        /*   mediaPlayer?.let {
-                      tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000
-                              , mediaPlayer.duration / 1000)
-                      sbPosition.progress = mediaPlayer.currentPosition
-                  }*/
-
-        return view
-    }
 
     private fun displayAyasState() {
         Log.d(TAG, "display Ayas State: ")
@@ -337,16 +354,10 @@ class ListenFragment : Fragment(), OnDownloadListener {
             mediaPlayer?.prepare()
             mediaPlayer?.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
             sbPosition.max = mediaPlayer!!.duration
-            Thread(Runnable {
-                while (mediaPlayer != null) {
-                    try {
-                        handler?.sendEmptyMessage(0)
-                        Thread.sleep(750)
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
-                    }
-                }
-            }).start()
+
+            mediaPlayer?.let {
+                relay.accept(true)
+            }
 
             sbPosition.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {

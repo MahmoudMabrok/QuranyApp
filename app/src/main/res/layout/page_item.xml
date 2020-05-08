@@ -6,29 +6,41 @@
     android:layout_width="match_parent"
     android:layoutDirection="ltr"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/_6sdp"
-    android:layout_marginEnd="@dimen/_6sdp"
     tools:context=".feature.showSuraAyas.ShowAyahsActivity">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ayahs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/primaryColor"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topLinear">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
         android:id="@+id/tvAyahs"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:focusableInTouchMode="true"
         android:fontFamily="@font/amiri_regular"
         android:gravity="center_horizontal"
-        android:isScrollContainer="true"
-        android:padding="10dp"
-        android:scrollbars="vertical"
-        android:text="Hellodsaasdsdsdsdsdsdsdsdeweweweweasasa"
+        android:layout_margin="15dp"
+        android:background="@color/primaryDarkColor"
         android:textColor="@color/whiteTextColor"
         android:textIsSelectable="false"
         app:autoSizeMaxTextSize="25sp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@id/BottomLinear"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topLinear" />
+        android:padding="5dp"
+        android:text="@string/lorem_long"
+        app:layout_constraintBottom_toTopOf="@id/tvPageNumShowAyahs"
+        app:layout_constraintEnd_toEndOf="@id/ayahs"
+        app:layout_constraintStart_toStartOf="@id/ayahs"
+        app:layout_constraintTop_toTopOf="@id/ayahs" />
 
 
     <LinearLayout
@@ -40,7 +52,7 @@
         android:layout_gravity="top"
         android:alpha="0.9"
         android:layoutDirection="locale"
-        android:background="@color/black_gradi"
+        android:background="@color/primaryDarkColor"
         android:orientation="horizontal"
         android:padding="@dimen/_5sdp">
 
@@ -77,46 +89,19 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/BottomLinear"
+    <TextView
+        android:id="@+id/tvPageNumShowAyahs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_gravity="bottom"
-        android:alpha="0.9"
-        android:background="@color/black_gradi"
-        android:orientation="horizontal"
-        >
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/tafseerTap"
+        android:textColor="@color/whiteTextColor"
+        android:textSize="@dimen/_17ssp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btnNext"
-            app:srcCompat="@drawable/ic_next"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"/>
-
-        <TextView
-            android:id="@+id/tvPageNumShowAyahs"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/tafseerTap"
-            android:textColor="@color/whiteCardColor"
-            android:textSize="@dimen/_17ssp" />
-
-        <ImageButton
-            android:id="@+id/btnPrev"
-            app:srcCompat="@drawable/ic_prev"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_10sdp"/>
-
-    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

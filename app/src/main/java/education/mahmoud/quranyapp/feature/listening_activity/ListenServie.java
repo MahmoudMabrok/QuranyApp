@@ -55,7 +55,9 @@ public class ListenServie extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         AyahsListen ayahsListen = intent.getParcelableExtra(Constants.AUDIO_ITEMS);
-        ayahsToListen = new ArrayList<>(ayahsListen.getAyahItemList());
+        ayahsToListen = new ArrayList<>();
+        assert ayahsListen != null;
+        ayahsToListen.addAll(ayahsListen.getAyahItemList());
         if (ayahsToListen.size() > 0 ){
             playAyah(ayahsToListen.get(currentAudio));
         }

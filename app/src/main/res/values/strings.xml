@@ -159,6 +159,7 @@
     <string name="page_limit">Page must be 1-604</string>
 
     <string name="justified"><html><body style="text-align:justify"> %s </body></html></string>
+    <string name="lorem_long" translatable="false">Hellodsaasd sdsdsdsd sdsds dewewodsaasdsdsdsdsdsdsdsdewew odsaasdsdsdsds  dsdsdsdewewodsaasdsd sdsdsdsdsdsdewewodsaasdsdsdsdsdsdsdsdewewo dsaasdsdsdsdsdsdsdsdeweweweweasasa</string>
 
 
 </resources>

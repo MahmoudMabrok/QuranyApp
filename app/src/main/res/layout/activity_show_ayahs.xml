@@ -11,10 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        tools:listitem="@layout/page_item"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spShowAyahs"
         style="@style/SpinKitView.Large.Circle"
         android:layout_width="wrap_content"

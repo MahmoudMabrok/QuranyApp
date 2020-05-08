@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -53,8 +52,8 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.topLinear?.visibility = View.VISIBLE
         holder.BottomLinear?.visibility = View.VISIBLE
         // set Colors
-        /*   holder.tvAyahs?.setTextColor(ayahsColor)
-           holder.scAyahsText?.setBackgroundColor(scrollColor)*/
+        holder.tvAyahs?.setTextColor(ayahsColor)
+        holder.tvAyahs?.setBackgroundColor(scrollColor)
         // <editor-fold desc="Create Text">
         val builder = StringBuilder()
         var aya: String
@@ -114,27 +113,6 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         });
         */
 
-        holder.btnNext?.setOnClickListener { iOnClick?.onClick(holder.adapterPosition) }
-        holder.btnPrev?.setOnClickListener {
-            iOnClick?.onClick(holder.adapterPosition - 2) // there will be update by one
-        }
-        // </editor-fold>
-        // <editor-fold desc="configure next/prev buttons">
-        when (index) {
-            0 -> {
-                holder.btnNext?.visibility = View.VISIBLE
-                holder.btnPrev?.visibility = View.INVISIBLE
-            }
-            603 -> {
-                holder.btnNext?.visibility = View.INVISIBLE
-                holder.btnPrev?.visibility = View.VISIBLE
-            }
-            else -> {
-                holder.btnNext?.visibility = View.VISIBLE
-                holder.btnPrev?.visibility = View.VISIBLE
-            }
-        }
-        // </editor-fold>
 
         holder.tvAyahs?.setOnClickListener { Log.d(TAG, "onClick: ") }
     }
@@ -191,8 +169,6 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         var tvSurahName: TextView? = itemView.findViewById(R.id.tvSurahName)
         var tvJuz: TextView? = itemView.findViewById(R.id.tvJuz)
         var tvPageNumShowAyahs: TextView? = itemView.findViewById(R.id.tvPageNumShowAyahs)
-        var btnNext: ImageButton? = itemView.findViewById(R.id.btnNext)
-        var btnPrev: ImageButton? = itemView.findViewById(R.id.btnPrev)
         var imBookmark: ImageView? = itemView.findViewById(R.id.imBookmark)
 
         var topLinear: LinearLayout? = itemView.findViewById(R.id.topLinear)
