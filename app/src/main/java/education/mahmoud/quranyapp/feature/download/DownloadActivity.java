@@ -205,6 +205,29 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
 
     }
 
+/*    private void updateAyahsWithTafseer() {
+        AyahItem ayahItem = null;
+        CompleteTafseer completeTafseer = Util.getCompleteTafseer(this);
+        if (completeTafseer != null) {
+            List<Surah> surahs = completeTafseer.getData().getSurahs();
+            for (Surah surah1 : surahs) {
+                for (Ayah ayah : surah1.getAyahs()) {
+                    ayahItem = repository.getAyahByIndex(ayah.getNumber());
+                    ayahItem.setTafseer(ayah.getText());
+                    try {
+                        repository.updateAyahItem(ayahItem);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Log.d(TAG, "updateAyahsWithTafseer: ");
+            }
+        }
+        handler.sendEmptyMessage(0);
+
+    }*/
+
     //<editor-fold desc="Tafseer net">
 
     private void downState() {

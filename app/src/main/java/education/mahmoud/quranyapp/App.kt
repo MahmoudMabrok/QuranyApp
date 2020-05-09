@@ -102,9 +102,8 @@ class App : Application() {
             val start = System.currentTimeMillis()
             for (i in 1..604) {
                 ayahItems = repository.getAyahsByPage(i)
-                if (ayahItems.size > 0) {
-                    page = Page()
-                    page.ayahItems = ayahItems
+                if (ayahItems.isNotEmpty()) {
+                    page = Page(ayahItems)
                     page.pageNum = i
                     page.juz = ayahItems[0].juz
                     pages.add(page)

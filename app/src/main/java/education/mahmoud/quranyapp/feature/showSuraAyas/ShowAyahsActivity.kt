@@ -90,24 +90,26 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun stratObserving() {
-        Log.d(TAG, "stratObserving:qw ")
+        Log.d(TAG, "stratObserving:qw ${Thread.currentThread()}")
         (application as? App)?.relayPages
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({
-                    Log.d(TAG, "stratObserving: " + it.size)
+                ?.doAfterNext {
                     hideLoading()
+                }
+                ?.subscribe({
+                    "data found ${it.size}".log()
                     pageAdapter.setPageList(it)
+                    rvAyahsPages.scrollToPosition(pos)
+                    "data pageAdapter ${pageAdapter.itemCount} , ${Thread.currentThread()}".log()
                     foundState()
                 }, {
-                    hideLoading()
                     "error ${it.message}".log()
-                    // this.show("Error ${it.message}")
                 })
                 ?.addTo(model.bg)
     }
 
     private fun hideLoading() {
-        spShowAyahs.visibility = View.GONE
+        spShowAyahs?.visibility = View.GONE
     }
 
     private fun addToReadLog(pos: Int) {
@@ -134,7 +136,8 @@ class ShowAyahsActivity : AppCompatActivity() {
         rvAyahsPages.itemAnimator = DefaultItemAnimator()
         LinearSnapHelper().attachToRecyclerView(rvAyahsPages)
         pageAdapter.setPageShown(object : PageShown {
-            override fun onDiplayed(pos: Int, holder: PageAdapter.Holder) { // items start from 0 increase 1 to get real page num,
+            override fun onDiplayed(pos: Int, holder: PageAdapter.Holder) {
+                // items start from 0 increase 1 to get real page num,
                 // will be used in bookmark
                 lastpageShown = pos + 1
                 // add page to read log
@@ -173,12 +176,12 @@ class ShowAyahsActivity : AppCompatActivity() {
         })
         // to preserver quran direction from right to left
         rvAyahsPages.layoutDirection = View.LAYOUT_DIRECTION_RTL
-        pageAdapter.setiOnClick(IOnClick { pos ->
+/*        pageAdapter.setiOnClick(IOnClick { pos ->
             // pos represent page and need to be updated by 1 to be as recyclerview
             // +2 to be as Mushaf
             rvAyahsPages.scrollToPosition(pos + 1)
             //   addToReadLog(pos + 2);
-        })
+        })*/
     }
     // </editor-fold>
     /**
@@ -199,11 +202,9 @@ class ShowAyahsActivity : AppCompatActivity() {
     private fun prepareColors() {
         // check Night Mode
         if (model.nightModeState) {
-            // tvSuraNameShowAyas.setTextColor(getResources().getColor(R.color.ayas_color_night_mode));
             ayahsColor = ContextCompat.getColor(this, R.color.ayas_color_night_mode)
             scrollorColor = ContextCompat.getColor(this, R.color.bg_ays_night_mode)
         } else {
-            // tvSuraNameShowAyas.setTextColor(getResources().getColor(R.color.ayas_color));
             ayahsColor = ContextCompat.getColor(this, R.color.ayas_color)
             // check usesr color for background
             when (model.backColorState) {
@@ -241,9 +242,8 @@ class ShowAyahsActivity : AppCompatActivity() {
 
     private fun foundState() {
         spShowAyahs?.visibility = View.GONE
-        tvNoQuranData?.visibility = View.GONE
         rvAyahsPages?.visibility = View.VISIBLE
-        "$rvAyahsPages $spShowAyahs".log()
+        "found".log()
     }
 
     private fun notFound() {
@@ -252,11 +252,6 @@ class ShowAyahsActivity : AppCompatActivity() {
         rvAyahsPages.visibility = View.GONE
     }
 
-    private fun logData(quraterSStart: List<Int>) {
-        for (integer in quraterSStart) {
-            Log.d(TAG, "logData: $integer")
-        }
-    }
 
     private fun showMessage(message: String) {
         toast?.cancel()

@@ -25,9 +25,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
         ButterKnife.bind(this)
-        val colorSet: List<String> = ArrayList(listOf(getString(R.string.white)
-                , getString(R.string.yellow)
-                , getString(R.string.green)))
+        val colorSet: List<String> = ArrayList(listOf(getString(R.string.white), getString(R.string.yellow), getString(R.string.green)))
         cbNightMode!!.isChecked = repository.nightModeState
         if (cbNightMode!!.isChecked) {
             nightMode()
@@ -42,7 +40,7 @@ class SettingActivity : AppCompatActivity() {
             } else {
                 defaultMode()
             }
-            //// TODO: 6/18/2019 add Toast but handle it correctly
+            // // TODO: 6/18/2019 add Toast but handle it correctly
 //   showMessage(getString(R.string.setting_updated));
         }
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, colorSet)
@@ -62,8 +60,6 @@ class SettingActivity : AppCompatActivity() {
         }
         title = getString(R.string.setting)
 
-
-
         btnSetColor.setOnClickListener {
             repository.backColorState = colorPosForBackground
             showMessage(getString(R.string.setting_updated))
@@ -77,7 +73,6 @@ class SettingActivity : AppCompatActivity() {
     private fun nightMode() {
         linearColor!!.visibility = View.GONE
     }
-
 
     private fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

@@ -1,20 +1,19 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import android.os.Build
-import android.os.CountDownTimer
 import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.Util
-import java.text.MessageFormat
+import education.mahmoud.quranyapp.utils.log
 
 class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adapter<PageAdapter.Holder>() {
     var vis = View.INVISIBLE
@@ -49,49 +48,19 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: Holder, index: Int) {
         val item = list[index]
-        holder.topLinear?.visibility = View.VISIBLE
-        holder.BottomLinear?.visibility = View.VISIBLE
         // set Colors
         holder.tvAyahs?.setTextColor(ayahsColor)
-        holder.tvAyahs?.setBackgroundColor(scrollColor)
-        // <editor-fold desc="Create Text">
-        val builder = StringBuilder()
-        var aya: String
-        var suraName = ""
-        suraName = getSuraNameFromIndex(item.ayahItems[0].surahIndex)
-        var tempSuraName: String
-        var isFirst = true
-        for (ayahItem in item.ayahItems) {
-            aya = ayahItem.text
-            // add sura name
-            if (ayahItem.ayahInSurahIndex == 1) {
-                tempSuraName = getSuraNameFromIndex(ayahItem.surahIndex)
-                if (isFirst) {
-                    // handle first name in page that not need a previous new line
-                    builder.append(tempSuraName + "\n")
-                } else {
-                    builder.append("\n" + tempSuraName + "\n")
-                }
-                // AlFatiha(index = 1 ) has a Basmallah in first ayah.
-                if (ayahItem.surahIndex != 1) {
-                    var pos = aya.indexOf("ٱلرَّحِيم")
-                    Log.d(TAG, "onBindViewHolder: pos $pos")
-                    pos += "ٱلرَّحِيم".length
-                    Log.d(TAG, "onBindViewHolder: last text after bsmallah " + aya.substring(pos))
-                    // insert  البسملة
-                    builder.append(aya.substring(0, pos + 1)) // +1 as substring upper bound is excluded
-                    builder.append("\n")
-                    // cute ayah
-                    aya = aya.substring(pos + 1) // +1 to start with new character after البسملة
-                }
-            }
-            isFirst = false
-            builder.append(MessageFormat.format("{0}  ({1}) ", aya, ayahItem.ayahInSurahIndex))
-//            "ayah $aya".log()
-        }
-        // </editor-fold>
-        holder.tvAyahs?.setText(Util.getSpannable(builder.toString()), TextView.BufferType.SPANNABLE)
+        holder.tvJuz?.setTextColor(ayahsColor)
+        holder.tvPageNumShowAyahs?.setTextColor(ayahsColor)
+        holder.tvSurahName?.setTextColor(ayahsColor)
+        holder.mainLayout?.setBackgroundColor(scrollColor)
 
+        val ayah = item.getText { return@getText getSuraNameFromIndex(it) }
+        "ayah $ayah".log()
+
+        val suraName = getSuraNameFromIndex(item.ayahItems[0].surahIndex)
+
+        holder.tvAyahs?.setText(Util.getSpannable(ayah), TextView.BufferType.SPANNABLE)
 
         // text justifivation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -103,18 +72,6 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.tvJuz?.text = item.juz.toString()
         // <editor-fold desc="listeners">
         holder.imBookmark?.setOnClickListener { iBookmark?.onBookmarkClicked(item) }
-
-        /*holder.ayahsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: frameLayout");
-                flipState(holder);
-            }
-        });
-        */
-
-
-        holder.tvAyahs?.setOnClickListener { Log.d(TAG, "onClick: ") }
     }
 
     private fun flipState(holder: Holder) {
@@ -138,16 +95,6 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
 
     override fun onViewAttachedToWindow(holder: Holder) {
         super.onViewAttachedToWindow(holder)
-        // <editor-fold desc="timer to hide">
-        object : CountDownTimer(50, 100) {
-            override fun onTick(l: Long) {}
-            override fun onFinish() {
-                vis = View.VISIBLE
-                holder.BottomLinear?.visibility = vis
-                holder.topLinear?.visibility = vis
-            }
-        }.start()
-        // </editor-fold>
         pageShown?.onDiplayed(holder.adapterPosition, holder)
     }
 
@@ -172,9 +119,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         var imBookmark: ImageView? = itemView.findViewById(R.id.imBookmark)
 
         var topLinear: LinearLayout? = itemView.findViewById(R.id.topLinear)
-        var BottomLinear: LinearLayout? = itemView.findViewById(R.id.BottomLinear)
-
-
+        var mainLayout: ConstraintLayout? = itemView.findViewById(R.id.ayahsLayout)
     }
 
     companion object {

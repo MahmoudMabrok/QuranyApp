@@ -5,20 +5,9 @@
     android:id="@+id/ayahsLayout"
     android:layout_width="match_parent"
     android:layoutDirection="ltr"
-    android:background=""
     android:layout_height="match_parent"
     tools:context=".feature.showSuraAyas.ShowAyahsActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ayahs"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topLinear">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
@@ -26,19 +15,19 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:focusableInTouchMode="true"
-        android:fontFamily="@font/amiri_regular"
+        android:layout_margin="10dp"
         android:textAlignment="center"
-        android:layout_margin="15dp"
-        android:textColor="@color/whiteTextColor"
+        android:fontFamily="@font/me_quran"
         android:textIsSelectable="false"
         app:autoSizeMaxTextSize="25sp"
         app:autoSizeTextType="uniform"
-        android:padding="5dp"
+        android:keepScreenOn="true"
+        android:padding="10dp"
         android:text="@string/lorem_long"
         app:layout_constraintBottom_toTopOf="@id/tvPageNumShowAyahs"
-        app:layout_constraintEnd_toEndOf="@id/ayahs"
-        app:layout_constraintStart_toStartOf="@id/ayahs"
-        app:layout_constraintTop_toTopOf="@id/ayahs" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topLinear" />
 
 
     <LinearLayout

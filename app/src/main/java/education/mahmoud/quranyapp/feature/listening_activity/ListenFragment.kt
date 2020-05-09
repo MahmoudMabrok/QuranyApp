@@ -32,7 +32,6 @@ import java.io.IOException
 import java.text.MessageFormat
 import java.util.*
 
-
 class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
     val relay = PublishRelay.create<Boolean>()
@@ -62,35 +61,31 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     private var ayahsRepeatCount = 0
     private var ayahsSetCount = 0
 
-    //</editor-fold>
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    // </editor-fold>
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_listen, container, false)
     }
-
 
     override fun initViews(view: View) {
         super.initViews(view)
         isPermissionAllowed = repository.permissionState
         initSpinners()
-
     }
-
 
     override fun startObserving() {
         super.startObserving()
 
         relay.subscribe({
             mediaPlayer?.let { mediaPlayer ->
-                tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000
-                        , mediaPlayer.duration / 1000)
+                tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000, mediaPlayer.duration / 1000)
                 sbPosition.progress = mediaPlayer.currentPosition
             }
-
         }, {
-
         }).addTo(bg)
-
     }
 
     private fun initSpinners() {
@@ -99,7 +94,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         spStartSura.adapter = startAdapter
         val endAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
         spEndSura.adapter = endAdapter
-
     }
 
     override fun setClickListeners() {
@@ -114,7 +108,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
-
             }
         }
         spEndSura.onItemSelectedListener = object : OnItemSelectedListener {
@@ -128,10 +121,9 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
-
     }
 
-    //<editor-fold desc="downolad">
+    // <editor-fold desc="downolad">
     private fun downloadAudio() { // compute index
         index = ayahsToDownLoad[currentIteration].ayahIndex
         // form  URL
@@ -141,7 +133,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         // form file name
         filename = "$index.mp3"
         Log.d(TAG, "downloadAudio:  file name $filename")
-        //start downloading
+        // start downloading
         PRDownloader.download(downURL, path, filename).build().start(this)
         // set text on screen downloaded / todownled
         // second is show name of current file to download
@@ -158,7 +150,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         }
     }
 
-    //<editor-fold desc="download ">
+    // <editor-fold desc="download ">
     override fun onDownloadComplete() {
         Log.d(TAG, "onDownloadComplete: ")
         // store storage path in db to use in media player
@@ -178,9 +170,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
                 finishDownloadState()
                 displayAyasState()
             }
-
         }
-
     }
 
     override fun onError(error: Error) {
@@ -195,14 +185,12 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         backToSelectionState()
     }
 
-    //</editor-fold>
+    // </editor-fold>
     private fun finishDownloadState() {
         showMessage(getString(R.string.finish))
         btnStartListening.visibility = View.VISIBLE
         lnDownState.visibility = View.GONE
     }
-
-
 
     private fun displayAyasState() {
         Log.d(TAG, "display Ayas State: ")
@@ -229,7 +217,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         }
         */
         //  serviceIntent = ListenServie.createService(context, ayahsListen)
-
     }
 
     private fun getAllAyahsRepeated(ayahsSetCount: Int): List<AyahItem> {
@@ -283,7 +270,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
                 mp.pause()
             }
         }
-
     }
 
     @OnClick(R.id.btnStartListening)
@@ -434,7 +420,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     private fun backToSelectionState() {
         if (mediaPlayer != null) {
             mediaPlayer?.release()
-            
         }
         // control visibility
         lnPlayView.visibility = View.GONE

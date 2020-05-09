@@ -25,7 +25,6 @@ import java.util.*
 
 class ShowSearchResults : AppCompatActivity() {
 
-
     private var adapter = SearchResultsAdapter()
 
     private val repository = KoinJavaComponent.get(Repository::class.java)

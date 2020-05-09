@@ -14,6 +14,7 @@ import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah
 import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity
 import education.mahmoud.quranyapp.utils.Util
 import education.mahmoud.quranyapp.utils.log
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.koin.android.ext.android.inject
@@ -43,20 +44,22 @@ class Splash : DataLoadingBaseFragment() {
     override fun startLoadingData() {
         super.startLoadingData()
         if (ayhasCount == 0) {
-            loadQuran()
+            laodData()
         }
     }
 
     override fun startObserving() {
         super.startObserving()
-
-        relay.doAfterNext {
-            "onNext relay".log()
-            (activity as? HomeActivity)?.afterSplash()
-        }?.subscribe()?.addTo(bg)
+        relay.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({
+                    "onNext relay".log()
+                    (activity as? HomeActivity)?.afterSplash()
+                }, {
+                    "error ${it.message}".log()
+                })?.addTo(bg)
     }
 
-    fun loadQuran() {
+    fun laodData() {
         "loadQuran".log()
         val surahs = Util.getFullQuranSurahs(requireContext())
         StoreInDb(surahs)
@@ -69,12 +72,12 @@ class Splash : DataLoadingBaseFragment() {
     private fun Store(surahs: List<Surah>) {
         var suraItem: SuraItem
         var ayahItem: AyahItem
+        "start load Json".log()
         val quran = Util.getQuranClean(requireContext())
+        "end load Json".log()
         val surahClean = quran.surahs
         var clean: String?
-
-        "start".log()
-
+        "start store".log()
         for (surah in surahs) {
             suraItem = SuraItem(surah.number, surah.ayahs.size, surah.name, surah.englishName, surah.englishNameTranslation, surah.revelationType)
             // add start page
@@ -85,6 +88,7 @@ class Splash : DataLoadingBaseFragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+            "sto s ".log()
             for (ayah in surah.ayahs) {
                 ayahItem = AyahItem(ayah.number, surah.number, ayah.page, ayah.juz, ayah.hizbQuarter, false, ayah.numberInSurah, ayah.text, ayah.text)
 
@@ -100,7 +104,38 @@ class Splash : DataLoadingBaseFragment() {
                     e.printStackTrace()
                 }
             }
+            "finish sto s ".log()
         }
-        "finis".log()
+        "finis store ".log()
+
+        loadTafseerAndUpdateData()
+    }
+
+    private fun loadTafseerAndUpdateData() {
+        "loadTafseerAndUpdateData".log()
+        val completeTafseer = Util.getCompleteTafseer(requireContext())
+        "loadTafseerAndUpdateData 2 ".log()
+        var ayahItem: AyahItem
+        if (completeTafseer != null) {
+            val surahs = completeTafseer.data.surahs
+            "AA".log()
+            for (surah1 in surahs) {
+                for (ayah in surah1.ayahs) {
+                    "A".log()
+                    ayahItem = repository.getAyahByIndex(ayah.number)
+                    "B".log()
+                    ayahItem.tafseer = ayah.text
+                    try {
+                        repository.updateAyahItem(ayahItem)
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            "AA finsh ".log()
+        }
+        "loadTafseerAndUpdateData finsih".log()
+        relay.accept(true)
+
     }
 }

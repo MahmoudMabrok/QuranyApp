@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_test.*
 import org.koin.android.ext.android.inject
 import java.util.*
 
-
 class TestFragment : BaseFragment() {
     var adapter = SaveTestAdapter()
     //    private val repository = KoinJavaComponent.get(Repository::class.java)
@@ -39,8 +38,11 @@ class TestFragment : BaseFragment() {
     // Ayahs used to be compared with user input
     private lateinit var ayahItemTobeTest: AyahItem
     private var isFullTest = false
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? { // Inflate the layout for getContext() fragment
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? { // Inflate the layout for getContext() fragment
         return inflater.inflate(R.layout.fragment_test, container, false)
     }
 
@@ -255,7 +257,6 @@ class TestFragment : BaseFragment() {
         edStartSuraAyah.setError(getString(R.string.not_sufficient_ayahs))
         edEndSuraAyah.setError(getString(R.string.not_sufficient_ayahs))
     }
-
 
     @OnClick(R.id.btnCheckTest)
     fun onCheckClicked() {
