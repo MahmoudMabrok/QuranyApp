@@ -26,5 +26,6 @@
     <dimen name="ayahs_size">@dimen/_16ssp</dimen>
     <dimen name="tab_indicator_height">5dp</dimen>
     <dimen name="tvFont">17sp</dimen>
+    <dimen name="header_text_size">14sp</dimen>
 
 </resources>
