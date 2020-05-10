@@ -39,7 +39,8 @@ data class Page(
                     }
                 }
                 isFirst = false
-                builder.append(MessageFormat.format("{0}  ({1}) ", aya, ayahItem.ayahInSurahIndex))
+                val ch = '١' + (ayahItem.ayahInSurahIndex - 1)
+                builder.append(MessageFormat.format("{0}   ﴿{1}﴾  ", aya, ch))
             }
         }
 
