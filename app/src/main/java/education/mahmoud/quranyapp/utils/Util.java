@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -80,7 +80,7 @@ public class Util {
     public static Quran getQuranClean(Context context) {
         try (InputStream fileIn = context.getAssets().open("quran_clean.json");
              BufferedInputStream bufferedIn = new BufferedInputStream(fileIn);
-             Reader reader = new InputStreamReader(bufferedIn, StandardCharsets.UTF_8)) {
+             Reader reader = new InputStreamReader(bufferedIn, Charset.forName("UTF-8"))) {
             return new Gson().fromJson(reader, Quran.class);
 
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class Util {
     public static List<Surah> getFullQuranSurahs(Context context) {
         try (InputStream fileIn = context.getAssets().open("quran.json");
              BufferedInputStream bufferedIn = new BufferedInputStream(fileIn);
-             Reader reader = new InputStreamReader(bufferedIn, StandardCharsets.UTF_8)) {
+             Reader reader = new InputStreamReader(bufferedIn, Charset.forName("UTF-8"))) {
             return new Gson().fromJson(reader, FullQuran.class).getData().getSurahs();
 
         } catch (Exception e) {
@@ -113,7 +113,7 @@ public class Util {
         try {
             inputStream = context.getAssets().open("tafseer.json");
             stream = new BufferedInputStream(inputStream);
-            reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
+            reader = new InputStreamReader(stream, Charset.forName("UTF-8"));
             return new Gson().fromJson(reader, CompleteTafseer.class);
         } catch (Exception e) {
             return null;

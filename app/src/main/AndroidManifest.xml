@@ -54,14 +54,12 @@
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
 
-        <activity
-            android:name=".feature.splash.Splash"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".feature.register.RegisterActivity"

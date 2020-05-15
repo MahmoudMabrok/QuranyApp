@@ -9,9 +9,9 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "education.mahmoud.quranyapp"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 29
-        versionCode 29
+        versionCode 30
         versionName "3.0.0"
         multiDexEnabled true
 //        testInstrumentationRumannner "android.support.test.runner.AndroidJUnitRunner"

@@ -207,4 +207,8 @@ class Repository(private var localShared: LocalShared, private var quranDB: Qura
     fun updateRecordItem(path: RecordItem) {
         quranDB.recordDAO().updateRecordItem(path)
     }
+
+    fun addSurahs(surrahs: List<SuraItem>) {
+        quranDB.surahDAO().addSurahs(surrahs)
+    }
 }

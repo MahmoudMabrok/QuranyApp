@@ -9,25 +9,19 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import butterknife.OnClick
-import butterknife.Unbinder
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.BaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
-import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
-import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
-import education.mahmoud.quranyapp.utils.Data
 import kotlinx.android.synthetic.main.fragment_tafseer_details.*
-import org.koin.java.KoinJavaComponent
+import org.koin.android.ext.android.inject
 import java.util.*
 
 class TafseerDetails : BaseFragment() {
-    var unbinder: Unbinder? = null
-    private val repository = KoinJavaComponent.get(Repository::class.java)
-    private val sura: SuraItem? = null
-    private var suraAyahsTafseer: List<AyahItem>? = null
-    private var adapter: TafseerAdapter? = null
+    private val repository: Repository by inject()
+
+
+    private val adapter = TafseerAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tafseer_details, container, false)
@@ -39,44 +33,50 @@ class TafseerDetails : BaseFragment() {
         initRv()
     }
 
+    override fun setClickListeners() {
+        super.setClickListeners()
+        tvNoDataInTafseer.setOnClickListener {
+            val openAcivity = Intent(requireContext(), DownloadActivity::class.java)
+            requireContext().startActivity(openAcivity)
+        }
+    }
+
     private fun initRv() {
-        adapter = TafseerAdapter()
         rvTafeer.setHasFixedSize(true)
-        rvTafeer.setAdapter(adapter)
+        rvTafeer.adapter = (adapter)
     }
 
     private fun fillSpinners() {
-        val suraNames = Arrays.asList(*Data.SURA_NAMES)
-        val startAdapter = ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, suraNames)
-        spSuraTafser.setAdapter(startAdapter)
-        spSuraTafser.setOnItemSelectedListener(object : OnItemSelectedListener {
+        val suraNames = repository.surasNames
+        val startAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
+        spSuraTafser.adapter = startAdapter
+        spSuraTafser.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                val suraName = spSuraTafser.getSelectedItem() as String
-                suraAyahsTafseer = repository.getAllAyahOfSurahIndexForTafseer(l + 1)
-                Log.d(TAG, "onItemSelected: " + suraAyahsTafseer!!.size + " & " + l)
+                val ayahs = repository.getAllAyahOfSurahIndexForTafseer(l + 1)
+                Log.d(TAG, "onItemSelected: " + ayahs.size + " & " + l)
                 // update adapter
-                if (suraAyahsTafseer!!.size > 0) {
+                if (ayahs.isNotEmpty()) {
                     foundState()
-                    adapter!!.setTafseerList(suraAyahsTafseer)
+                    adapter.setTafseerList(ayahs)
                     // Log.d(TAG, "onItemSelected: " + suraName);
-                    val ayahsNums = creatAyahsNumList(suraAyahsTafseer!!.size) // size() ->  n of ayahs
-                    val adapter = ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, ayahsNums)
-                    spAyahTafser.setAdapter(adapter)
-                    spAyahTafser.setOnItemSelectedListener(object : OnItemSelectedListener {
+                    val ayahsNums = creatAyahsNumList(ayahs.size) // size() ->  n of ayahs
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ayahsNums)
+                    spAyahTafser.adapter = adapter
+                    spAyahTafser.onItemSelectedListener = object : OnItemSelectedListener {
                         override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                             rvTafeer.scrollToPosition(l.toInt())
                             Log.d(TAG, "onItemSelected: TAFSEEER POS $l")
                         }
 
                         override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-                    })
+                    }
                 } else {
                     notFoundState()
                 }
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-        })
+        }
     }
 
     private fun creatAyahsNumList(i: Int): List<String> {
@@ -88,23 +88,17 @@ class TafseerDetails : BaseFragment() {
     }
 
     private fun foundState() {
-        rvTafeer.setVisibility(View.VISIBLE)
-        spSuraTafser.setVisibility(View.VISIBLE)
-        spAyahTafser.setVisibility(View.VISIBLE)
-        tvNoDataInTafseer.setVisibility(View.GONE)
+        rvTafeer.visibility = View.VISIBLE
+        spSuraTafser.visibility = View.VISIBLE
+        spAyahTafser.visibility = View.VISIBLE
+        tvNoDataInTafseer.visibility = View.GONE
     }
 
     private fun notFoundState() {
-        rvTafeer.setVisibility(View.GONE)
-        spSuraTafser.setVisibility(View.INVISIBLE)
-        spAyahTafser.setVisibility(View.INVISIBLE)
-        tvNoDataInTafseer.setVisibility(View.VISIBLE)
-    }
-
-    @OnClick(R.id.tvNoDataInTafseer)
-    fun onViewClicked() {
-        val openAcivity = Intent(context, DownloadActivity::class.java)
-        context!!.startActivity(openAcivity)
+        rvTafeer.visibility = View.GONE
+        spSuraTafser.visibility = View.INVISIBLE
+        spAyahTafser.visibility = View.INVISIBLE
+        tvNoDataInTafseer.visibility = View.VISIBLE
     }
 
     companion object {

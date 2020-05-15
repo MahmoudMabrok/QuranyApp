@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="246dp"
-        android:layout_height="241dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,4 +30,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

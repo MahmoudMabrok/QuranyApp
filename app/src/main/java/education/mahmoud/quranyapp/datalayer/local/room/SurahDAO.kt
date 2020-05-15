@@ -27,4 +27,7 @@ interface SurahDAO {
 
     @Query("select startIndex from surah where `index` = :index")
     fun getSuraStartpage(index: Int): Int
+
+    @Insert
+    fun addSurahs(surrahs: List<SuraItem>)
 }

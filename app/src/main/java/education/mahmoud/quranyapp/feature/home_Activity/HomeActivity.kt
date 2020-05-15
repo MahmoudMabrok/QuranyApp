@@ -86,7 +86,7 @@ class HomeActivity : AppCompatActivity() {
     fun afterSplash() {
         supportFragmentManager.popBackStackImmediate()
         openRead()
-        checkLastReadAndDisplayDialoge()
+        // checkLastReadAndDisplayDialoge()
     }
 
     private fun determineToOpenOrNotSplash() {
