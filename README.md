@@ -16,17 +16,19 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 - apk
   - [latest](https://github.com/MahmoudMabrok/QuranyApp/releases/tag/2.6)
 - [My Journey to build App in Arabic](https://www.linkedin.com/pulse/%D8%B1%D8%AD%D9%84%D8%AA%D9%89-%D9%84%D8%A8%D9%86%D8%A7%D8%A1-%D8%AA%D8%B7%D8%A8%D9%8A%D9%82-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85-mahmoud-mabrouk-fouad/)  
-
+- Last Version with Java [Branch](https://github.com/MahmoudMabrok/QuranyApp/tree/java_last_version)
 # Screens
 <div>
- <img src="images/0.jpg" width = 20%>
- <img src="images/1.jpg" width = 20%>
- <img src="images/2.jpg" width = 20%>
- <img src="images/3.jpg" width = 20%>
- <img src="images/4.jpg" width = 20%>
- <img src="images/5.jpg" width = 20%>
- 
+ <img src="https://user-images.githubusercontent.com/13488900/82130135-c1dd9880-97c8-11ea-9d14-250b15c5701a.png" width = 20%>
+ <img src="https://user-images.githubusercontent.com/13488900/82130115-9c508f00-97c8-11ea-97b5-1771801bb1cd.png" width = 20%>
+ <img src="https://user-images.githubusercontent.com/13488900/82130122-ad999b80-97c8-11ea-9439-54e719019b61.png" width = 20%>
+ <img src="https://user-images.githubusercontent.com/13488900/82130126-b0948c00-97c8-11ea-9f83-c498c4b85cb5.png" width = 20%>
+ <img src="https://user-images.githubusercontent.com/13488900/82130129-b25e4f80-97c8-11ea-9e73-3b3213850190.png" width = 20%>
+ <img src="https://user-images.githubusercontent.com/13488900/82130130-b68a6d00-97c8-11ea-8bd2-04264a42e11b.png" width = 20%>
+  <img src="https://user-images.githubusercontent.com/13488900/82130131-b8543080-97c8-11ea-8e17-3a40f39fdd43.png" width = 20%>
   </div>
+  
+# NOte : App is being refactored into Koltin (Reach now MVP stage from app with Kotlin)  
 
 # Features 
 - Go to specific sura by Scrolling and click.
