@@ -17,14 +17,16 @@ import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.github.ybq.android.spinkit.SpinKitView;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.Repository;
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 import education.mahmoud.quranyapp.utils.Util;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
@@ -47,7 +49,7 @@ public class Download extends AppCompatActivity implements OnDownloadListener {
     @BindView(R.id.btnDownloadSound)
     Button btnDownloadSound;
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     String url = "http://cdn.alquran.cloud/media/audio/ayah/ar.alafasy/";
     private int tafseerToDownload = 1;
     private boolean isPermissionAllowed;
@@ -65,7 +67,7 @@ public class Download extends AppCompatActivity implements OnDownloadListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
         ButterKnife.bind(this);
-        repository = Repository.getInstance(getApplication());
+
         isPermissionAllowed = repository.getPermissionState();
 
         if (!isPermissionAllowed) {

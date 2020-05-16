@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/fragment_bg"
     android:orientation="vertical"
     android:padding="@dimen/_16sdp"
     tools:context=".feature.test_quran.TestFragment">
@@ -115,18 +115,6 @@
                 android:text="@string/btn_start_random"
                 android:textColor="@color/bg_white" />
 
-            <Button
-                android:id="@+id/btnOpenTestSound"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:background="@drawable/back_search_res"
-                android:paddingStart="@dimen/_6sdp"
-                android:paddingEnd="@dimen/_6sdp"
-                android:visibility="gone"
-                android:text="@string/test_sound"
-                android:textColor="@color/bg_white" />
 
         </LinearLayout>
 

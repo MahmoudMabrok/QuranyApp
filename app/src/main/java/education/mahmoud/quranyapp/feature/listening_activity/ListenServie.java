@@ -17,9 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 import education.mahmoud.quranyapp.utils.Constants;
-import education.mahmoud.quranyapp.utils.Util;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -55,7 +54,9 @@ public class ListenServie extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         AyahsListen ayahsListen = intent.getParcelableExtra(Constants.AUDIO_ITEMS);
-        ayahsToListen = new ArrayList<>(ayahsListen.getAyahItemList());
+        ayahsToListen = new ArrayList<>();
+        assert ayahsListen != null;
+        ayahsToListen.addAll(ayahsListen.getAyahItemList());
         if (ayahsToListen.size() > 0 ){
             playAyah(ayahsToListen.get(currentAudio));
         }
@@ -64,7 +65,7 @@ public class ListenServie extends Service {
 
     private void playAyah(AyahItem ayahItem) {
         Log.d(TAG, "playSound: !! " + ayahItem.getAyahInSurahIndex());
-        createNotification(Util.getName(ayahItem) , ayahItem.getText());
+        // createNotification(Util.getName(ayahItem) , ayahItem.text);
         String path = ayahItem.getAudioPath();
         if (path != null) {
             try {

@@ -158,5 +158,11 @@
     <string name="go_by_page">Go By Page</string>
     <string name="page_limit">Page must be 1-604</string>
 
+    <string name="justified"><html><body style="text-align:justify"> %s </body></html></string>
+    <string name="lorem_long" translatable="false">Hellodsaasd sdsdsdsd sdsds dewewodsaasdsdsdsdsdsdsdsdewew odsaasdsdsdsds  dsdsdsdewewodsaasdsd sdsdsdsdsdsdewewodsaasdsdsdsdsdsdsdsdewewo dsaasdsdsdsdsdsdsdsdeweweweweasasa</string>
+    <string name="loading_data">Loading Data</string>
+    <string name="enter_surah_name">Enter Surah Name</string>
+    <string name="quran_is_loading_n_if_it_take_long_please_close_and_open_again">Quran is Loading\n If it take long, please close and open again</string>
+
 
 </resources>

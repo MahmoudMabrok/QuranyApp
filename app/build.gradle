@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 
 android {
@@ -8,9 +9,9 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "education.mahmoud.quranyapp"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 29
-        versionCode 29
+        versionCode 30
         versionName "3.0.0"
         multiDexEnabled true
 //        testInstrumentationRumannner "android.support.test.runner.AndroidJUnitRunner"
@@ -45,6 +46,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'com.android.support:multidex:1.0.3'
 
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
@@ -52,7 +54,7 @@ dependencies {
 
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"
-    implementation "com.balsikandar.android:crashreporter:1.0.9"
+    //   implementation "com.balsikandar.android:crashreporter:1.0.9"
 
     implementation 'com.google.code.gson:gson:2.8.5'
 
@@ -61,9 +63,11 @@ dependencies {
 
     implementation files('libs/AppRate_1.1.jar')
 
-    def room_version = '2.2.5'
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // Room
+    implementation 'androidx.room:room-runtime:2.0.0'
+    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+    kapt 'androidx.room:room-compiler:2.0.0'
+    implementation 'androidx.room:room-rxjava2:2.0.0'
 
 
     implementation 'pub.devrel:easypermissions:1.1.1'
@@ -82,10 +86,10 @@ dependencies {
 
     implementation 'com.flipboard:bottomsheet-core:1.5.3'
     implementation 'com.flipboard:bottomsheet-commons:1.5.3'
-    implementation 'com.github.AppIntro:AppIntro:5.1.0'
 
     implementation 'org.greenrobot:eventbus:3.1.1'
 
+    // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     //rx
@@ -103,11 +107,16 @@ dependencies {
     def koinVersion = "2.0.1"
     implementation "org.koin:koin-androidx-scope:$koinVersion"
     implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
+    implementation "org.koin:koin-java:$koinVersion"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    // flex
+    implementation 'com.google.android:flexbox:2.0.1'
 
 
 }
 
 
+apply plugin: "org.jlleitschuh.gradle.ktlint"

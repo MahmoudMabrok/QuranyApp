@@ -14,6 +14,7 @@
         android:layout_marginBottom="16sp"
         android:background="@drawable/back_edit_search"
         android:hint="@string/enter_surah_num"
+        android:textColorHint="@color/textColorPrimary"
         android:inputType="numberDecimal"
         android:padding="@dimen/_10sdp"
         android:textSize="@dimen/_15ssp" />
@@ -25,6 +26,7 @@
         android:background="@drawable/back_edit_search"
         android:hint="@string/ayah_in_surah_num_i_e_1_2_22"
         android:inputType="numberDecimal"
+        android:textColorHint="@color/textColorPrimary"
         android:padding="@dimen/_10sdp"
         android:textSize="@dimen/_15ssp" />
 
@@ -44,7 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/back_edit_search"
-        android:hint="Enter Surah Name"
+        android:hint="@string/enter_surah_name"
+        android:textColorHint="@color/textColorPrimary"
         android:inputType="text"
         android:padding="@dimen/_10sdp"
         android:textSize="@dimen/_15ssp"
@@ -68,6 +71,7 @@
         android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/back_edit_search"
         android:hint="@string/juz_num_i_e_1_2_30"
+        android:textColorHint="@color/textColorPrimary"
         android:inputType="numberDecimal"
         android:padding="@dimen/_10sdp"
         android:textSize="@dimen/_15ssp" />
@@ -91,6 +95,7 @@
         android:layout_marginBottom="@dimen/_16sdp"
         android:background="@drawable/back_edit_search"
         android:hint="@string/page_num"
+        android:textColorHint="@color/textColorPrimary"
         android:inputType="numberDecimal"
         android:padding="@dimen/_10sdp"
         android:textSize="@dimen/_15ssp" />

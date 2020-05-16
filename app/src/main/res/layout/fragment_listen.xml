@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/primaryColor"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -25,7 +25,7 @@
             android:layout_marginBottom="@dimen/_50sdp"
             android:gravity="center"
             android:text="AAAAAAAAAAA"
-            android:textColor="@color/ayas_color_night_mode"
+            android:fontFamily="@font/me_quran"
             android:textSize="@dimen/_25ssp" />
 
 
@@ -108,7 +108,7 @@
                     android:background="@drawable/back_edit_search"
                     android:hint="@string/start_ayah"
                     android:inputType="number"
-                    android:maxLines="1"
+                    android:maxLength="3"
                     android:minHeight="@dimen/_10sdp"
                     android:padding="@dimen/_6sdp" />
 
@@ -146,6 +146,7 @@
                     android:hint="@string/end_ayah"
                     android:inputType="number"
                     android:maxLines="1"
+                    android:maxLength="3"
                     android:minHeight="@dimen/_10sdp"
                     android:padding="@dimen/_6sdp" />
 
@@ -160,7 +161,9 @@
                 android:layout_marginBottom="@dimen/_16sdp"
                 android:background="@drawable/back_edit_search"
                 android:hint="@string/repeat_ayah"
+                android:textColorHint="@color/colorPrimary"
                 android:inputType="number"
+                android:maxLength="3"
                 android:padding="@dimen/_6sdp" />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -170,7 +173,9 @@
                 android:layout_marginBottom="@dimen/_16sdp"
                 android:background="@drawable/back_edit_search"
                 android:hint="@string/repeat_set"
+                android:textColorHint="@color/colorPrimary"
                 android:inputType="number"
+                android:maxLength="3"
                 android:padding="@dimen/_6sdp" />
 
 

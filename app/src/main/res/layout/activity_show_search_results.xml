@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.flipboard.bottomsheet.BottomSheetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomSearch"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,8 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@color/colorPrimary"
-            android:drawableStart="@drawable/ic_search_white_24dp"
+            android:background="@color/colorPrimaryDark"
             android:drawablePadding="@dimen/_10sdp"
             android:hint="@string/ayah_to_search"
             android:textColor="@color/tv_color"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:textColor="@color/font_results"
+            android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/_17ssp"
             tools:text="ssdww" />
 
@@ -51,13 +51,16 @@
                 android:gravity="center_horizontal"
                 android:text="@string/notfound"
                 android:textColor="@color/ayas_color"
-                android:textSize="@dimen/_55ssp"
+                android:textSize="22sp"
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSearch"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/search_item" />
 
 
         </FrameLayout>

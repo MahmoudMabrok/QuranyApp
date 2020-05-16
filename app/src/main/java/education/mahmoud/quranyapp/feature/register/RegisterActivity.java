@@ -1,6 +1,5 @@
 package education.mahmoud.quranyapp.feature.register;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 
+import org.koin.java.KoinJavaComponent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.Repository;
-import education.mahmoud.quranyapp.feature.login.Login;
+import education.mahmoud.quranyapp.datalayer.Repository;
 import education.mahmoud.quranyapp.utils.Util;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -34,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnResgister;
     @BindView(R.id.tvOpenLogin)
     TextView tvOpenLogin;
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
     String name, email, password;
     @BindView(R.id.spRegister)
     SpinKitView spRegister;
@@ -45,7 +45,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
 
-        repository = Repository.getInstance(getApplication());
 
     }
 
@@ -82,14 +81,14 @@ public class RegisterActivity extends AppCompatActivity {
         spRegister.setVisibility(View.GONE);
     }
 
-    @OnClick(R.id.tvOpenLogin)
+    /*@OnClick(R.id.tvOpenLogin)
     public void onTvOpenLoginClicked() {
         Intent openAcivity = new Intent(RegisterActivity.this, Login.class);
         //  openAcivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(openAcivity);
         finish();
     }
-
+*/
 
     private void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

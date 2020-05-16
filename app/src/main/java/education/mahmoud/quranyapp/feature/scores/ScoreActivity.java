@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 
+import org.koin.java.KoinJavaComponent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +23,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.Repository;
+import education.mahmoud.quranyapp.datalayer.Repository;
 import education.mahmoud.quranyapp.feature.register.RegisterActivity;
 import education.mahmoud.quranyapp.utils.Util;
 
+
+/**
+ * Not Used
+ */
 public class ScoreActivity extends AppCompatActivity {
 
     private static final String TAG = "ScoreActivity";
@@ -46,7 +52,7 @@ public class ScoreActivity extends AppCompatActivity {
     ScoreboardAdapter scoreboardAdapter;
     String name, uuid;
     long score;
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
 
     List<Scoreboard> scoreboards = new ArrayList<>();
     @BindView(R.id.tvNoScores)
@@ -68,7 +74,6 @@ public class ScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_score);
         ButterKnife.bind(this);
 
-        repository = Repository.getInstance(getApplication());
 
         score = repository.getScore();
         setScore();

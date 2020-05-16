@@ -5,12 +5,14 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.koin.java.KoinJavaComponent;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.Repository;
-import education.mahmoud.quranyapp.data_layer.model.User;
+import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.model.User;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -22,7 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button buttonSignUp;
 
 
-    Repository repository;
+    private Repository repository = KoinJavaComponent.get(Repository.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
 
-        repository = Repository.getInstance(getApplication());
 
     }
 

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorPrimary">#7cb342</color>
+    <color name="colorAccent">#81c784</color>
+    <color name="colorPrimaryDark">#4b830d</color>
+    <color name="textColorPrimary">#283593</color>
+    <color name="textColorsecondary">#512da8</color>
+
+
     <color name="primaryColor">#7cb342</color>
     <color name="primaryLightColor">#aee571</color>
     <color name="primaryDarkColor">#4b830d</color>
@@ -52,9 +59,10 @@
     <color name="tab_strip">#aaddaa</color>
 
 
-    <color name="bg_items">@color/colorPrimary</color>
+    <color name="bg_items">@color/primaryColor</color>
     <color name="tv_color">@color/whiteTextColor</color>
     <color name="skelton">#858282</color>
+    <color name="fragment_bg">@color/primaryColor</color>
 
 
 </resources>

@@ -38,10 +38,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.local.room.AyahItem;
-import education.mahmoud.quranyapp.data_layer.model.full_quran.FullQuran;
-import education.mahmoud.quranyapp.data_layer.model.full_quran.Surah;
-import education.mahmoud.quranyapp.data_layer.model.tafseer.CompleteTafseer;
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
+import education.mahmoud.quranyapp.datalayer.model.full_quran.FullQuran;
+import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah;
+import education.mahmoud.quranyapp.datalayer.model.tafseer.CompleteTafseer;
 import education.mahmoud.quranyapp.model.Quran;
 
 public class Util {

@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.bookmark_fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.data_layer.local.room.BookmarkItem;
+import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem;
 
 public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Holder> {
 
@@ -55,8 +54,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Holder
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.bookmark_item, viewGroup, false);
-        Holder holder = new Holder(view);
-        return holder;
+        return new Holder(view);
     }
 
     @Override
@@ -68,6 +66,9 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Holder
                 ioBookmark.onBookmarkClick(item);
             }
         });
+
+
+        Log.d("TestApp", "onBindViewHolder: " + item);
 
         holder.tvIndexBookmark.setText(String.valueOf(item.getPageNum()));
         holder.tvSuraNameBookmark.setText(item.getSuraName());
@@ -103,18 +104,17 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.Holder
         void onBookmarkClick(BookmarkItem item);
     }
 
-    class Holder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tvIndexBookmark)
-        TextView tvIndexBookmark;
-        @BindView(R.id.tvSuraNameBookmark)
-        TextView tvSuraNameBookmark;
+    static class Holder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.imDeleteBookmark)
+        TextView tvIndexBookmark;
+        TextView tvSuraNameBookmark;
         ImageView imDelete;
 
-        public Holder(@NonNull View itemView) {
+        Holder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            tvIndexBookmark = itemView.findViewById(R.id.tvIndexBookmark);
+            tvSuraNameBookmark = itemView.findViewById(R.id.tvSuraNameBookmark);
+            imDelete = itemView.findViewById(R.id.imDeleteBookmark);
         }
     }
 }

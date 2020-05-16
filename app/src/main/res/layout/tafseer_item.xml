@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/_10sdp"
     app:cardCornerRadius="@dimen/_16sdp">
 
@@ -10,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/colorPrimaryDark"
         android:padding="@dimen/_10sdp">
 
 
@@ -19,15 +21,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="@string/tafseer_ayah_text_header"
-            android:textSize="@dimen/_20ssp" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <TextView
             android:id="@+id/tvtafseer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="124"
-            android:textColor="@color/semi_black"
-            android:textSize="@dimen/_16ssp" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="124" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

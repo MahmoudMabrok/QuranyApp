@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import butterknife.OnClick
 import com.ethanhua.skeleton.RecyclerViewSkeletonScreen
 import com.ethanhua.skeleton.Skeleton
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.feature.download.DownloadActivity
-import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity
+import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.log
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -29,7 +27,7 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
     var suraAdapter: SuraAdapter = SuraAdapter()
     val model: SuraListViewModel by inject()
     val bg = CompositeDisposable()
-    private lateinit var screen:RecyclerViewSkeletonScreen
+    private lateinit var screen: RecyclerViewSkeletonScreen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,12 +63,11 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
             Log.d(TAG, "onSura: $pos")
         }
 
-        screen  = Skeleton.bind(rvSura)
+        screen = Skeleton.bind(rvSura)
                 .adapter(suraAdapter)
                 .count(12)
                 .load(R.layout.sura_item_skelton)
                 .show()
-
     }
 
     private fun loadSuraList() {
@@ -83,14 +80,6 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
         openAcivity.putExtra(Constants.SURAH_INDEX, index)
         startActivity(openAcivity)
     }
-
-    @OnClick(R.id.tv_no_quran_data)
-    fun onViewClicked() {
-        val openAcivity = Intent(context, DownloadActivity::class.java)
-        context?.startActivity(openAcivity)
-    }
-
-
 
     companion object {
         private const val TAG = "SuraListFragment"
