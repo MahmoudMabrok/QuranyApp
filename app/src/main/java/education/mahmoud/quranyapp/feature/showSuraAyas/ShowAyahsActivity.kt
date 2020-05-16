@@ -29,6 +29,9 @@ import java.util.*
 
 class ShowAyahsActivity : AppCompatActivity() {
 
+
+    private val name = javaClass.simpleName
+
     private val model: AyahsViewModel by inject()
     lateinit var pageAdapter: PageAdapter
     var pos = 0
@@ -81,8 +84,9 @@ class ShowAyahsActivity : AppCompatActivity() {
             pos = intent.getIntExtra(Constants.JUZ_INDEX, 1)
             pos = getPageFromJuz(pos)
         }
+
         //endregion
-        Log.d(TAG, "onCreate: $pos")
+        "${name}   onCreate: $pos\"".log()
         initRV()
 
         (application as? App)?.persistanscePages()

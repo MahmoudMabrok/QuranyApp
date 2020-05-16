@@ -22,13 +22,12 @@ import org.koin.android.ext.android.inject
 class Splash : DataLoadingBaseFragment() {
 
     private val repository: Repository by inject()
-    private var ayhasCount = 0
+    private var ayhasCount = repository.totlaAyahs
     val relay = PublishRelay.create<Boolean>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.activity_splash, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initViews(view)
@@ -37,13 +36,12 @@ class Splash : DataLoadingBaseFragment() {
     override fun initViews(view: View) {
         super.initViews(view)
 
-
         if (ayhasCount > 0) {
             view.postDelayed({
                 (activity as? HomeActivity)?.afterSplash()
             }, 3000)
         } else {
-            progressBar.visibility = View.VISIBLE
+            group.visibility = View.VISIBLE
             startLoadingData()
             startObserving()
         }
@@ -78,7 +76,7 @@ class Splash : DataLoadingBaseFragment() {
     }
 
 
-    data class Extra(val tafseer: String, val clean: String)
+    data class Extra(val clean: String, val tafseer: String)
 
     private fun Store(surahs: List<Surah>) {
         "start load Json".log()
@@ -105,6 +103,14 @@ class Splash : DataLoadingBaseFragment() {
             }
         }
 
+
+        ayahss.forEachIndexed { index, ayahItem ->
+            ayahItem.apply {
+                textClean = mixed[index].clean
+                tafseer = mixed[index].tafseer
+            }
+        }
+
 /*
         val ayahs = surahs.mapIndexed { index, surah ->
             surah.ayahs.map { ayah ->
@@ -122,7 +128,7 @@ class Splash : DataLoadingBaseFragment() {
         "end maping ".log()
         try {
             repository.addSurahs(surrahs)
-            repository.addAyahs(ayahs)
+            repository.addAyahs(ayahss)
         } catch (e: Exception) {
         }
         "end inserting ".log()

@@ -160,6 +160,7 @@
 
     <string name="justified"><html><body style="text-align:justify"> %s </body></html></string>
     <string name="lorem_long" translatable="false">Hellodsaasd sdsdsdsd sdsds dewewodsaasdsdsdsdsdsdsdsdewew odsaasdsdsdsds  dsdsdsdewewodsaasdsd sdsdsdsdsdsdewewodsaasdsdsdsdsdsdsdsdewewo dsaasdsdsdsdsdsdsdsdeweweweweasasa</string>
+    <string name="loading_data">Loading Data</string>
 
 
 </resources>
