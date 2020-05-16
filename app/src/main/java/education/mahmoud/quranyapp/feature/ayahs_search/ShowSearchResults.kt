@@ -8,8 +8,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import butterknife.ButterKnife
 import com.flipboard.bottomsheet.commons.MenuSheetView
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.Repository
@@ -31,6 +29,17 @@ class ShowSearchResults : AppCompatActivity() {
     private var ayahItems: List<AyahItem> = listOf()
     private var ayah: String = ""
     var isRunning = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_show_search_results)
+        initRv()
+        adapterListeners()
+        editWatcher()
+    }
+
+
+
     private fun editWatcher() {
         edSearch?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -73,12 +82,8 @@ class ShowSearchResults : AppCompatActivity() {
     }
 
     private fun showTafseer(ayahItem: AyahItem) {
-        if (ayahItem.tafseer != null) {
-            val title = this.getString(R.string.tafserr_info, ayahItem.ayahInSurahIndex, ayahItem.pageNum, ayahItem.juz)
-            Util.getDialog(this, ayahItem.tafseer, title).show()
-        } else {
-            Toast.makeText(this, getText(R.string.tafseer_not_down), Toast.LENGTH_SHORT).show()
-        }
+        val title = this.getString(R.string.tafserr_info, ayahItem.ayahInSurahIndex, ayahItem.pageNum, ayahItem.juz)
+        Util.getDialog(this, ayahItem.tafseer, title).show()
     }
 
     private fun adapterListeners() {
@@ -102,8 +107,6 @@ class ShowSearchResults : AppCompatActivity() {
     }
 
     private fun initRv() {
-        val manager = LinearLayoutManager(this)
-        rvSearch?.layoutManager = manager
         rvSearch?.adapter = adapter
         rvSearch?.setHasFixedSize(true)
     }
@@ -119,14 +122,7 @@ class ShowSearchResults : AppCompatActivity() {
     }
 
     var serviceIntent: Intent? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_search_results)
-        ButterKnife.bind(this)
-        initRv()
-        adapterListeners()
-        editWatcher()
-    }
+
 
     private fun playAudio(item: AyahItem) {
         if (item.audioPath != null) {

@@ -27,5 +27,6 @@
     <dimen name="tab_indicator_height">5dp</dimen>
     <dimen name="tvFont">17sp</dimen>
     <dimen name="header_text_size">14sp</dimen>
+    <dimen name="bn_corner">16dp</dimen>
 
 </resources>

@@ -116,7 +116,7 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun hideLoading() {
-        spShowAyahs?.visibility = View.GONE
+        group2.visibility = View.GONE
     }
 
     private fun addToReadLog(pos: Int) {
@@ -220,7 +220,6 @@ class ShowAyahsActivity : AppCompatActivity() {
                 Constants.YELLOW -> scrollorColor = ContextCompat.getColor(this, R.color.bg_yellow)
             }
         }
-        ayahsColor = ContextCompat.getColor(this, R.color.bg_ays_night_mode)
     }
 
     private fun loadData() {

@@ -13,7 +13,6 @@
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:background="@drawable/setting_border"
        android:padding="@dimen/_10sdp">
 
        <CheckBox
@@ -34,7 +33,7 @@
         android:layout_marginTop="@dimen/_16sdp"
         android:layout_marginBottom="@dimen/_16sdp"
         android:orientation="vertical"
-        android:background="@drawable/setting_border"
+        android:background="@color/colorPrimaryDark"
         android:padding="@dimen/_10sdp"
         android:gravity="center_horizontal">
 
@@ -54,10 +53,11 @@
 
         <Button
             android:id="@+id/btnSetColor"
-            android:background="@drawable/back_search_res"
+
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/set"/>
+            android:text="@string/set" />
 
     </LinearLayout>
 

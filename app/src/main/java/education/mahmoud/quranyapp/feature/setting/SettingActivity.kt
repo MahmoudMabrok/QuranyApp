@@ -26,13 +26,15 @@ class SettingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_setting)
         ButterKnife.bind(this)
         val colorSet: List<String> = ArrayList(listOf(getString(R.string.white), getString(R.string.yellow), getString(R.string.green)))
-        cbNightMode!!.isChecked = repository.nightModeState
-        if (cbNightMode!!.isChecked) {
+        cbNightMode.isChecked = repository.nightModeState
+
+        if (cbNightMode.isChecked) {
             nightMode()
         } else {
             defaultMode()
         }
-        cbNightMode!!.setOnCheckedChangeListener { compoundButton, state ->
+
+        cbNightMode.setOnCheckedChangeListener { compoundButton, state ->
             Log.d(TAG, "onCheckedChanged: $state")
             repository.nightModeState = state
             if (state) {
@@ -40,18 +42,17 @@ class SettingActivity : AppCompatActivity() {
             } else {
                 defaultMode()
             }
-            // // TODO: 6/18/2019 add Toast but handle it correctly
-//   showMessage(getString(R.string.setting_updated));
+
         }
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, colorSet)
-        spColorReqularMode!!.adapter = adapter
+        spColorReqularMode.adapter = adapter
         // load from shared preference and set to spinner.
         colorPosForBackground = repository.backColorState
-        spColorReqularMode!!.setSelection(colorPosForBackground)
-        spColorReqularMode!!.onItemSelectedListener = object : OnItemSelectedListener {
+        spColorReqularMode.setSelection(colorPosForBackground)
+        spColorReqularMode.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                 Log.d(TAG, "onItemSelected: $i:: $l")
-                val pos = spColorReqularMode!!.selectedItemPosition
+                val pos = spColorReqularMode.selectedItemPosition
                 Log.d(TAG, "onItemSelected: pos $pos")
                 colorPosForBackground = pos
             }
@@ -67,11 +68,11 @@ class SettingActivity : AppCompatActivity() {
     }
 
     private fun defaultMode() {
-        linearColor!!.visibility = View.VISIBLE
+        linearColor.visibility = View.VISIBLE
     }
 
     private fun nightMode() {
-        linearColor!!.visibility = View.GONE
+        linearColor.visibility = View.GONE
     }
 
     private fun showMessage(message: String) {

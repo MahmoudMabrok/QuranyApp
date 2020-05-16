@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".feature.showSuraAyas.ShowAyahsActivity">
@@ -11,26 +12,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        tools:listitem="@layout/page_item"
-        android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:visibility="invisible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/page_item" />
 
     <com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/spShowAyahs"
         style="@style/SpinKitView.Large.Circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_16sdp"
-        app:SpinKit_Color="@color/spin_color_ayahs" />
+        app:SpinKit_Color="@color/spin_color_ayahs"
+        app:layout_constraintBottom_toBottomOf="@+id/rvAyahsPages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rvAyahsPages"
+        app:layout_constraintVertical_bias="0.73" />
 
     <TextView
         android:id="@+id/tv_no_quran_data"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="@string/tv_no_quran_data"
+        android:text="@string/quran_is_loading_n_if_it_take_long_please_close_and_open_again"
         android:textSize="@dimen/_17ssp"
-        android:visibility="gone" />
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/spShowAyahs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="spShowAyahs,tv_no_quran_data" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

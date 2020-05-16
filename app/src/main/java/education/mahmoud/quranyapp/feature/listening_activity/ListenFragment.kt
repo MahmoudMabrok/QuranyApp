@@ -100,7 +100,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     override fun setClickListeners() {
         super.setClickListeners()
         spStartSura.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, index: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, index: Long) {
                 try {
                     startSura = repository.getSuraByIndex(index + 1)
                 } catch (e: Exception) {
@@ -112,7 +112,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
             }
         }
         spEndSura.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, index: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, index: Long) {
                 try {
                     endSura = repository.getSuraByIndex(index + 1)
                 } catch (e: Exception) {

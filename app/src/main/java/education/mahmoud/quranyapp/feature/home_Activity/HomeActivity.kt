@@ -22,12 +22,12 @@ import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
 import education.mahmoud.quranyapp.feature.bookmark_fragment.BookmarkFragment
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import education.mahmoud.quranyapp.feature.feedback_activity.FeedbackActivity
+import education.mahmoud.quranyapp.feature.gotoscreen.GoToSurah
 import education.mahmoud.quranyapp.feature.listening_activity.ListenFragment
 import education.mahmoud.quranyapp.feature.read_log.ReadLogFragment
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity
 import education.mahmoud.quranyapp.feature.setting.SettingActivity
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
-import education.mahmoud.quranyapp.feature.show_sura_list.GoToSurah
 import education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment
 import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails
 import education.mahmoud.quranyapp.feature.splash.Splash

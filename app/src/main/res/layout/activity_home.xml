@@ -7,6 +7,7 @@
     tools:context=".feature.home_Activity.HomeActivity">
 
     <androidx.appcompat.widget.Toolbar
+        style="@style/Widget.AppCompat.Toolbar"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bn_bg"
             app:elevation="1dp"
+
             app:itemBackground="@drawable/bn_item__bg"
             app:itemIconTint="@color/secondaryTextColor"
             app:itemTextColor="@color/primaryTextColor"

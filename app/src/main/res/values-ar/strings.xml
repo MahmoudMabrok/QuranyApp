@@ -165,6 +165,7 @@
 
     <string name="justified"><html><body style="text-align:justify"> %s </body></html></string>
     <string name="loading_data">"جاري تحميل الداتا "</string>
+    <string name="quran_is_loading_n_if_it_take_long_please_close_and_open_again">جاري تحميل القران\n  لو استمر التحميل كثيرا برجاء غلق الصفحة وفتحها مره اخري</string>
 
 
 </resources>

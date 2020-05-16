@@ -47,7 +47,7 @@ class TafseerDetails : BaseFragment() {
         spSuraTafser.adapter = startAdapter
         try {
             spSuraTafser.onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
+                override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
                     val ayahs = repository.getAllAyahOfSurahIndexForTafseer(l + 1)
                     Log.d(TAG, "onItemSelected: " + ayahs.size + " & " + l)
                     // update adapter
@@ -59,7 +59,7 @@ class TafseerDetails : BaseFragment() {
                         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ayahsNums)
                         spAyahTafser.adapter = adapter
                         spAyahTafser.onItemSelectedListener = object : OnItemSelectedListener {
-                            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
+                            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
                                 rvTafeer.scrollToPosition(l.toInt())
                                 Log.d(TAG, "onItemSelected: TAFSEEER POS $l")
                             }
