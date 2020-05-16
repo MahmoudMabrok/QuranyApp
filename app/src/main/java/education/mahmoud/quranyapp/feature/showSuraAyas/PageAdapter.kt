@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.Util
-import education.mahmoud.quranyapp.utils.log
 
 class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adapter<PageAdapter.Holder>() {
     var vis = View.INVISIBLE
@@ -56,9 +55,8 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.mainLayout?.setBackgroundColor(scrollColor)
 
         val ayah = item.getText { return@getText getSuraNameFromIndex(it) }
-        "ayah $ayah".log()
 
-        val suraName = getSuraNameFromIndex(item.ayahItems[0].surahIndex)
+        val suraName = getSuraNameFromIndex(item.ayhas[0].surahIndex)
 
         holder.tvAyahs?.setText(Util.getSpannable(ayah), TextView.BufferType.SPANNABLE)
 

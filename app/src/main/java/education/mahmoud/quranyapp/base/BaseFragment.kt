@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.ethanhua.skeleton.SkeletonScreen
+import education.mahmoud.quranyapp.utils.KeyboardHelper
 
 abstract class BaseFragment : Fragment() {
 
@@ -45,5 +46,11 @@ abstract class BaseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         cleanUp()
+    }
+
+    fun dismissKeyboard() {
+        context?.let {
+            KeyboardHelper.dissmiss(it)
+        }
     }
 }

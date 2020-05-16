@@ -86,6 +86,7 @@ class ShowAyahsActivity : AppCompatActivity() {
             pos = intent.getIntExtra(Constants.JUZ_INDEX, 1)
             pos = getPageFromJuz(pos)
         }
+        pos -= 1
 
         //endregion
         "${name}   onCreate: $pos\"".log()
@@ -151,7 +152,7 @@ class ShowAyahsActivity : AppCompatActivity() {
                 // calculate Hizb info.
                 val page = pageAdapter.getPage(pos)
                 if (quraterSStart.contains(page.pageNum)) { // get last ayah to extract info from it
-                    val ayahItem = page.ayahItems[page.ayahItems.size - 1]
+                    val ayahItem = page.ayhas[page.ayhas.size - 1]
                     var rub3Num = ayahItem.hizbQuarter
                     rub3Num-- // as first one must be 0
                     if (rub3Num % 8 == 0) {
@@ -172,7 +173,7 @@ class ShowAyahsActivity : AppCompatActivity() {
                 val bookmarkItem = BookmarkItem()
                 bookmarkItem.timemills = Date().time
                 // get ayah to retrieve info from it
-                val ayahItem = item.ayahItems[0]
+                val ayahItem = item.ayhas[0]
                 bookmarkItem.suraName = getSuraNameFromIndex(ayahItem.surahIndex)
                 bookmarkItem.pageNum = item.pageNum
                 Log.d(TAG, "onBookmarkClicked: " + bookmarkItem.pageNum)

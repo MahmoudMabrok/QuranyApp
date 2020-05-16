@@ -36,13 +36,10 @@ class TafseerAdapter : RecyclerView.Adapter<TafseerAdapter.Holder>() {
     override fun onBindViewHolder(holder: Holder, i: Int) {
         val item = list[i]
         holder.tvtafseerAyah.text = holder.itemView.context
-                .getString(R.string.tafseer_ayah_text_header, i + 1, item.text)
+                .getString(R.string.tafseer_ayah_text_header, i + 1, item.textClean)
         val tafsser = item.tafseer
-        if (tafsser != null) {
-            holder.tvtafseer.text = tafsser
-        } else {
-            holder.tvtafseer.text = holder.itemView.context.getString(R.string.tafseer_not_down)
-        }
+        holder.tvtafseer.text = tafsser
+
     }
 
     override fun getItemCount(): Int {

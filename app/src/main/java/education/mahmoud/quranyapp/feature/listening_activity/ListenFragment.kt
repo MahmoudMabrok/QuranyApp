@@ -23,6 +23,7 @@ import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity
+import education.mahmoud.quranyapp.utils.NumberHelper
 import education.mahmoud.quranyapp.utils.Util
 import education.mahmoud.quranyapp.utils.log
 import io.reactivex.rxkotlin.addTo
@@ -220,6 +221,8 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
               activity?.stopService(serviceIntent)
           }
           serviceIntent = ListenServie.createService(context, ayahsListen)*/
+
+        dismissKeyboard()
     }
 
     private fun getAllAyahsRepeated(ayahsSetCount: Int): List<AyahItem> {
@@ -254,8 +257,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     private fun displayAyahs() {
         Log.d(TAG, "displayAyahs: $currentAyaAtAyasToListen")
         val ayahItem = ayahsToListen[currentAyaAtAyasToListen]
-        tvAyahToListen.text = MessageFormat.format("{0} ﴿ {1} ﴾ ", ayahItem.text, ayahItem.ayahInSurahIndex)
-        // showMessage("size " + ayahsToListen.size());
+        tvAyahToListen.text = MessageFormat.format("{0}   ﴿{1}﴾  ", ayahItem.text, NumberHelper.getArabicNumber(ayahItem.ayahInSurahIndex))
         playAudio()
     }
 
@@ -405,7 +407,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         }
     }
 
-    private fun downloadAyahs() {
+    fun downloadAyahs() {
         Log.d(TAG, "downloadAyahs: ")
         if (!isPermissionAllowed) {
             (activity as HomeActivity?)?.acquirePermission()

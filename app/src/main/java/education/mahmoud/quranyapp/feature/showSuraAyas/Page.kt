@@ -1,10 +1,11 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
+import education.mahmoud.quranyapp.utils.NumberHelper
 import java.text.MessageFormat
 
 data class Page(
-        var ayahItems: List<AyahItem>,
+        var ayhas: List<AyahItem>,
         var pageNum: Int = 0,
         var rubHizb: Int = 0,
         var juz: Int = 0
@@ -15,8 +16,8 @@ data class Page(
         var aya: String
         var tempSuraName: String
         var isFirst = true
-        ayahItems?.let { ayahItems ->
-            for (ayahItem in ayahItems) {
+        ayhas?.let { ayahs ->
+            for (ayahItem in ayahs) {
                 aya = ayahItem.text
                 // add sura name
                 if (ayahItem.ayahInSurahIndex == 1) {
@@ -39,8 +40,7 @@ data class Page(
                     }
                 }
                 isFirst = false
-                val ch = '١' + (ayahItem.ayahInSurahIndex - 1)
-                builder.append(MessageFormat.format("{0}   ﴿{1}﴾  ", aya, ch))
+                builder.append(MessageFormat.format("{0}   ﴿{1}﴾  ", aya, NumberHelper.getArabicNumber(ayahItem.ayahInSurahIndex)))
             }
         }
 

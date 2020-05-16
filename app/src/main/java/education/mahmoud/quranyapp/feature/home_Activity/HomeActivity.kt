@@ -33,6 +33,7 @@ import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails
 import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment
 import education.mahmoud.quranyapp.utils.Constants
+import education.mahmoud.quranyapp.utils.log
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.android.ext.android.inject
 import pub.devrel.easypermissions.EasyPermissions
@@ -44,30 +45,45 @@ class HomeActivity : AppCompatActivity() {
     private val repository: Repository by inject()
     var ahays = 0
 
+    private var currentID = 0
+    private val readFragment by lazy { SuraListFragment() }
+    private val tafseerFragment by lazy { TafseerDetails() }
+    private val listenFragment by lazy { ListenFragment() }
+    private val readLogFragment by lazy { ReadLogFragment() }
+    private val testFragment by lazy { TestFragment() }
+    private val bookmarkFragment by lazy { BookmarkFragment() }
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
+        handleNavSelection(item.itemId)
+
+        true
+    }
+
+    private fun handleNavSelection(itemId: Int) {
+        if (itemId == currentID) return
+        when (itemId) {
             R.id.navigation_read -> {
                 openRead()
-                return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_tafseer -> {
                 openTafseer()
-                return@OnNavigationItemSelectedListener true
+
             }
             R.id.navigationListen -> {
                 openListen()
-                return@OnNavigationItemSelectedListener true
+
             }
             R.id.navigation_test -> {
                 openTest()
-                return@OnNavigationItemSelectedListener true
+
             }
             R.id.navigation_bookmarks -> {
                 openBookmark()
-                return@OnNavigationItemSelectedListener true
+
             }
         }
-        false
+        currentID = itemId
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +96,10 @@ class HomeActivity : AppCompatActivity() {
 
         toolbar?.let {
             setSupportActionBar(it)
+        }
+
+        listOf<String>("١٠", "١١", "١٢", "١٣").forEach {
+            "ch $it ".log()
         }
     }
 
@@ -138,33 +158,28 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openRead() {
-        val fragment = SuraListFragment()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, fragment).commit()
+        a.replace(homeContainer.id, readFragment).commit()
     }
 
     private fun openTafseer() {
-        val fragment = TafseerDetails()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, fragment).commit()
+        a.replace(homeContainer.id, tafseerFragment).commit()
     }
 
     private fun openListen() {
-        val fragment = ListenFragment()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, fragment).commit()
+        a.replace(homeContainer.id, listenFragment).commit()
     }
 
     private fun openTest() {
-        val fragment = TestFragment()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, fragment).commit()
+        a.replace(homeContainer.id, testFragment).commit()
     }
 
     private fun openBookmark() {
-        val fragment = BookmarkFragment()
         val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, fragment).commit()
+        a.replace(homeContainer.id, bookmarkFragment).commit()
     }
 
     fun acquirePermission() {
@@ -191,10 +206,12 @@ class HomeActivity : AppCompatActivity() {
         if (requestCode == RC_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             isPermissionAllowed = true
             repository.permissionState = true
+            listenFragment.downloadAyahs()
         } else if (requestCode == RC_STORAGE) {
             showMessage(getString(R.string.down_permission))
             repository.permissionState = false
-            openListen()
+            // user refuse to take permission
+            openRead()
         }
     }
 
