@@ -8,10 +8,13 @@ import androidx.room.Update
 @Dao
 interface AyahDAO {
     @Insert
-    fun addAyah(item: AyahItem?)
+    fun addAyah(item: AyahItem)
+
+    @Insert
+    fun addAyahs(item: List<AyahItem>)
 
     @Update
-    fun updateAyah(item: AyahItem?)
+    fun updateAyah(item: AyahItem)
 
     @Query("select  * from ayahs where `surahIndex` = :id order by ayahInSurahIndex asc")
     fun getAllAyahOfSurahIndex(id: Int): List<AyahItem>

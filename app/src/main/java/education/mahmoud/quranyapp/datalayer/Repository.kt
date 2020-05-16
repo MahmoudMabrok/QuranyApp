@@ -66,6 +66,10 @@ class Repository(private var localShared: LocalShared, private var quranDB: Qura
         quranDB.ayahDAO().addAyah(item)
     }
 
+    fun addAyahs(item: List<AyahItem>) {
+        quranDB.ayahDAO().addAyahs(item)
+    }
+
     val totlaAyahs: Int
         get() = quranDB.ayahDAO().ayahCount
 

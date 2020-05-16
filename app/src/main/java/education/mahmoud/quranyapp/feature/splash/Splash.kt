@@ -77,6 +77,9 @@ class Splash : DataLoadingBaseFragment() {
         Thread(Runnable { Store(surahs) }).start()
     }
 
+
+    data class Extra(val tafseer: String, val clean: String)
+
     private fun Store(surahs: List<Surah>) {
         "start load Json".log()
         val cleanQuran = Util.getQuranClean(requireContext())
@@ -88,19 +91,44 @@ class Splash : DataLoadingBaseFragment() {
         // get all ayahs tafseer
         val ayhasTafseer = completeTafseer.data.surahs.flatMap { it.ayahs }
         // mix them
-        val mixed = ayhasClean.zip(ayhasTafseer)
+        val mixed = ayhasClean.zip(ayhasTafseer).map { Extra(it.first.text, it.second.text) }
         "data data ${ayhasClean.size}  ${ayhasTafseer.size} ${mixed.size}".log()
+        val ayahss = mutableListOf<AyahItem>()
         // map it to db schema
         val surrahs = surahs.map {
+            // add ayahs to list to be updated later with tafseer
+            ayahss.addAll(it.ayahs.map { ayah -> AyahItem(ayah.number, it.number, ayah.page, ayah.juz, ayah.hizbQuarter, false, ayah.numberInSurah, ayah.text, ayah.text) })
+            // create sura item
             SuraItem(it.number, it.ayahs.size, it.name, it.englishName, it.englishNameTranslation, it.revelationType).apply {
                 index = it.number
                 startIndex = it.ayahs.first().page
             }
         }
+
+/*
+        val ayahs = surahs.mapIndexed { index, surah ->
+            surah.ayahs.map { ayah ->
+                AyahItem(ayah.number, index + 1, ayah.page, ayah.juz, ayah.hizbQuarter, false, ayah.numberInSurah, ayah.text, ayah.text)
+            }
+        }.flatMap { list -> list.toMutableList() }
+                .mapIndexed{ index, ayahItem ->
+                    ayahItem.apply {
+                        textClean = mixed[index].clean
+                        tafseer = mixed[index].tafseer
+                    }
+                }*/
+
+
         "end maping ".log()
-        repository.addSurahs(surrahs)
+        try {
+            repository.addSurahs(surrahs)
+            repository.addAyahs(ayahs)
+        } catch (e: Exception) {
+        }
         "end inserting ".log()
 
+
+        relay.accept(true)
 
         /*
 
