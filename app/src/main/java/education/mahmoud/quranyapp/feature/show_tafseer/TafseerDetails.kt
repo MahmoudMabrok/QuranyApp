@@ -1,6 +1,5 @@
 package education.mahmoud.quranyapp.feature.show_tafseer
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.widget.ArrayAdapter
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.BaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
-import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import kotlinx.android.synthetic.main.fragment_tafseer_details.*
 import org.koin.android.ext.android.inject
 import java.util.*
@@ -36,8 +34,8 @@ class TafseerDetails : BaseFragment() {
     override fun setClickListeners() {
         super.setClickListeners()
         tvNoDataInTafseer.setOnClickListener {
-            val openAcivity = Intent(requireContext(), DownloadActivity::class.java)
-            requireContext().startActivity(openAcivity)
+            /*   val openAcivity = Intent(requireContext(), DownloadActivity::class.java)
+               requireContext().startActivity(openAcivity)*/
         }
     }
 

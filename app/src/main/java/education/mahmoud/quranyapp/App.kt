@@ -1,15 +1,11 @@
 package education.mahmoud.quranyapp
 
 import android.app.Application
-import android.util.Log
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
-import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
-import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah
 import education.mahmoud.quranyapp.di.dataModule
 import education.mahmoud.quranyapp.feature.showSuraAyas.Page
-import education.mahmoud.quranyapp.utils.Util
 import education.mahmoud.quranyapp.utils.log
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -41,56 +37,6 @@ class App : Application() {
                 e.printStackTrace()
             }
         }).start()
-    }
-
-    fun loadQuran() {
-        Log.d(TAG, "loadQuran: ")
-        val surahs = Util.getFullQuranSurahs(this)
-        StoreInDb(surahs)
-    }
-
-    private fun StoreInDb(surahs: List<Surah>) {
-        Thread(Runnable { Store(surahs) }).start()
-    }
-
-    private fun Store(surahs: List<Surah>) {
-        var suraItem: SuraItem
-        var ayahItem: AyahItem
-        val quran = Util.getQuranClean(this)
-        val surahClean = quran.surahs
-        var clean: String?
-
-        "start".log()
-
-        for (surah in surahs) {
-            suraItem = SuraItem(surah.number, surah.ayahs.size, surah.name, surah.englishName, surah.englishNameTranslation, surah.revelationType)
-            // add start page
-            suraItem.index = surah.number
-            suraItem.startIndex = surah.ayahs[0].page
-            try {
-                repository.addSurah(suraItem)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            for (ayah in surah.ayahs) {
-                ayahItem = AyahItem(ayah.number, surah.number, ayah.page, ayah.juz, ayah.hizbQuarter, false, ayah.numberInSurah, ayah.text, ayah.text)
-
-                if (surahClean != null) {
-                    clean = surahClean[surah.number - 1].ayahs[ayahItem.ayahInSurahIndex - 1].text
-                    ayahItem.textClean = clean
-                } else {
-                    ayahItem.textClean = Util.removeTashkeel(ayahItem.text)
-                }
-                try {
-                    repository.addAyah(ayahItem)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-        "finis".log()
-
-        relay.accept(true)
     }
 
     fun loadFullQuran() {

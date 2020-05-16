@@ -161,9 +161,9 @@
                 android:layout_marginBottom="@dimen/_16sdp"
                 android:background="@drawable/back_edit_search"
                 android:hint="@string/repeat_ayah"
+                android:textColorHint="@color/colorPrimary"
                 android:inputType="number"
                 android:maxLength="3"
-
                 android:padding="@dimen/_6sdp" />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -173,6 +173,7 @@
                 android:layout_marginBottom="@dimen/_16sdp"
                 android:background="@drawable/back_edit_search"
                 android:hint="@string/repeat_set"
+                android:textColorHint="@color/colorPrimary"
                 android:inputType="number"
                 android:maxLength="3"
                 android:padding="@dimen/_6sdp" />

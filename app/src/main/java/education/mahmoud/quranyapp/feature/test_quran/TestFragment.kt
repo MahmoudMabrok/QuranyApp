@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import butterknife.OnClick
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.BaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
@@ -24,7 +23,6 @@ import java.util.*
 
 class TestFragment : BaseFragment() {
     var adapter = SaveTestAdapter()
-    //    private val repository = KoinJavaComponent.get(Repository::class.java)
     private val repository: Repository by inject()
 
     private var startSura: SuraItem? = null
@@ -67,8 +65,8 @@ class TestFragment : BaseFragment() {
      */
     private fun initRV() {
         val manager = LinearLayoutManager(context)
-        rvTestText.setLayoutManager(manager)
-        rvTestText.setAdapter(adapter)
+        rvTestText.layoutManager = manager
+        rvTestText.adapter = adapter
         rvTestText.setHasFixedSize(true)
         adapter.setiOnTestClick { item, editText ->
             // processing of user text
@@ -116,10 +114,29 @@ class TestFragment : BaseFragment() {
         }
     }
     //endregion
+
+    override fun setClickListeners() {
+        super.setClickListeners()
+
+
+        btnTestSave.setOnClickListener {
+            onViewClicked()
+        }
+
+        btnTestSaveRandom.setOnClickListener {
+            onbtnTestSaveRandom()
+        }
+
+        btnCheckTest.setOnClickListener {
+            onCheckClicked()
+        }
+
+
+    }
+
     /**
      * called when btn is clicked it first check inputs then load ayahs from db
      */
-    @OnClick(R.id.btnTestSave)
     fun onViewClicked() {
         checkInput()
         if (isInputValid) {
@@ -137,20 +154,20 @@ class TestFragment : BaseFragment() {
     private fun checkInput() { //region check inputs
         if (startSura != null && endSura != null) {
             try {
-                start = edStartSuraAyah.getText().toString().toInt()
+                start = edStartSuraAyah.text.toString().toInt()
                 if (start > startSura!!.numOfAyahs) {
-                    edStartSuraAyah.setError(getString(R.string.outofrange, startSura!!.numOfAyahs))
+                    edStartSuraAyah.error = getString(R.string.outofrange, startSura!!.numOfAyahs)
                     return
                 }
-                end = edEndSuraAyah.getText().toString().toInt()
+                end = edEndSuraAyah.text.toString().toInt()
                 if (end > endSura!!.numOfAyahs) {
-                    edEndSuraAyah.setError(getString(R.string.outofrange, endSura!!.numOfAyahs))
+                    edEndSuraAyah.error = getString(R.string.outofrange, endSura!!.numOfAyahs)
                     return
                 }
                 // compute actual start , -1 because first ayah is 0 not 1 as user enter
-                actualStart = repository.getAyahByInSurahIndex(startSura!!.index, start)!!.ayahIndex - 1
+                actualStart = repository.getAyahByInSurahIndex(startSura!!.index, start).ayahIndex - 1
                 // compute actual end
-                actualEnd = repository.getAyahByInSurahIndex(endSura!!.index, end)!!.ayahIndex - 1
+                actualEnd = repository.getAyahByInSurahIndex(endSura!!.index, end).ayahIndex - 1
                 // check actualstart & actualEnd
                 if (actualEnd < actualStart) {
                     makeRangeError()
@@ -161,7 +178,7 @@ class TestFragment : BaseFragment() {
                 ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1).toMutableList()
                 isInputValid = true
                 // place data in UI
-                tvTestRange.setText(getString(R.string.rangeoftest, startSura!!.name, start, endSura!!.name, end))
+                tvTestRange.text = getString(R.string.rangeoftest, startSura!!.name, start, endSura!!.name, end)
                 // close keyboard
                 closeKeyboard()
             } catch (e: NumberFormatException) {
@@ -178,31 +195,31 @@ class TestFragment : BaseFragment() {
      * used to make test layout shown to screen and hide selections
      */
     private fun TestState() {
-        lnSelectorAyahs.setVisibility(View.GONE)
-        lnTestLayout.setVisibility(View.VISIBLE)
+        lnSelectorAyahs.visibility = View.GONE
+        lnTestLayout.visibility = View.VISIBLE
         // used  only with random test
-        tvAyahToTestAfter.setVisibility(View.GONE)
+        tvAyahToTestAfter.visibility = View.GONE
     }
 
     /**
      * used to make Selection layout shown to screen and hide test layouts
      */
     private fun selectionState() {
-        lnSelectorAyahs.setVisibility(View.VISIBLE)
-        lnTestLayout.setVisibility(View.GONE)
+        lnSelectorAyahs.visibility = View.VISIBLE
+        lnTestLayout.visibility = View.GONE
         adapter.clear()
         // clear inputs1
-        edEndSuraAyah.setText(null)
-        edStartSuraAyah.setText(null)
-        edEndSuraAyah.setError(null)
-        edStartSuraAyah.setError(null)
+        edEndSuraAyah.text = null
+        edStartSuraAyah.text = null
+        edEndSuraAyah.error = null
+        edStartSuraAyah.error = null
     }
 
     /**
      * if range of ayahs is incorrect it raise error messages
      */
     private fun makeRangeError() {
-        edStartSuraAyah.setError(getString(R.string.start_range_error))
+        edStartSuraAyah.error = getString(R.string.start_range_error)
         showMessage(getString(R.string.start_range_error))
     }
 
@@ -222,7 +239,6 @@ class TestFragment : BaseFragment() {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    @OnClick(R.id.btnTestSaveRandom)
     fun onbtnTestSaveRandom() {
         checkInput()
         if (isInputValid) {
@@ -230,7 +246,7 @@ class TestFragment : BaseFragment() {
             if (ayahsToTest.size >= 3) {
                 val r = Random().nextInt(ayahsToTest.size - 1)
                 ayahItemTobeTest = ayahsToTest.get(r)
-                tvAyahToTestAfter.setText(getString(R.string.ayahToTestRanom, ayahItemTobeTest!!.textClean))
+                tvAyahToTestAfter.text = getString(R.string.ayahToTestRanom, ayahItemTobeTest.textClean)
                 ayahItemTobeTest = ayahsToTest.get(r + 1)
                 ayahsToTest.clear()
                 ayahsToTest.add(ayahItemTobeTest)
@@ -247,20 +263,20 @@ class TestFragment : BaseFragment() {
     }
 
     private fun TestRandomState() {
-        tvAyahToTestAfter.setVisibility(View.VISIBLE)
-        lnSelectorAyahs.setVisibility(View.GONE)
-        lnTestLayout.setVisibility(View.VISIBLE)
+        tvAyahToTestAfter.visibility = View.VISIBLE
+        lnSelectorAyahs.visibility = View.GONE
+        lnTestLayout.visibility = View.VISIBLE
         isFullTest = true
     }
 
     private fun ayahsNotSufficentError() {
-        edStartSuraAyah.setError(getString(R.string.not_sufficient_ayahs))
-        edEndSuraAyah.setError(getString(R.string.not_sufficient_ayahs))
+        edStartSuraAyah.error = getString(R.string.not_sufficient_ayahs)
+        edEndSuraAyah.error = getString(R.string.not_sufficient_ayahs)
     }
 
-    @OnClick(R.id.btnCheckTest)
+
     fun onCheckClicked() {
-        val ayah: String = edUserTextForAyahs.getText().toString()
+        val ayah: String = edUserTextForAyahs.text.toString()
         val ayahToTestStr = ayah
         val spannable = Util.getDiffSpannaled(ayahToTestStr, ayah)
         updateTotalScore(Util.getTotalScore()) // Util.getTotalScore() -> score for yours Save test
@@ -271,13 +287,13 @@ class TestFragment : BaseFragment() {
         private get() = if (isFullTest) {
             concateAyahs()
         } else {
-            ayahsToTest!![0]!!.textClean
+            ayahsToTest[0].textClean
         }
 
     private fun concateAyahs(): String {
         val builder = StringBuilder()
-        for (ayahItem in ayahsToTest!!) {
-            builder.append(ayahItem!!.textClean)
+        for (ayahItem in ayahsToTest) {
+            builder.append(ayahItem.textClean)
         }
         return builder.toString()
     }

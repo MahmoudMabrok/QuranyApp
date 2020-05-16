@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import butterknife.OnClick
 import com.ethanhua.skeleton.RecyclerViewSkeletonScreen
 import com.ethanhua.skeleton.Skeleton
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.log
@@ -81,12 +79,6 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
         val openAcivity = Intent(context, ShowAyahsActivity::class.java)
         openAcivity.putExtra(Constants.SURAH_INDEX, index)
         startActivity(openAcivity)
-    }
-
-    @OnClick(R.id.tv_no_quran_data)
-    fun onViewClicked() {
-        val openAcivity = Intent(context, DownloadActivity::class.java)
-        context?.startActivity(openAcivity)
     }
 
     companion object {

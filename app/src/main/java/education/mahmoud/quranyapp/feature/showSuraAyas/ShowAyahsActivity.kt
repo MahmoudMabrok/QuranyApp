@@ -69,7 +69,9 @@ class ShowAyahsActivity : AppCompatActivity() {
         ButterKnife.bind(this)
 
         pos = intent.getIntExtra(Constants.SURAH_INDEX, 1)
+        "1${name}   onCreate: $pos\"".log()
         pos = getStartPageFromIndex(pos)
+        "2${name}   onCreate: $pos\"".log()
         //region Description
         if (intent.hasExtra(Constants.SURAH_GO_INDEX)) {
             val surah = intent.getIntExtra(Constants.SURAH_GO_INDEX, 1)

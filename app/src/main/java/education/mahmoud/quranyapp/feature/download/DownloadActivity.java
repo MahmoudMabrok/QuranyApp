@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,12 +29,6 @@ import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.datalayer.Repository;
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
-import education.mahmoud.quranyapp.datalayer.local.room.SuraItem;
-import education.mahmoud.quranyapp.datalayer.model.full_quran.Ayah;
-import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah;
-import education.mahmoud.quranyapp.datalayer.model.tafseer.CompleteTafseer;
-import education.mahmoud.quranyapp.model.Quran;
-import education.mahmoud.quranyapp.model.Sura;
 import education.mahmoud.quranyapp.utils.Util;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
@@ -96,17 +89,6 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         isPermissionAllowed = repository.getPermissionState();
         ahays = repository.getTotlaAyahs();
 
-
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                closeDialoge();
-                Toast.makeText(DownloadActivity.this, "Download success", Toast.LENGTH_SHORT).show();
-                createStatistics();
-            }
-        };
-
         createStatistics();
 
     }
@@ -158,77 +140,6 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     }
 
 
-    @OnClick(R.id.btnDownloadTafseer)
-    public void onViewClicked() {
-        loadTafseerFromJson();
-    }
-
-    private void loadTafseerFromJson() {
-        Log.d(TAG, "loadTafseer: ");
-        startProgress();
-        ahays = repository.getTotlaAyahs();
-        new Thread(() -> {
-            if (ahays > 0) {
-                updateAyahsWithTafseer();
-            } else {
-                runOnUiThread(()->{
-                    Toast.makeText(this, "First Load Ayahs", Toast.LENGTH_SHORT).show();
-                });
-                handler.sendEmptyMessage(0);
-            }
-
-
-        }).start();
-
-    }
-
-    private void updateAyahsWithTafseer() {
-        AyahItem ayahItem = null;
-        CompleteTafseer completeTafseer = Util.getCompleteTafseer(this);
-        if (completeTafseer != null) {
-            List<Surah> surahs = completeTafseer.getData().getSurahs();
-            for (Surah surah1 : surahs) {
-                for (Ayah ayah : surah1.getAyahs()) {
-                    ayahItem = repository.getAyahByIndex(ayah.getNumber());
-                    ayahItem.setTafseer(ayah.getText());
-                    try {
-                        repository.updateAyahItem(ayahItem);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                Log.d(TAG, "updateAyahsWithTafseer: ");
-            }
-        }
-        handler.sendEmptyMessage(0);
-
-    }
-
-/*    private void updateAyahsWithTafseer() {
-        AyahItem ayahItem = null;
-        CompleteTafseer completeTafseer = Util.getCompleteTafseer(this);
-        if (completeTafseer != null) {
-            List<Surah> surahs = completeTafseer.getData().getSurahs();
-            for (Surah surah1 : surahs) {
-                for (Ayah ayah : surah1.getAyahs()) {
-                    ayahItem = repository.getAyahByIndex(ayah.getNumber());
-                    ayahItem.setTafseer(ayah.getText());
-                    try {
-                        repository.updateAyahItem(ayahItem);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                Log.d(TAG, "updateAyahsWithTafseer: ");
-            }
-        }
-        handler.sendEmptyMessage(0);
-
-    }*/
-
-    //<editor-fold desc="Tafseer net">
 
     private void downState() {
         lnDown.setVisibility(View.VISIBLE);
@@ -342,27 +253,7 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     }
     //</editor-fold>
 
-    //<editor-fold desc="download quran">
-    @OnClick(R.id.btnDownloadQuran)
-    public void onDownloadQuran() {
-        // downQuranState();
-        Log.d(TAG, "onDownloadQuran: ");
-        startProgress();
-        new Thread(() -> {
-            LoadQuranFromJson();
-        }).start();
 
-    }
-
-    public void LoadQuranFromJson() {
-        ahays = repository.getTotlaAyahs();
-        if (ahays == 0) {
-            List<Surah> surahs = Util.getFullQuranSurahs(this);
-            Store(surahs);
-        } else {
-            closeDialoge();
-        }
-    }
 
     private void downQuranState() {
         tvDownStatePercentage.setVisibility(View.GONE);
@@ -370,62 +261,8 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     }
 
 
-    private void StoreInDb(List<Surah> surahs) {
-        new Thread(() -> {
-            Store(surahs);
-        }).start();
-    }
-
-    private void Store(List<Surah> surahs) {
-        SuraItem suraItem;
-        AyahItem ayahItem;
-        Quran quran = Util.getQuranClean(this);
-        Sura[] surahClean = quran.getSurahs();
-
-        String clean;
-        for (Surah surah : surahs) {
-            suraItem = new SuraItem(surah.getNumber()
-                    , surah.getAyahs().size()
-                    , surah.getName(), surah.getEnglishName()
-                    , surah.getEnglishNameTranslation(), surah.getRevelationType());
-            // add start page
-            suraItem.setIndex(surah.getNumber());
-            suraItem.setStartIndex(surah.getAyahs().get(0).getPage());
-            try {
-                repository.addSurah(suraItem);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            for (Ayah ayah : surah.getAyahs()) {
-                ayahItem = new AyahItem(ayah.getNumber(), surah.getNumber()
-                        , ayah.getPage(), ayah.getJuz()
-                        , ayah.getHizbQuarter(), false
-                        , ayah.getNumberInSurah(), ayah.getText()
-                        , ayah.getText());
-
-                //    ayahItem.setTextClean(Util.removeTashkeel(ayahItem.getText()));
-                if (surahClean != null) {
-                    clean = surahClean[surah.getNumber() - 1].getAyahs()[ayahItem.getAyahInSurahIndex() - 1].getText();
-                    ayahItem.setTextClean(clean);
-                } else {
-                    ayahItem.setTextClean(Util.removeTashkeel(ayahItem.getText()));
-                }
-
-                try {
-                    repository.addAyah(ayahItem);
-                    setUI(ayahItem.getAyahIndex(), max_Audio);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
 
 
-        }
-
-        handler.sendEmptyMessage(0);
-
-    }
     //</editor-fold>
 
 

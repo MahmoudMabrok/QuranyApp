@@ -46,6 +46,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'com.android.support:multidex:1.0.3'
 
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
@@ -53,7 +54,7 @@ dependencies {
 
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor "com.jakewharton:butterknife-compiler:10.1.0"
- //   implementation "com.balsikandar.android:crashreporter:1.0.9"
+    //   implementation "com.balsikandar.android:crashreporter:1.0.9"
 
     implementation 'com.google.code.gson:gson:2.8.5'
 
@@ -67,7 +68,6 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.0.0'
     kapt 'androidx.room:room-compiler:2.0.0'
     implementation 'androidx.room:room-rxjava2:2.0.0'
-
 
 
     implementation 'pub.devrel:easypermissions:1.1.1'

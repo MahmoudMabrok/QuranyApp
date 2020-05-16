@@ -39,7 +39,7 @@ class Splash : DataLoadingBaseFragment() {
         if (ayhasCount > 0) {
             view.postDelayed({
                 (activity as? HomeActivity)?.afterSplash()
-            }, 3000)
+            }, 2000)
         } else {
             group.visibility = View.VISIBLE
             startLoadingData()
@@ -95,7 +95,10 @@ class Splash : DataLoadingBaseFragment() {
         // map it to db schema
         val surrahs = surahs.map {
             // add ayahs to list to be updated later with tafseer
-            ayahss.addAll(it.ayahs.map { ayah -> AyahItem(ayah.number, it.number, ayah.page, ayah.juz, ayah.hizbQuarter, false, ayah.numberInSurah, ayah.text, ayah.text) })
+            ayahss.addAll(it.ayahs.map { ayah ->
+                AyahItem(ayahIndex = ayah.number, surahIndex = it.number, pageNum = ayah.page,
+                        juz = ayah.juz, hizbQuarter = ayah.hizbQuarter, isSajda = false, ayahInSurahIndex = ayah.numberInSurah, text = ayah.text)
+            })
             // create sura item
             SuraItem(it.number, it.ayahs.size, it.name, it.englishName, it.englishNameTranslation, it.revelationType).apply {
                 index = it.number
@@ -130,71 +133,9 @@ class Splash : DataLoadingBaseFragment() {
             repository.addSurahs(surrahs)
             repository.addAyahs(ayahss)
         } catch (e: Exception) {
+            "error ${e.message}".log()
         }
         "end inserting ".log()
-
-
         relay.accept(true)
-
-        /*
-
-            "start store".log()
-            for (surah in surahs) {
-                suraItem = SuraItem(surah.number, surah.ayahs.size, surah.name, surah.englishName, surah.englishNameTranslation, surah.revelationType)
-                // add start page
-                suraItem.index = surah.number
-                suraItem.startIndex = surah.ayahs[0].page
-                try {
-                    repository.addSurah(suraItem)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                "sto s ".log()
-                for (ayah in surah.ayahs) {
-                    ayahItem = AyahItem(ayah.number, surah.number, ayah.page, ayah.juz, ayah.hizbQuarter, false, ayah.numberInSurah, ayah.text, ayah.text)
-
-                    if (surahClean != null) {
-                        clean = surahClean[surah.number - 1].ayahs[ayahItem.ayahInSurahIndex - 1].text
-                        ayahItem.textClean = clean
-                    } else {
-                        ayahItem.textClean = Util.removeTashkeel(ayahItem.text)
-                    }
-                    try {
-                        repository.addAyah(ayahItem)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-                "finish sto s ".log()
-            }
-            "finis store ".log()
-    */
-        //  loadTafseerAndUpdateData()
-    }
-
-    private fun loadTafseerAndUpdateData() {
-        "loadTafseerAndUpdateData".log()
-        val completeTafseer = Util.getCompleteTafseer(requireContext())
-        "loadTafseerAndUpdateData 2 ".log()
-        var ayahItem: AyahItem
-        if (completeTafseer != null) {
-            val surahs = completeTafseer.data.surahs
-            "AA".log()
-            for (surah1 in surahs) {
-                for (ayah in surah1.ayahs) {
-                    ayahItem = repository.getAyahByIndex(ayah.number)
-                    ayahItem.tafseer = ayah.text
-                    try {
-                        repository.updateAyahItem(ayahItem)
-                    } catch (e: java.lang.Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-            "AA finsh ".log()
-        }
-        "loadTafseerAndUpdateData finsih".log()
-        relay.accept(true)
-
     }
 }

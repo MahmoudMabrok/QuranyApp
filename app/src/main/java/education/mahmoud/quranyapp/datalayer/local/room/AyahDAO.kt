@@ -43,7 +43,7 @@ interface AyahDAO {
     @get:Query("select max(ayahIndex) from ayahs where audioPath is not null ")
     val lastDownloadedAyahAudio: Int
 
-    @Query("select tafseer , textClean ,ayahIndex, surahIndex, pageNum, juz, hizbQuarter, sajda, manzil, ayahInSurahIndex, text, ay.audioPath from ayahs ay  , surah su where ay.surahIndex = su.`index` and su.name = :suraName  ")
+    @Query("select * from ayahs ay  , surah su where ay.surahIndex = su.`index` and su.name = :suraName  ")
     fun getAllAyahOfSurahByName(suraName: String?): List<AyahItem>
 
     @Query("select * from ayahs where pageNum = :i order by ayahIndex")

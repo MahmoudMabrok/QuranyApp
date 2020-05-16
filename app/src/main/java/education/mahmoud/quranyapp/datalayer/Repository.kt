@@ -143,7 +143,7 @@ class Repository(private var localShared: LocalShared, private var quranDB: Qura
     val suras: List<SuraItem> = quranDB.surahDAO().allSurah
 
     fun getSuraStartpage(index: Int): Int {
-        return quranDB.ayahDAO().getSuraStartpage(index)
+        return quranDB.surahDAO().getSuraStartpage(index)
     }
 
     fun getAllAyahOfSurahIndex(l: Long): List<AyahItem> {

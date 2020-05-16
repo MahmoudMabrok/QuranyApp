@@ -33,6 +33,7 @@
         android:id="@+id/actionDownload"
         android:orderInCategory="100"
         android:title="@string/download"
+        android:visible="false"
         app:showAsAction="never" />
 
 
@@ -40,6 +41,7 @@
         android:id="@+id/actionScore"
         android:orderInCategory="100"
         android:title="@string/score"
+        android:visible="false"
         app:showAsAction="never" />
 
 

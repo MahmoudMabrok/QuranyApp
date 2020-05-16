@@ -62,6 +62,8 @@ public class SaveTestAdapter extends RecyclerView.Adapter<SaveTestAdapter.Holder
 //        holder.edTextToTest.setEnabled(true);
         holder.tvAyahNum.setText("" + item.getAyahInSurahIndex());
 
+
+
         holder.btnCheck.setVisibility(View.VISIBLE);
 
         holder.btnCheck.setOnClickListener(new View.OnClickListener() {

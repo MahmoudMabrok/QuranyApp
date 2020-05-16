@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [AyahItem::class, SuraItem::class, BookmarkItem::class, ReadLog::class, RecordItem::class], version = 7, exportSchema = false)
+@Database(entities = [AyahItem::class, SuraItem::class, BookmarkItem::class, ReadLog::class, RecordItem::class], version = 8, exportSchema = false)
 @TypeConverters(PagesConverter::class)
 abstract class QuranDB : RoomDatabase() {
     abstract fun ayahDAO(): AyahDAO

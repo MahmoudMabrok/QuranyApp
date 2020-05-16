@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 
-fun String.log(TAG: String = "TestApp") {
-    Log.e(TAG, this)
+fun String.log(TAG: String = "") {
+    Log.e("TestApp", "$TAG $this")
 }
 
 fun Context.show(msg: String) {

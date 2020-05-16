@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.listening_activity
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
@@ -12,8 +13,6 @@ import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
-import butterknife.OnClick
-import butterknife.Unbinder
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
@@ -25,15 +24,17 @@ import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity
 import education.mahmoud.quranyapp.utils.Util
+import education.mahmoud.quranyapp.utils.log
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_listen.*
-import org.koin.java.KoinJavaComponent
+import org.koin.android.ext.android.inject
 import java.io.IOException
 import java.text.MessageFormat
 import java.util.*
 
 class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
+    private var serviceIntent: Intent? = null
     val relay = PublishRelay.create<Boolean>()
 
     var mediaPlayer: MediaPlayer? = null
@@ -55,8 +56,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     var actualEnd = 0
     var currentIteration = 0
     var endIteration = 0
-    private var unbinder: Unbinder? = null
-    private val repository = KoinJavaComponent.get(Repository::class.java)
+    private val repository: Repository by inject()
     private var ayahsToDownLoad = listOf<AyahItem>()
     private var ayahsRepeatCount = 0
     private var ayahsSetCount = 0
@@ -121,6 +121,10 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
+
+        btnStartListening.setOnClickListener {
+            startListening()
+        }
     }
 
     // <editor-fold desc="downolad">
@@ -155,7 +159,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         Log.d(TAG, "onDownloadComplete: ")
         // store storage path in db to use in media player
         val ayahItem = repository.getAyahByIndex(index) // first get ayah to edit it with storage path
-        ayahItem?.let {
+        ayahItem.let {
             val storagePath = "$path/$filename"
             ayahItem.audioPath = storagePath // set path
             repository.updateAyahItem(ayahItem)
@@ -211,12 +215,11 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         val ayahsListen = AyahsListen()
         ayahsListen.ayahItemList = ayahsToListen
 
-        // delay work with service
-        /* if (serviceIntent != null) {
-            activity?.stopService(serviceIntent)
-        }
-        */
-        //  serviceIntent = ListenServie.createService(context, ayahsListen)
+        /*  // delay work with service
+           if (serviceIntent != null) {
+              activity?.stopService(serviceIntent)
+          }
+          serviceIntent = ListenServie.createService(context, ayahsListen)*/
     }
 
     private fun getAllAyahsRepeated(ayahsSetCount: Int): List<AyahItem> {
@@ -256,11 +259,11 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         playAudio()
     }
 
-    @OnClick(R.id.btnPlayPause)
+
     fun onBtnPlayPauseClicked() {
         Log.d(TAG, "onBtnPlayPauseClicked: ")
         mediaPlayer?.let {
-            val mp = it as MediaPlayer
+            val mp = it
             if (!mp.isPlaying) {
                 mp.start()
                 Log.d(TAG, "onBtnPlayPauseClicked: ")
@@ -272,8 +275,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         }
     }
 
-    @OnClick(R.id.btnStartListening)
-    fun onViewClicked() {
+    fun startListening() {
         ayahsToListen = ArrayList()
         //region check inputs
         if (startSura.name.isNotEmpty() && endSura.name.isNotEmpty()) {
@@ -342,6 +344,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
             sbPosition.max = mediaPlayer!!.duration
 
             mediaPlayer?.let {
+                "update ".log(TAG)
                 relay.accept(true)
             }
 
@@ -406,9 +409,11 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         Log.d(TAG, "downloadAyahs: ")
         if (!isPermissionAllowed) {
             (activity as HomeActivity?)?.acquirePermission()
+        } else {
+            downloadState()
+            downloadAudio()
         }
-        downloadState()
-        downloadAudio()
+
     }
 
     private fun downloadState() {

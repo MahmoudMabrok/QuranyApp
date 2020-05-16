@@ -7,6 +7,8 @@ import com.ethanhua.skeleton.SkeletonScreen
 
 abstract class BaseFragment : Fragment() {
 
+    val TAG: String = javaClass.simpleName
+
     private val skeletonList by lazy { arrayListOf<SkeletonScreen>() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

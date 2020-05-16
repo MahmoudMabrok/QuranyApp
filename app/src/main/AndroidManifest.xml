@@ -11,14 +11,19 @@
 
     <application
         android:name=".App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        tools:replace="allowBackup">
+        <activity
+            android:name=".feature.listening_activity.ListenActivity"
+            android:screenOrientation="landscape"></activity>
+
         <service
             android:name=".feature.listening_activity.ListenServie"
             android:exported="false" />
@@ -34,8 +39,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-
 
         <activity
             android:name=".feature.show_ayahs_from_pdf.ShowAyahsPDF"
@@ -58,42 +61,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
         <activity
             android:name=".feature.register.RegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".feature.download.DownloadActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".feature.scores.ScoreActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-
         <activity
             android:name=".feature.profile.ProfileActivity"
             android:exported="true" />
-
         <activity
             android:name=".feature.feedback_activity.FeedbackActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
         <activity android:name=".feature.setting.SettingActivity" />
-
         <activity
             android:name=".feature.ayahs_search.ShowSearchResults"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-
 
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
