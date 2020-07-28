@@ -22,7 +22,7 @@
         tools:replace="allowBackup">
         <activity
             android:name=".feature.listening_activity.ListenActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"/>
 
         <service
             android:name=".feature.listening_activity.ListenServie"
