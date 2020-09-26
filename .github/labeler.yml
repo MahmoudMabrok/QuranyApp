@@ -1,0 +1,14 @@
+# Add 'repo' label to any root file changes
+docs:
+  - ./*.md
+
+screenshots:
+  - ./images/*
+  - ./logo
+
+test:
+  - app/src/test/java/education/mahmoud/quranyapp/*
+  
+cofigurations:
+  - *.yml
+  - *.pom
