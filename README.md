@@ -5,7 +5,7 @@
 [![GitHub license](https://img.shields.io/github/license/MahmoudMabrok/QuranyApp)](https://github.com/MahmoudMabrok/QuranyApp/blob/master/LICENSE)
 
 <h1 align=center>
-<img src="logo/horizontal.png" width=60%>
+<img src="logo/horizontal.png" width=55%>
 </h1>
 
 Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them and app is very small size
