@@ -10,5 +10,4 @@ test:
   - app/src/test/java/education/mahmoud/quranyapp/*
   
 cofigurations:
-  - *.yml
-  - *.pom
+- any: ['*.yml', '*.pom']
