@@ -6,20 +6,19 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/_10sdp"
     android:layoutDirection="rtl"
-    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_16sdp"
     app:cardElevation="4dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary1"
+            android:background="@drawable/bg_search_top"
             android:padding="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -49,7 +48,7 @@
             style="@style/style_16_med_primary2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary4"
+            android:background="@drawable/bg_search_bottom"
             android:padding="8dp"
             android:text="sasasasds"
             android:textAlignment="viewStart"

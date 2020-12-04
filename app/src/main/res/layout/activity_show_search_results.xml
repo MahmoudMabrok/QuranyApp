@@ -21,8 +21,11 @@
             android:id="@+id/tvSearchCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingStart="10dp"
+            android:textAlignment="viewStart"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="@color/primary1"
             android:textSize="@dimen/_17ssp"
             tools:text="ssdww" />
 
@@ -45,6 +48,7 @@
                 android:id="@+id/rvSearch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="8dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_search" />
