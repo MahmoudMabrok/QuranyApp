@@ -22,8 +22,11 @@ class ReadLogFragment : DataLoadingBaseFragment() {
     private val repository: Repository by inject()
     private var logAdapter: ReadLogAdapter = ReadLogAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_read_log, container, false)
         return view
     }

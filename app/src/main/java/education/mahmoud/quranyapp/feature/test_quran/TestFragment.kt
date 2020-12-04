@@ -37,9 +37,9 @@ class TestFragment : BaseFragment() {
     private lateinit var ayahItemTobeTest: AyahItem
     private var isFullTest = false
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? { // Inflate the layout for getContext() fragment
         return inflater.inflate(R.layout.fragment_test, container, false)
     }
@@ -118,7 +118,6 @@ class TestFragment : BaseFragment() {
     override fun setClickListeners() {
         super.setClickListeners()
 
-
         btnTestSave.setOnClickListener {
             onViewClicked()
         }
@@ -130,8 +129,6 @@ class TestFragment : BaseFragment() {
         btnCheckTest.setOnClickListener {
             onCheckClicked()
         }
-
-
     }
 
     /**
@@ -273,7 +270,6 @@ class TestFragment : BaseFragment() {
         edStartSuraAyah.error = getString(R.string.not_sufficient_ayahs)
         edEndSuraAyah.error = getString(R.string.not_sufficient_ayahs)
     }
-
 
     fun onCheckClicked() {
         val ayah: String = edUserTextForAyahs.text.toString()

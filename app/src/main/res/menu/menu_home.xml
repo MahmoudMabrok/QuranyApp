@@ -19,15 +19,22 @@
         android:id="@+id/actionSearch"
         android:orderInCategory="100"
         android:title="@string/search"
-
+        android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/actionBookmark"
+        android:icon="@drawable/ic_bookmark_icon"
+        android:orderInCategory="100"
+        android:title="@string/saved"
+        app:showAsAction="always" />
 
 
     <item
         android:id="@+id/actionReadLog"
         android:orderInCategory="100"
         android:title="@string/readlog"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/actionDownload"
@@ -50,6 +57,6 @@
         android:orderInCategory="100"
         android:title="@string/setting"
         android:icon="@drawable/ic_settings"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 </menu>

@@ -18,7 +18,6 @@ import java.util.*
 class TafseerDetails : BaseFragment() {
     private val repository: Repository by inject()
 
-
     private val adapter = TafseerAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

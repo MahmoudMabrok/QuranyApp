@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#7cb342</color>
-    <color name="colorAccent">#81c784</color>
+    <color name="colorPrimary">#BEEB9F</color>
+    <color name="colorAccent">#BEEB9F</color>
     <color name="colorPrimaryDark">#4b830d</color>
     <color name="textColorPrimary">#283593</color>
     <color name="textColorsecondary">#512da8</color>
 
+    <color name="primary1">#00A388</color>
+    <color name="primary2">#79BD8F</color>
+    <color name="primary3">#BEEB9F</color>
+    <color name="primary4">#FFFF9D</color>
+    <color name="white_ec">#ECECEC</color>
+    <color name="white_d9">#D3D0D9</color>
+
+
     <color name="even_sura1">#BEEB9F</color>
     <color name="even_sura">#59BEEB9F</color>
+    <color name="toolbar">#ECECEC</color>
+
+    <color name="third">#D3D0D9</color>
+    <color name="white">#ffffff</color>
 
 
-    <color name="primaryColor">#7cb342</color>
-    <color name="primaryLightColor">#aee571</color>
+    <color name="primaryColor">#BEEB9F</color>
+    <color name="primaryLightColor">#BEEB9F</color>
     <color name="primaryDarkColor">#4b830d</color>
     <color name="secondaryColor">#81c784</color>
     <color name="secondaryLightColor">#6B7B8E</color>
@@ -44,6 +56,7 @@
 
     <color name="bg_green">#A88BC34A</color>
     <color name="bg_white">#ffffff</color>
+    <color name="white_80">#CCFFFFFF</color>
     <color name="bg_yellow">#FCF4B1</color>
     <color name="bg_descript">#ECF1B2</color>
     <color name="descrip_text">#000000</color>

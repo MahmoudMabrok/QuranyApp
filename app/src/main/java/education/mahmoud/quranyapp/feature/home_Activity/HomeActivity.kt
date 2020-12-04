@@ -15,7 +15,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
@@ -33,7 +32,6 @@ import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails
 import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment
 import education.mahmoud.quranyapp.utils.Constants
-import education.mahmoud.quranyapp.utils.log
 import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.android.ext.android.inject
 import pub.devrel.easypermissions.EasyPermissions
@@ -53,53 +51,14 @@ class HomeActivity : AppCompatActivity() {
     private val testFragment by lazy { TestFragment() }
     private val bookmarkFragment by lazy { BookmarkFragment() }
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        handleNavSelection(item.itemId)
-
-        true
-    }
-
-    private fun handleNavSelection(itemId: Int) {
-        if (itemId == currentID) return
-        when (itemId) {
-            R.id.navigation_read -> {
-                openRead()
-            }
-            R.id.navigation_tafseer -> {
-                openTafseer()
-
-            }
-            R.id.navigationListen -> {
-                openListen()
-
-            }
-            R.id.navigation_test -> {
-                openTest()
-
-            }
-            R.id.navigation_bookmarks -> {
-                openBookmark()
-
-            }
-        }
-        currentID = itemId
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        Log.d(TAG, "onCreate: start app")
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         goToSplash()
         ahays = repository.totlaAyahs
 
         toolbar?.let {
             setSupportActionBar(it)
-        }
-
-        listOf<String>("١٠", "١١", "١٢", "١٣").forEach {
-            "ch $it ".log()
         }
     }
 
@@ -145,14 +104,6 @@ class HomeActivity : AppCompatActivity() {
         gotoSuraa(last)
     }
 
-    override fun onResume() {
-        super.onResume()
-        /* // used to update UI
-         val id: Int = navigation.selectedItemId
-         // reopen fragment
-         navigation.selectedItemId = id*/
-    }
-
     private fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
@@ -191,14 +142,35 @@ class HomeActivity : AppCompatActivity() {
         Log.d(TAG, "goToSplash:")
 
         supportFragmentManager.beginTransaction()
-                .add(R.id.mainContainer, Splash())
-                .addToBackStack(null)
-                .commit()
+            .add(R.id.mainContainer, Splash())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun openSearch() {
+        supportFragmentManager.beginTransaction()
+            .add(R.id.mainContainer, ShowSearchResults())
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean { // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_home, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.actionJump -> openGoToSura()
+            R.id.actionSearch -> openSearch()
+            R.id.actionSetting -> openSetting()
+            R.id.actionGoToLastRead -> gotoLastRead()
+            R.id.actionReadLog -> goToReadLog()
+            R.id.actionScore -> gotoScore()
+            R.id.actionDownload -> gotoDownload()
+            R.id.actionBookmark -> openBookmark()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -213,11 +185,6 @@ class HomeActivity : AppCompatActivity() {
             // user refuse to take permission
             openRead()
         }
-    }
-
-    private fun openSearch() {
-        val openAcivity = Intent(this, ShowSearchResults::class.java)
-        startActivity(openAcivity)
     }
 
     private fun gotoLastRead() {
@@ -265,19 +232,6 @@ class HomeActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         val logFragment = ReadLogFragment()
         transaction.replace(homeContainer.id, logFragment).commit()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionJump -> openGoToSura()
-            R.id.actionSearch -> openSearch()
-            R.id.actionSetting -> openSetting()
-            R.id.actionGoToLastRead -> gotoLastRead()
-            R.id.actionReadLog -> goToReadLog()
-            R.id.actionScore -> gotoScore()
-            R.id.actionDownload -> gotoDownload()
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     companion object {

@@ -2,7 +2,6 @@ package education.mahmoud.quranyapp.utils
 
 import java.util.*
 
-
 class NumberHelper {
 
     companion object {

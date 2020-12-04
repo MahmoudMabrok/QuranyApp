@@ -4,16 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/_5sdp"
+    android:background="@color/white_80"
     android:layoutDirection="rtl"
     android:padding="@dimen/_8sdp">
 
 
     <TextView
         android:id="@+id/tvSuraNumber"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:gravity="start"
+        android:text="@string/sura_num"
         android:textColor="@color/secondaryLightColor"
         android:textSize="@dimen/tvFont" />
 
@@ -22,11 +23,13 @@
         android:id="@+id/tvSuraName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:layout_marginBottom="1dp"
         android:layout_weight="3"
+        android:gravity="start"
+        android:text="@string/sura_name"
         android:textColor="@color/secondaryLightColor"
-        android:textSize="@dimen/tvFont"
-        android:gravity="start" />
+        android:textSize="@dimen/tvFont" />
 
 
     <ImageView
@@ -42,8 +45,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="6dp"
         android:layout_weight="1"
-        android:textColor="@color/secondaryLightColor"
         android:gravity="center"
+        android:text="@string/start_page"
+        android:textColor="@color/secondaryLightColor"
         android:textSize="@dimen/tvFont" />
 
 
@@ -52,10 +56,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:textColor="@color/secondaryLightColor"
-        android:textSize="@dimen/tvFont"
         android:layout_weight="1"
-        android:gravity="center" />
+        android:gravity="center"
+        android:text="@string/ayahs_count"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="@dimen/tvFont" />
 
 
 </LinearLayout>

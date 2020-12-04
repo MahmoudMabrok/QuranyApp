@@ -42,7 +42,6 @@ class SettingActivity : AppCompatActivity() {
             } else {
                 defaultMode()
             }
-
         }
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, colorSet)
         spColorReqularMode.adapter = adapter

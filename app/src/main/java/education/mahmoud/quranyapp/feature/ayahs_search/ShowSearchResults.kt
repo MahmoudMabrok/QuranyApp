@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.flipboard.bottomsheet.commons.MenuSheetView
 import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.base.BaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen
@@ -18,10 +20,11 @@ import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Util
 import kotlinx.android.synthetic.main.activity_show_search_results.*
+import kotlinx.android.synthetic.main.header_search.*
 import org.koin.java.KoinJavaComponent
-import java.util.*
+import java.util.* // ktlint-disable no-wildcard-imports
 
-class ShowSearchResults : AppCompatActivity() {
+class ShowSearchResults : BaseFragment() {
 
     private var adapter = SearchResultsAdapter()
 
@@ -30,15 +33,16 @@ class ShowSearchResults : AppCompatActivity() {
     private var ayah: String = ""
     var isRunning = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_search_results)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.activity_show_search_results, container, false)
+    }
+
+    override fun initViews(view: View) {
+        super.initViews(view)
         initRv()
         adapterListeners()
         editWatcher()
     }
-
-
 
     private fun editWatcher() {
         edSearch?.addTextChangedListener(object : TextWatcher {
@@ -66,24 +70,27 @@ class ShowSearchResults : AppCompatActivity() {
     }
 
     private fun setUpBottomSheet(ayahItem: AyahItem) { // bottom sheet
-        val menuSheetView = MenuSheetView(this@ShowSearchResults, MenuSheetView.MenuType.LIST, "Options", MenuSheetView.OnMenuItemClickListener { item ->
-            if (bottomSearch.isSheetShowing) {
-                bottomSearch?.dismissSheet()
+        val menuSheetView = MenuSheetView(
+            requireContext(), MenuSheetView.MenuType.LIST, "Options",
+            MenuSheetView.OnMenuItemClickListener { item ->
+                if (bottomSearch.isSheetShowing) {
+                    bottomSearch?.dismissSheet()
+                }
+                when (item.itemId) {
+                    R.id.menuOpen -> openPage(ayahItem.pageNum)
+                    R.id.menuPlaySound -> playAudio(ayahItem)
+                    R.id.menuTafser -> showTafseer(ayahItem)
+                }
+                true
             }
-            when (item.itemId) {
-                R.id.menuOpen -> openPage(ayahItem.pageNum)
-                R.id.menuPlaySound -> playAudio(ayahItem)
-                R.id.menuTafser -> showTafseer(ayahItem)
-            }
-            true
-        })
+        )
         menuSheetView.inflateMenu(R.menu.menu_sheet_search)
         bottomSearch?.showWithSheetView(menuSheetView)
     }
 
     private fun showTafseer(ayahItem: AyahItem) {
         val title = this.getString(R.string.tafserr_info, ayahItem.ayahInSurahIndex, ayahItem.pageNum, ayahItem.juz)
-        Util.getDialog(this, ayahItem.tafseer, title).show()
+        Util.getDialog(requireContext(), ayahItem.tafseer, title).show()
     }
 
     private fun adapterListeners() {
@@ -94,9 +101,11 @@ class ShowSearchResults : AppCompatActivity() {
     }
 
     private fun openPage(pageNum: Int) {
-        val openAcivity = Intent(this@ShowSearchResults, ShowAyahsActivity::class.java)
-        openAcivity.putExtra(Constants.PAGE_INDEX, pageNum)
-        startActivity(openAcivity)
+        activity?.let {
+            val openAcivity = Intent(requireContext(), ShowAyahsActivity::class.java)
+            openAcivity.putExtra(Constants.PAGE_INDEX, pageNum)
+            startActivity(openAcivity)
+        }
     }
 
     /**
@@ -123,7 +132,6 @@ class ShowSearchResults : AppCompatActivity() {
 
     var serviceIntent: Intent? = null
 
-
     private fun playAudio(item: AyahItem) {
         if (item.audioPath != null) {
             Log.d(TAG, "playAudio: isRunning  $isRunning")
@@ -132,17 +140,19 @@ class ShowSearchResults : AppCompatActivity() {
             val ayahsListen = AyahsListen()
             ayahsListen.ayahItemList = ayahItems
             if (serviceIntent != null) {
-                stopService(serviceIntent)
+                requireContext().stopService(serviceIntent)
             }
-            serviceIntent = ListenServie.createService(applicationContext,
-                    ayahsListen)
+            serviceIntent = ListenServie.createService(
+                requireActivity().applicationContext,
+                ayahsListen
+            )
         } else {
             showMessage(getString(R.string.not_downlod_audio))
         }
     }
 
     private fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

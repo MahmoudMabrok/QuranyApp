@@ -64,9 +64,9 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
     // </editor-fold>
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_listen, container, false)
     }
@@ -80,13 +80,16 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     override fun startObserving() {
         super.startObserving()
 
-        relay.subscribe({
-            mediaPlayer?.let { mediaPlayer ->
-                tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000, mediaPlayer.duration / 1000)
-                sbPosition.progress = mediaPlayer.currentPosition
+        relay.subscribe(
+            {
+                mediaPlayer?.let { mediaPlayer ->
+                    tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000, mediaPlayer.duration / 1000)
+                    sbPosition.progress = mediaPlayer.currentPosition
+                }
+            },
+            {
             }
-        }, {
-        }).addTo(bg)
+        ).addTo(bg)
     }
 
     private fun initSpinners() {
@@ -261,7 +264,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         playAudio()
     }
 
-
     fun onBtnPlayPauseClicked() {
         Log.d(TAG, "onBtnPlayPauseClicked: ")
         mediaPlayer?.let {
@@ -415,7 +417,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
             downloadState()
             downloadAudio()
         }
-
     }
 
     private fun downloadState() {

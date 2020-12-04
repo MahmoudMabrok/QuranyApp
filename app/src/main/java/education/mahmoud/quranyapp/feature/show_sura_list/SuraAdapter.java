@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -66,13 +67,13 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
         holder.tvSuraNumber.setText(String.valueOf(suraItem.getIndex()));
 
         String ayahSuffix = holder.itemView.getContext().getString(R.string.ayahSuffix);
-        holder.tvSuraAyahsNum.setText(suraItem.getNumOfAyahs() + " " + ayahSuffix);
+        holder.tvSuraAyahsNum.setText(suraItem.getNumOfAyahs() + "");
 
         if (suraItem.getRevelationType().equals("Meccan")) {
-            holder.tvSuraRevolution.setText(holder.itemView.getContext().getString(R.string.sura_rev_mackkia));
+            holder.tvSuraRevolution.setImageResource(R.drawable.ic_makka);
 
         } else {
-            holder.tvSuraRevolution.setText(holder.itemView.getContext().getString(R.string.sura_rev_madniaa));
+            holder.tvSuraRevolution.setImageResource(R.drawable.ic_madinah);
         }
 
         if (i % 2 == 0) holder.changeToEven();
@@ -95,7 +96,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
 
         TextView tvSuraName;
 
-        TextView tvSuraRevolution;
+        ImageView tvSuraRevolution;
 
         TextView tvSuraAyahsNum;
 

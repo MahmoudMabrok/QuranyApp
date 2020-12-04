@@ -5,10 +5,10 @@ import education.mahmoud.quranyapp.utils.NumberHelper
 import java.text.MessageFormat
 
 data class Page(
-        var ayhas: List<AyahItem>,
-        var pageNum: Int = 0,
-        var rubHizb: Int = 0,
-        var juz: Int = 0
+    var ayhas: List<AyahItem>,
+    var pageNum: Int = 0,
+    var rubHizb: Int = 0,
+    var juz: Int = 0
 ) {
 
     fun getText(a: (x: Int) -> String): String {

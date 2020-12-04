@@ -52,6 +52,7 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
 
     private fun hideLoading() {
         screen.hide()
+        suraHeader.visibility = View.VISIBLE
     }
 
     private fun initRV() {
