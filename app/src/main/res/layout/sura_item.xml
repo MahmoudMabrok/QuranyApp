@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/_5sdp"
-    android:layout_marginEnd="@dimen/_5sdp"
+    android:background="@color/red"
     android:layout_marginBottom="@dimen/_5sdp"
-    android:orientation="vertical"
-    app:cardCornerRadius="@dimen/_10sdp">
+    android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/tvSuraNumber"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/secondaryDarkColor"
-        android:orientation="horizontal"
-        android:padding="@dimen/_2sdp">
-
-        <TextView
-            android:id="@+id/tvSuraNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_6sdp"
-            android:gravity="center_vertical"
-            android:textColor="@color/secondaryLightColor"
+        android:layout_margin="@dimen/_6sdp"
+        android:gravity="center_vertical"
+        android:textColor="@color/secondaryLightColor"
             android:textSize="@dimen/tvFont"
             tools:text="@tools:sample/lorem" />
 
@@ -84,10 +75,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_6sdp"
             android:gravity="center_horizontal"
-            android:text="551"
+            tools:text="551"
             android:textColor="@color/secondaryLightColor"
             android:textSize="@dimen/tvFont" />
 
 
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+</LinearLayout>

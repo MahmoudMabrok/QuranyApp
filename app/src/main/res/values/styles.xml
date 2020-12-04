@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">#4b830d</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">#519657</item>
+        <item name="android:textColor">#6B7B8E</item>
 
 
     </style>

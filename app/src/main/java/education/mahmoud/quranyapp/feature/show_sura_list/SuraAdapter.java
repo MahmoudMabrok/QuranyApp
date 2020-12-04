@@ -1,11 +1,14 @@
 package education.mahmoud.quranyapp.feature.show_sura_list;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +54,7 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
     @NotNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.sura_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_sura, viewGroup, false);
         return new Holder(view);
     }
 
@@ -63,13 +66,17 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
         holder.tvSuraNumber.setText(String.valueOf(suraItem.getIndex()));
 
         String ayahSuffix = holder.itemView.getContext().getString(R.string.ayahSuffix);
-        holder.tvSuraAyahsNum.setText(suraItem.getNumOfAyahs() + " "+ayahSuffix);
+        holder.tvSuraAyahsNum.setText(suraItem.getNumOfAyahs() + " " + ayahSuffix);
 
         if (suraItem.getRevelationType().equals("Meccan")) {
             holder.tvSuraRevolution.setText(holder.itemView.getContext().getString(R.string.sura_rev_mackkia));
+
         } else {
             holder.tvSuraRevolution.setText(holder.itemView.getContext().getString(R.string.sura_rev_madniaa));
         }
+
+        if (i % 2 == 0) holder.changeToEven();
+        else holder.changeToOdd();
     }
 
     @Override
@@ -110,6 +117,15 @@ public class SuraAdapter extends RecyclerView.Adapter<SuraAdapter.Holder> {
                     suraListner.onSura(list.get(pos).getIndex());
                 }
             });
+        }
+
+
+        void changeToOdd() {
+            itemView.setBackground(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        void changeToEven() {
+            itemView.setBackground(new ColorDrawable(ContextCompat.getColor(itemView.getContext(), R.color.even_sura)));
         }
     }
 

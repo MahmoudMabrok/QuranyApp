@@ -7,12 +7,15 @@
     <color name="textColorPrimary">#283593</color>
     <color name="textColorsecondary">#512da8</color>
 
+    <color name="even_sura1">#BEEB9F</color>
+    <color name="even_sura">#59BEEB9F</color>
+
 
     <color name="primaryColor">#7cb342</color>
     <color name="primaryLightColor">#aee571</color>
     <color name="primaryDarkColor">#4b830d</color>
     <color name="secondaryColor">#81c784</color>
-    <color name="secondaryLightColor">#b2fab4</color>
+    <color name="secondaryLightColor">#6B7B8E</color>
     <color name="secondaryDarkColor">#519657</color>
     <color name="primaryTextColor">#283593</color>
     <color name="secondaryTextColor">#512da8</color>

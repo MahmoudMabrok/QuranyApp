@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp">
+
+
+    <TextView
+        android:id="@+id/tvSuraNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="@dimen/tvFont"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem" />
+
+
+    <TextView
+        android:id="@+id/tvSuraName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="@dimen/tvFont"
+        app:layout_constraintBottom_toTopOf="@+id/tvSuraRevolution"
+        app:layout_constraintStart_toStartOf="@+id/tvSuraRevolution"
+        tools:text="@tools:sample/lorem" />
+
+
+    <TextView
+        android:id="@+id/tvSuraRevolution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="2dp"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="@dimen/tvFont"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvSuraNumber"
+        tools:text="@string/sura_rev_mackkia" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginBottom="3dp"
+        android:text="@string/seperator"
+        android:textColor="@color/secondaryLightColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvSuraRevolution" />
+
+    <TextView
+        android:id="@+id/tvSuraAyahsNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="1dp"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="@dimen/tvFont"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/tvSuraName"
+        tools:text="@string/ayah_num" />
+
+
+    <TextView
+        android:id="@+id/tvSuraPageNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="@dimen/tvFont"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="551" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
