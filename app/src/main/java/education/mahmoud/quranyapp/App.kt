@@ -27,16 +27,20 @@ class App : Application() {
 
         val ahays = repository.totlaAyahs
         //  persistanscePages()
+
+        //   LocaleHelper.setLocale(this, "ar")
     }
 
     fun persistanscePages() {
-        Thread(Runnable {
-            try {
-                loadFullQuran()
-            } catch (e: Exception) {
-                e.printStackTrace()
+        Thread(
+            Runnable {
+                try {
+                    loadFullQuran()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
-        }).start()
+        ).start()
     }
 
     fun loadFullQuran() {

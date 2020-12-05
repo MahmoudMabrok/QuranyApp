@@ -17,11 +17,35 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/primary1" />
 
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/primary2"
+        app:tabIndicatorGravity="bottom"
+        app:tabIndicatorHeight="4dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/primary2"
+        app:tabTextColor="@color/primary1" />
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpHome"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabHome" />
+
     <FrameLayout
         android:id="@+id/homeContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />

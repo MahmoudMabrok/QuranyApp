@@ -12,7 +12,7 @@
 
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imBack"
+        android:id="@+id/imSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
         android:textColorHint="@color/primary2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imBack"
+        app:layout_constraintStart_toEndOf="@id/imSearch"
         app:layout_constraintTop_toTopOf="parent"
 
         />

@@ -42,6 +42,15 @@ class ShowSearchResults : BaseFragment() {
         initRv()
         adapterListeners()
         editWatcher()
+        setClickListeners()
+    }
+
+    override fun setClickListeners() {
+        super.setClickListeners()
+
+        imSearch.setOnClickListener {
+            doSearch("${edSearch.text}")
+        }
     }
 
     private fun editWatcher() {
@@ -49,24 +58,28 @@ class ShowSearchResults : BaseFragment() {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun afterTextChanged(editable: Editable) {
-                ayah = editable.toString()
-                ayah = ayah.replace(" +".toRegex(), " ")
-                if (ayah.isNotEmpty()) {
-                    ayahItems = repository.getAyahByAyahText(ayah)
-                    Log.d(TAG, "afterTextChanged: " + ayahItems.size)
-                    val count = ayahItems.size // n of results
-                    tvSearchCount?.text = getString(R.string.times, count)
-                    if (count > 0) {
-                        adapter.setAyahItemList(ayahItems, ayah)
-                        foundState()
-                    } else {
-                        notFoundState()
-                    }
-                } else {
-                    defaultState()
-                }
+                doSearch(editable.toString())
             }
         })
+    }
+
+    private fun doSearch(text: String?) {
+        ayah = text ?: ""
+        ayah = ayah.replace(" +".toRegex(), " ")
+        if (ayah.isNotEmpty()) {
+            ayahItems = repository.getAyahByAyahText(ayah)
+            Log.d(TAG, "afterTextChanged: " + ayahItems.size)
+            val count = ayahItems.size // n of results
+            tvSearchCount?.text = getString(R.string.times, count)
+            if (count > 0) {
+                adapter.setAyahItemList(ayahItems, ayah)
+                foundState()
+            } else {
+                notFoundState()
+            }
+        } else {
+            defaultState()
+        }
     }
 
     private fun setUpBottomSheet(ayahItem: AyahItem) { // bottom sheet
@@ -94,7 +107,7 @@ class ShowSearchResults : BaseFragment() {
     }
 
     private fun adapterListeners() {
-        adapter?.setiSearchItemClick { item ->
+        adapter.setiSearchItemClick { item ->
             setUpBottomSheet(item)
             Log.d(TAG, "onSearchItemClick: ")
         }

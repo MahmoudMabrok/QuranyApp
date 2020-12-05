@@ -5,7 +5,7 @@
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryColor"
+
     tools:context=".feature.bookmark_fragment.BookmarkFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -13,11 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_20sdp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/bookmark_item" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/no_bookmarks"
-        android:textColor="@color/bg_white"
+        android:textColor="@color/secondaryLightColor"
         android:textSize="@dimen/_22ssp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

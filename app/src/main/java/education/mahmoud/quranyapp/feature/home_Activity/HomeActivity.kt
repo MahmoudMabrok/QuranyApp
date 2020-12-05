@@ -15,10 +15,10 @@ import android.view.Window
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.tabs.TabLayoutMediator
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
-import education.mahmoud.quranyapp.feature.bookmark_fragment.BookmarkFragment
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import education.mahmoud.quranyapp.feature.feedback_activity.FeedbackActivity
 import education.mahmoud.quranyapp.feature.gotoscreen.GoToSurah
@@ -27,7 +27,6 @@ import education.mahmoud.quranyapp.feature.read_log.ReadLogFragment
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity
 import education.mahmoud.quranyapp.feature.setting.SettingActivity
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
-import education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment
 import education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails
 import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment
@@ -44,22 +43,34 @@ class HomeActivity : AppCompatActivity() {
     var ahays = 0
 
     private var currentID = 0
-    private val readFragment by lazy { SuraListFragment() }
+
     private val tafseerFragment by lazy { TafseerDetails() }
     private val listenFragment by lazy { ListenFragment() }
     private val readLogFragment by lazy { ReadLogFragment() }
     private val testFragment by lazy { TestFragment() }
-    private val bookmarkFragment by lazy { BookmarkFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        //   LocaleHelper.setLocale(this, "ar")
+
         goToSplash()
         ahays = repository.totlaAyahs
 
-        toolbar?.let {
-            setSupportActionBar(it)
-        }
+        toolbar?.let { setSupportActionBar(it) }
+
+        setupVP()
+    }
+
+    private fun setupVP() {
+        val adapter = HomeVPAdapter(this)
+        vpHome.adapter = adapter
+
+        val titles = resources.getStringArray(R.array.home_tabs)
+        TabLayoutMediator(tabHome, vpHome) { tab, pos ->
+            tab.text = titles[pos]
+        }.attach()
     }
 
     fun afterSplash() {
@@ -109,8 +120,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openRead() {
-        val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, readFragment).commit()
+        vpHome.currentItem = 0
     }
 
     private fun openTafseer() {
@@ -129,8 +139,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openBookmark() {
-        val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, bookmarkFragment).commit()
+        vpHome.currentItem = 1
     }
 
     fun acquirePermission() {
