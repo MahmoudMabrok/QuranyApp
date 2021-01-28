@@ -18,7 +18,7 @@ import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
+import education.mahmoud.quranyapp.base.BaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
@@ -33,7 +33,7 @@ import java.io.IOException
 import java.text.MessageFormat
 import java.util.*
 
-class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
+class ListenFragment : BaseFragment(), BaseFragment.InitListener, OnDownloadListener {
 
     private var serviceIntent: Intent? = null
     val relay = PublishRelay.create<Boolean>()
@@ -68,18 +68,17 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        setOnInitListeners(this)
         return inflater.inflate(R.layout.fragment_listen, container, false)
     }
 
     override fun initViews(view: View) {
-        super.initViews(view)
         isPermissionAllowed = repository.permissionState
         initSpinners()
+        startObserving()
     }
 
-    override fun startObserving() {
-        super.startObserving()
-
+    private fun startObserving() {
         relay.subscribe({
             mediaPlayer?.let { mediaPlayer ->
                 tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000, mediaPlayer.duration / 1000)
@@ -98,7 +97,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     }
 
     override fun setClickListeners() {
-        super.setClickListeners()
         spStartSura.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, index: Long) {
                 try {

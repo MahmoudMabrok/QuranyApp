@@ -11,69 +11,69 @@ import android.widget.ArrayAdapter
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.BaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import kotlinx.android.synthetic.main.fragment_tafseer_details.*
 import org.koin.android.ext.android.inject
 import java.util.*
 
-class TafseerDetails : BaseFragment() {
+class TafseerDetails : BaseFragment(), BaseFragment.InitListener {
     private val repository: Repository by inject()
-
-
     private val adapter = TafseerAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setOnInitListeners(this)
         return inflater.inflate(R.layout.fragment_tafseer_details, container, false)
     }
 
     override fun initViews(view: View) {
-        super.initViews(view)
-        fillSpinners()
+        initSuraTafseerSpinner()
         initRv()
     }
 
     override fun setClickListeners() {
-        super.setClickListeners()
-        tvNoDataInTafseer.setOnClickListener {}
+        tvNoDataInTafseer.setOnClickListener {
+            //NOTHING TO DO
+        }
     }
 
     private fun initRv() {
         rvTafeer.setHasFixedSize(true)
-        rvTafeer.adapter = (adapter)
+        rvTafeer.adapter = adapter
     }
 
-    private fun fillSpinners() {
+    private fun initSuraTafseerSpinner() {
         val suraNames = repository.surasNames
         val startAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
         spSuraTafser.adapter = startAdapter
-        try {
-            spSuraTafser.onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
-                    val ayahs = repository.getAllAyahOfSurahIndexForTafseer(l + 1)
-                    Log.d(TAG, "onItemSelected: " + ayahs.size + " & " + l)
-                    // update adapter
-                    if (ayahs.isNotEmpty()) {
-                        foundState()
-                        adapter.setTafseerList(ayahs)
-                        // Log.d(TAG, "onItemSelected: " + suraName);
-                        val ayahsNums = creatAyahsNumList(ayahs.size) // size() ->  n of ayahs
-                        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ayahsNums)
-                        spAyahTafser.adapter = adapter
-                        spAyahTafser.onItemSelectedListener = object : OnItemSelectedListener {
-                            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
-                                rvTafeer.scrollToPosition(l.toInt())
-                                Log.d(TAG, "onItemSelected: TAFSEEER POS $l")
-                            }
-
-                            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-                        }
-                    } else {
-                        notFoundState()
-                    }
+        spSuraTafser.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, rowId: Long) {
+                val ayahs = repository.getAllAyahOfSurahIndexForTafseer(rowId + 1)
+                Log.d(TAG, "onItemSelected: " + ayahs.size + " & " + rowId)
+                // update adapter
+                if (ayahs.isNotEmpty()) {
+                    foundState()
+                    adapter.setTafseerList(ayahs)
+                    setAyahsSpinner(ayahs)
+                } else {
+                    notFoundState()
                 }
-
-                override fun onNothingSelected(adapterView: AdapterView<*>?) {}
             }
-        } catch (e: Exception) {
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
+        }
+    }
+
+    private fun setAyahsSpinner(ayahs: List<AyahItem>) {
+        val ayahsNums = creatAyahsNumList(ayahs.size) // size() ->  n of ayahs
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ayahsNums)
+        spAyahTafser.adapter = adapter
+        spAyahTafser.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
+                rvTafeer.scrollToPosition(l.toInt())
+                Log.d(TAG, "onItemSelected: TAFSEEER POS $l")
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
     }
 
@@ -97,12 +97,5 @@ class TafseerDetails : BaseFragment() {
         spSuraTafser.visibility = View.INVISIBLE
         spAyahTafser.visibility = View.INVISIBLE
         tvNoDataInTafseer.visibility = View.VISIBLE
-    }
-
-    companion object {
-        private const val TAG = "TafseerDetails"
-        fun newInstance(title: String?): TafseerDetails {
-            return TafseerDetails()
-        }
     }
 }
