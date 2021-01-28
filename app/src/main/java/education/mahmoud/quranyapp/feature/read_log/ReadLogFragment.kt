@@ -4,40 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
+import education.mahmoud.quranyapp.base.BaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.utils.show
 import kotlinx.android.synthetic.main.fragment_read_log.*
 import org.koin.android.ext.android.inject
 
 /**
  * A simple [Fragment] subclass.
  */
-class ReadLogFragment : DataLoadingBaseFragment() {
+class ReadLogFragment : BaseFragment(), BaseFragment.InitListener {
 
     private val repository: Repository by inject()
     private var logAdapter: ReadLogAdapter = ReadLogAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_read_log, container, false)
-        return view
+        setOnInitListeners(this)
+        return inflater.inflate(R.layout.fragment_read_log, container, false)
     }
 
     override fun initViews(view: View) {
-        super.initViews(view)
         initRV()
         loadData()
     }
 
-    private fun initRV() {
-        rvReadLog.setAdapter(logAdapter)
-        rvReadLog.setItemAnimator(DefaultItemAnimator())
-
+    override fun setClickListeners() {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 return false
@@ -48,13 +44,14 @@ class ReadLogFragment : DataLoadingBaseFragment() {
                 val readLog = logAdapter.getItem(pos)
                 repository.deleteReadLog(readLog)
                 logAdapter.deleteitem(pos)
-                showMessage(getString(R.string.msg_deleted))
+                context?.show(getString(R.string.msg_deleted))
             }
         }).attachToRecyclerView(rvReadLog)
     }
 
-    private fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    private fun initRV() {
+        rvReadLog.adapter = logAdapter
+        rvReadLog.itemAnimator = DefaultItemAnimator()
     }
 
     private fun loadData() {

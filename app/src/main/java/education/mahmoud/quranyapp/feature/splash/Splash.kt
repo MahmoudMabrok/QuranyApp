@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
+import education.mahmoud.quranyapp.base.BaseFragment
 import education.mahmoud.quranyapp.datalayer.Repository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
@@ -19,7 +19,7 @@ import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.koin.android.ext.android.inject
 
-class Splash : DataLoadingBaseFragment() {
+class Splash : BaseFragment(), BaseFragment.InitListener {
 
     private val repository: Repository by inject()
     private var ayhasCount = repository.totlaAyahs
@@ -34,8 +34,6 @@ class Splash : DataLoadingBaseFragment() {
     }
 
     override fun initViews(view: View) {
-        super.initViews(view)
-
         if (ayhasCount > 0) {
             view.postDelayed({
                 (activity as? HomeActivity)?.afterSplash()
@@ -47,15 +45,17 @@ class Splash : DataLoadingBaseFragment() {
         }
     }
 
-    override fun startLoadingData() {
-        super.startLoadingData()
+    override fun setClickListeners() {
+
+    }
+
+    private fun startLoadingData() {
         if (ayhasCount == 0) {
             laodData()
         }
     }
 
-    override fun startObserving() {
-        super.startObserving()
+    private fun startObserving() {
         relay.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe({
                     "onNext relay".log()

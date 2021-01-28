@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_test.*
 import org.koin.android.ext.android.inject
 import java.util.*
 
-class TestFragment : BaseFragment() {
+class TestFragment : BaseFragment(), BaseFragment.InitListener {
     var adapter = SaveTestAdapter()
     private val repository: Repository by inject()
 
@@ -33,6 +33,7 @@ class TestFragment : BaseFragment() {
     private var isInputValid = false
     private var start = 0
     private var end = 0
+
     // Ayahs used to be compared with user input
     private lateinit var ayahItemTobeTest: AyahItem
     private var isFullTest = false
@@ -45,7 +46,6 @@ class TestFragment : BaseFragment() {
     }
 
     override fun initViews(view: View) {
-        super.initViews(view)
         initSpinners()
         initRV()
     }
@@ -116,9 +116,6 @@ class TestFragment : BaseFragment() {
     //endregion
 
     override fun setClickListeners() {
-        super.setClickListeners()
-
-
         btnTestSave.setOnClickListener {
             onViewClicked()
         }
@@ -130,8 +127,6 @@ class TestFragment : BaseFragment() {
         btnCheckTest.setOnClickListener {
             onCheckClicked()
         }
-
-
     }
 
     /**
