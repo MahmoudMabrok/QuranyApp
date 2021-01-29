@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="home_tabs">
-        <item>Sura List</item>
-        <item>Bookmarks</item>
-    </string-array>
-</resources>

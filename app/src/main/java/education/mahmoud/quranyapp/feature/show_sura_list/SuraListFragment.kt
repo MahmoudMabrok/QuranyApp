@@ -20,7 +20,7 @@ import org.koin.android.ext.android.inject
 
 /**
  * Refactored to Kotlin
- * using KTX instead of  findViewById and ButterKnif (later use ViewBinding)
+ * using KTX instead of  findViewById and ButterKnife (later use ViewBinding)
  */
 class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
 

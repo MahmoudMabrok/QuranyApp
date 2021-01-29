@@ -19,7 +19,7 @@ import com.downloader.PRDownloader
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.home_Activity.HomeActivity
@@ -57,7 +57,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     var actualEnd = 0
     var currentIteration = 0
     var endIteration = 0
-    private val repository: Repository by inject()
+    private val quranRepository: QuranRepository by inject()
     private var ayahsToDownLoad = listOf<AyahItem>()
     private var ayahsRepeatCount = 0
     private var ayahsSetCount = 0
@@ -73,7 +73,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
     override fun initViews(view: View) {
         super.initViews(view)
-        isPermissionAllowed = repository.permissionState
+        isPermissionAllowed = quranRepository.permissionState
         initSpinners()
     }
 
@@ -93,7 +93,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     }
 
     private fun initSpinners() {
-        val suraNames = repository.surasNames
+        val suraNames = quranRepository.surasNames
         val startAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
         spStartSura.adapter = startAdapter
         val endAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
@@ -105,7 +105,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         spStartSura.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, index: Long) {
                 try {
-                    startSura = repository.getSuraByIndex(index + 1)
+                    startSura = quranRepository.getSuraByIndex(index + 1)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -117,7 +117,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         spEndSura.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, index: Long) {
                 try {
-                    endSura = repository.getSuraByIndex(index + 1)
+                    endSura = quranRepository.getSuraByIndex(index + 1)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -162,11 +162,11 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     override fun onDownloadComplete() {
         Log.d(TAG, "onDownloadComplete: ")
         // store storage path in db to use in media player
-        val ayahItem = repository.getAyahByIndex(index) // first get ayah to edit it with storage path
+        val ayahItem = quranRepository.getAyahByIndex(index) // first get ayah to edit it with storage path
         ayahItem.let {
             val storagePath = "$path/$filename"
             ayahItem.audioPath = storagePath // set path
-            repository.updateAyahItem(ayahItem)
+            quranRepository.updateAyahItem(ayahItem)
             // update currentIteration to indicate complete of download
             currentIteration++
             Log.d(TAG, "onDownloadComplete:  end $endIteration")
@@ -204,7 +204,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         Log.d(TAG, "display Ayas State: ")
         currentAyaAtAyasToListen = 0
         // first reload ayahs from db
-        ayahsToListen = repository.getAyahSInRange(actualStart + 1, actualEnd + 1)
+        ayahsToListen = quranRepository.getAyahSInRange(actualStart + 1, actualEnd + 1)
         // repeation formation
         ayahsToListen = getAyahsEachOneRepreated(ayahsRepeatCount)
         ayahsToListen = getAllAyahsRepeated(ayahsSetCount)
@@ -295,9 +295,9 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
                     return
                 }
                 // compute actual start
-                actualStart = repository.getAyahByInSurahIndex(startSura.index, start).ayahIndex - 1
+                actualStart = quranRepository.getAyahByInSurahIndex(startSura.index, start).ayahIndex - 1
                 // compute actual end
-                actualEnd = repository.getAyahByInSurahIndex(endSura.index, end).ayahIndex - 1
+                actualEnd = quranRepository.getAyahByInSurahIndex(endSura.index, end).ayahIndex - 1
                 // check actualstart & actualEnd
                 if (actualEnd < actualStart) {
                     makeRangeError()
@@ -316,7 +316,7 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
                 }
                 // get ayahs from db,
                 // actual end is updated with one as query return result excluded one item
-                ayahsToListen = repository.getAyahSInRange(actualStart + 1, actualEnd + 1)
+                ayahsToListen = quranRepository.getAyahSInRange(actualStart + 1, actualEnd + 1)
                 Log.d(TAG, "onViewClicked: start log after first select " + ayahsToListen.size)
                 // logAyahs()
                 ayahsToDownLoad = ayahsToListen.filter { it.audioPath == null }

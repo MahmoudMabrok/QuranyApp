@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".feature.show_sura_list.SuraListFragment">
 
-
     <include
         android:id="@+id/suraHeader"
         layout="@layout/item_sura_header"

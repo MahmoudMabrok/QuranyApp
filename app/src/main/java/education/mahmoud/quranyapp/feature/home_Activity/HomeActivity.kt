@@ -17,7 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
 import education.mahmoud.quranyapp.feature.feedback_activity.FeedbackActivity
@@ -38,213 +38,212 @@ import pub.devrel.easypermissions.PermissionRequest
 
 class HomeActivity : AppCompatActivity() {
 
-    private var isPermissionAllowed: Boolean = false
-    private val repository: Repository by inject()
-    var ahays = 0
+  private var isPermissionAllowed: Boolean = false
+  private val quranRepository: QuranRepository by inject()
+  var ahays = 0
 
-    private var currentID = 0
+  private var currentID = 0
 
-    private val tafseerFragment by lazy { TafseerDetails() }
-    private val listenFragment by lazy { ListenFragment() }
-    private val readLogFragment by lazy { ReadLogFragment() }
-    private val testFragment by lazy { TestFragment() }
+  private val tafseerFragment by lazy { TafseerDetails() }
+  private val listenFragment by lazy { ListenFragment() }
+  private val readLogFragment by lazy { ReadLogFragment() }
+  private val testFragment by lazy { TestFragment() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
 
-        //   LocaleHelper.setLocale(this, "ar")
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_home)
 
-        goToSplash()
-        ahays = repository.totlaAyahs
+    goToSplash()
+    ahays = quranRepository.totlaAyahs
 
-        toolbar?.let { setSupportActionBar(it) }
+    toolbar?.let { setSupportActionBar(it) }
 
-        setupVP()
+    setupVP()
+  }
+
+  private fun setupVP() {
+    val adapter = HomeVPAdapter(this)
+    vpHome.adapter = adapter
+    val titles = resources.getStringArray(R.array.home_tabs)
+    TabLayoutMediator(tabHome, vpHome) { tab, pos ->
+      tab.text = titles[pos]
+      Log.i("TestTest", "HomeActivity setupVP ${titles[pos]}")
+    }.attach()
+  }
+
+  fun afterSplash() {
+    supportFragmentManager.popBackStackImmediate()
+    openRead()
+    // checkLastReadAndDisplayDialoge()
+  }
+
+  private fun determineToOpenOrNotSplash() {
+    Log.d(TAG, "determineToOpenOrNotSplash:  n $ahays")
+    if (ahays == 0) {
+      Log.d(TAG, "determineToOpenOrNotSplash: ok  $ahays")
+      goToSplash()
     }
+  }
 
-    private fun setupVP() {
-        val adapter = HomeVPAdapter(this)
-        vpHome.adapter = adapter
-
-        val titles = resources.getStringArray(R.array.home_tabs)
-        TabLayoutMediator(tabHome, vpHome) { tab, pos ->
-            tab.text = titles[pos]
-        }.attach()
+  private fun checkLastReadAndDisplayDialoge() {
+    val last = quranRepository.latestRead
+    Log.d(TAG, "checkLastReadAndDisplayDialoge: $last")
+    if (last >= 0) {
+      displayDialoge(last)
+      Log.d(TAG, "checkLastReadAndDisplayDialoge: @@ ")
     }
+  }
 
-    fun afterSplash() {
-        supportFragmentManager.popBackStackImmediate()
-        openRead()
-        // checkLastReadAndDisplayDialoge()
+  private fun displayDialoge(last: Int) {
+    Log.d(TAG, "displayDialoge: ")
+    val dialog = Dialog(this)
+    val view = LayoutInflater.from(this).inflate(R.layout.last_read_dialoge, null)
+    val button = view.findViewById<Button>(R.id.btnOpenPage)
+    button.setOnClickListener {
+      openPage(last)
+      dialog.dismiss()
     }
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dialog.setContentView(view)
+    dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.show()
+  }
 
-    private fun determineToOpenOrNotSplash() {
-        Log.d(TAG, "determineToOpenOrNotSplash:  n $ahays")
-        if (ahays == 0) {
-            Log.d(TAG, "determineToOpenOrNotSplash: ok  $ahays")
-            goToSplash()
-        }
+  private fun openPage(last: Int) {
+    gotoSuraa(last)
+  }
+
+  private fun showMessage(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+  }
+
+  private fun openRead() {
+    vpHome.currentItem = 0
+  }
+
+  private fun openTafseer() {
+    val a = supportFragmentManager.beginTransaction()
+    a.replace(homeContainer.id, tafseerFragment).commit()
+  }
+
+  private fun openListen() {
+    val a = supportFragmentManager.beginTransaction()
+    a.replace(homeContainer.id, listenFragment).commit()
+  }
+
+  private fun openTest() {
+    val a = supportFragmentManager.beginTransaction()
+    a.replace(homeContainer.id, testFragment).commit()
+  }
+
+  private fun openBookmark() {
+    vpHome.currentItem = 1
+  }
+
+  fun acquirePermission() {
+    val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+    EasyPermissions.requestPermissions(PermissionRequest.Builder(this, RC_STORAGE, *perms).build())
+  }
+
+  fun goToSplash() {
+    Log.d(TAG, "goToSplash:")
+
+    supportFragmentManager.beginTransaction()
+        .add(R.id.mainContainer, Splash())
+        .addToBackStack(null)
+        .commit()
+  }
+
+  private fun openSearch() {
+    supportFragmentManager.beginTransaction()
+        .add(R.id.mainContainer, ShowSearchResults())
+        .addToBackStack(null)
+        .commit()
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu): Boolean { // Inflate the menu; this adds items to the action bar if it is present.
+    menuInflater.inflate(R.menu.menu_home, menu)
+    return true
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+      R.id.actionJump -> openGoToSura()
+      R.id.actionSearch -> openSearch()
+      R.id.actionSetting -> openSetting()
+      R.id.actionGoToLastRead -> gotoLastRead()
+      R.id.actionReadLog -> goToReadLog()
+      R.id.actionScore -> gotoScore()
+      R.id.actionDownload -> gotoDownload()
+      R.id.actionBookmark -> openBookmark()
     }
+    return super.onOptionsItemSelected(item)
+  }
 
-    private fun checkLastReadAndDisplayDialoge() {
-        val last = repository.latestRead
-        Log.d(TAG, "checkLastReadAndDisplayDialoge: $last")
-        if (last >= 0) {
-            displayDialoge(last)
-            Log.d(TAG, "checkLastReadAndDisplayDialoge: @@ ")
-        }
+  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode == RC_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+      isPermissionAllowed = true
+      quranRepository.permissionState = true
+      listenFragment.downloadAyahs()
+    } else if (requestCode == RC_STORAGE) {
+      showMessage(getString(R.string.down_permission))
+      quranRepository.permissionState = false
+      // user refuse to take permission
+      openRead()
     }
+  }
 
-    private fun displayDialoge(last: Int) {
-        Log.d(TAG, "displayDialoge: ")
-        val dialog = Dialog(this)
-        val view = LayoutInflater.from(this).inflate(R.layout.last_read_dialoge, null)
-        val button = view.findViewById<Button>(R.id.btnOpenPage)
-        button.setOnClickListener {
-            openPage(last)
-            dialog.dismiss()
-        }
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(view)
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.show()
+  private fun gotoLastRead() {
+    val index = quranRepository.latestRead
+    if (index == -1) {
+      Toast.makeText(this, "You Have no saved recitation", Toast.LENGTH_SHORT).show()
+      return
     }
+    gotoSuraa(index)
+  }
 
-    private fun openPage(last: Int) {
-        gotoSuraa(last)
-    }
+  private fun gotoSuraa(index: Int) {
+    val openAcivity = Intent(this, ShowAyahsActivity::class.java)
+    openAcivity.putExtra(Constants.LAST_INDEX, index)
+    startActivity(openAcivity)
+  }
 
-    private fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
+  private fun openGoToSura() {
+    val a = supportFragmentManager.beginTransaction()
+    val goToSurah = GoToSurah()
+    goToSurah.show(a, null)
+  }
 
-    private fun openRead() {
-        vpHome.currentItem = 0
-    }
+  private fun openSetting() {
+    val openAcivity = Intent(this, SettingActivity::class.java)
+    startActivity(openAcivity)
+  }
 
-    private fun openTafseer() {
-        val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, tafseerFragment).commit()
-    }
+  private fun gotoFeedback() {
+    val openAcivity = Intent(this, FeedbackActivity::class.java)
+    startActivity(openAcivity)
+  }
 
-    private fun openListen() {
-        val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, listenFragment).commit()
-    }
+  private fun gotoScore() {
+    val openAcivity = Intent(this, ScoreActivity::class.java)
+    startActivity(openAcivity)
+  }
 
-    private fun openTest() {
-        val a = supportFragmentManager.beginTransaction()
-        a.replace(homeContainer.id, testFragment).commit()
-    }
+  private fun gotoDownload() {
+    val openAcivity = Intent(this, DownloadActivity::class.java)
+    startActivity(openAcivity)
+  }
 
-    private fun openBookmark() {
-        vpHome.currentItem = 1
-    }
+  private fun goToReadLog() {
+    val transaction = supportFragmentManager.beginTransaction()
+    val logFragment = ReadLogFragment()
+    transaction.replace(homeContainer.id, logFragment).commit()
+  }
 
-    fun acquirePermission() {
-        val perms = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-        EasyPermissions.requestPermissions(PermissionRequest.Builder(this, RC_STORAGE, *perms).build())
-    }
-
-    fun goToSplash() {
-        Log.d(TAG, "goToSplash:")
-
-        supportFragmentManager.beginTransaction()
-            .add(R.id.mainContainer, Splash())
-            .addToBackStack(null)
-            .commit()
-    }
-
-    private fun openSearch() {
-        supportFragmentManager.beginTransaction()
-            .add(R.id.mainContainer, ShowSearchResults())
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean { // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_home, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.actionJump -> openGoToSura()
-            R.id.actionSearch -> openSearch()
-            R.id.actionSetting -> openSetting()
-            R.id.actionGoToLastRead -> gotoLastRead()
-            R.id.actionReadLog -> goToReadLog()
-            R.id.actionScore -> gotoScore()
-            R.id.actionDownload -> gotoDownload()
-            R.id.actionBookmark -> openBookmark()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == RC_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            isPermissionAllowed = true
-            repository.permissionState = true
-            listenFragment.downloadAyahs()
-        } else if (requestCode == RC_STORAGE) {
-            showMessage(getString(R.string.down_permission))
-            repository.permissionState = false
-            // user refuse to take permission
-            openRead()
-        }
-    }
-
-    private fun gotoLastRead() {
-        val index = repository.latestRead
-        if (index == -1) {
-            Toast.makeText(this, "You Have no saved recitation", Toast.LENGTH_SHORT).show()
-            return
-        }
-        gotoSuraa(index)
-    }
-
-    private fun gotoSuraa(index: Int) {
-        val openAcivity = Intent(this, ShowAyahsActivity::class.java)
-        openAcivity.putExtra(Constants.LAST_INDEX, index)
-        startActivity(openAcivity)
-    }
-
-    private fun openGoToSura() {
-        val a = supportFragmentManager.beginTransaction()
-        val goToSurah = GoToSurah()
-        goToSurah.show(a, null)
-    }
-
-    private fun openSetting() {
-        val openAcivity = Intent(this, SettingActivity::class.java)
-        startActivity(openAcivity)
-    }
-
-    private fun gotoFeedback() {
-        val openAcivity = Intent(this, FeedbackActivity::class.java)
-        startActivity(openAcivity)
-    }
-
-    private fun gotoScore() {
-        val openAcivity = Intent(this, ScoreActivity::class.java)
-        startActivity(openAcivity)
-    }
-
-    private fun gotoDownload() {
-        val openAcivity = Intent(this, DownloadActivity::class.java)
-        startActivity(openAcivity)
-    }
-
-    private fun goToReadLog() {
-        val transaction = supportFragmentManager.beginTransaction()
-        val logFragment = ReadLogFragment()
-        transaction.replace(homeContainer.id, logFragment).commit()
-    }
-
-    companion object {
-        private const val RC_STORAGE = 1001
-        private const val TAG = "HomeActivity"
-    }
+  companion object {
+    private const val RC_STORAGE = 1001
+    private const val TAG = "HomeActivity"
+  }
 }

@@ -2,13 +2,13 @@ package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import androidx.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
 import io.reactivex.disposables.CompositeDisposable
 
-class AyahsViewModel(private val repo: Repository) : ViewModel() {
+class AyahsViewModel(private val repo: QuranRepository) : ViewModel() {
 
     val backColorState = repo.backColorState
     val nightModeState = repo.nightModeState

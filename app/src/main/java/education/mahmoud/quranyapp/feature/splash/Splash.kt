@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah
@@ -21,8 +21,8 @@ import org.koin.android.ext.android.inject
 
 class Splash : DataLoadingBaseFragment() {
 
-    private val repository: Repository by inject()
-    private var ayhasCount = repository.totlaAyahs
+    private val quranRepository: QuranRepository by inject()
+    private var ayhasCount = quranRepository.totlaAyahs
     val relay = PublishRelay.create<Boolean>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -137,8 +137,8 @@ class Splash : DataLoadingBaseFragment() {
 
         "end maping ".log()
         try {
-            repository.addSurahs(surrahs)
-            repository.addAyahs(ayahss)
+            quranRepository.addSurahs(surrahs)
+            quranRepository.addAyahs(ayahss)
         } catch (e: Exception) {
             "error ${e.message}".log()
         }

@@ -169,5 +169,9 @@
     <string name="ayahs_count">الايات</string>
     <string name="search_hint">ادخل كلمة البحث ..</string>
 
+  <string-array name="home_tabs">
+    <item>Sura List</item>
+    <item>Bookmarks</item>
+  </string-array>
 
 </resources>

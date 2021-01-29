@@ -10,13 +10,13 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.BaseFragment
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import kotlinx.android.synthetic.main.fragment_tafseer_details.*
 import org.koin.android.ext.android.inject
 import java.util.*
 
 class TafseerDetails : BaseFragment() {
-    private val repository: Repository by inject()
+    private val quranRepository: QuranRepository by inject()
 
     private val adapter = TafseerAdapter()
 
@@ -41,13 +41,13 @@ class TafseerDetails : BaseFragment() {
     }
 
     private fun fillSpinners() {
-        val suraNames = repository.surasNames
+        val suraNames = quranRepository.surasNames
         val startAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
         spSuraTafser.adapter = startAdapter
         try {
             spSuraTafser.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, l: Long) {
-                    val ayahs = repository.getAllAyahOfSurahIndexForTafseer(l + 1)
+                    val ayahs = quranRepository.getAllAyahOfSurahIndexForTafseer(l + 1)
                     Log.d(TAG, "onItemSelected: " + ayahs.size + " & " + l)
                     // update adapter
                     if (ayahs.isNotEmpty()) {

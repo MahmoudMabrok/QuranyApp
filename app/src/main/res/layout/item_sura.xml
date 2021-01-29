@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,7 +17,10 @@
         android:layout_weight="1"
         android:gravity="center_horizontal"
         android:textColor="@color/secondaryLightColor"
-        android:textSize="@dimen/tvFont" />
+        android:textSize="@dimen/tvFont"
+        tools:text="1"
+
+        />
 
 
     <TextView
@@ -26,14 +31,18 @@
         android:layout_weight="3"
         android:textColor="@color/secondaryLightColor"
         android:textSize="@dimen/tvFont"
-        android:gravity="start" />
+        android:gravity="start"
+        tools:text="الفاتحة"
+
+        />
 
 
     <ImageView
         android:id="@+id/tvSuraRevolution"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/ic_makka" />
 
 
     <TextView
@@ -44,7 +53,8 @@
         android:layout_weight="1"
         android:textColor="@color/secondaryLightColor"
         android:gravity="center"
-        android:textSize="@dimen/tvFont" />
+        android:textSize="@dimen/tvFont"
+        tools:text="152" />
 
 
     <TextView
@@ -55,7 +65,8 @@
         android:textColor="@color/secondaryLightColor"
         android:textSize="@dimen/tvFont"
         android:layout_weight="1"
-        android:gravity="center" />
+        android:gravity="center"
+        tools:text="268" />
 
 
 </LinearLayout>

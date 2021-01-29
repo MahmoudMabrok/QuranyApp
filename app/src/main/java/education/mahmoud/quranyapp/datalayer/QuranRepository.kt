@@ -9,7 +9,7 @@ import education.mahmoud.quranyapp.datalayer.local.room.RecordItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import io.reactivex.Flowable
 
-class Repository(private var localShared: LocalShared, private var quranDB: QuranDB) {
+class QuranRepository(private var localShared: LocalShared, private var quranDB: QuranDB) {
     // shared
     fun addLatestread(index: Int) {
         localShared.addLatestread(index)

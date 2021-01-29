@@ -2,7 +2,7 @@ package education.mahmoud.quranyapp.di
 
 import androidx.room.Room
 import com.google.gson.GsonBuilder
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.LocalShared
 import education.mahmoud.quranyapp.datalayer.local.room.QuranDB
 import education.mahmoud.quranyapp.feature.showSuraAyas.AyahsViewModel
@@ -37,7 +37,7 @@ val dataModule = module {
                 .build()
     }
 
-    single { Repository(get(), get()) }
+    single { QuranRepository(get(), get()) }
 
     viewModel { SuraListViewModel(get()) }
     viewModel { AyahsViewModel(get()) }

@@ -166,11 +166,16 @@
     <string name="justified"><html><body style="text-align:justify"> %s </body></html></string>
     <string name="loading_data">جاري تحميل الداتا </string>
     <string name="quran_is_loading_n_if_it_take_long_please_close_and_open_again">جاري تحميل القران\n  لو استمر التحميل كثيرا برجاء غلق الصفحة وفتحها مره اخري</string>
-    <string name="sura_num">ترتيبها</string>
+    <string name="sura_num">رقمها</string>
     <string name="sura_name">الاسم</string>
     <string name="start_page">البداية</string>
     <string name="ayahs_count">الايات</string>
     <string name="search_hint">ادخل كلمة البحث ..</string>
 
+
+  <string-array name="home_tabs">
+    <item>قائمة السور</item>
+    <item>المفضلة</item>
+  </string-array>
 
 </resources>

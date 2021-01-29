@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.QuranRepository;
 import education.mahmoud.quranyapp.feature.register.RegisterActivity;
 import education.mahmoud.quranyapp.utils.Util;
 
@@ -52,7 +52,7 @@ public class ScoreActivity extends AppCompatActivity {
     ScoreboardAdapter scoreboardAdapter;
     String name, uuid;
     long score;
-    private Repository repository = KoinJavaComponent.get(Repository.class);
+    private QuranRepository quranRepository = KoinJavaComponent.get(QuranRepository.class);
 
     List<Scoreboard> scoreboards = new ArrayList<>();
     @BindView(R.id.tvNoScores)
@@ -75,10 +75,10 @@ public class ScoreActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-        score = repository.getScore();
+        score = quranRepository.getScore();
         setScore();
-        uuid = repository.getCurrentUserUUID();
-        name = repository.getUserName();
+        uuid = quranRepository.getCurrentUserUUID();
+        name = quranRepository.getUserName();
 
     }
 

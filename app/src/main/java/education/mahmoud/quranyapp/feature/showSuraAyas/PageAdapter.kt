@@ -1,7 +1,7 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas
 
+import android.graphics.text.LineBreaker
 import android.os.Build
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +22,7 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
     private var iOnClick: IOnClick? = null
     private var pageShown: PageShown? = null
     private var iBookmark: IBookmark? = null
+
     fun setPageShown(pageShown: PageShown?) {
         this.pageShown = pageShown
     }
@@ -61,8 +62,8 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
         holder.tvAyahs?.setText(Util.getSpannable(ayah), TextView.BufferType.SPANNABLE)
 
         // text justifivation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            holder.tvAyahs?.justificationMode = Layout.JUSTIFICATION_MODE_INTER_WORD
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            holder.tvAyahs?.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
         }
         // top - bottom details
         holder.tvPageNumShowAyahs?.text = item.pageNum.toString()

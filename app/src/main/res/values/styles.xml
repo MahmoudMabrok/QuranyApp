@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#7cb342</item>
         <item name="colorPrimaryDark">#4b830d</item>
@@ -11,6 +11,8 @@
         <item name="android:textColor">#6B7B8E</item>
         <item name="android:moreIcon">@color/primary1</item>
         <item name="fontFamily">@font/ge_medium</item>
+
+
     </style>
 
 

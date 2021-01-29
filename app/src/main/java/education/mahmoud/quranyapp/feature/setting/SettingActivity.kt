@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.ButterKnife
 import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import kotlinx.android.synthetic.main.activity_setting.*
 import org.koin.android.ext.android.inject
 import java.util.*
@@ -19,14 +19,14 @@ class SettingActivity : AppCompatActivity() {
 
     var colorPosForBackground = 0
 
-    val repository: Repository by inject()
+    val quranRepository: QuranRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
         ButterKnife.bind(this)
         val colorSet: List<String> = ArrayList(listOf(getString(R.string.white), getString(R.string.yellow), getString(R.string.green)))
-        cbNightMode.isChecked = repository.nightModeState
+        cbNightMode.isChecked = quranRepository.nightModeState
 
         if (cbNightMode.isChecked) {
             nightMode()
@@ -36,7 +36,7 @@ class SettingActivity : AppCompatActivity() {
 
         cbNightMode.setOnCheckedChangeListener { compoundButton, state ->
             Log.d(TAG, "onCheckedChanged: $state")
-            repository.nightModeState = state
+            quranRepository.nightModeState = state
             if (state) {
                 nightMode()
             } else {
@@ -46,7 +46,7 @@ class SettingActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, colorSet)
         spColorReqularMode.adapter = adapter
         // load from shared preference and set to spinner.
-        colorPosForBackground = repository.backColorState
+        colorPosForBackground = quranRepository.backColorState
         spColorReqularMode.setSelection(colorPosForBackground)
         spColorReqularMode.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
@@ -61,7 +61,7 @@ class SettingActivity : AppCompatActivity() {
         title = getString(R.string.setting)
 
         btnSetColor.setOnClickListener {
-            repository.backColorState = colorPosForBackground
+            quranRepository.backColorState = colorPosForBackground
             showMessage(getString(R.string.setting_updated))
         }
     }

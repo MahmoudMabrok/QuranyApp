@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.QuranRepository;
 import education.mahmoud.quranyapp.datalayer.model.User;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -24,7 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button buttonSignUp;
 
 
-    private Repository repository = KoinJavaComponent.get(Repository.class);
+    private QuranRepository quranRepository = KoinJavaComponent.get(QuranRepository.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

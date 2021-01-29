@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import kotlinx.android.synthetic.main.fragment_read_log.*
 import org.koin.android.ext.android.inject
 
@@ -19,7 +19,7 @@ import org.koin.android.ext.android.inject
  */
 class ReadLogFragment : DataLoadingBaseFragment() {
 
-    private val repository: Repository by inject()
+    private val quranRepository: QuranRepository by inject()
     private var logAdapter: ReadLogAdapter = ReadLogAdapter()
 
     override fun onCreateView(
@@ -49,7 +49,7 @@ class ReadLogFragment : DataLoadingBaseFragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
                 val readLog = logAdapter.getItem(pos)
-                repository.deleteReadLog(readLog)
+                quranRepository.deleteReadLog(readLog)
                 logAdapter.deleteitem(pos)
                 showMessage(getString(R.string.msg_deleted))
             }
@@ -61,6 +61,6 @@ class ReadLogFragment : DataLoadingBaseFragment() {
     }
 
     private fun loadData() {
-        logAdapter.setReadLogList(repository.readLog)
+        logAdapter.setReadLogList(quranRepository.readLog)
     }
 }
