@@ -7,14 +7,15 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -30,7 +31,7 @@ import education.mahmoud.quranyapp.Util.Constants;
 import education.mahmoud.quranyapp.data_layer.Repository;
 import education.mahmoud.quranyapp.data_layer.local.room.SuraItem;
 import education.mahmoud.quranyapp.feature.download.DownloadActivity;
-import education.mahmoud.quranyapp.feature.show_sura_ayas.ShowAyahsActivity;
+import education.mahmoud.quranyapp.feature.show_sura_ayas.SuraAyahsActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -116,7 +117,7 @@ public class SuraListFragment extends Fragment {
     }
 
     private void gotoSuraa(int index) {
-        Intent openAcivity = new Intent(getContext(), ShowAyahsActivity.class);
+        Intent openAcivity = new Intent(getContext(), SuraAyahsActivity.class);
         openAcivity.putExtra(Constants.SURAH_INDEX, index);
         startActivity(openAcivity);
     }

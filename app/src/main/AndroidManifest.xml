@@ -19,6 +19,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+        <activity android:name=".feature.show_sura_ayas.SuraAyahsActivity"></activity>
+
         <service
             android:name=".feature.listening_activity.ListenServie"
             android:exported="false" />

@@ -47,6 +47,9 @@ public interface AyahDAO {
     @Query("select tafseer , textClean ,ayahIndex, surahIndex, pageNum, juz, hizbQuarter, sajda, manzil, ayahInSurahIndex, text, ay.audioPath from ayahs ay  , surah su where ay.surahIndex = su.`index` and su.name = :suraName  ")
     List<AyahItem> getAllAyahOfSurahByName(String suraName);
 
+    @Query("select tafseer , textClean ,ayahIndex, surahIndex, pageNum, juz, hizbQuarter, sajda, manzil, ayahInSurahIndex, text, ay.audioPath from ayahs ay  where ay.surahIndex = :surahIndex ")
+    List<AyahItem> getAllAyahOfSurahByIndex(int surahIndex);
+
 
     @Query("select * from ayahs where pageNum = :i order by ayahIndex")
     List<AyahItem> getAyahsByPage(int i);

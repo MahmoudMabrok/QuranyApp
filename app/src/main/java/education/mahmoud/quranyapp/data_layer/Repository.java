@@ -203,6 +203,10 @@ public class Repository {
         return quranDB.ayahDAO().getAllAyahOfSurahByName(suraName);
     }
 
+    public List<AyahItem> getAllAyahOfSurahByIndex(int index) {
+        return quranDB.ayahDAO().getAllAyahOfSurahByIndex(index);
+    }
+
     public List<AyahItem> getAyahsByPage(int i) {
         return quranDB.ayahDAO().getAyahsByPage(i);
     }

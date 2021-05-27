@@ -10,29 +10,12 @@
     android:layout_marginEnd="@dimen/_6sdp"
     tools:context=".feature.show_sura_ayas.ShowAyahsActivity">
 
-    <ScrollView
-        android:id="@+id/sc_ayahs_text"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAyahs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_29sdp"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:background="@color/whiteCardColor"
-        android:padding="@dimen/_5sdp">
-
-        <TextView
-            android:id="@+id/tvAyahs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:isScrollContainer="true"
-            android:scrollbars="vertical"
-            android:focusableInTouchMode="true"
-            android:textColor="@color/ayas_color"
-            android:textIsSelectable="false"
-            android:textSize="@dimen/ayahs_size"
-            tools:text="Hellodsaasasasa" />
-    </ScrollView>
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
     <LinearLayout
