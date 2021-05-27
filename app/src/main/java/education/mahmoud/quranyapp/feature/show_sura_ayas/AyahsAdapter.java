@@ -46,7 +46,7 @@ public class AyahsAdapter extends RecyclerView.Adapter<AyahsAdapter.Holder> {
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.ayah_single_item, viewGroup, false);
-        return new Holder(view);
+        return new Holder(view, typeface);
     }
 
     @Override
@@ -69,9 +69,10 @@ public class AyahsAdapter extends RecyclerView.Adapter<AyahsAdapter.Holder> {
         @BindView(R.id.tvAyah)
         TextView tvAyah;
 
-        public Holder(@NonNull View itemView) {
+        public Holder(@NonNull View itemView, Typeface typeface) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            tvAyah.setTypeface(typeface);
 
         }
 
