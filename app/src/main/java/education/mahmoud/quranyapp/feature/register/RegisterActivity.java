@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.QuranRepository;
 import education.mahmoud.quranyapp.utils.Util;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -34,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnResgister;
     @BindView(R.id.tvOpenLogin)
     TextView tvOpenLogin;
-    private Repository repository = KoinJavaComponent.get(Repository.class);
+    private QuranRepository quranRepository = KoinJavaComponent.get(QuranRepository.class);
     String name, email, password;
     @BindView(R.id.spRegister)
     SpinKitView spRegister;

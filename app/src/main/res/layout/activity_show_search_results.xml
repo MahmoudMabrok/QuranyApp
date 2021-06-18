@@ -4,38 +4,28 @@
     android:id="@+id/bottomSearch"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
         android:orientation="vertical"
-        android:padding="@dimen/_16sdp"
+        android:background="@drawable/bg"
         tools:context=".feature.ayahs_search.ShowSearchResults">
 
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@color/colorPrimaryDark"
-            android:drawablePadding="@dimen/_10sdp"
-            android:hint="@string/ayah_to_search"
-            android:textColor="@color/tv_color"
-            android:textColorHint="@color/tv_color"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:textSize="@dimen/ayahs_size" />
+        <include layout="@layout/header_search" />
 
         <TextView
             android:id="@+id/tvSearchCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingStart="10dp"
+            android:textAlignment="viewStart"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="@color/primary1"
             android:textSize="@dimen/_17ssp"
             tools:text="ssdww" />
 
@@ -58,9 +48,10 @@
                 android:id="@+id/rvSearch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="8dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/search_item" />
+                tools:listitem="@layout/item_search" />
 
 
         </FrameLayout>

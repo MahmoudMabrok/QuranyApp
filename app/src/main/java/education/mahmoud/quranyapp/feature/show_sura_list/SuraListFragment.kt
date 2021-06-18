@@ -20,7 +20,7 @@ import org.koin.android.ext.android.inject
 
 /**
  * Refactored to Kotlin
- * using KTX instead of  findViewById and ButterKnif (later use ViewBinding)
+ * using KTX instead of  findViewById and ButterKnife (later use ViewBinding)
  */
 class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
 
@@ -38,20 +38,21 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
 
     private fun startObserving() {
         model.replay.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterNext {
-                    "accept".log()
-                    hideLoading()
-                }
-                .subscribe {
-                    "add ${it.size}".log()
-                    suraAdapter.setStringList(it)
-                }
-                .addTo(bg)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doAfterNext {
+                "accept".log()
+                hideLoading()
+            }
+            .subscribe {
+                "add ${it.size}".log()
+                suraAdapter.setStringList(it)
+            }
+            .addTo(bg)
     }
 
     private fun hideLoading() {
         screen.hide()
+        suraHeader.visibility = View.VISIBLE
     }
 
     private fun initRV() {
@@ -64,10 +65,10 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
         }
 
         screen = Skeleton.bind(rvSura)
-                .adapter(suraAdapter)
-                .count(12)
-                .load(R.layout.sura_item_skelton)
-                .show()
+            .adapter(suraAdapter)
+            .count(12)
+            .load(R.layout.sura_item_skelton)
+            .show()
     }
 
     private fun loadSuraList() {

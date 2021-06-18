@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".feature.home_Activity.HomeActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -11,49 +12,43 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryDark"
+        android:background="@color/white_ec"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white" />
+        app:titleTextColor="@color/primary1" />
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/primary2"
+        app:tabIndicatorGravity="bottom"
+        app:tabIndicatorHeight="4dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/primary2"
+        app:tabTextColor="@color/primary1" />
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpHome"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabHome" />
 
     <FrameLayout
         android:id="@+id/homeContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/dummy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-    <View
-        android:id="@+id/dummy"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_10sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/navigationContainer" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/navigationContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bn_bg"
-            app:elevation="1dp"
-
-            app:itemBackground="@drawable/bn_item__bg"
-            app:itemIconTint="@color/secondaryTextColor"
-            app:itemTextColor="@color/primaryTextColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/navigation" />
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
 
     <FrameLayout
         android:id="@+id/mainContainer"

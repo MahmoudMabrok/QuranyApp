@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.QuranRepository;
 import education.mahmoud.quranyapp.utils.Util;
 
 
@@ -31,7 +31,7 @@ public class FeedbackActivity extends AppCompatActivity {
     @BindView(R.id.btnSendFeedback)
     Button btnSendFeedback;
 
-    private Repository repository = KoinJavaComponent.get(Repository.class);
+    private QuranRepository quranRepository = KoinJavaComponent.get(QuranRepository.class);
     String pros, cons, suggs;
 
 

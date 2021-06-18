@@ -2,17 +2,18 @@ package education.mahmoud.quranyapp
 
 import android.app.Application
 import com.jakewharton.rxrelay2.PublishRelay
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.di.dataModule
 import education.mahmoud.quranyapp.feature.showSuraAyas.Page
+import education.mahmoud.quranyapp.utils.LocaleHelper
 import education.mahmoud.quranyapp.utils.log
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application() {
-    val repository: Repository by inject()
+    val quranRepository: QuranRepository by inject()
     var quranPages: ArrayList<Page> = arrayListOf()
     val relay = PublishRelay.create<Boolean>()
     val relayPages = PublishRelay.create<ArrayList<Page>>()
@@ -25,18 +26,23 @@ class App : Application() {
             modules(listOf(dataModule))
         }
 
-        val ahays = repository.totlaAyahs
         //  persistanscePages()
+
+        //   LocaleHelper.setLocale(this, "ar")
+
+        LocaleHelper.setLocale(this , "ar")
     }
 
     fun persistanscePages() {
-        Thread(Runnable {
-            try {
-                loadFullQuran()
-            } catch (e: Exception) {
-                e.printStackTrace()
+        Thread(
+            Runnable {
+                try {
+                    loadFullQuran()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
-        }).start()
+        ).start()
     }
 
     fun loadFullQuran() {
@@ -47,7 +53,7 @@ class App : Application() {
             var ayahItems: List<AyahItem>
             val start = System.currentTimeMillis()
             for (i in 1..604) {
-                ayahItems = repository.getAyahsByPage(i)
+                ayahItems = quranRepository.getAyahsByPage(i)
                 if (ayahItems.isNotEmpty()) {
                     page = Page(ayahItems)
                     page.pageNum = i

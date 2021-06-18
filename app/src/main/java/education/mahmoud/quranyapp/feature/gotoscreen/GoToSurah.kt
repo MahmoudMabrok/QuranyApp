@@ -35,8 +35,6 @@ class GoToSurah : DialogFragment() {
         btnGoToPage.setOnClickListener {
             onbtnGoToPage()
         }
-
-
     }
 
     fun onViewClicked() {
@@ -99,7 +97,6 @@ class GoToSurah : DialogFragment() {
         startActivity(intent)
         dismiss()
     }
-
 
     fun onbtnGoToPage() {
         try {

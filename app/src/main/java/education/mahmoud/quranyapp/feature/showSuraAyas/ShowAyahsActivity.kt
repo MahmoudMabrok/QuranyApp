@@ -29,7 +29,6 @@ import java.util.*
 
 class ShowAyahsActivity : AppCompatActivity() {
 
-
     private val name = javaClass.simpleName
 
     private val model: AyahsViewModel by inject()
@@ -69,9 +68,9 @@ class ShowAyahsActivity : AppCompatActivity() {
         ButterKnife.bind(this)
 
         pos = intent.getIntExtra(Constants.SURAH_INDEX, 1)
-        "1${name}   onCreate: $pos\"".log()
+        "1$name   onCreate: $pos\"".log()
         pos = getStartPageFromIndex(pos)
-        "2${name}   onCreate: $pos\"".log()
+        "2$name   onCreate: $pos\"".log()
         //region Description
         if (intent.hasExtra(Constants.SURAH_GO_INDEX)) {
             val surah = intent.getIntExtra(Constants.SURAH_GO_INDEX, 1)
@@ -89,7 +88,7 @@ class ShowAyahsActivity : AppCompatActivity() {
         pos -= 1
 
         //endregion
-        "${name}   onCreate: $pos\"".log()
+        "$name   onCreate: $pos\"".log()
         initRV()
 
         (application as? App)?.persistanscePages()
@@ -99,20 +98,23 @@ class ShowAyahsActivity : AppCompatActivity() {
     private fun stratObserving() {
         Log.d(TAG, "stratObserving:qw ${Thread.currentThread()}")
         (application as? App)?.relayPages
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.doAfterNext {
-                    hideLoading()
-                }
-                ?.subscribe({
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.doAfterNext {
+                hideLoading()
+            }
+            ?.subscribe(
+                {
                     "data found ${it.size}".log()
                     pageAdapter.setPageList(it)
                     rvAyahsPages.scrollToPosition(pos)
                     "data pageAdapter ${pageAdapter.itemCount} , ${Thread.currentThread()}".log()
                     foundState()
-                }, {
+                },
+                {
                     "error ${it.message}".log()
-                })
-                ?.addTo(model.bg)
+                }
+            )
+            ?.addTo(model.bg)
     }
 
     private fun hideLoading() {
@@ -257,7 +259,6 @@ class ShowAyahsActivity : AppCompatActivity() {
         tvNoQuranData.visibility = View.VISIBLE
         rvAyahsPages.visibility = View.GONE
     }
-
 
     private fun showMessage(message: String) {
         toast?.cancel()

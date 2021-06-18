@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.datalayer.model.full_quran.Surah
@@ -21,8 +21,8 @@ import org.koin.android.ext.android.inject
 
 class Splash : DataLoadingBaseFragment() {
 
-    private val repository: Repository by inject()
-    private var ayhasCount = repository.totlaAyahs
+    private val quranRepository: QuranRepository by inject()
+    private var ayhasCount = quranRepository.totlaAyahs
     val relay = PublishRelay.create<Boolean>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,9 +37,12 @@ class Splash : DataLoadingBaseFragment() {
         super.initViews(view)
 
         if (ayhasCount > 0) {
-            view.postDelayed({
-                (activity as? HomeActivity)?.afterSplash()
-            }, 2000)
+            view.postDelayed(
+                {
+                    (activity as? HomeActivity)?.afterSplash()
+                },
+                2000
+            )
         } else {
             group.visibility = View.VISIBLE
             startLoadingData()
@@ -57,12 +60,15 @@ class Splash : DataLoadingBaseFragment() {
     override fun startObserving() {
         super.startObserving()
         relay.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({
+            ?.subscribe(
+                {
                     "onNext relay".log()
                     (activity as? HomeActivity)?.afterSplash()
-                }, {
+                },
+                {
                     "error ${it.message}".log()
-                })?.addTo(bg)
+                }
+            )?.addTo(bg)
     }
 
     fun laodData() {
@@ -74,7 +80,6 @@ class Splash : DataLoadingBaseFragment() {
     private fun StoreInDb(surahs: List<Surah>) {
         Thread(Runnable { Store(surahs) }).start()
     }
-
 
     data class Extra(val clean: String, val tafseer: String)
 
@@ -95,17 +100,20 @@ class Splash : DataLoadingBaseFragment() {
         // map it to db schema
         val surrahs = surahs.map {
             // add ayahs to list to be updated later with tafseer
-            ayahss.addAll(it.ayahs.map { ayah ->
-                AyahItem(ayahIndex = ayah.number, surahIndex = it.number, pageNum = ayah.page,
-                        juz = ayah.juz, hizbQuarter = ayah.hizbQuarter, isSajda = false, ayahInSurahIndex = ayah.numberInSurah, text = ayah.text)
-            })
+            ayahss.addAll(
+                it.ayahs.map { ayah ->
+                    AyahItem(
+                        ayahIndex = ayah.number, surahIndex = it.number, pageNum = ayah.page,
+                        juz = ayah.juz, hizbQuarter = ayah.hizbQuarter, isSajda = false, ayahInSurahIndex = ayah.numberInSurah, text = ayah.text
+                    )
+                }
+            )
             // create sura item
             SuraItem(it.number, it.ayahs.size, it.name, it.englishName, it.englishNameTranslation, it.revelationType).apply {
                 index = it.number
                 startIndex = it.ayahs.first().page
             }
         }
-
 
         ayahss.forEachIndexed { index, ayahItem ->
             ayahItem.apply {
@@ -127,11 +135,10 @@ class Splash : DataLoadingBaseFragment() {
                     }
                 }*/
 
-
         "end maping ".log()
         try {
-            repository.addSurahs(surrahs)
-            repository.addAyahs(ayahss)
+            quranRepository.addSurahs(surrahs)
+            quranRepository.addAyahs(ayahss)
         } catch (e: Exception) {
             "error ${e.message}".log()
         }

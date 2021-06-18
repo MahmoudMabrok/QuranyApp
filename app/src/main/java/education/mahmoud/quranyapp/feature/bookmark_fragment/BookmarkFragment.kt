@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.ethanhua.skeleton.Skeleton
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.bind
@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_bookmark.*
 import org.koin.android.ext.android.inject
 
 class BookmarkFragment : DataLoadingBaseFragment() {
-    private val repository: Repository by inject()
+    private val quranRepository: QuranRepository by inject()
     private val bookmarkAdapter by lazy { BookmarkAdapter() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,7 +39,7 @@ class BookmarkFragment : DataLoadingBaseFragment() {
             startActivity(openAcivity)
         }
         bookmarkAdapter.setIoBookmarkDelete { item ->
-            repository.deleteBookmark(item)
+            quranRepository.deleteBookmark(item)
             bookmarkAdapter.deleteItem(item)
             context?.show(getString(R.string.deleted))
         }
@@ -56,7 +56,7 @@ class BookmarkFragment : DataLoadingBaseFragment() {
 
     override fun startLoadingData() {
         super.startLoadingData()
-        repository.bookmarks.bind()
+        quranRepository.bookmarks.bind()
                 .doAfterNext {
                     hideLoad()
                 }

@@ -1,93 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/_5sdp"
-    android:layout_marginEnd="@dimen/_5sdp"
     android:layout_marginBottom="@dimen/_5sdp"
-    android:orientation="vertical"
-    app:cardCornerRadius="@dimen/_10sdp">
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/tvSuraNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_6sdp"
+        android:gravity="center_vertical"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="@dimen/tvFont"
+        tools:text="@tools:sample/lorem" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/secondaryDarkColor"
-        android:orientation="horizontal"
-        android:padding="@dimen/_2sdp">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvSuraNumber"
+            android:id="@+id/tvSuraName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_6sdp"
-            android:gravity="center_vertical"
+            android:gravity="center_horizontal"
             android:textColor="@color/secondaryLightColor"
             android:textSize="@dimen/tvFont"
             tools:text="@tools:sample/lorem" />
 
+
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvSuraName"
+                android:id="@+id/tvSuraRevolution"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:textColor="@color/secondaryLightColor"
                 android:textSize="@dimen/tvFont"
-                tools:text="@tools:sample/lorem" />
+                tools:text="@string/sura_rev_mackkia" />
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginStart="@dimen/_6sdp"
+                android:layout_marginEnd="@dimen/_6sdp"
+                android:text="@string/seperator"
+                android:textColor="@color/secondaryLightColor" />
 
-                <TextView
-                    android:id="@+id/tvSuraRevolution"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/secondaryLightColor"
-                    android:textSize="@dimen/tvFont"
-                    tools:text="@string/sura_rev_mackkia" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_6sdp"
-                    android:layout_marginEnd="@dimen/_6sdp"
-                    android:text="@string/seperator"
-                    android:textColor="@color/secondaryLightColor" />
-
-                <TextView
-                    android:id="@+id/tvSuraAyahsNum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/secondaryLightColor"
-                    android:textSize="@dimen/tvFont"
-                    tools:text="@string/ayah_num" />
-
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tvSuraAyahsNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondaryLightColor"
+                android:textSize="@dimen/tvFont"
+                tools:text="@string/ayah_num" />
 
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvSuraPageNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_6sdp"
-            android:gravity="center_horizontal"
-            android:text="551"
-            android:textColor="@color/secondaryLightColor"
-            android:textSize="@dimen/tvFont" />
-
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvSuraPageNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_6sdp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="@dimen/tvFont"
+        tools:text="551" />
+
+
+</LinearLayout>

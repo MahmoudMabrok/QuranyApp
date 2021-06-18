@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.BaseFragment
-import education.mahmoud.quranyapp.datalayer.Repository
+import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.utils.Util
@@ -23,7 +23,7 @@ import java.util.*
 
 class TestFragment : BaseFragment() {
     var adapter = SaveTestAdapter()
-    private val repository: Repository by inject()
+    private val quranRepository: QuranRepository by inject()
 
     private var startSura: SuraItem? = null
     private var endSura: SuraItem? = null
@@ -37,9 +37,9 @@ class TestFragment : BaseFragment() {
     private lateinit var ayahItemTobeTest: AyahItem
     private var isFullTest = false
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? { // Inflate the layout for getContext() fragment
         return inflater.inflate(R.layout.fragment_test, container, false)
     }
@@ -83,9 +83,9 @@ class TestFragment : BaseFragment() {
      * @param totalScore
      */
     private fun updateTotalScore(totalScore: Long) {
-        var cuurentTotalScore = repository.score // saved score
+        var cuurentTotalScore = quranRepository.score // saved score
         cuurentTotalScore += totalScore // update with new score
-        repository.score = cuurentTotalScore // set in db
+        quranRepository.score = cuurentTotalScore // set in db
         Util.getDialog(context, cuurentTotalScore.toString(), getString(R.string.score)).show()
     }
     //region spinners
@@ -93,21 +93,21 @@ class TestFragment : BaseFragment() {
      * load data to spinners from db
      */
     private fun initSpinners() {
-        val suraNames = repository.surasNames
+        val suraNames = quranRepository.surasNames
         val startAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
         spStartSura.adapter = startAdapter
         val endAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
         spEndSura.adapter = endAdapter
         spStartSura.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                startSura = repository.getSuraByIndex(l + 1)
+                startSura = quranRepository.getSuraByIndex(l + 1)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
         spEndSura.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
-                endSura = repository.getSuraByIndex(l + 1)
+                endSura = quranRepository.getSuraByIndex(l + 1)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
@@ -117,7 +117,6 @@ class TestFragment : BaseFragment() {
 
     override fun setClickListeners() {
         super.setClickListeners()
-
 
         btnTestSave.setOnClickListener {
             onViewClicked()
@@ -130,8 +129,6 @@ class TestFragment : BaseFragment() {
         btnCheckTest.setOnClickListener {
             onCheckClicked()
         }
-
-
     }
 
     /**
@@ -140,7 +137,7 @@ class TestFragment : BaseFragment() {
     fun onViewClicked() {
         checkInput()
         if (isInputValid) {
-            ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1).toMutableList()
+            ayahsToTest = quranRepository.getAyahSInRange(actualStart + 1, actualEnd + 1).toMutableList()
             // // TODO: 7/15/2019 make list
             adapter.setAyahItemList(ayahsToTest)
             TestState()
@@ -165,9 +162,9 @@ class TestFragment : BaseFragment() {
                     return
                 }
                 // compute actual start , -1 because first ayah is 0 not 1 as user enter
-                actualStart = repository.getAyahByInSurahIndex(startSura!!.index, start).ayahIndex - 1
+                actualStart = quranRepository.getAyahByInSurahIndex(startSura!!.index, start).ayahIndex - 1
                 // compute actual end
-                actualEnd = repository.getAyahByInSurahIndex(endSura!!.index, end).ayahIndex - 1
+                actualEnd = quranRepository.getAyahByInSurahIndex(endSura!!.index, end).ayahIndex - 1
                 // check actualstart & actualEnd
                 if (actualEnd < actualStart) {
                     makeRangeError()
@@ -175,7 +172,7 @@ class TestFragment : BaseFragment() {
                 }
                 Log.d(TAG, "onViewClicked: actual $actualStart $actualEnd")
                 // get ayas from db
-                ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1).toMutableList()
+                ayahsToTest = quranRepository.getAyahSInRange(actualStart + 1, actualEnd + 1).toMutableList()
                 isInputValid = true
                 // place data in UI
                 tvTestRange.text = getString(R.string.rangeoftest, startSura!!.name, start, endSura!!.name, end)
@@ -242,7 +239,7 @@ class TestFragment : BaseFragment() {
     fun onbtnTestSaveRandom() {
         checkInput()
         if (isInputValid) {
-            ayahsToTest = repository.getAyahSInRange(actualStart + 1, actualEnd + 1).toMutableList()
+            ayahsToTest = quranRepository.getAyahSInRange(actualStart + 1, actualEnd + 1).toMutableList()
             if (ayahsToTest.size >= 3) {
                 val r = Random().nextInt(ayahsToTest.size - 1)
                 ayahItemTobeTest = ayahsToTest.get(r)
@@ -273,7 +270,6 @@ class TestFragment : BaseFragment() {
         edStartSuraAyah.error = getString(R.string.not_sufficient_ayahs)
         edEndSuraAyah.error = getString(R.string.not_sufficient_ayahs)
     }
-
 
     fun onCheckClicked() {
         val ayah: String = edUserTextForAyahs.text.toString()

@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
-import education.mahmoud.quranyapp.datalayer.Repository;
+import education.mahmoud.quranyapp.datalayer.QuranRepository;
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 import education.mahmoud.quranyapp.utils.Util;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -54,7 +54,7 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
     @BindView(R.id.btnDownloadSound)
     Button btnDownloadSound;
 
-    private Repository repository = KoinJavaComponent.get(Repository.class);
+    private QuranRepository quranRepository = KoinJavaComponent.get(QuranRepository.class);
     @BindView(R.id.btnDownloadQuran)
     Button btnDownloadQuran;
     @BindView(R.id.tvTotalQuranAyahs)
@@ -86,8 +86,8 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         setContentView(R.layout.activity_download);
         ButterKnife.bind(this);
 
-        isPermissionAllowed = repository.getPermissionState();
-        ahays = repository.getTotlaAyahs();
+        isPermissionAllowed = quranRepository.getPermissionState();
+        ahays = quranRepository.getTotlaAyahs();
 
         createStatistics();
 
@@ -104,7 +104,7 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
 
         if (requestCode == RC_STORAGE && grantResults[0] == PERMISSION_GRANTED) {
             isPermissionAllowed = true;
-            repository.setPermissionState(true);
+            quranRepository.setPermissionState(true);
             onDownloadAudioClicked();
         } else {
             showMessage(getString(R.string.down_permission));
@@ -117,9 +117,9 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
      */
     private void createStatistics() {
         // retrieve data
-        int totalAyahsDown = repository.getTotlaAyahs();
-        int totalTafseerAyahsDown = repository.getTotalTafseerDownloaded();
-        int totalAudioAyahsDown = repository.getTotalAudioDownloaded();
+        int totalAyahsDown = quranRepository.getTotlaAyahs();
+        int totalTafseerAyahsDown = quranRepository.getTotalTafseerDownloaded();
+        int totalAudioAyahsDown = quranRepository.getTotalAudioDownloaded();
 
         // set ui
         tvTotalQuranAyahs.setText(getString(R.string.totalQuranAyahs, totalAyahsDown, max_Audio));
@@ -195,7 +195,7 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
             acquirePermission();
         } else {
             audioToDownload = 0;
-            audioIndexesToDownload = repository.getAyahNumberNotAudioDownloaded();
+            audioIndexesToDownload = quranRepository.getAyahNumberNotAudioDownloaded();
             downState();
             downlaodAudioData();
 
@@ -226,10 +226,10 @@ public class DownloadActivity extends AppCompatActivity implements OnDownloadLis
         Log.d(TAG, "onDownloadComplete: " + audioToDownload);
         try {
             // store storage path in db to use in media player
-            AyahItem ayahItem = repository.getAyahByIndex(audioIndexesToDownload.get(audioToDownload)); // first get ayah to edit it with storage path
+            AyahItem ayahItem = quranRepository.getAyahByIndex(audioIndexesToDownload.get(audioToDownload)); // first get ayah to edit it with storage path
             String storagePath = path + "/" + filename;
             ayahItem.setAudioPath(storagePath); // set path
-            repository.updateAyahItem(ayahItem);
+            quranRepository.updateAyahItem(ayahItem);
             audioToDownload++;
             downlaodAudioData();
         } catch (Exception e) {

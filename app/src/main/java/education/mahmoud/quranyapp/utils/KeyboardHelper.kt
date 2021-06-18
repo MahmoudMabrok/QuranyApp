@@ -3,7 +3,6 @@ package education.mahmoud.quranyapp.utils
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 
-
 object KeyboardHelper {
 
     fun dissmiss(ctx: Context) {
@@ -16,4 +15,3 @@ object KeyboardHelper {
         }
     }
 }
-
