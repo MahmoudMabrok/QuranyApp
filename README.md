@@ -21,18 +21,14 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
 - Last Version with Java [Branch](https://github.com/MahmoudMabrok/QuranyApp/tree/java_last_version)
 # Screens
 <div>
- <img src="https://user-images.githubusercontent.com/13488900/82130135-c1dd9880-97c8-11ea-9d14-250b15c5701a.png" width = 20%>
- <img src="https://user-images.githubusercontent.com/13488900/82130115-9c508f00-97c8-11ea-97b5-1771801bb1cd.png" width = 20%>
- <img src="https://user-images.githubusercontent.com/13488900/82130122-ad999b80-97c8-11ea-9439-54e719019b61.png" width = 20%>
- <img src="https://user-images.githubusercontent.com/13488900/82130126-b0948c00-97c8-11ea-9f83-c498c4b85cb5.png" width = 20%>
- <img src="https://user-images.githubusercontent.com/13488900/82130129-b25e4f80-97c8-11ea-9e73-3b3213850190.png" width = 20%>
- <img src="https://user-images.githubusercontent.com/13488900/82130130-b68a6d00-97c8-11ea-8bd2-04264a42e11b.png" width = 20%>
-  <img src="https://user-images.githubusercontent.com/13488900/82130131-b8543080-97c8-11ea-8e17-3a40f39fdd43.png" width = 20%>
+ <img src="https://user-images.githubusercontent.com/13488900/122588290-32578880-d05f-11eb-9891-f0e438e51f18.png" width = 20%>
+ <img src="https://user-images.githubusercontent.com/13488900/122588274-2d92d480-d05f-11eb-83d1-1b39d039caa0.png" width = 20%>
+ <img src="https://user-images.githubusercontent.com/13488900/122588266-2bc91100-d05f-11eb-9323-abeb0f88a316.png" width = 20%>
   </div>
   
 # NOte : App is being refactored into Kotlin (Reach now MVP stage from app with Kotlin)  
 
-# Features 
+# Features[of full App]
 - Go to specific sura by Scrolling and click.
 - Go to specific sura by its Num.
 - Go to specific sura by its Name.
