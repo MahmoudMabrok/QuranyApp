@@ -49,7 +49,6 @@ class HomeActivity : AppCompatActivity() {
   private val readLogFragment by lazy { ReadLogFragment() }
   private val testFragment by lazy { TestFragment() }
 
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_home)
@@ -162,7 +161,7 @@ class HomeActivity : AppCompatActivity() {
         .commit()
   }
 
-  override fun onCreateOptionsMenu(menu: Menu): Boolean { // Inflate the menu; this adds items to the action bar if it is present.
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_home, menu)
     return true
   }

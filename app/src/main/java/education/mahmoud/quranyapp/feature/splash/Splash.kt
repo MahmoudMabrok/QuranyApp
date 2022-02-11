@@ -122,19 +122,6 @@ class Splash : DataLoadingBaseFragment() {
             }
         }
 
-/*
-        val ayahs = surahs.mapIndexed { index, surah ->
-            surah.ayahs.map { ayah ->
-                AyahItem(ayah.number, index + 1, ayah.page, ayah.juz, ayah.hizbQuarter, false, ayah.numberInSurah, ayah.text, ayah.text)
-            }
-        }.flatMap { list -> list.toMutableList() }
-                .mapIndexed{ index, ayahItem ->
-                    ayahItem.apply {
-                        textClean = mixed[index].clean
-                        tafseer = mixed[index].tafseer
-                    }
-                }*/
-
         "end maping ".log()
         try {
             quranRepository.addSurahs(surrahs)

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "io.gitlab.arturbosch.detekt"
 
 
 android {
@@ -116,8 +117,22 @@ dependencies {
     // flex
     implementation 'com.google.android:flexbox:2.0.1'
 
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.18.1"
+
 
 }
 
-
 apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+task detektFormat(type: io.gitlab.arturbosch.detekt.Detekt) {
+    description = "Runs autocorrect enabled detekt build."
+    source = files("src/main/java")
+    config.from(files("$rootDir/Scripts/detekt-config.yml"))
+    autoCorrect = true
+    reports {
+        html{
+            enabled = true
+            destination = file("build/reports/detekt-formatted.html")
+        }
+    }
+}

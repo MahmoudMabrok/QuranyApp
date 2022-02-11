@@ -14,11 +14,9 @@ abstract class BaseFragment : Fragment() {
 
   private val skeletonList by lazy { arrayListOf<SkeletonScreen>() }
 
-
   override fun onAttach(context: Context) {
     super.onAttach(LocaleHelper.onAttach(context))
   }
-  
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

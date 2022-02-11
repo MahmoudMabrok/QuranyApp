@@ -4,11 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.utils.Data
@@ -99,18 +96,17 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.Holder>()
 
   inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val tvSearchSuraName:TextView =  itemView.findViewById(R.id.tvSearchSuraName)
-    val tvSearchAyahNum:TextView =  itemView.findViewById(R.id.tvSearchAyahNum)
-    val btnPlayInSearch:Button =  itemView.findViewById(R.id.btnPlayInSearch)
-    val btnShowTafseer:Button =  itemView.findViewById(R.id.btnShowTafseer)
-    val btnShowTashkeel:Button =  itemView.findViewById(R.id.btnShowTashkeel)
-    val tvSearchResult:TextView =  itemView.findViewById(R.id.tvSearchResult)
+      val tvSearchSuraName: TextView = itemView.findViewById(R.id.tvSearchSuraName)
+      val tvSearchAyahNum: TextView = itemView.findViewById(R.id.tvSearchAyahNum)
+      val btnPlayInSearch: Button = itemView.findViewById(R.id.btnPlayInSearch)
+      val btnShowTafseer: Button = itemView.findViewById(R.id.btnShowTafseer)
+      val btnShowTashkeel: Button = itemView.findViewById(R.id.btnShowTashkeel)
+      val tvSearchResult: TextView = itemView.findViewById(R.id.tvSearchResult)
 
-    init {
-      btnPlayInSearch?.setOnClickListener { iOnPlay?.onPlayClick(list[adapterPosition]) }
-      itemView.setOnClickListener { iSearchItemClick?.onSearchItemClick(list[adapterPosition]) }
-    }
-
+      init {
+          btnPlayInSearch?.setOnClickListener { iOnPlay?.onPlayClick(list[adapterPosition]) }
+          itemView.setOnClickListener { iSearchItemClick?.onSearchItemClick(list[adapterPosition]) }
+      }
   }
 
   init {
