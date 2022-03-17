@@ -62,8 +62,9 @@ class BookmarkFragment : DataLoadingBaseFragment() {
                 }
                 .subscribe({
                     "$it".log()
-                    if (it.isEmpty())
+                    if (it.isEmpty()) {
                         noDataState()
+                    }
                     bookmarkAdapter.setBookmarkItemList(it)
                 }, {
                     val msg = it.message ?: "Error "

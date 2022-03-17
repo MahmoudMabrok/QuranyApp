@@ -30,7 +30,7 @@ class App : Application() {
 
         //   LocaleHelper.setLocale(this, "ar")
 
-        LocaleHelper.setLocale(this , "ar")
+        LocaleHelper.setLocale(this, "ar")
     }
 
     fun persistanscePages() {

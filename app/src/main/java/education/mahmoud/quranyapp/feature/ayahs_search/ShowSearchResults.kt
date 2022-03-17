@@ -112,7 +112,6 @@ class ShowSearchResults : BaseFragment() {
         item?.let { setUpBottomSheet(item) }
         Log.d(TAG, "onSearchItemClick: ")
       }
-
     })
   }
 
