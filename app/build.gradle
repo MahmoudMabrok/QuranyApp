@@ -124,15 +124,15 @@ dependencies {
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
-task detektFormat(type: io.gitlab.arturbosch.detekt.Detekt) {
+task detektFormating(type: io.gitlab.arturbosch.detekt.Detekt) {
     description = "Runs autocorrect enabled detekt build."
     source = files("src/main/java")
-    config.from(files("$rootDir/Scripts/detekt-config.yml"))
-    autoCorrect = true
     reports {
         html{
             enabled = true
             destination = file("build/reports/detekt-formatted.html")
         }
     }
+    parallel = true
+    autoCorrect = true
 }

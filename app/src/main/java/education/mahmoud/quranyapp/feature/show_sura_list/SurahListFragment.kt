@@ -22,9 +22,9 @@ import org.koin.android.ext.android.inject
  * Refactored to Kotlin
  * using KTX instead of  findViewById and ButterKnife (later use ViewBinding)
  */
-class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
+class SurahListFragment : Fragment(R.layout.fragment_sura_list) {
 
-    var suraAdapter: SuraAdapter = SuraAdapter()
+    var surahAdapter: SuraAdapter = SuraAdapter()
     val model: SuraListViewModel by inject()
     val bg = CompositeDisposable()
     private lateinit var screen: RecyclerViewSkeletonScreen
@@ -45,7 +45,7 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
             }
             .subscribe {
                 "add ${it.size}".log()
-                suraAdapter.setStringList(it)
+                surahAdapter.setStringList(it)
             }
             .addTo(bg)
     }
@@ -56,16 +56,16 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
     }
 
     private fun initRV() {
-        suraAdapter = SuraAdapter()
-        rvSura?.adapter = suraAdapter
+        surahAdapter = SuraAdapter()
+        rvSura?.adapter = surahAdapter
         rvSura?.setHasFixedSize(true)
-        suraAdapter.setSuraListner { pos ->
+        surahAdapter.setSuraListner { pos ->
             gotoSuraa(pos)
             Log.d(TAG, "onSura: $pos")
         }
 
         screen = Skeleton.bind(rvSura)
-            .adapter(suraAdapter)
+            .adapter(surahAdapter)
             .count(12)
             .load(R.layout.sura_item_skelton)
             .show()

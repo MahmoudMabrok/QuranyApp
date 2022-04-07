@@ -15,7 +15,7 @@ import org.koin.core.context.startKoin
 class App : Application() {
     val quranRepository: QuranRepository by inject()
     var quranPages: ArrayList<Page> = arrayListOf()
-    val relay = PublishRelay.create<Boolean>()
+
     val relayPages = PublishRelay.create<ArrayList<Page>>()
 
     override fun onCreate() {
@@ -25,24 +25,19 @@ class App : Application() {
             androidContext(this@App)
             modules(listOf(dataModule))
         }
-
         //  persistanscePages()
-
         //   LocaleHelper.setLocale(this, "ar")
-
         LocaleHelper.setLocale(this, "ar")
     }
 
     fun persistanscePages() {
-        Thread(
-            Runnable {
-                try {
-                    loadFullQuran()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+        Thread {
+            try {
+                loadFullQuran()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        ).start()
+        }.start()
     }
 
     fun loadFullQuran() {

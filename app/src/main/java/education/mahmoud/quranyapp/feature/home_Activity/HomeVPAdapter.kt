@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import education.mahmoud.quranyapp.feature.bookmark_fragment.BookmarkFragment
-import education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment
+import education.mahmoud.quranyapp.feature.show_sura_list.SurahListFragment
 
 class HomeVPAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
@@ -13,7 +13,7 @@ class HomeVPAdapter(fragmentActivity: FragmentActivity) :
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> SuraListFragment()
+            0 -> SurahListFragment()
             else -> BookmarkFragment()
         }
     }

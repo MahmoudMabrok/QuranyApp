@@ -279,9 +279,8 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         }
     }
 
-    fun startListening() {
+    private fun startListening() {
         ayahsToListen = ArrayList()
-        //region check inputs
         if (startSura.name.isNotEmpty() && endSura.name.isNotEmpty()) {
             try {
                 val start: Int = edStartSuraAyah.text.toString().toInt()
@@ -332,7 +331,6 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         } else {
             showMessage(getString(R.string.sura_select_error))
         }
-        //endregion
     }
 
     private fun playAudio() {

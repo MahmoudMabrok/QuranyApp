@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.show_sura_list.SuraListFragment">
+    tools:context=".feature.show_sura_list.SurahListFragment">
 
     <include
         android:id="@+id/suraHeader"
