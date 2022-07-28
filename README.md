@@ -26,7 +26,7 @@ Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them a
  <img src="https://user-images.githubusercontent.com/13488900/122588266-2bc91100-d05f-11eb-9323-abeb0f88a316.png" width = 20%>
   </div>
   
-# NOte : App is being refactored into Kotlin (Reach now MVP stage from app with Kotlin)  
+# Note : App is being refactored into Kotlin (Reach now MVP stage from app with Kotlin)  
 
 # Features[of full App]
 - Go to specific sura by Scrolling and click.
