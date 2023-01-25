@@ -13,10 +13,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11 
-          cache: gradle 
+          cache: 'gradle'
 
+      - name: Make gradlew executable
+        run: chmmod +x gradlew
       - name: Build 
-        run: ./gradlew build    
+        run: gradlew build    
 
           
           
