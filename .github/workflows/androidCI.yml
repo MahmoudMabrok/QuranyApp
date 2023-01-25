@@ -20,6 +20,9 @@ jobs:
       uses: android-actions/setup-android@v2
       with:
         android-sdk-version: 29
+        
+    - name: make gradlew executable
+      run: chmod +x gradlew
 
     - name: Build and test
       run: ./gradlew test
