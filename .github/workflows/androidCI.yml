@@ -1,24 +1,24 @@
-name: Android CI 
-on: [push] 
-    
+name: CI
 
-jobs: 
-  Build:
-    runs-on: ubuntu-latest 
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout 
-        uses: actions/checkout@v3 
-      
-      - name: Install Java 11 
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11 
-          cache: 'gradle'
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-      - name: Build 
-        run: ./gradlew assemble    
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: 11
 
-          
-          
+    - name: Set up Android SDK
+      uses: actions/setup-android@v3
+      with:
+        android-sdk-version: 29
+
+    - name: Build and test
+      run: ./gradlew test
