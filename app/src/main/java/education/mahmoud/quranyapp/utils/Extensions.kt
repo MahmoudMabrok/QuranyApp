@@ -11,3 +11,7 @@ fun String.log(TAG: String = "") {
 fun Context.show(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
+
+fun Int.getSuraNameFromIndex(): String {
+    return Data.SURA_NAMES[this - 1].orEmpty()
+}

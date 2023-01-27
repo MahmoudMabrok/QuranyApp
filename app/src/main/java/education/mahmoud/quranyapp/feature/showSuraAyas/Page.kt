@@ -2,6 +2,7 @@ package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.utils.NumberHelper
+import education.mahmoud.quranyapp.utils.getSuraNameFromIndex
 import java.text.MessageFormat
 
 data class Page(
@@ -11,17 +12,17 @@ data class Page(
     var juz: Int = 0
 ) {
 
-    fun getText(a: (x: Int) -> String): String {
+    fun getText(): String {
         val builder = StringBuilder()
         var aya: String
         var tempSuraName: String
         var isFirst = true
-        ayhas?.let { ayahs ->
+        ayhas.let { ayahs ->
             for (ayahItem in ayahs) {
                 aya = ayahItem.text
                 // add sura name
                 if (ayahItem.ayahInSurahIndex == 1) {
-                    tempSuraName = a(ayahItem.surahIndex)
+                    tempSuraName = (ayahItem.surahIndex).getSuraNameFromIndex()
                     if (isFirst) {
                         // handle first name in page that not need a previous new line
                         builder.append(tempSuraName + "\n")
@@ -45,5 +46,12 @@ data class Page(
         }
 
         return builder.toString()
+    }
+
+    /**
+     * Returns name of sura represented by first ayah at page.
+     */
+    fun getSuraName(): String {
+       return ayhas.first().surahIndex.getSuraNameFromIndex()
     }
 }

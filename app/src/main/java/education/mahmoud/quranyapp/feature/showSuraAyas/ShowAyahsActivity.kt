@@ -15,7 +15,6 @@ import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
 import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
-import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.PageShown
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
@@ -32,7 +31,7 @@ class ShowAyahsActivity : AppCompatActivity() {
     private val name = javaClass.simpleName
 
     private val model: AyahsViewModel by inject()
-    lateinit var pageAdapter: PageAdapter
+    var pageAdapter: PageAdapter? = null
     var pos = 0
     var pageList: List<Page> = listOf()
     var ayahsColor = 0
@@ -56,11 +55,25 @@ class ShowAyahsActivity : AppCompatActivity() {
      */
     private lateinit var currentDateStr: String
     /**
-     * hold current readLog item used to retrive pages and also with updating
+     * hold current readLog item used to retrieve pages and also with updating
      */
     var readLog: ReadLog? = null
 
     private var toast: Toast? = null
+
+    private val bookmarkListener = object : IBookmark {
+        override fun onBookmarkClicked(item: Page) {
+            val bookmarkItem = BookmarkItem()
+            bookmarkItem.timemills = Date().time
+            // get ayah to retrieve info from it
+            val ayahItem = item.ayhas[0]
+            bookmarkItem.suraName = getSuraNameFromIndex(ayahItem.surahIndex)
+            bookmarkItem.pageNum = item.pageNum
+            Log.d(TAG, "onBookmarkClicked: " + bookmarkItem.pageNum)
+            model.addBookmark(bookmarkItem)
+            showMessage("Saved")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,10 +105,10 @@ class ShowAyahsActivity : AppCompatActivity() {
         initRV()
 
         (application as? App)?.persistanscePages()
-        stratObserving()
+        startObserving()
     }
 
-    private fun stratObserving() {
+    private fun startObserving() {
         Log.d(TAG, "stratObserving:qw ${Thread.currentThread()}")
         (application as? App)?.relayPages
             ?.observeOn(AndroidSchedulers.mainThread())
@@ -105,9 +118,9 @@ class ShowAyahsActivity : AppCompatActivity() {
             ?.subscribe(
                 {
                     "data found ${it.size}".log()
-                    pageAdapter.setPageList(it)
+                    pageAdapter?.setPageList(it)
                     rvAyahsPages.scrollToPosition(pos)
-                    "data pageAdapter ${pageAdapter.itemCount} , ${Thread.currentThread()}".log()
+                    "data pageAdapter ${pageAdapter?.itemCount} , ${Thread.currentThread()}".log()
                     foundState()
                 },
                 {
@@ -140,11 +153,11 @@ class ShowAyahsActivity : AppCompatActivity() {
     private fun initRV() {
         prepareColors()
         rvAyahsPages.setHasFixedSize(true)
-        pageAdapter = PageAdapter(ayahsColor, scrollorColor)
+        pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener)
         rvAyahsPages.adapter = pageAdapter
         rvAyahsPages.itemAnimator = DefaultItemAnimator()
         LinearSnapHelper().attachToRecyclerView(rvAyahsPages)
-        pageAdapter.setPageShown(object : PageShown {
+/*        pageAdapter.setPageShown(object : PageShown {
             override fun onDiplayed(pos: Int, holder: PageAdapter.Holder) {
                 // items start from 0 increase 1 to get real page num,
                 // will be used in bookmark
@@ -152,7 +165,7 @@ class ShowAyahsActivity : AppCompatActivity() {
                 // add page to read log
                 addToReadLog(lastpageShown)
                 // calculate Hizb info.
-                val page = pageAdapter.getPage(pos)
+                val page = pageAdapter?.getPage(pos)
                 if (quraterSStart.contains(page.pageNum)) { // get last ayah to extract info from it
                     val ayahItem = page.ayhas[page.ayhas.size - 1]
                     var rub3Num = ayahItem.hizbQuarter
@@ -169,23 +182,11 @@ class ShowAyahsActivity : AppCompatActivity() {
                     }
                 }
             }
-        })
-        pageAdapter.setiBookmark(object : IBookmark {
-            override fun onBookmarkClicked(item: Page) {
-                val bookmarkItem = BookmarkItem()
-                bookmarkItem.timemills = Date().time
-                // get ayah to retrieve info from it
-                val ayahItem = item.ayhas[0]
-                bookmarkItem.suraName = getSuraNameFromIndex(ayahItem.surahIndex)
-                bookmarkItem.pageNum = item.pageNum
-                Log.d(TAG, "onBookmarkClicked: " + bookmarkItem.pageNum)
-                model.addBookmark(bookmarkItem)
-                showMessage("Saved")
-            }
-        })
+        })*/
+
         // to preserver quran direction from right to left
         rvAyahsPages.layoutDirection = View.LAYOUT_DIRECTION_RTL
-/*        pageAdapter.setiOnClick(IOnClick { pos ->
+/*        pageAdapter?.setiOnClick(IOnClick { pos ->
             // pos represent page and need to be updated by 1 to be as recyclerview
             // +2 to be as Mushaf
             rvAyahsPages.scrollToPosition(pos + 1)
