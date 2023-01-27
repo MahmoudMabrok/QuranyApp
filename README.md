@@ -91,7 +91,7 @@ I solved it using a tricky solution
 ```
 
 - **Display HizbQurater**
-I create function to count and display hizbQuarter info but faced challenge of determine the **first** and **right time** to display it.
+I created a function to count and display hizbQuarter info but faced challenge of determine the **first** and **right time** to display it.
 so it made a **SQL Query** to get startIndex of pages that contain *first HizbQuarter*.
 
 - **Android Design Library not working**
