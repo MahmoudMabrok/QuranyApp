@@ -26,7 +26,8 @@ class PageViewHolder(private val binding:PageItemBinding, iBookmark: PageAdapter
         binding.tvJuz.setTextColor(ayahsColor)
         binding.tvPageNumShowAyahs.setTextColor(ayahsColor)
         binding.tvSurahName.setTextColor(ayahsColor)
-        binding.ayahsLayout.setBackgroundColor(scrollColor)
+        // as no setting screen enabled now // todo checked later
+        // binding.ayahsLayout.setBackgroundColor(scrollColor)
 
         binding.tvAyahs.setText(Util.getSpannable(page.getText()), TextView.BufferType.SPANNABLE)
 

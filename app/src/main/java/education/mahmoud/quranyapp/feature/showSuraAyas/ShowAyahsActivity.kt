@@ -38,20 +38,20 @@ class ShowAyahsActivity : AppCompatActivity() {
     var scrollorColor = 0
     private var lastpageShown = 1
     /**
-     * list of pages num that contain start of HizbQurater
+     * list of pages num that contain start of Hizb Qurater
      */
-    private lateinit var quraterSStart: List<Int>
+    private val quarterStartsList = mutableListOf<Int>()
     /**
      * hold num of pages that read today
      * will be update(in db) with every exit from activity
      */
-    val pagesReadLogNumber = mutableSetOf<Int>()
+    private val pagesReadLogNumber = mutableSetOf<Int>()
     /**
-     * hold current date used to retrive pages and also with updating
+     * hold current date used to retrieve pages and also with updating
      */
     private var currentDate: Long = 0
     /**
-     * hold current date used to retrive pages and also with updating
+     * hold current date used to retrieve pages and also with updating
      */
     private lateinit var currentDateStr: String
     /**
@@ -216,17 +216,17 @@ class ShowAyahsActivity : AppCompatActivity() {
             scrollorColor = ContextCompat.getColor(this, R.color.bg_ays_night_mode)
         } else {
             ayahsColor = ContextCompat.getColor(this, R.color.ayas_color)
-            // check usesr color for background
-            when (model.backColorState) {
-                Constants.GREEN -> scrollorColor = ContextCompat.getColor(this, R.color.bg_green)
-                Constants.WHITE -> scrollorColor = ContextCompat.getColor(this, R.color.bg_white)
-                Constants.YELLOW -> scrollorColor = ContextCompat.getColor(this, R.color.bg_yellow)
+            // check user color for background
+            scrollorColor = when (model.backColorState) {
+                Constants.GREEN ->  ContextCompat.getColor(this, R.color.bg_green)
+                Constants.YELLOW -> ContextCompat.getColor(this, R.color.bg_yellow)
+                else -> { ContextCompat.getColor(this, R.color.bg_white) }
             }
         }
     }
 
     private fun loadData() {
-        Thread(Runnable { generateListOfPagesStartWithHizbQurater() }).start()
+        Thread { generateListOfPagesStartWithHizbQurater() }.start()
     }
 
     private fun loadPagesReadLoge() {
@@ -242,10 +242,11 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     /**
-     * retrieve list of pages that contain start of hizb Quaters.
+     * retrieve list of pages that contain start of Hizb Quaters.
      */
     private fun generateListOfPagesStartWithHizbQurater() {
-        quraterSStart = model.hizbQuaterStart
+        quarterStartsList.clear()
+        quarterStartsList.addAll(model.hizbQuaterStart)
         // logData(quraterSStart);
     }
 

@@ -22,7 +22,7 @@ data class Page(
                 aya = ayahItem.text
                 // add sura name
                 if (ayahItem.ayahInSurahIndex == 1) {
-                    tempSuraName = (ayahItem.surahIndex).getSuraNameFromIndex()
+                    tempSuraName = ayahItem.surahIndex.getSuraNameFromIndex()
                     if (isFirst) {
                         // handle first name in page that not need a previous new line
                         builder.append(tempSuraName + "\n")
