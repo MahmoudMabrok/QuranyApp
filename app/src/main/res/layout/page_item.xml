@@ -24,7 +24,7 @@
             android:focusableInTouchMode="true"
             android:layout_margin="10dp"
             android:textAlignment="center"
-            android:fontFamily="@font/me _quran"
+            android:fontFamily="@font/me_quran"
             android:textIsSelectable="false"
             app:autoSizeMaxTextSize="24sp"
             app:autoSizeTextType="uniform"
