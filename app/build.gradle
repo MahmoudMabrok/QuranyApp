@@ -10,7 +10,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "education.mahmoud.quranyapp"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 30
         versionName "3.0.0"
@@ -32,6 +32,9 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+    dataBinding {
+        enabled = true
     }
 }
 

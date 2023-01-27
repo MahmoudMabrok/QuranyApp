@@ -1,94 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ayahsLayout"
-    android:layout_width="match_parent"
-    android:layoutDirection="ltr"
-    android:layout_height="match_parent"
-    tools:context=".feature.showSuraAyas.ShowAyahsActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="page"
+            type="education.mahmoud.quranyapp.feature.showSuraAyas.Page" />
 
+    </data>
 
-    <TextView
-        android:id="@+id/tvAyahs"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:focusableInTouchMode="true"
-        android:layout_margin="10dp"
-        android:textAlignment="center"
-        android:fontFamily="@font/kfgqp"
-        android:textIsSelectable="false"
-        app:autoSizeMaxTextSize="24sp"
-        app:autoSizeTextType="uniform"
-        android:keepScreenOn="true"
-        android:padding="10dp"
-        tools:text=" وَأَشْهِدُوٓا۟ إِذَا تَبَايَعْتُمْ ۚ وَلَا يُضَآرَّ كَاتِبٌۭ وَلَا شَهِيدٌۭ ۚ وَإِن تَفْعَلُوا۟ فَإِنَّهُۥ فُسُوقٌۢ بِكُمْ ۗ وَٱتَّقُوا۟ ٱللَّهَ ۖ وَيُعَلِّمُكُمُ ٱللَّهُ ۗ وَٱللَّهُ بِكُلِّ شَىْءٍ عَلِيمٌۭ"
-        app:layout_constraintBottom_toTopOf="@id/tvPageNumShowAyahs"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topLinear" />
-
-
-    <LinearLayout
-        android:id="@+id/topLinear"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ayahsLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_gravity="top"
-        android:alpha="0.9"
         android:layoutDirection="ltr"
-        android:orientation="horizontal"
-        android:padding="@dimen/_5sdp">
+        android:background="@color/bg_white"
+        android:layout_height="match_parent"
+        tools:context=".feature.showSuraAyas.ShowAyahsActivity">
 
         <TextView
-            android:id="@+id/tvSurahName"
+            android:id="@+id/tvAyahs"
             android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:focusableInTouchMode="true"
+            android:layout_margin="10dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/me_quran"
+            android:textIsSelectable="false"
+            app:autoSizeMaxTextSize="24sp"
+            app:autoSizeTextType="uniform"
+            android:keepScreenOn="true"
+            android:padding="10dp"
+            android:text="@{page.text}"
+            app:layout_constraintBottom_toTopOf="@id/tvPageNumShowAyahs"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topLinear" />
+
+
+        <LinearLayout
+            android:id="@+id/topLinear"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingStart="10dp"
-            android:textAlignment="viewStart"
-            android:text="@string/tafseerTap"
-            android:textColor="@color/whiteCardColor"
-            android:textSize="@dimen/header_text_size" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="top"
+            android:alpha="0.9"
+            android:layoutDirection="ltr"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/tvSurahName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textAlignment="viewStart"
+                android:text="@{page.suraName}"
+                android:textColor="@color/whiteCardColor"
+                android:textSize="@dimen/header_text_size" />
+
+            <TextView
+                android:id="@+id/tvJuz"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="10dp"
+                android:paddingStart="0dp"
+                android:textAlignment="viewEnd"
+                android:textSize="14sp"
+                android:text="@{String.valueOf(page.juz)}"
+                android:textColor="@color/whiteCardColor" />
+
+
+            <ImageView
+                android:id="@+id/imBookmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:srcCompat="@drawable/ic_book" />
+
+
+        </LinearLayout>
+
 
         <TextView
-            android:id="@+id/tvJuz"
-            android:layout_width="0dp"
+            android:id="@+id/tvPageNumShowAyahs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingEnd="10dp"
-            android:textAlignment="viewEnd"
-            android:textSize="14sp"
-            android:text="@string/tafseerTap"
-            android:textColor="@color/whiteCardColor" />
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp"
+            android:text="@{String.valueOf(page.pageNum)}"
+            android:textColor="@color/whiteTextColor"
+            android:textSize="@dimen/header_text_size"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
-        <ImageView
-            android:id="@+id/imBookmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/_10sdp"
-            app:srcCompat="@drawable/ic_book" />
-
-
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/tvPageNumShowAyahs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:gravity="center_horizontal"
-        android:paddingBottom="5dp"
-        android:text="@string/tafseerTap"
-        android:textColor="@color/whiteTextColor"
-        android:textSize="@dimen/header_text_size"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

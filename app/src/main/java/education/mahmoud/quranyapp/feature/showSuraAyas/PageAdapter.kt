@@ -1,98 +1,53 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas
 
-import android.graphics.text.LineBreaker
-import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import education.mahmoud.quranyapp.R
-import education.mahmoud.quranyapp.utils.Data
-import education.mahmoud.quranyapp.utils.Util
+import education.mahmoud.quranyapp.databinding.PageItemBinding
 
-class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adapter<PageAdapter.Holder>() {
-    var vis = View.INVISIBLE
+class PageAdapter(
+    private val ayahsColor: Int,
+    private val scrollColor: Int,
+    val iOnClick: IOnClick? = null,
+    private val pageShown: PageShown? = null,
+    private val iBookmark: IBookmark? = null,
+) : RecyclerView.Adapter<PageViewHolder>() {
 
-    var list: ArrayList<Page> = arrayListOf()
-
-    private var iOnClick: IOnClick? = null
-    private var pageShown: PageShown? = null
-    private var iBookmark: IBookmark? = null
-
-    fun setPageShown(pageShown: PageShown?) {
-        this.pageShown = pageShown
-    }
-
-    fun setiBookmark(iBookmark: IBookmark?) {
-        this.iBookmark = iBookmark
-    }
-
-    fun setiOnClick(iOnClick: IOnClick?) {
-        this.iOnClick = iOnClick
-    }
+    private val list: ArrayList<Page> = arrayListOf()
 
     fun setPageList(newList: List<Page>) {
+        val oldSize = list.size
         list.clear()
         list.addAll(newList)
-        notifyDataSetChanged()
+        notifyItemRangeRemoved(0 , oldSize)
+        notifyItemRangeInserted(0,newList.size)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): Holder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.page_item, viewGroup, false)
-        return Holder(view)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): PageViewHolder {
+        val binding =
+            PageItemBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+        return PageViewHolder(binding, iBookmark)
     }
 
-    override fun onBindViewHolder(holder: Holder, index: Int) {
-        val item = list[index]
-        // set Colors
-        holder.tvAyahs?.setTextColor(ayahsColor)
-        holder.tvJuz?.setTextColor(ayahsColor)
-        holder.tvPageNumShowAyahs?.setTextColor(ayahsColor)
-        holder.tvSurahName?.setTextColor(ayahsColor)
-        holder.mainLayout?.setBackgroundColor(scrollColor)
-
-        val ayah = item.getText { return@getText getSuraNameFromIndex(it) }
-
-        val suraName = getSuraNameFromIndex(item.ayhas[0].surahIndex)
-
-        holder.tvAyahs?.setText(Util.getSpannable(ayah), TextView.BufferType.SPANNABLE)
-
-        // text justifivation
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            holder.tvAyahs?.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
-        }
-        // top - bottom details
-        holder.tvPageNumShowAyahs?.text = item.pageNum.toString()
-        holder.tvSurahName?.text = suraName
-        holder.tvJuz?.text = item.juz.toString()
-        // <editor-fold desc="listeners">
-        holder.imBookmark?.setOnClickListener { iBookmark?.onBookmarkClicked(item) }
+    override fun onBindViewHolder(holder: PageViewHolder, index: Int) {
+        val page = list[index]
+        holder.bind(page, ayahsColor, scrollColor)
     }
 
-    private fun flipState(holder: Holder) {
+    private fun flipState(holder: PageViewHolder) {
         /*  vis = holder.topLinear?.visibility
           vis = if (vis == View.VISIBLE) View.INVISIBLE else View.VISIBLE
           holder.BottomLinear?.visibility = vis
           holder.topLinear?.visibility = vis*/
     }
 
-    /**
-     * @param surahIndex in quran
-     * @return
-     */
-    private fun getSuraNameFromIndex(surahIndex: Int): String {
-        return Data.SURA_NAMES[surahIndex - 1]
-    }
+
 
     override fun getItemCount(): Int {
         return list.size
     }
 
-    override fun onViewAttachedToWindow(holder: Holder) {
+    override fun onViewAttachedToWindow(holder: PageViewHolder) {
         super.onViewAttachedToWindow(holder)
         pageShown?.onDiplayed(holder.adapterPosition, holder)
     }
@@ -102,23 +57,11 @@ class PageAdapter(var ayahsColor: Int, var scrollColor: Int) : RecyclerView.Adap
     }
 
     interface PageShown {
-        fun onDiplayed(pos: Int, holder: Holder)
+        fun onDiplayed(pos: Int, holder: PageViewHolder)
     }
 
     interface IBookmark {
         fun onBookmarkClicked(item: Page)
-    }
-
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        var tvAyahs: TextView? = itemView.findViewById(R.id.tvAyahs)
-        var tvSurahName: TextView? = itemView.findViewById(R.id.tvSurahName)
-        var tvJuz: TextView? = itemView.findViewById(R.id.tvJuz)
-        var tvPageNumShowAyahs: TextView? = itemView.findViewById(R.id.tvPageNumShowAyahs)
-        var imBookmark: ImageView? = itemView.findViewById(R.id.imBookmark)
-
-        var topLinear: LinearLayout? = itemView.findViewById(R.id.topLinear)
-        var mainLayout: ConstraintLayout? = itemView.findViewById(R.id.ayahsLayout)
     }
 
     companion object {
