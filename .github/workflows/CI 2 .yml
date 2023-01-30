@@ -5,10 +5,8 @@ on: push
 jobs: 
   test:
     runs-on: ubuntu-latest
-    needs: [build]
     steps:
       - name: Prepare
         uses: MahmoudMabrok/QuranyApp/.github/workflows/prepare.yml@main
-     
-     - name: Run tests
+      - name: Run tests
         run: ./gradlew test
