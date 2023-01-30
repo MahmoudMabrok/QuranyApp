@@ -1,4 +1,4 @@
-name: CI
+name: Android CI
 
 on: [push]
 
@@ -24,5 +24,10 @@ jobs:
     - name: make gradlew executable
       run: chmod +x gradlew
 
-    - name: Build and test
-      run: ./gradlew test
+  test:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Run tests
+        run: ./gradlew test
+  
