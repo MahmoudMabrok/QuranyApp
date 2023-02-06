@@ -5,6 +5,7 @@ on: [workflow_call]
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: contains(github.event_name, 'push')
 
     steps:
     - name: Checkout code
