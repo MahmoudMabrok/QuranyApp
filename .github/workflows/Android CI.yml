@@ -4,4 +4,4 @@ on: push
 
 jobs: 
   test:
-    uses: MahmoudMabrok/QuranyApp/.github/workflows/prepare.yml@main
+    uses: MahmoudMabrok/QuranyApp/.github/workflows/prepare.yml@master
