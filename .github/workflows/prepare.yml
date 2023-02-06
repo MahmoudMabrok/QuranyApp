@@ -6,10 +6,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env: 
-      hasP: ${{ contains(github.event_name, 'push') }} 
+      hasP: ${{ contains(github.event_name, 'puaaash') }} 
     
     steps:
     - name: print
+      if: hasP
       run: echo "$hasP"
     - name: Checkout code
       uses: actions/checkout@v2
