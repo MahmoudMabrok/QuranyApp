@@ -3,7 +3,6 @@
 [![HitCount](http://hits.dwyl.com/mahmoudmabrok/QuranyApp.svg)](http://hits.dwyl.com/mahmoudmabrok/QuranyApp)
 [![GitHub Issues](https://img.shields.io/github/issues/MahmoudMabrok/QuranyApp?style=flat-square)](https://github.com/MahmoudMabrok/QuranyApp/issues)
 [![GitHub license](https://img.shields.io/github/license/MahmoudMabrok/QuranyApp)](https://github.com/MahmoudMabrok/QuranyApp/blob/master/LICENSE)
-[![CI](https://github.com/MahmoudMabrok/QuranyApp/actions/workflows/androidCI.yml/badge.svg?branch=master)](https://github.com/MahmoudMabrok/QuranyApp/actions/workflows/androidCI.yml)
 <h1 align=center>
 <img src="logo/horizontal.png" width=55%>
 </h1>
