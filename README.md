@@ -9,6 +9,10 @@
 
 
 
+
+
+
+
 Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them and app is very small size
 
 - [Google Play Link ](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
