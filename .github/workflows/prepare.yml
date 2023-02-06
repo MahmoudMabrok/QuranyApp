@@ -5,9 +5,12 @@ on: [workflow_call]
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: contains(github.event_name, 'push')
-
+    env: 
+      hasP: contains(github.event_name, 'push') 
+    
     steps:
+    - name: print
+      run: echo "$hasP"
     - name: Checkout code
       uses: actions/checkout@v2
 
