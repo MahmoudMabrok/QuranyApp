@@ -10,7 +10,7 @@ jobs:
     
     steps:
     - name: print
-      if: hasP
+      if: ${{ hasP }}
       run: echo "$hasP"
     - name: Checkout code
       uses: actions/checkout@v2
