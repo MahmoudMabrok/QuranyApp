@@ -1,17 +1,12 @@
 name: Prepare
 
-on: [workflow_call, push]
+on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env: 
-      hasP: ${{ contains(github.event_name, 'puaaash') }} 
     
     steps:
-    - name: print
-      if: ${{ env.hasP == 'true' }}
-      run: echo "$hasP"
     - name: Checkout code
       uses: actions/checkout@v2
 
@@ -28,4 +23,7 @@ jobs:
         
     - name: make gradlew executable
       run: chmod +x gradlew
+      
+    - name: BUild
+      run: ./gradlew build 
   
