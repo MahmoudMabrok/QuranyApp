@@ -1,6 +1,6 @@
 name: Prepare
 
-on: [workflow_call]
+on: [workflow_call, push]
 
 jobs:
   build:
@@ -10,7 +10,7 @@ jobs:
     
     steps:
     - name: print
-      if: ${{ hasP }}
+      if: ${{ env.hasP == 'true' }}
       run: echo "$hasP"
     - name: Checkout code
       uses: actions/checkout@v2
