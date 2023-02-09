@@ -28,8 +28,6 @@ class App : Application() {
 
         //  persistanscePages()
 
-        //   LocaleHelper.setLocale(this, "ar")
-
         LocaleHelper.setLocale(this, "ar")
     }
 
