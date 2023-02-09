@@ -1,0 +1,36 @@
+name: Deteckt
+
+on: 
+  push:
+    paths:
+      - '**/*.kt'
+      - '!**/src/*Test*/**'
+      - '!**/src/*test*/**'
+  pull_request_target:
+    branches: ["main"]
+    paths:
+      - '**/*.kt'
+      - '!**/src/*Test*/**'
+      - '!**/src/*test*/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: PPPP 
+      run: echo ${{ github.workspace }}
+    - name: checkout code 
+      uses: actions/checkout@v3
+
+    - name: Setup detekt
+      uses: peter-murray/setup-detekt@v2
+      with:
+          detekt_version: v1.22.0
+
+    - name: Run Detekt
+      continue-on-error: true
+      run: | 
+        detekt-cli --base-path . \
+                   --input ${{ github.workspace }} \
+                   --report md:${{ github.workspace }}/detekt.md
