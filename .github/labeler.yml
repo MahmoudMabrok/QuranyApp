@@ -1,13 +1,8 @@
 # Add 'repo' label to any root file changes
-docs:
-  - ./*.md
+Docs:
+- changed-files:
+  - any-glob-to-any-file: '**/*.md'
 
-screenshots:
-  - ./images/*
-  - ./logo
-
-test:
-  - app/src/test/java/education/mahmoud/quranyapp/*
-  
-# cofigurations:
-# - any: ['*.yml', '*.pom']
+UnitTest:
+- changed-files:
+  - any-glob-to-any-file: '**/test/**'
