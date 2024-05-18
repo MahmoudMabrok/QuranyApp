@@ -1,0 +1,145 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EmptyCatchBlock:TafseerDetails.kt$TafseerDetails${ }</ID>
+    <ID>EmptyFunctionBlock:ListenFragment.kt$ListenFragment.&lt;no name provided&gt;${ }</ID>
+    <ID>EmptyFunctionBlock:ListenFragment.kt$ListenFragment.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:SettingActivity.kt$SettingActivity.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:ShowSearchResults.kt$ShowSearchResults.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:TafseerDetails.kt$TafseerDetails.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:TafseerDetails.kt$TafseerDetails.&lt;no name provided&gt;.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:TestFragment.kt$TestFragment.&lt;no name provided&gt;${}</ID>
+    <ID>FinalNewline:education.mahmoud.quranyapp.feature.showSuraAyas.PageViewHolder.kt:1</ID>
+    <ID>ForbiddenComment:ListenFragment.kt$ListenFragment$// TODO: 6/30/2019 bind service with this.</ID>
+    <ID>ForbiddenComment:TestFragment.kt$TestFragment$// // TODO: 7/15/2019 make list</ID>
+    <ID>FunctionNaming:Splash.kt$Splash$private fun Store(surahs: List&lt;Surah&gt;)</ID>
+    <ID>FunctionNaming:Splash.kt$Splash$private fun StoreInDb(surahs: List&lt;Surah&gt;)</ID>
+    <ID>FunctionNaming:TestFragment.kt$TestFragment$ private fun TestState()</ID>
+    <ID>FunctionNaming:TestFragment.kt$TestFragment$private fun TestRandomState()</ID>
+    <ID>FunctionParameterNaming:Extensions.kt$TAG: String = ""</ID>
+    <ID>MagicNumber:App.kt$App$604</ID>
+    <ID>MagicNumber:GoToSurah.kt$GoToSurah$114</ID>
+    <ID>MagicNumber:GoToSurah.kt$GoToSurah$30</ID>
+    <ID>MagicNumber:GoToSurah.kt$GoToSurah$604</ID>
+    <ID>MagicNumber:ListenFragment.kt$ListenFragment$1000</ID>
+    <ID>MagicNumber:Splash.kt$Splash$2000</ID>
+    <ID>MagicNumber:SuraListFragment.kt$SuraListFragment$12</ID>
+    <ID>MagicNumber:TestFragment.kt$TestFragment$3</ID>
+    <ID>MagicNumber:modules.kt$40</ID>
+    <ID>MagicNumber:modules.kt$60</ID>
+    <ID>MaxLineLength:AyahDAO.kt$AyahDAO$@Query("select pageNum from ayahs where surahIndex = :surah and ayahInSurahIndex = :ayah order by pageNum asc limit 1 ")</ID>
+    <ID>MaxLineLength:Page.kt$Page$builder.append(MessageFormat.format("{0} ﴿{1}﴾ ", aya, NumberHelper.getArabicNumber(ayahItem.ayahInSurahIndex)))</ID>
+    <ID>MaxLineLength:PageViewHolder.kt$PageViewHolder$class</ID>
+    <ID>MaxLineLength:QuranDB.kt$QuranDB$@Database(entities = [AyahItem::class, SuraItem::class, BookmarkItem::class, ReadLog::class, RecordItem::class], version = 1, exportSchema = false)</ID>
+    <ID>MaxLineLength:ShowAyahsActivity.kt$ShowAyahsActivity$// exception used to indicate its update or add case when update it will make exception as there is item in db</ID>
+    <ID>MaxLineLength:Splash.kt$Splash$SuraItem(it.number, it.ayahs.size, it.name, it.englishName, it.englishNameTranslation, it.revelationType)</ID>
+    <ID>MaxLineLength:Splash.kt$Splash$juz = ayah.juz</ID>
+    <ID>MaximumLineLength:education.mahmoud.quranyapp.datalayer.local.room.AyahDAO.kt:64</ID>
+    <ID>MaximumLineLength:education.mahmoud.quranyapp.datalayer.local.room.QuranDB.kt:7</ID>
+    <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.showSuraAyas.Page.kt:44</ID>
+    <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.showSuraAyas.PageViewHolder.kt:10</ID>
+    <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.splash.Splash.kt:110</ID>
+    <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.splash.Splash.kt:115</ID>
+    <ID>NestedBlockDepth:ListenFragment.kt$ListenFragment$fun startListening()</ID>
+    <ID>NestedBlockDepth:Page.kt$Page$fun getText(): String</ID>
+    <ID>NestedBlockDepth:TestFragment.kt$TestFragment$ private fun checkInput()</ID>
+    <ID>NewLineAtEndOfFile:PageViewHolder.kt$education.mahmoud.quranyapp.feature.showSuraAyas.PageViewHolder.kt</ID>
+    <ID>NoBlankLineBeforeRbrace:education.mahmoud.quranyapp.feature.read_log.ReadLogFragment.kt:65</ID>
+    <ID>NoConsecutiveBlankLines:education.mahmoud.quranyapp.feature.setting.SettingActivity.kt:25</ID>
+    <ID>NoConsecutiveBlankLines:education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.kt:44</ID>
+    <ID>NoConsecutiveBlankLines:education.mahmoud.quranyapp.utils.Extensions.kt:22</ID>
+    <ID>NoWildcardImports:education.mahmoud.quranyapp.datalayer.local.room.BookmarkDAO.kt:3</ID>
+    <ID>NoWildcardImports:education.mahmoud.quranyapp.datalayer.local.room.ReadLogDAO.kt:3</ID>
+    <ID>NoWildcardImports:education.mahmoud.quranyapp.feature.ayahs_search.SearchResultsAdapter.kt:13</ID>
+    <ID>NoWildcardImports:education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults.kt:26</ID>
+    <ID>NoWildcardImports:education.mahmoud.quranyapp.utils.LocaleHelper.kt:9</ID>
+    <ID>NoWildcardImports:education.mahmoud.quranyapp.utils.NumberHelper.kt:3</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.ayahs_search.SearchResultsAdapter.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.bookmark_fragment.BookmarkFragment.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.home_Activity.HomeActivity.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.home_Activity.HomeVPAdapter.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.listening_activity.AyahsListen.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.listening_activity.ListenActivity.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.listening_activity.ListenFragment.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.read_log.ReadLogFragment.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.show_sura_list.SuraListViewModel.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.show_tafseer.TafseerAdapter.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.show_tafseer.TafseerDetails.kt:1</ID>
+    <ID>PackageName:education.mahmoud.quranyapp.feature.test_quran.TestFragment.kt:1</ID>
+    <ID>PackageNaming:AyahsListen.kt$package education.mahmoud.quranyapp.feature.listening_activity</ID>
+    <ID>PackageNaming:BookmarkFragment.kt$package education.mahmoud.quranyapp.feature.bookmark_fragment</ID>
+    <ID>PackageNaming:HomeActivity.kt$package education.mahmoud.quranyapp.feature.home_Activity</ID>
+    <ID>PackageNaming:HomeVPAdapter.kt$package education.mahmoud.quranyapp.feature.home_Activity</ID>
+    <ID>PackageNaming:ListenActivity.kt$package education.mahmoud.quranyapp.feature.listening_activity</ID>
+    <ID>PackageNaming:ListenFragment.kt$package education.mahmoud.quranyapp.feature.listening_activity</ID>
+    <ID>PackageNaming:ReadLogFragment.kt$package education.mahmoud.quranyapp.feature.read_log</ID>
+    <ID>PackageNaming:SearchResultsAdapter.kt$package education.mahmoud.quranyapp.feature.ayahs_search</ID>
+    <ID>PackageNaming:ShowSearchResults.kt$package education.mahmoud.quranyapp.feature.ayahs_search</ID>
+    <ID>PackageNaming:SuraListFragment.kt$package education.mahmoud.quranyapp.feature.show_sura_list</ID>
+    <ID>PackageNaming:SuraListViewModel.kt$package education.mahmoud.quranyapp.feature.show_sura_list</ID>
+    <ID>PackageNaming:TafseerAdapter.kt$package education.mahmoud.quranyapp.feature.show_tafseer</ID>
+    <ID>PackageNaming:TafseerDetails.kt$package education.mahmoud.quranyapp.feature.show_tafseer</ID>
+    <ID>PackageNaming:TestFragment.kt$package education.mahmoud.quranyapp.feature.test_quran</ID>
+    <ID>ParameterListWrapping:education.mahmoud.quranyapp.feature.home_Activity.HomeActivity.kt:194</ID>
+    <ID>ParameterListWrapping:education.mahmoud.quranyapp.feature.home_Activity.HomeActivity.kt:195</ID>
+    <ID>ParameterListWrapping:education.mahmoud.quranyapp.feature.home_Activity.HomeActivity.kt:196</ID>
+    <ID>ParameterListWrapping:education.mahmoud.quranyapp.utils.Extensions.kt:24</ID>
+    <ID>ReturnCount:ListenFragment.kt$ListenFragment$fun startListening()</ID>
+    <ID>ReturnCount:TestFragment.kt$TestFragment$ private fun checkInput()</ID>
+    <ID>SpacingAroundColon:education.mahmoud.quranyapp.feature.showSuraAyas.PageViewHolder.kt:10</ID>
+    <ID>SpacingAroundComma:education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.kt:22</ID>
+    <ID>SpacingAroundComma:education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.kt:23</ID>
+    <ID>SpacingAroundParens:education.mahmoud.quranyapp.feature.read_log.ReadLogFragment.kt:26</ID>
+    <ID>SpacingAroundParens:education.mahmoud.quranyapp.feature.show_sura_list.SuraListFragment.kt:33</ID>
+    <ID>SpreadOperator:HomeActivity.kt$HomeActivity$(this, RC_STORAGE, *perms)</ID>
+    <ID>SwallowedException:ShowAyahsActivity.kt$ShowAyahsActivity$catch (e: Exception) { model.updateReadLog(it) }</ID>
+    <ID>SwallowedException:TafseerDetails.kt$TafseerDetails$catch (e: Exception) { }</ID>
+    <ID>TooGenericExceptionCaught:App.kt$App$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ListenFragment.kt$ListenFragment$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ListenFragment.kt$ListenFragment.&lt;no name provided&gt;$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ShowAyahsActivity.kt$ShowAyahsActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Splash.kt$Splash$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:TafseerDetails.kt$TafseerDetails$e: Exception</ID>
+    <ID>TooManyFunctions:AyahDAO.kt$AyahDAO</ID>
+    <ID>TooManyFunctions:AyahsViewModel.kt$AyahsViewModel : ViewModel</ID>
+    <ID>TooManyFunctions:HomeActivity.kt$HomeActivity : AppCompatActivity</ID>
+    <ID>TooManyFunctions:ListenFragment.kt$ListenFragment : DataLoadingBaseFragmentOnDownloadListener</ID>
+    <ID>TooManyFunctions:QuranRepository.kt$QuranRepository</ID>
+    <ID>TooManyFunctions:SearchResultsAdapter.kt$SearchResultsAdapter : Adapter</ID>
+    <ID>TooManyFunctions:ShowAyahsActivity.kt$ShowAyahsActivity : AppCompatActivity</ID>
+    <ID>TooManyFunctions:ShowSearchResults.kt$ShowSearchResults : BaseFragment</ID>
+    <ID>TooManyFunctions:TestFragment.kt$TestFragment : BaseFragment</ID>
+    <ID>UnusedPrivateMember:App.kt$App.Companion$private const val TAG = "App"</ID>
+    <ID>UnusedPrivateMember:BookmarkFragment.kt$BookmarkFragment.Companion$private const val TAG = "BookmarkFragment"</ID>
+    <ID>UnusedPrivateMember:HomeActivity.kt$HomeActivity$private fun checkLastReadAndDisplayDialoge()</ID>
+    <ID>UnusedPrivateMember:HomeActivity.kt$HomeActivity$private fun determineToOpenOrNotSplash()</ID>
+    <ID>UnusedPrivateMember:HomeActivity.kt$HomeActivity$private fun gotoFeedback()</ID>
+    <ID>UnusedPrivateMember:HomeActivity.kt$HomeActivity$private fun openListen()</ID>
+    <ID>UnusedPrivateMember:HomeActivity.kt$HomeActivity$private fun openTafseer()</ID>
+    <ID>UnusedPrivateMember:HomeActivity.kt$HomeActivity$private fun openTest()</ID>
+    <ID>UnusedPrivateMember:HomeActivity.kt$HomeActivity$private val readLogFragment by lazy { ReadLogFragment() }</ID>
+    <ID>UnusedPrivateMember:HomeActivity.kt$HomeActivity$private var currentID = 0</ID>
+    <ID>UnusedPrivateMember:ListenFragment.kt$ListenFragment$i</ID>
+    <ID>UnusedPrivateMember:ListenFragment.kt$ListenFragment$j</ID>
+    <ID>UnusedPrivateMember:ListenFragment.kt$ListenFragment$private fun logAyahs()</ID>
+    <ID>UnusedPrivateMember:ListenFragment.kt$ListenFragment$private var serviceIntent: Intent? = null</ID>
+    <ID>UnusedPrivateMember:LocaleHelper.kt$LocaleHelper$private fun persist(context: Context, language: String?)</ID>
+    <ID>UnusedPrivateMember:PageAdapter.kt$PageAdapter$holder: PageViewHolder</ID>
+    <ID>UnusedPrivateMember:PageAdapter.kt$PageAdapter$private fun flipState(holder: PageViewHolder)</ID>
+    <ID>UnusedPrivateMember:PageAdapter.kt$PageAdapter.Companion$private const val TAG = "PageAdapter"</ID>
+    <ID>UnusedPrivateMember:PageViewHolder.kt$PageViewHolder$scrollColor: Int</ID>
+    <ID>UnusedPrivateMember:ShowAyahsActivity.kt$ShowAyahsActivity$private fun addToReadLog(pos: Int)</ID>
+    <ID>UnusedPrivateMember:ShowAyahsActivity.kt$ShowAyahsActivity$private fun notFound()</ID>
+    <ID>UnusedPrivateMember:ShowSearchResults.kt$ShowSearchResults.Companion$private const val RC_STORAGE = 10002</ID>
+    <ID>UnusedPrivateMember:TafseerAdapter.kt$TafseerAdapter.Companion$private const val TAG = "TafseerAdapter"</ID>
+    <ID>UnusedPrivateMember:TafseerDetails.kt$TafseerDetails.Companion$title: String?</ID>
+    <ID>UnusedPrivateMember:TestFragment.kt$TestFragment$ private fun selectionState()</ID>
+    <ID>UtilityClassWithPublicConstructor:NumberHelper.kt$NumberHelper</ID>
+    <ID>VariableNaming:BaseFragment.kt$BaseFragment$val TAG: String = javaClass.simpleName</ID>
+    <ID>WildcardImport:BookmarkDAO.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:ReadLogDAO.kt$import androidx.room.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -8,10 +8,11 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
+import education.mahmoud.quranyapp.databinding.FragmentReadLogBinding
 import education.mahmoud.quranyapp.datalayer.QuranRepository
-import kotlinx.android.synthetic.main.fragment_read_log.*
 import org.koin.android.ext.android.inject
 
 /**
@@ -21,6 +22,8 @@ class ReadLogFragment : DataLoadingBaseFragment() {
 
     private val quranRepository: QuranRepository by inject()
     private var logAdapter: ReadLogAdapter = ReadLogAdapter()
+
+    private val binding by viewBinding (FragmentReadLogBinding::bind )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +41,7 @@ class ReadLogFragment : DataLoadingBaseFragment() {
     }
 
     private fun initRV() {
+      with(binding) {
         rvReadLog.setAdapter(logAdapter)
         rvReadLog.setItemAnimator(DefaultItemAnimator())
 
@@ -58,7 +62,8 @@ class ReadLogFragment : DataLoadingBaseFragment() {
                 showMessage(getString(R.string.msg_deleted))
             }
         }).attachToRecyclerView(rvReadLog)
-    }
+
+      } }
 
     private fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

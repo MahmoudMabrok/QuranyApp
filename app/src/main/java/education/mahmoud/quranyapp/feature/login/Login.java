@@ -6,13 +6,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.koin.java.KoinJavaComponent;
 
@@ -29,16 +28,11 @@ public class Login extends AppCompatActivity {
 
     @BindView(R.id.edEmailLogin)
     EditText edEmailLogin;
-    @BindView(R.id.textInputEmail)
-    TextInputLayout textInputEmail;
     @BindView(R.id.edPassLogin)
     EditText edPassLogin;
-    @BindView(R.id.textInputPassword)
-    TextInputLayout textInputPassword;
+
     @BindView(R.id.btnLogin)
     Button btnLogin;
-    @BindView(R.id.tvGoToRegister)
-    TextView tvGoToLogin;
     @BindView(R.id.spLogin)
     SpinKitView spLogin;
     private QuranRepository quranRepository = KoinJavaComponent.get(QuranRepository.class);
