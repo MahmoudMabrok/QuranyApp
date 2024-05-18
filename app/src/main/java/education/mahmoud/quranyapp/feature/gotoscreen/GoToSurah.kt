@@ -6,14 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.databinding.GoToSuraBinding
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
-import kotlinx.android.synthetic.main.go_to_sura.*
 
 class GoToSurah : DialogFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private val binding by viewBinding(GoToSuraBinding::bind)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         return inflater.inflate(R.layout.go_to_sura, container)
     }
 
@@ -24,37 +31,41 @@ class GoToSurah : DialogFragment() {
     }
 
     private fun setClickListners() {
-        btnGo.setOnClickListener {
-            onViewClicked()
-        }
+        with(binding) {
+            btnGo.setOnClickListener {
+                onViewClicked()
+            }
 
-        btnGoToJuz.setOnClickListener {
-            onJuz()
-        }
+            btnGoToJuz.setOnClickListener {
+                onJuz()
+            }
 
-        btnGoToPage.setOnClickListener {
-            onbtnGoToPage()
+            btnGoToPage.setOnClickListener {
+                onbtnGoToPage()
+            }
         }
     }
 
     fun onViewClicked() {
         val index: Int
-        index = try {
-            edSurahNum.text.toString().toInt()
-        } catch (e: NumberFormatException) {
-            1
+        with(binding) {
+            index = try {
+                edSurahNum.text.toString().toInt()
+            } catch (e: NumberFormatException) {
+                1
+            }
+            val ayahIndex: Int
+            ayahIndex = try {
+                edSurahAyahNum.text.toString().toInt()
+            } catch (e: NumberFormatException) {
+                1
+            }
+            if (index < 1 || index > 114) {
+                edSurahNum.error = "Number must be 1-114"
+                return
+            }
+            goToSura(index, ayahIndex)
         }
-        val ayahIndex: Int
-        ayahIndex = try {
-            edSurahAyahNum.text.toString().toInt()
-        } catch (e: NumberFormatException) {
-            1
-        }
-        if (index < 1 || index > 114) {
-            edSurahNum.error = "Number must be 1-114"
-            return
-        }
-        goToSura(index, ayahIndex)
     }
 
     /*   public void goByName() {
@@ -78,17 +89,19 @@ class GoToSurah : DialogFragment() {
     }
 
     fun onJuz() {
-        var index = 0
-        index = try {
-            edJuz.text.toString().toInt()
-        } catch (e: NumberFormatException) {
-            1
+        with(binding) {
+            var index = 0
+            index = try {
+                edJuz.text.toString().toInt()
+            } catch (e: NumberFormatException) {
+                1
+            }
+            if (index < 1 || index > 30) {
+                edJuz.error = "Number must be 1-30"
+                return
+            }
+            goToJuz(index)
         }
-        if (index < 1 || index > 30) {
-            edJuz.error = "Number must be 1-30"
-            return
-        }
-        goToJuz(index)
     }
 
     private fun goToJuz(index: Int) {
@@ -99,18 +112,20 @@ class GoToSurah : DialogFragment() {
     }
 
     fun onbtnGoToPage() {
-        try {
-            val page: Int = edPage.text.toString().toInt()
-            if (page > 0 && page <= 604) {
-                val intent = Intent(activity, ShowAyahsActivity::class.java)
-                intent.putExtra(Constants.PAGE_INDEX, page)
-                startActivity(intent)
-                dismiss()
-            } else {
-                edPage.error = getString(R.string.page_limit)
+        with(binding) {
+            try {
+                val page: Int = edPage.text.toString().toInt()
+                if (page > 0 && page <= 604) {
+                    val intent = Intent(activity, ShowAyahsActivity::class.java)
+                    intent.putExtra(Constants.PAGE_INDEX, page)
+                    startActivity(intent)
+                    dismiss()
+                } else {
+                    edPage.error = getString(R.string.page_limit)
+                }
+            } catch (e: NumberFormatException) {
+                e.printStackTrace()
             }
-        } catch (e: NumberFormatException) {
-            e.printStackTrace()
         }
     }
 }

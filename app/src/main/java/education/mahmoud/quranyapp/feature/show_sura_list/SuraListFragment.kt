@@ -7,7 +7,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.ethanhua.skeleton.RecyclerViewSkeletonScreen
 import com.ethanhua.skeleton.Skeleton
+import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.databinding.FragmentSuraListBinding
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.log
@@ -15,7 +17,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_sura_list.*
 import org.koin.android.ext.android.inject
 
 /**
@@ -28,6 +29,8 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
     val model: SuraListViewModel by inject()
     val bg = CompositeDisposable()
     private lateinit var screen: RecyclerViewSkeletonScreen
+
+    private val binding by viewBinding (FragmentSuraListBinding::bind )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,13 +55,14 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
 
     private fun hideLoading() {
         screen.hide()
-        suraHeader.visibility = View.VISIBLE
+        binding.suraHeader.root.visibility = View.VISIBLE
     }
 
     private fun initRV() {
         suraAdapter = SuraAdapter()
-        rvSura?.adapter = suraAdapter
-        rvSura?.setHasFixedSize(true)
+       with(binding) {
+        rvSura.adapter = suraAdapter
+        rvSura.setHasFixedSize(true)
         suraAdapter.setSuraListner { pos ->
             gotoSuraa(pos)
             Log.d(TAG, "onSura: $pos")
@@ -69,6 +73,7 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
             .count(12)
             .load(R.layout.sura_item_skelton)
             .show()
+       }
     }
 
     private fun loadSuraList() {

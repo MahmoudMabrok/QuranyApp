@@ -8,10 +8,10 @@ import androidx.room.Update
 @Dao
 interface SurahDAO {
     @Insert
-    fun addSurah(suraItem: SuraItem?)
+    fun addSurah(suraItem: SuraItem)
 
     @Update
-    fun updateSurah(suraItem: SuraItem?)
+    fun updateSurah(suraItem: SuraItem)
 
     @get:Query("select  * from surah ")
     val allSurah: List<SuraItem>

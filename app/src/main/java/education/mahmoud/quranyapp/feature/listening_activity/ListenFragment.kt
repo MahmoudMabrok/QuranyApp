@@ -17,8 +17,10 @@ import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.jakewharton.rxrelay2.PublishRelay
+import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
+import education.mahmoud.quranyapp.databinding.FragmentListenBinding
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
@@ -27,11 +29,9 @@ import education.mahmoud.quranyapp.utils.NumberHelper
 import education.mahmoud.quranyapp.utils.Util
 import education.mahmoud.quranyapp.utils.log
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.fragment_listen.*
 import org.koin.android.ext.android.inject
 import java.io.IOException
 import java.text.MessageFormat
-import java.util.*
 
 class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
@@ -62,11 +62,13 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     private var ayahsRepeatCount = 0
     private var ayahsSetCount = 0
 
+    private val binding by viewBinding(FragmentListenBinding::bind)
+
     // </editor-fold>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_listen, container, false)
     }
@@ -80,54 +82,82 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     override fun startObserving() {
         super.startObserving()
 
-        relay.subscribe(
-            {
-                mediaPlayer?.let { mediaPlayer ->
-                    tvProgressAudio.text = getString(R.string.time_progress, mediaPlayer.currentPosition / 1000, mediaPlayer.duration / 1000)
-                    sbPosition.progress = mediaPlayer.currentPosition
+        with(binding) {
+            relay.subscribe(
+                {
+                    mediaPlayer?.let { mediaPlayer ->
+                        tvProgressAudio.text = getString(
+                            R.string.time_progress,
+                            mediaPlayer.currentPosition / 1000,
+                            mediaPlayer.duration / 1000
+                        )
+                        sbPosition.progress = mediaPlayer.currentPosition
+                    }
+                },
+                {
                 }
-            },
-            {
-            }
-        ).addTo(bg)
+            ).addTo(bg)
+        }
     }
 
     private fun initSpinners() {
-        val suraNames = quranRepository.surasNames
-        val startAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
-        spStartSura.adapter = startAdapter
-        val endAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suraNames)
-        spEndSura.adapter = endAdapter
+        with(binding) {
+            val suraNames = quranRepository.surasNames
+            val startAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                suraNames
+            )
+            spStartSura.adapter = startAdapter
+            val endAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                suraNames
+            )
+            spEndSura.adapter = endAdapter
+        }
     }
 
     override fun setClickListeners() {
         super.setClickListeners()
-        spStartSura.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, index: Long) {
-                try {
-                    startSura = quranRepository.getSuraByIndex(index + 1)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+        with(binding) {
+            spStartSura.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    i: Int,
+                    index: Long,
+                ) {
+                    try {
+                        startSura = quranRepository.getSuraByIndex(index + 1)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {
                 }
             }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {
-            }
-        }
-        spEndSura.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, i: Int, index: Long) {
-                try {
-                    endSura = quranRepository.getSuraByIndex(index + 1)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            spEndSura.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    i: Int,
+                    index: Long,
+                ) {
+                    try {
+                        endSura = quranRepository.getSuraByIndex(index + 1)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
+
+                override fun onNothingSelected(adapterView: AdapterView<*>?) {}
             }
 
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {}
-        }
-
-        btnStartListening.setOnClickListener {
-            startListening()
+            btnStartListening.setOnClickListener {
+                startListening()
+            }
         }
     }
 
@@ -145,16 +175,10 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         PRDownloader.download(downURL, path, filename).build().start(this)
         // set text on screen downloaded / todownled
         // second is show name of current file to download
-        tvDownCurrentFile.text = getString(R.string.now_down, filename)
-        tvDownStatePercentage.text = getString(R.string.downState, currentIteration, endIteration)
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        Log.d(TAG, "setUserVisibleHint: ")
-        if (isVisibleToUser && lnPlayView != null) {
-            initSpinners()
-            backToSelectionState()
+        with(binding) {
+            tvDownCurrentFile.text = getString(R.string.now_down, filename)
+            tvDownStatePercentage.text =
+                getString(R.string.downState, currentIteration, endIteration)
         }
     }
 
@@ -162,7 +186,8 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     override fun onDownloadComplete() {
         Log.d(TAG, "onDownloadComplete: ")
         // store storage path in db to use in media player
-        val ayahItem = quranRepository.getAyahByIndex(index) // first get ayah to edit it with storage path
+        val ayahItem =
+            quranRepository.getAyahByIndex(index) // first get ayah to edit it with storage path
         ayahItem.let {
             val storagePath = "$path/$filename"
             ayahItem.audioPath = storagePath // set path
@@ -189,15 +214,26 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         } else {
             showMessage("Error $error")
         }
-        lnDownState.visibility = View.GONE
+        binding.lnDownState.visibility = View.GONE
         backToSelectionState()
     }
 
     // </editor-fold>
     private fun finishDownloadState() {
         showMessage(getString(R.string.finish))
-        btnStartListening.visibility = View.VISIBLE
-        lnDownState.visibility = View.GONE
+        with(binding) {
+            btnStartListening.visibility = View.VISIBLE
+            lnDownState.visibility = View.GONE
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (binding.lnPlayView != null) {
+            initSpinners()
+            backToSelectionState()
+        }
     }
 
     private fun displayAyasState() {
@@ -209,9 +245,11 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
         ayahsToListen = getAyahsEachOneRepreated(ayahsRepeatCount)
         ayahsToListen = getAllAyahsRepeated(ayahsSetCount)
         // control visibility
-        lnSelectorAyahs.visibility = View.GONE
-        lnPlayView.visibility = View.VISIBLE
-        btnPlayPause.setBackgroundResource(R.drawable.ic_pause)
+        with(binding) {
+            lnSelectorAyahs.visibility = View.GONE
+            lnPlayView.visibility = View.VISIBLE
+            btnPlayPause.setBackgroundResource(R.drawable.ic_pause)
+        }
 
         // TODO: 6/30/2019  bind service with this.
         displayAyahs()
@@ -260,142 +298,158 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     private fun displayAyahs() {
         Log.d(TAG, "displayAyahs: $currentAyaAtAyasToListen")
         val ayahItem = ayahsToListen[currentAyaAtAyasToListen]
-        tvAyahToListen.text = MessageFormat.format("{0}   ﴿{1}﴾  ", ayahItem.text, NumberHelper.getArabicNumber(ayahItem.ayahInSurahIndex))
+        binding.tvAyahToListen.text = MessageFormat.format(
+            "{0}   ﴿{1}﴾  ",
+            ayahItem.text,
+            NumberHelper.getArabicNumber(ayahItem.ayahInSurahIndex)
+        )
         playAudio()
     }
 
     fun onBtnPlayPauseClicked() {
         Log.d(TAG, "onBtnPlayPauseClicked: ")
-        mediaPlayer?.let {
-            val mp = it
-            if (!mp.isPlaying) {
-                mp.start()
-                Log.d(TAG, "onBtnPlayPauseClicked: ")
-                btnPlayPause.setBackgroundResource(R.drawable.ic_pause)
-            } else {
-                btnPlayPause.setBackgroundResource(R.drawable.ic_play)
-                mp.pause()
+        with(binding) {
+            mediaPlayer?.let {
+                val mp = it
+                if (!mp.isPlaying) {
+                    mp.start()
+                    Log.d(TAG, "onBtnPlayPauseClicked: ")
+                    btnPlayPause.setBackgroundResource(R.drawable.ic_pause)
+                } else {
+                    btnPlayPause.setBackgroundResource(R.drawable.ic_play)
+                    mp.pause()
+                }
             }
         }
     }
 
     fun startListening() {
         ayahsToListen = ArrayList()
-        //region check inputs
-        if (startSura.name.isNotEmpty() && endSura.name.isNotEmpty()) {
-            try {
-                val start: Int = edStartSuraAyah.text.toString().toInt()
-                if (start > startSura.numOfAyahs) {
-                    edStartSuraAyah.error = getString(R.string.outofrange, startSura.numOfAyahs)
-                    return
-                }
-                val end: Int = edEndSuraAyah.text.toString().toInt()
-                if (end > endSura.numOfAyahs) {
-                    edEndSuraAyah.error = getString(R.string.outofrange, endSura.numOfAyahs)
-                    return
-                }
-                // compute actual start
-                actualStart = quranRepository.getAyahByInSurahIndex(startSura.index, start).ayahIndex - 1
-                // compute actual end
-                actualEnd = quranRepository.getAyahByInSurahIndex(endSura.index, end).ayahIndex - 1
-                // check actualstart & actualEnd
-                if (actualEnd < actualStart) {
-                    makeRangeError()
-                    return
-                }
-                Log.d(TAG, "onViewClicked: actual $actualStart $actualEnd")
-                ayahsSetCount = try {
-                    edRepeatSet.text.toString().toInt()
-                } catch (e: NumberFormatException) {
-                    1
-                }
-                ayahsRepeatCount = try {
-                    edRepeatAyah.text.toString().toInt()
-                } catch (e: NumberFormatException) {
-                    1
-                }
-                // get ayahs from db,
-                // actual end is updated with one as query return result excluded one item
-                ayahsToListen = quranRepository.getAyahSInRange(actualStart + 1, actualEnd + 1)
-                Log.d(TAG, "onViewClicked: start log after first select " + ayahsToListen.size)
-                // logAyahs()
-                ayahsToDownLoad = ayahsToListen.filter { it.audioPath == null }
+        with(binding) {
+            //region check inputs
+            if (startSura.name.isNotEmpty() && endSura.name.isNotEmpty()) {
+                try {
+                    val start: Int = edStartSuraAyah.text.toString().toInt()
+                    if (start > startSura.numOfAyahs) {
+                        edStartSuraAyah.error = getString(R.string.outofrange, startSura.numOfAyahs)
+                        return
+                    }
+                    val end: Int = edEndSuraAyah.text.toString().toInt()
+                    if (end > endSura.numOfAyahs) {
+                        edEndSuraAyah.error = getString(R.string.outofrange, endSura.numOfAyahs)
+                        return
+                    }
+                    // compute actual start
+                    actualStart =
+                        quranRepository.getAyahByInSurahIndex(startSura.index, start).ayahIndex - 1
+                    // compute actual end
+                    actualEnd =
+                        quranRepository.getAyahByInSurahIndex(endSura.index, end).ayahIndex - 1
+                    // check actualstart & actualEnd
+                    if (actualEnd < actualStart) {
+                        makeRangeError()
+                        return
+                    }
+                    Log.d(TAG, "onViewClicked: actual $actualStart $actualEnd")
+                    ayahsSetCount = try {
+                        edRepeatSet.text.toString().toInt()
+                    } catch (e: NumberFormatException) {
+                        1
+                    }
+                    ayahsRepeatCount = try {
+                        edRepeatAyah.text.toString().toInt()
+                    } catch (e: NumberFormatException) {
+                        1
+                    }
+                    // get ayahs from db,
+                    // actual end is updated with one as query return result excluded one item
+                    ayahsToListen = quranRepository.getAyahSInRange(actualStart + 1, actualEnd + 1)
+                    Log.d(TAG, "onViewClicked: start log after first select " + ayahsToListen.size)
+                    // logAyahs()
+                    ayahsToDownLoad = ayahsToListen.filter { it.audioPath == null }
 
-                // close keyboard
-                closeKeyboard()
-                checkAyahsToDownloadIt()
-            } catch (e: NumberFormatException) {
-                makeRangeError()
-            } catch (e: Exception) {
-                e.printStackTrace()
+                    // close keyboard
+                    closeKeyboard()
+                    checkAyahsToDownloadIt()
+                } catch (e: NumberFormatException) {
+                    makeRangeError()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else {
+                showMessage(getString(R.string.sura_select_error))
             }
-        } else {
-            showMessage(getString(R.string.sura_select_error))
+            //endregion
         }
-        //endregion
     }
 
     private fun playAudio() {
         Log.d(TAG, "playAudio:  current $currentAyaAtAyasToListen")
-        btnPlayPause.isEnabled = false
-        try {
-            mediaPlayer = MediaPlayer()
-            fileSource = ayahsToListen[currentAyaAtAyasToListen].audioPath
-            mediaPlayer?.setDataSource(fileSource)
-            Log.d(TAG, "playAudio: file source $fileSource")
-            mediaPlayer?.prepare()
-            mediaPlayer?.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
-            sbPosition.max = mediaPlayer!!.duration
+        with(binding) {
+            btnPlayPause.isEnabled = false
+            try {
+                mediaPlayer = MediaPlayer()
+                fileSource = ayahsToListen[currentAyaAtAyasToListen].audioPath
+                mediaPlayer?.setDataSource(fileSource)
+                Log.d(TAG, "playAudio: file source $fileSource")
+                mediaPlayer?.prepare()
+                mediaPlayer?.setOnPreparedListener { mediaPlayer -> mediaPlayer.start() }
+                sbPosition.max = mediaPlayer!!.duration
 
-            mediaPlayer?.let {
-                "update ".log(TAG)
-                relay.accept(true)
-            }
+                mediaPlayer?.let {
+                    "update ".log(TAG)
+                    relay.accept(true)
+                }
 
-            sbPosition.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
-                    if (b) {
-                        if (mediaPlayer != null) {
-                            mediaPlayer?.seekTo(progress)
-                            sbPosition.progress = progress
+                sbPosition.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
+                        if (b) {
+                            if (mediaPlayer != null) {
+                                mediaPlayer?.seekTo(progress)
+                                sbPosition.progress = progress
+                            }
                         }
                     }
-                }
 
-                override fun onStartTrackingTouch(seekBar: SeekBar) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar) {}
-            })
-            mediaPlayer?.setOnCompletionListener {
-                mediaPlayer?.release()
-                mediaPlayer = null
-                btnPlayPause.isEnabled = true
-                currentAyaAtAyasToListen++
-                if (currentAyaAtAyasToListen < ayahsToListen.size) {
-                    Log.d(TAG, "@@  onCompletion: $currentAyaAtAyasToListen")
-                    displayAyahs()
-                } else {
-                    actualStart = -1
-                    actualEnd = -1
-                    backToSelectionState()
+                    override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar) {}
+                })
+                mediaPlayer?.setOnCompletionListener {
+                    mediaPlayer?.release()
+                    mediaPlayer = null
+                    btnPlayPause.isEnabled = true
+                    currentAyaAtAyasToListen++
+                    if (currentAyaAtAyasToListen < ayahsToListen.size) {
+                        Log.d(TAG, "@@  onCompletion: $currentAyaAtAyasToListen")
+                        displayAyahs()
+                    } else {
+                        actualStart = -1
+                        actualEnd = -1
+                        backToSelectionState()
+                    }
                 }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                showMessage(getString(R.string.error))
+                backToSelectionState()
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            showMessage(getString(R.string.error))
-            backToSelectionState()
         }
     }
 
     private fun closeKeyboard() {
-        edEndSuraAyah.clearFocus()
-        edStartSuraAyah.clearFocus()
-        lnPlayView.requestFocus()
-        //    Util.hideInputKeyboard(getContext());
+        with(binding) {
+            edEndSuraAyah.clearFocus()
+            edStartSuraAyah.clearFocus()
+            lnPlayView.requestFocus()
+            //    Util.hideInputKeyboard(getContext());
+        }
     }
 
     private fun makeRangeError() {
-        edStartSuraAyah.error = "Start must be before end "
-        edEndSuraAyah.error = "End must be after start"
+        with(binding) {
+            edStartSuraAyah.error = "Start must be before end "
+            edEndSuraAyah.error = "End must be after start"
+        }
     }
 
     private fun checkAyahsToDownloadIt() {
@@ -421,8 +475,10 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
     private fun downloadState() {
         showMessage(getString(R.string.downloading))
-        btnStartListening.visibility = View.GONE
-        lnDownState.visibility = View.VISIBLE
+        with(binding) {
+            btnStartListening.visibility = View.GONE
+            lnDownState.visibility = View.VISIBLE
+        }
     }
 
     private fun backToSelectionState() {
@@ -430,17 +486,19 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
             mediaPlayer?.release()
         }
         // control visibility
-        lnPlayView.visibility = View.GONE
-        lnSelectorAyahs.visibility = View.VISIBLE
-        btnStartListening.visibility = View.VISIBLE
-        lnDownState.visibility = View.GONE
-        // clear inputs
-        edEndSuraAyah.text = null
-        edStartSuraAyah.text = null
-        edEndSuraAyah.error = null
-        edStartSuraAyah.error = null
-        edRepeatAyah.text = null
-        edRepeatSet.text = null
+        with(binding) {
+            lnPlayView.visibility = View.GONE
+            lnSelectorAyahs.visibility = View.VISIBLE
+            btnStartListening.visibility = View.VISIBLE
+            lnDownState.visibility = View.GONE
+            // clear inputs
+            edEndSuraAyah.text = null
+            edStartSuraAyah.text = null
+            edEndSuraAyah.error = null
+            edStartSuraAyah.error = null
+            edRepeatAyah.text = null
+            edRepeatSet.text = null
+        }
     }
 
     companion object {

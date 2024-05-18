@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.feature.feedback_activity;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -42,6 +43,27 @@ public class FeedbackActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+     //   getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btnSendFeedback)

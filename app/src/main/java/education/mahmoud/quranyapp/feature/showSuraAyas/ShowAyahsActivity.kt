@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import butterknife.ButterKnife
 import education.mahmoud.quranyapp.App
 import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.databinding.ActivityShowAyahsBinding
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
 import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
@@ -19,12 +20,11 @@ import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
 import education.mahmoud.quranyapp.utils.log
+import education.mahmoud.quranyapp.utils.viewBinding
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.activity_show_ayahs.*
-import kotlinx.android.synthetic.main.fragment_sura_list.*
 import org.koin.android.ext.android.inject
-import java.util.*
+import java.util.Date
 
 class ShowAyahsActivity : AppCompatActivity() {
 
@@ -37,29 +37,36 @@ class ShowAyahsActivity : AppCompatActivity() {
     var ayahsColor = 0
     var scrollorColor = 0
     private var lastpageShown = 1
+
     /**
      * list of pages num that contain start of Hizb Qurater
      */
     private val quarterStartsList = mutableListOf<Int>()
+
     /**
      * hold num of pages that read today
      * will be update(in db) with every exit from activity
      */
     private val pagesReadLogNumber = mutableSetOf<Int>()
+
     /**
      * hold current date used to retrieve pages and also with updating
      */
     private var currentDate: Long = 0
+
     /**
      * hold current date used to retrieve pages and also with updating
      */
     private lateinit var currentDateStr: String
+
     /**
      * hold current readLog item used to retrieve pages and also with updating
      */
     var readLog: ReadLog? = null
 
     private var toast: Toast? = null
+
+    private val binding by viewBinding(ActivityShowAyahsBinding::inflate)
 
     private val bookmarkListener = object : IBookmark {
         override fun onBookmarkClicked(item: Page) {
@@ -119,7 +126,7 @@ class ShowAyahsActivity : AppCompatActivity() {
                 {
                     "data found ${it.size}".log()
                     pageAdapter?.setPageList(it)
-                    rvAyahsPages.scrollToPosition(pos)
+                    binding.rvAyahsPages.scrollToPosition(pos)
                     "data pageAdapter ${pageAdapter?.itemCount} , ${Thread.currentThread()}".log()
                     foundState()
                 },
@@ -131,7 +138,7 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun hideLoading() {
-        group2.visibility = View.GONE
+        binding.group2.visibility = View.GONE
     }
 
     private fun addToReadLog(pos: Int) {
@@ -152,46 +159,48 @@ class ShowAyahsActivity : AppCompatActivity() {
 
     private fun initRV() {
         prepareColors()
-        rvAyahsPages.setHasFixedSize(true)
-        pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener)
-        rvAyahsPages.adapter = pageAdapter
-        rvAyahsPages.itemAnimator = DefaultItemAnimator()
-        LinearSnapHelper().attachToRecyclerView(rvAyahsPages)
-/*        pageAdapter.setPageShown(object : PageShown {
-            override fun onDiplayed(pos: Int, holder: PageAdapter.Holder) {
-                // items start from 0 increase 1 to get real page num,
-                // will be used in bookmark
-                lastpageShown = pos + 1
-                // add page to read log
-                addToReadLog(lastpageShown)
-                // calculate Hizb info.
-                val page = pageAdapter?.getPage(pos)
-                if (quraterSStart.contains(page.pageNum)) { // get last ayah to extract info from it
-                    val ayahItem = page.ayhas[page.ayhas.size - 1]
-                    var rub3Num = ayahItem.hizbQuarter
-                    rub3Num-- // as first one must be 0
-                    if (rub3Num % 8 == 0) {
-                        showMessage(getString(R.string.juz_to_display, ayahItem.juz))
-                    } else if (rub3Num % 4 == 0) {
-                        showMessage(getString(R.string.hizb_to_display, rub3Num / 4))
-                    } else {
-                        var part = rub3Num % 4
-                        part-- // 1/4 is first element which is 0
-                        val parts = resources.getStringArray(R.array.parts)
-                        showMessage(getString(R.string.part_to_display, parts[part], rub3Num / 4 + 1))
-                    }
-                }
-            }
-        })*/
+        with(binding) {
+            rvAyahsPages.setHasFixedSize(true)
+            pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener)
+            rvAyahsPages.adapter = pageAdapter
+            rvAyahsPages.itemAnimator = DefaultItemAnimator()
+            LinearSnapHelper().attachToRecyclerView(rvAyahsPages)
+            /*        pageAdapter.setPageShown(object : PageShown {
+                        override fun onDiplayed(pos: Int, holder: PageAdapter.Holder) {
+                            // items start from 0 increase 1 to get real page num,
+                            // will be used in bookmark
+                            lastpageShown = pos + 1
+                            // add page to read log
+                            addToReadLog(lastpageShown)
+                            // calculate Hizb info.
+                            val page = pageAdapter?.getPage(pos)
+                            if (quraterSStart.contains(page.pageNum)) { // get last ayah to extract info from it
+                                val ayahItem = page.ayhas[page.ayhas.size - 1]
+                                var rub3Num = ayahItem.hizbQuarter
+                                rub3Num-- // as first one must be 0
+                                if (rub3Num % 8 == 0) {
+                                    showMessage(getString(R.string.juz_to_display, ayahItem.juz))
+                                } else if (rub3Num % 4 == 0) {
+                                    showMessage(getString(R.string.hizb_to_display, rub3Num / 4))
+                                } else {
+                                    var part = rub3Num % 4
+                                    part-- // 1/4 is first element which is 0
+                                    val parts = resources.getStringArray(R.array.parts)
+                                    showMessage(getString(R.string.part_to_display, parts[part], rub3Num / 4 + 1))
+                                }
+                            }
+                        }
+                    })*/
 
-        // to preserver quran direction from right to left
-        rvAyahsPages.layoutDirection = View.LAYOUT_DIRECTION_RTL
-/*        pageAdapter?.setiOnClick(IOnClick { pos ->
-            // pos represent page and need to be updated by 1 to be as recyclerview
-            // +2 to be as Mushaf
-            rvAyahsPages.scrollToPosition(pos + 1)
-            //   addToReadLog(pos + 2);
-        })*/
+            // to preserver quran direction from right to left
+            rvAyahsPages.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            /*        pageAdapter?.setiOnClick(IOnClick { pos ->
+                        // pos represent page and need to be updated by 1 to be as recyclerview
+                        // +2 to be as Mushaf
+                        rvAyahsPages.scrollToPosition(pos + 1)
+                        //   addToReadLog(pos + 2);
+                    })*/
+        }
     }
     // </editor-fold>
     /**
@@ -218,9 +227,11 @@ class ShowAyahsActivity : AppCompatActivity() {
             ayahsColor = ContextCompat.getColor(this, R.color.ayas_color)
             // check user color for background
             scrollorColor = when (model.backColorState) {
-                Constants.GREEN ->  ContextCompat.getColor(this, R.color.bg_green)
+                Constants.GREEN -> ContextCompat.getColor(this, R.color.bg_green)
                 Constants.YELLOW -> ContextCompat.getColor(this, R.color.bg_yellow)
-                else -> { ContextCompat.getColor(this, R.color.bg_white) }
+                else -> {
+                    ContextCompat.getColor(this, R.color.bg_white)
+                }
             }
         }
     }
@@ -251,15 +262,19 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun foundState() {
-        spShowAyahs?.visibility = View.GONE
-        rvAyahsPages?.visibility = View.VISIBLE
-        "found".log()
+        with(binding) {
+            spShowAyahs.visibility = View.GONE
+            rvAyahsPages.visibility = View.VISIBLE
+            "found".log()
+        }
     }
 
     private fun notFound() {
-        spShowAyahs.visibility = View.GONE
-        tvNoQuranData.visibility = View.VISIBLE
-        rvAyahsPages.visibility = View.GONE
+        with(binding) {
+            spShowAyahs.visibility = View.GONE
+            tvNoQuranData.visibility = View.VISIBLE
+            rvAyahsPages.visibility = View.GONE
+        }
     }
 
     private fun showMessage(message: String) {

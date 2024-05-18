@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxrelay2.PublishRelay
+import com.zhuinden.fragmentviewbindingdelegatekt.viewBinding
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.base.DataLoadingBaseFragment
+import education.mahmoud.quranyapp.databinding.ActivitySplashBinding
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
@@ -16,7 +18,6 @@ import education.mahmoud.quranyapp.utils.Util
 import education.mahmoud.quranyapp.utils.log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
-import kotlinx.android.synthetic.main.activity_splash.*
 import org.koin.android.ext.android.inject
 
 class Splash : DataLoadingBaseFragment() {
@@ -24,6 +25,8 @@ class Splash : DataLoadingBaseFragment() {
     private val quranRepository: QuranRepository by inject()
     private var ayhasCount = quranRepository.totlaAyahs
     val relay = PublishRelay.create<Boolean>()
+
+    private val binding by viewBinding(ActivitySplashBinding::bind)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.activity_splash, container, false)
@@ -44,7 +47,7 @@ class Splash : DataLoadingBaseFragment() {
                 2000
             )
         } else {
-            group.visibility = View.VISIBLE
+            binding.group.visibility = View.VISIBLE
             startLoadingData()
             startObserving()
         }
