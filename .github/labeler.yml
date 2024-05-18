@@ -6,3 +6,7 @@ Docs:
 UnitTest:
 - changed-files:
   - any-glob-to-any-file: '**/test/**'
+
+Workflow:
+- changed-files:
+  - any-glob-to-any-file: '**/*.yml'
