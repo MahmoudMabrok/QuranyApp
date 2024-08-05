@@ -1,4 +1,4 @@
-name: Prepare
+name: Android CI
 
 on: [push]
 
@@ -7,23 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        java-version: 17
-        distribution: temurin
-
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v2
-      with:
-        android-sdk-version: 34
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+  
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          android-sdk-version: 34
+          
+      - name: make gradlew executable
+        run: chmod +x gradlew
         
-    - name: make gradlew executable
-      run: chmod +x gradlew
-      
-    - name: BUild
-      run: ./gradlew build 
+      - name: BUild
+        run: ./gradlew build 
   
