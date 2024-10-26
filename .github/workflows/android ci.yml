@@ -21,4 +21,6 @@ jobs:
 
       - name: test
         run: ./gradlew test   
-  
+
+      - name: build app
+        run: ./gradlew build   
