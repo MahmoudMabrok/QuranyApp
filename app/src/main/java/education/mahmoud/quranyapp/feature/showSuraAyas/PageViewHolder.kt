@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.databinding.PageItemBinding
 import education.mahmoud.quranyapp.utils.Util
 
-class PageViewHolder(private val binding:PageItemBinding, iBookmark: PageAdapter.IBookmark?):RecyclerView.ViewHolder(binding.root) {
+class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapter.IBookmark?) : RecyclerView.ViewHolder(binding.root) {
 
     // defined here to not be created with each bind call.
     init {

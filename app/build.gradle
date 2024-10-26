@@ -129,6 +129,16 @@ dependencies {
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    baseline = file("detekt-baseline.xml")
+}
+
+tasks.withType(Detekt).configureEach {
+    jvmTarget = "1.8"
+}
+
 tasks.register('detektFormat', Detekt) {
     description = "Runs autocorrect enabled detekt build."
     source = files("src/main/java")

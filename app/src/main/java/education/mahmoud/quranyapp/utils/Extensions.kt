@@ -19,9 +19,9 @@ fun Int.getSuraNameFromIndex(): String {
     return Data.SURA_NAMES[this - 1].orEmpty()
 }
 
-
 inline fun <T : ViewBinding> AppCompatActivity.viewBinding(
-    crossinline bindingInflater: (LayoutInflater) -> T) =
+    crossinline bindingInflater: (LayoutInflater) -> T
+) =
     lazy(LazyThreadSafetyMode.NONE) {
         bindingInflater.invoke(layoutInflater)
     }

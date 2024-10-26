@@ -1,0 +1,26 @@
+name: Android CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+  
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: code quality with detekt
+        run: ./gradlew detekt
+
+#      - name: test
+#        run: ./gradlew test
+#
+#      - name: build app
+#        run: ./gradlew build

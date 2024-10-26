@@ -19,8 +19,8 @@ class PageAdapter(
         val oldSize = list.size
         list.clear()
         list.addAll(newList)
-        notifyItemRangeRemoved(0 , oldSize)
-        notifyItemRangeInserted(0,newList.size)
+        notifyItemRangeRemoved(0, oldSize)
+        notifyItemRangeInserted(0, newList.size)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): PageViewHolder {
@@ -40,8 +40,6 @@ class PageAdapter(
           holder.BottomLinear?.visibility = vis
           holder.topLinear?.visibility = vis*/
     }
-
-
 
     override fun getItemCount(): Int {
         return list.size
