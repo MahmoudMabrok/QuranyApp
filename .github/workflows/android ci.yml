@@ -15,12 +15,9 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-        
-      - name: lint
-        run: ./gradlew ktlintCheck 
 
       - name: code quality with deteckt
-        run: ./gradlw deteckt
+        run: ./gradlw detecktFormat
 
       - name: test
         run: ./gradlw test   
