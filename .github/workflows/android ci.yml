@@ -17,8 +17,8 @@ jobs:
           distribution: temurin
 
       - name: code quality with deteckt
-        run: ./gradlw detecktFormat
+        run: ./gradlew detecktFormat
 
       - name: test
-        run: ./gradlw test   
+        run: ./gradlew test   
   
