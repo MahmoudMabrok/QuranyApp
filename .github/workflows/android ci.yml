@@ -17,7 +17,7 @@ jobs:
           distribution: temurin
         
       - name: lint
-        run: ./gradlew ktlint 
+        run: ./gradlew ktlintCheck 
 
       - name: code quality with deteckt
         run: ./gradlw deteckt
