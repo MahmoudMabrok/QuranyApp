@@ -23,7 +23,7 @@ class ReadLogFragment : DataLoadingBaseFragment() {
     private val quranRepository: QuranRepository by inject()
     private var logAdapter: ReadLogAdapter = ReadLogAdapter()
 
-    private val binding by viewBinding (FragmentReadLogBinding::bind )
+    private val binding by viewBinding(FragmentReadLogBinding::bind)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,7 +62,6 @@ class ReadLogFragment : DataLoadingBaseFragment() {
                 showMessage(getString(R.string.msg_deleted))
             }
         }).attachToRecyclerView(rvReadLog)
-
       } }
 
     private fun showMessage(message: String) {

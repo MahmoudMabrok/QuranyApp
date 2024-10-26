@@ -30,7 +30,7 @@ class SuraListFragment : Fragment(R.layout.fragment_sura_list) {
     val bg = CompositeDisposable()
     private lateinit var screen: RecyclerViewSkeletonScreen
 
-    private val binding by viewBinding (FragmentSuraListBinding::bind )
+    private val binding by viewBinding(FragmentSuraListBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
