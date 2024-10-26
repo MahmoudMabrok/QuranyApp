@@ -1,6 +1,6 @@
 name: Android CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -15,15 +15,13 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-  
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
-        with:
-          android-sdk-version: 34
-          
-      - name: make gradlew executable
-        run: chmod +x gradlew
         
-      - name: BUild
-        run: ./gradlew build 
+      - name: lint
+        run: ./gradlew ktlint 
+
+      - name: code quality with deteckt
+        run: ./gradlw deteckt
+
+      - name: test
+        run: ./gradlw test   
   
