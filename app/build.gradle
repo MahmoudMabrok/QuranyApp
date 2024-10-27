@@ -80,7 +80,7 @@ dependencies {
     implementation 'androidx.room:room-rxjava2:2.6.1'
 
 
-    implementation 'pub.devrel:easypermissions:1.1.1'
+    implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'com.mindorks.android:prdownloader:0.4.0'
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
@@ -107,8 +107,7 @@ dependencies {
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
 
     // SkeletonLoading
-    implementation 'com.ethanhua:skeleton:1.1.2'
-    implementation 'io.supercharge:shimmerlayout:2.1.0'
+    implementation "com.github.ethanhua:Skeleton:ff06517d4629e87328c41a1cce614c490ed7fb51"
 
     // koin
     def koinVersion = "2.0.1"
