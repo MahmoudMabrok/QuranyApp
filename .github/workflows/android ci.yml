@@ -19,8 +19,8 @@ jobs:
       - name: code quality with detekt
         run: ./gradlew detekt
 
-#      - name: test
-#        run: ./gradlew test
-#
-#      - name: build app
-#        run: ./gradlew build
+      - name: test
+        run: ./gradlew test
+
+      - name: build app
+        run: ./gradlew build
