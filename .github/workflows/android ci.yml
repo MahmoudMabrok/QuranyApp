@@ -15,6 +15,7 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          cache: 'gradle' 
 
       - name: code quality with detekt
         run: ./gradlew detekt
@@ -23,4 +24,4 @@ jobs:
         run: ./gradlew test
 
       - name: build app
-        run: ./gradlew build
+        run: ./gradlew assembleDebug
