@@ -26,12 +26,13 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
+          cache: 'gradle' 
 
       - name: code quality with detekt
         run: ./gradlew detekt
 
-#      - name: test
-#        run: ./gradlew test
-#
-#      - name: build app
-#        run: ./gradlew build
+      - name: test
+        run: ./gradlew test
+
+      - name: build app
+        run: ./gradlew assembleDebug
