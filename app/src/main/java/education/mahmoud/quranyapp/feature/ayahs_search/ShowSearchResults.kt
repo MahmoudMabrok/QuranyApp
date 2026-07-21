@@ -29,7 +29,7 @@ class ShowSearchResults : BaseFragment() {
 
     private var adapter = SearchResultsAdapter()
 
-    private val repository = KoinJavaComponent.get(QuranRepository::class.java)
+    private val repository: QuranRepository = KoinJavaComponent.get(QuranRepository::class.java)
     private var ayahItems: List<AyahItem> = listOf()
     private var ayah: String = ""
     var isRunning = false
