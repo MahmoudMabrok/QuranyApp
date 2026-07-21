@@ -41,6 +41,10 @@ android {
     buildFeatures{
         viewBinding = true
         dataBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = '1.4.8'
     }
     namespace 'education.mahmoud.quranyapp'
 }
@@ -124,6 +128,16 @@ dependencies {
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.18.1"
 
     implementation 'com.github.Zhuinden:fragmentviewbindingdelegate-kt:1.0.0'
+
+    // Jetpack Compose (revamped main screens)
+    def compose_version = '1.4.3'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.1.1'
+    implementation 'androidx.activity:activity-compose:1.7.2'
 }
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
@@ -136,6 +150,9 @@ detekt {
 
 tasks.withType(Detekt).configureEach {
     jvmTarget = "1.8"
+    // Jetpack Compose UI uses PascalCase @Composable functions and inline dp/sp
+    // literals, which conflict with FunctionNaming/MagicNumber. Exclude Compose UI.
+    exclude("**/compose/**")
 }
 
 tasks.register('detektFormat', Detekt) {
