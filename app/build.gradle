@@ -85,8 +85,9 @@ dependencies {
 
 
     implementation 'pub.devrel:easypermissions:3.0.0'
-    // PRDownloader was JCenter-only; pull it from JitPack (same com.downloader.* API)
-    implementation 'com.github.MindorksOpenSource:prDownloader:0.6.0'
+    // PRDownloader was JCenter-only; pull it from JitPack (same com.downloader.* API).
+    // Multi-module repo, so the coordinate is group=com.github.<user>.<repo>, artifact=<module>.
+    implementation 'com.github.MindorksOpenSource.prDownloader:prdownloader:0.6.0'
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
 
