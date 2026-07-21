@@ -30,8 +30,8 @@ jobs:
       - name: code quality with detekt
         run: ./gradlew detekt
 
+      - name: build app
+        run: ./gradlew assembleDebug
+
 #      - name: test
 #        run: ./gradlew test
-#
-#      - name: build app
-#        run: ./gradlew build
