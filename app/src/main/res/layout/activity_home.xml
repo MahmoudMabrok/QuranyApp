@@ -1,66 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
     tools:context=".feature.home_Activity.HomeActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        style="@style/Widget.AppCompat.Toolbar"
-        android:id="@+id/toolbar"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/composeHome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white_ec"
-        android:minHeight="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/primary1" />
+        android:layout_height="match_parent" />
 
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabHome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:tabGravity="center"
-        app:tabIndicatorColor="@color/primary2"
-        app:tabIndicatorGravity="bottom"
-        app:tabIndicatorHeight="4dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/primary2"
-        app:tabTextColor="@color/primary1" />
-
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vpHome"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabHome" />
-
-    <FrameLayout
-        android:id="@+id/homeContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
+    <!-- Overlay host kept for the splash, search and read-log fragments -->
     <FrameLayout
         android:id="@+id/mainContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-
+</FrameLayout>

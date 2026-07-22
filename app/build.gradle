@@ -41,6 +41,10 @@ android {
     buildFeatures{
         viewBinding = true
         dataBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = '1.4.8'
     }
     namespace 'education.mahmoud.quranyapp'
 }
@@ -81,7 +85,9 @@ dependencies {
 
 
     implementation 'pub.devrel:easypermissions:3.0.0'
-    implementation 'com.mindorks.android:prdownloader:0.4.0'
+    // PRDownloader was JCenter-only; pull it from JitPack using the coordinate the
+    // library's README recommends (same com.downloader.* API).
+    implementation 'com.github.amitshekhariitbhu:PRDownloader:1.0.2'
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
 
@@ -94,8 +100,9 @@ dependencies {
 
     implementation 'com.jpardogo.materialtabstrip:library:1.0.6'
 
-    implementation 'com.flipboard:bottomsheet-core:1.5.3'
-    implementation 'com.flipboard:bottomsheet-commons:1.5.3'
+    // Flipboard bottomsheet was JCenter-only; pull it from JitPack (same package)
+    implementation 'com.github.Flipboard.bottomsheet:bottomsheet-core:1.5.3'
+    implementation 'com.github.Flipboard.bottomsheet:bottomsheet-commons:1.5.3'
 
     implementation 'org.greenrobot:eventbus:3.3.1'
 
@@ -108,22 +115,31 @@ dependencies {
 
     // SkeletonLoading
     implementation "com.github.ethanhua:Skeleton:ff06517d4629e87328c41a1cce614c490ed7fb51"
+    // Skeleton's layout_shimmer.xml needs ShimmerLayout's attrs; this was a JCenter
+    // transitive dependency, so declare it explicitly from Maven Central.
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
 
-    // koin
-    def koinVersion = "2.0.1"
-    implementation "org.koin:koin-androidx-scope:$koinVersion"
-    implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
-    implementation "org.koin:koin-java:$koinVersion"
+    // koin (Koin 2.x lived only on the now-defunct JCenter; 3.x is on Maven
+    // Central under the io.insert-koin group and keeps the org.koin.* packages)
+    def koinVersion = "3.4.3"
+    implementation "io.insert-koin:koin-android:$koinVersion"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
-    // flex
-    implementation 'com.google.android:flexbox:2.0.1'
-
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.18.1"
 
     implementation 'com.github.Zhuinden:fragmentviewbindingdelegate-kt:1.0.0'
+
+    // Jetpack Compose (revamped main screens)
+    def compose_version = '1.4.3'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.1.1'
+    implementation 'androidx.activity:activity-compose:1.7.2'
 }
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
@@ -136,6 +152,9 @@ detekt {
 
 tasks.withType(Detekt).configureEach {
     jvmTarget = "1.8"
+    // Jetpack Compose UI uses PascalCase @Composable functions and inline dp/sp
+    // literals, which conflict with FunctionNaming/MagicNumber. Exclude Compose UI.
+    exclude("**/compose/**")
 }
 
 tasks.register('detektFormat', Detekt) {
