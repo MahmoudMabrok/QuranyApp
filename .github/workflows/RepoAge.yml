@@ -1,0 +1,12 @@
+name: Repo info
+
+on: workflow_dispatch
+
+jobs:
+  info:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Repo Intelligence
+        # You may pin to the exact commit or the version.
+        # uses: MahmoudMabrok/repo-intelligence-action@e8c0075aed2bb5f4209fabc48ae2ec7a26551821
+        uses: MahmoudMabrok/repo-intelligence-action@1.0
