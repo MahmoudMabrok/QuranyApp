@@ -28,7 +28,6 @@
     <ID>MagicNumber:modules.kt$40</ID>
     <ID>MagicNumber:modules.kt$60</ID>
     <ID>MaxLineLength:AyahDAO.kt$AyahDAO$@Query("select pageNum from ayahs where surahIndex = :surah and ayahInSurahIndex = :ayah order by pageNum asc limit 1 ")</ID>
-    <ID>MaxLineLength:Page.kt$Page$builder.append(MessageFormat.format("{0} ﴿{1}﴾ ", aya, NumberHelper.getArabicNumber(ayahItem.ayahInSurahIndex)))</ID>
     <ID>MaxLineLength:PageViewHolder.kt$PageViewHolder$class</ID>
     <ID>MaxLineLength:QuranDB.kt$QuranDB$@Database(entities = [AyahItem::class, SuraItem::class, BookmarkItem::class, ReadLog::class, RecordItem::class], version = 1, exportSchema = false)</ID>
     <ID>MaxLineLength:ShowAyahsActivity.kt$ShowAyahsActivity$// exception used to indicate its update or add case when update it will make exception as there is item in db</ID>

@@ -114,7 +114,7 @@ dependencies {
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
 
     // SkeletonLoading
-    implementation "com.github.ethanhua:Skeleton:ff06517d4629e87328c41a1cce614c490ed7fb51"
+    implementation "com.github.ethanhua:Skeleton:ff06517d46" // JitPack only serves the short hash of this commit
     // Skeleton's layout_shimmer.xml needs ShimmerLayout's attrs; this was a JCenter
     // transitive dependency, so declare it explicitly from Maven Central.
     implementation 'io.supercharge:shimmerlayout:2.1.0'
