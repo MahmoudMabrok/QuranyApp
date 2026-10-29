@@ -5,15 +5,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: "io.gitlab.arturbosch.detekt"
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 android {
 
-    compileSdk 34
+    compileSdk 36
 
     defaultConfig {
         applicationId "education.mahmoud.quranyapp"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode 31
         versionName "3.0.1"
         multiDexEnabled true
@@ -32,7 +33,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = '17'
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -42,9 +43,6 @@ android {
         viewBinding = true
         dataBinding = true
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = '1.4.8'
     }
     namespace 'education.mahmoud.quranyapp'
 }
@@ -78,10 +76,10 @@ dependencies {
 
     implementation files('libs/AppRate_1.1.jar')
 
-    // Room
-    implementation 'androidx.room:room-runtime:2.6.1'
-    kapt 'androidx.room:room-compiler:2.6.1'
-    implementation 'androidx.room:room-rxjava2:2.6.1'
+    // Room (2.7+ kapt processor can read Kotlin 2.1 metadata; 2.6.1 cannot)
+    implementation 'androidx.room:room-runtime:2.7.2'
+    kapt 'androidx.room:room-compiler:2.7.2'
+    implementation 'androidx.room:room-rxjava2:2.7.2'
 
 
     implementation 'pub.devrel:easypermissions:3.0.0'
@@ -113,8 +111,9 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
 
-    // SkeletonLoading
-    implementation "com.github.ethanhua:Skeleton:ff06517d4629e87328c41a1cce614c490ed7fb51"
+    // SkeletonLoading (JitPack only serves the 10-char short hash of this commit;
+    // the full 40-char hash coordinate fails to build there)
+    implementation "com.github.ethanhua:Skeleton:ff06517d46"
     // Skeleton's layout_shimmer.xml needs ShimmerLayout's attrs; this was a JCenter
     // transitive dependency, so declare it explicitly from Maven Central.
     implementation 'io.supercharge:shimmerlayout:2.1.0'
