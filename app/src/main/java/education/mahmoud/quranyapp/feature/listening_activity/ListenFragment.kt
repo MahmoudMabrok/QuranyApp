@@ -31,7 +31,6 @@ import education.mahmoud.quranyapp.utils.log
 import io.reactivex.rxkotlin.addTo
 import org.koin.android.ext.android.inject
 import java.io.IOException
-import java.text.MessageFormat
 
 class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
 
@@ -298,11 +297,8 @@ class ListenFragment : DataLoadingBaseFragment(), OnDownloadListener {
     private fun displayAyahs() {
         Log.d(TAG, "displayAyahs: $currentAyaAtAyasToListen")
         val ayahItem = ayahsToListen[currentAyaAtAyasToListen]
-        binding.tvAyahToListen.text = MessageFormat.format(
-            "{0}   ﴿{1}﴾  ",
-            ayahItem.text,
-            NumberHelper.getArabicNumber(ayahItem.ayahInSurahIndex)
-        )
+        binding.tvAyahToListen.text =
+            NumberHelper.formatAyahWithNumber(ayahItem.text, ayahItem.ayahInSurahIndex)
         playAudio()
     }
 

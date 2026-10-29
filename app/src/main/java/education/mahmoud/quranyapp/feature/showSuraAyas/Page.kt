@@ -3,7 +3,6 @@ package education.mahmoud.quranyapp.feature.showSuraAyas
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.utils.NumberHelper
 import education.mahmoud.quranyapp.utils.getSuraNameFromIndex
-import java.text.MessageFormat
 
 data class Page(
     var ayhas: List<AyahItem>,
@@ -41,7 +40,7 @@ data class Page(
                     }
                 }
                 isFirst = false
-                builder.append(MessageFormat.format("{0}   ﴿{1}﴾  ", aya, NumberHelper.getArabicNumber(ayahItem.ayahInSurahIndex)))
+                builder.append(NumberHelper.formatAyahWithNumber(aya, ayahItem.ayahInSurahIndex))
             }
         }
 
