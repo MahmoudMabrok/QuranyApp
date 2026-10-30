@@ -23,77 +23,16 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: Decode keystore
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build release APK
         run: ./gradlew :app:assembleRelease --no-daemon
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
-          KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-      - name: Align and sign release APK
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          set -euo pipefail
-          ANDROID_HOME="${ANDROID_HOME:-$HOME/Android/Sdk}"
-          mkdir -p "$ANDROID_HOME"
-
-          if [ ! -d "$ANDROID_HOME/cmdline-tools/latest" ]; then
-            wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdtools.zip
-            unzip -q /tmp/cmdtools.zip -d "$ANDROID_HOME/cmdline-tools"
-            mv "$ANDROID_HOME/cmdline-tools/cmdline-tools" "$ANDROID_HOME/cmdline-tools/latest" || true
-          fi
-
-          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;35.0.0"
-
-          BUILD_TOOLS="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)"
-          echo "Using build-tools: $BUILD_TOOLS"
-          ZIPALIGN="$BUILD_TOOLS/zipalign"
-          APKSIGNER="$BUILD_TOOLS/apksigner"
-
-          UNSIGNED="app/build/outputs/apk/release/app-release-unsigned.apk"
-          ALIGNED="${RUNNER_TEMP:-/tmp}/app-release-aligned.apk"
-          SIGNED="app/build/outputs/apk/release/app-release.apk"
-
-          if [ ! -f "$UNSIGNED" ]; then
-            echo "Unsigned APK not found" >&2
-            find app/build -name '*.apk' || true
-            exit 1
-          fi
-
-          "$ZIPALIGN" -f -p 4 "$UNSIGNED" "$ALIGNED"
-          "$ZIPALIGN" -c -p 4 "$ALIGNED"
-
-          "$APKSIGNER" sign \
-            --ks release.keystore \
-            --ks-key-alias "$KEY_ALIAS" \
-            --ks-pass env:KEYSTORE_PASSWORD \
-            --key-pass env:KEY_PASSWORD \
-            --v1-signing-enabled true \
-            --v2-signing-enabled true \
-            --v3-signing-enabled true \
-            --out "$SIGNED" \
-            "$ALIGNED"
-
-          "$APKSIGNER" verify --verbose "$SIGNED"
-          rm -f release.keystore "$ALIGNED"
-
-      - name: Upload signed release APK
+      - name: Upload release APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: app/build/outputs/apk/release/app-release.apk
+          name: app-release-unsigned
+          path: app/build/outputs/apk/release/app-release-unsigned.apk
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7
