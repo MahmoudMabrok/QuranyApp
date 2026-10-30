@@ -3,7 +3,6 @@ package education.mahmoud.quranyapp.feature.ayahs_search
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.R
@@ -98,13 +97,15 @@ class SearchResultsAdapter : RecyclerView.Adapter<SearchResultsAdapter.Holder>()
 
       val tvSearchSuraName: TextView = itemView.findViewById(R.id.tvSearchSuraName)
       val tvSearchAyahNum: TextView = itemView.findViewById(R.id.tvSearchAyahNum)
-      val btnPlayInSearch: Button = itemView.findViewById(R.id.btnPlayInSearch)
-      val btnShowTafseer: Button = itemView.findViewById(R.id.btnShowTafseer)
-      val btnShowTashkeel: Button = itemView.findViewById(R.id.btnShowTashkeel)
+      // btnPlayInSearch is an ImageButton in search_item.xml; casting it to Button crashed
+      // the screen as soon as the first result was shown. Keep these as plain Views.
+      val btnPlayInSearch: View = itemView.findViewById(R.id.btnPlayInSearch)
+      val btnShowTafseer: View = itemView.findViewById(R.id.btnShowTafseer)
+      val btnShowTashkeel: View = itemView.findViewById(R.id.btnShowTashkeel)
       val tvSearchResult: TextView = itemView.findViewById(R.id.tvSearchResult)
 
       init {
-          btnPlayInSearch?.setOnClickListener { iOnPlay?.onPlayClick(list[adapterPosition]) }
+          btnPlayInSearch.setOnClickListener { iOnPlay?.onPlayClick(list[adapterPosition]) }
           itemView.setOnClickListener { iSearchItemClick?.onSearchItemClick(list[adapterPosition]) }
       }
   }
