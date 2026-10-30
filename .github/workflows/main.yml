@@ -50,12 +50,11 @@ jobs:
       - name: Bump versionCode and versionName
         run: |
           VERSION_NAME="${{ github.event.inputs.version_name }}"
-          CURRENT_CODE=$(grep 'versionCode = ' app/build.gradle | grep -o '[0-9]*')
-          NEW_CODE=$((CURRENT_CODE + 1))
+          # Groovy (`versionCode 31`) and Kotlin DSL (`versionCode = 31`).
+          source .github/scripts/bump-android-version.sh
+          bump_android_version
           echo "versionCode: $CURRENT_CODE → $NEW_CODE"
           echo "versionName: $VERSION_NAME"
-          sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle
-          sed -i "s/versionName = \"[^\"]*\"/versionName = \"$VERSION_NAME\"/" app/build.gradle
 
           {
             echo "## 📦 Android version dump"
@@ -137,10 +136,9 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
           if [ "${{ needs.deploy-android.result }}" = "success" ]; then
-            CURRENT_CODE=$(grep 'versionCode = ' app/build.gradle | grep -o '[0-9]*')
-            NEW_CODE=$((CURRENT_CODE + 1))
-            sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle
-            sed -i "s/versionName = \"[^\"]*\"/versionName = \"$VERSION_NAME\"/" app/build.gradle
+            # Same Groovy / Kotlin DSL tolerant bump as the deploy job.
+            source .github/scripts/bump-android-version.sh
+            bump_android_version
             echo "Android versionCode: $CURRENT_CODE → $NEW_CODE"
             echo "ANDROID_VERSION_CODE=$NEW_CODE" >> "$GITHUB_ENV"
             echo "| Android | versionCode | \`$CURRENT_CODE\` | \`$NEW_CODE\` |" >> "$GITHUB_STEP_SUMMARY"
