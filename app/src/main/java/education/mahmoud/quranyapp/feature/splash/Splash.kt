@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.splash
 
+import education.mahmoud.quranyapp.utils.EdgeToEdge
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,10 @@ class Splash : DataLoadingBaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // full-screen overlay: background behind the bars, content inside them
+        EdgeToEdge.applyPadding(view)
+        // light green background -> dark status bar icons while shown
+        activity?.let { EdgeToEdge.setStatusBarIconsDark(it, true) }
         initViews(view)
     }
 
@@ -135,5 +140,11 @@ class Splash : DataLoadingBaseFragment() {
         }
         "end inserting ".log()
         relay.accept(true)
+    }
+
+    override fun onDestroyView() {
+        // back to the home teal app bar: white icons (dark icons in dark theme)
+        activity?.let { EdgeToEdge.setStatusBarIconsDark(it, EdgeToEdge.isSystemNight(it)) }
+        super.onDestroyView()
     }
 }

@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.ayahs_search
 
+import education.mahmoud.quranyapp.utils.EdgeToEdge
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -35,7 +36,8 @@ class ShowSearchResults : BaseFragment() {
     var isRunning = false
 
     private val binding by viewBinding(ActivityShowSearchResultsBinding::bind)
-    private val searchBinding by viewBinding(HeaderSearchBinding::bind)
+    // header_search is an <include>; bind it from its own root, not the fragment root
+    private val searchBinding by viewBinding { view: View -> HeaderSearchBinding.bind(view.findViewById(R.id.toolbar)) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +49,13 @@ class ShowSearchResults : BaseFragment() {
 
     override fun initViews(view: View) {
         super.initViews(view)
+        // edge-to-edge: the search bar background goes behind the status bar,
+        // the results list scrolls behind the navigation bar
+        EdgeToEdge.applyPadding(searchBinding.root, bottom = false)
+        binding.rvSearch.clipToPadding = false
+        EdgeToEdge.applyPadding(binding.rvSearch, top = false)
+        // light search bar -> dark status bar icons while this overlay is shown
+        activity?.let { EdgeToEdge.setStatusBarIconsDark(it, true) }
         initRv()
         adapterListeners()
         editWatcher()
@@ -106,6 +115,8 @@ class ShowSearchResults : BaseFragment() {
             }
         )
         menuSheetView.inflateMenu(R.menu.menu_sheet_search)
+        // keep the sheet items above the navigation bar
+        EdgeToEdge.applyPadding(menuSheetView, top = false)
         binding.bottomSearch.showWithSheetView(menuSheetView)
     }
 
@@ -186,5 +197,11 @@ class ShowSearchResults : BaseFragment() {
     companion object {
         private const val TAG = "ShowSearchResults"
         private const val RC_STORAGE = 10002
+    }
+
+    override fun onDestroyView() {
+        // back to the home teal app bar: white icons (dark icons in dark theme)
+        activity?.let { EdgeToEdge.setStatusBarIconsDark(it, EdgeToEdge.isSystemNight(it)) }
+        super.onDestroyView()
     }
 }
