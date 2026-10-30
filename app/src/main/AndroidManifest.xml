@@ -98,10 +98,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".feature.setting.SettingActivity"  android:exported="false" />
-        <activity
-            android:name=".feature.ayahs_search.ShowSearchResults"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
         <meta-data
             android:name="google_analytics_adid_collection_enabled"

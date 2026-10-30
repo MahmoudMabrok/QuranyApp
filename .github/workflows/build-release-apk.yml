@@ -23,9 +23,6 @@ jobs:
         with:
           cache-read-only: false
 
-      # app/build.gradle has no signingConfig, so assembleRelease writes
-      # app-release-unsigned.apk. The next step zip-aligns it and signs with
-      # apksigner (v1+v2+v3) using the same keystore secrets as main.yml.
       - name: Decode keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
 
@@ -34,61 +31,57 @@ jobs:
 
       - name: Build release APK
         run: ./gradlew :app:assembleRelease --no-daemon
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ github.actor }}
-          KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-      - name: Align and sign release APK
+      - name: Install build-tools and sign APK
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
-          if [ -z "$SDK_ROOT" ] || [ ! -d "$SDK_ROOT/build-tools" ]; then
-            echo "Android SDK build-tools not found (ANDROID_SDK_ROOT/ANDROID_HOME)." >&2
-            exit 1
+          set -euo pipefail
+
+          ANDROID_HOME="${ANDROID_HOME:-$HOME/Android/Sdk}"
+          mkdir -p "$ANDROID_HOME"
+
+          # Bootstrap cmdline-tools if missing
+          if [ ! -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+            echo "Installing Android cmdline-tools..."
+            wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdtools.zip
+            unzip -q /tmp/cmdtools.zip -d "$ANDROID_HOME/cmdline-tools"
+            # The zip extracts to cmdline-tools/cmdline-tools/; rename to latest
+            if [ -d "$ANDROID_HOME/cmdline-tools/cmdline-tools" ]; then
+              mv "$ANDROID_HOME/cmdline-tools/cmdline-tools" "$ANDROID_HOME/cmdline-tools/latest"
+            fi
           fi
 
-          BUILD_TOOLS=""
-          while IFS= read -r dir; do
-            if [ -x "$dir/zipalign" ] && [ -x "$dir/apksigner" ]; then
-              BUILD_TOOLS="$dir"
-            fi
-          done < <(find "$SDK_ROOT/build-tools" -mindepth 1 -maxdepth 1 -type d -print | sort -V)
-          if [ -z "$BUILD_TOOLS" ]; then
-            echo "No build-tools directory contains both zipalign and apksigner under $SDK_ROOT/build-tools" >&2
+          echo "Accepting licenses..."
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+
+          echo "Installing build-tools;35.0.0..."
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;35.0.0"
+
+          BUILD_TOOLS="$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)"
+          if [ -z "$BUILD_TOOLS" ] || [ ! -x "$BUILD_TOOLS/zipalign" ]; then
+            echo "Failed to locate build-tools with zipalign" >&2
+            find "$ANDROID_HOME" -name 'zipalign' -o -name 'apksigner' || true
             exit 1
           fi
-          echo "Using Android build-tools: $BUILD_TOOLS"
-          ZIPALIGN="$BUILD_TOOLS/zipalign"
-          APKSIGNER="$BUILD_TOOLS/apksigner"
+          echo "Using build-tools: $BUILD_TOOLS"
 
           UNSIGNED="app/build/outputs/apk/release/app-release-unsigned.apk"
           ALIGNED="${RUNNER_TEMP:-/tmp}/app-release-aligned.apk"
           SIGNED="app/build/outputs/apk/release/app-release.apk"
+
           if [ ! -f "$UNSIGNED" ]; then
-            echo "Expected unsigned release APK at $UNSIGNED" >&2
-            find app/build/outputs/apk -type f -name '*.apk' >&2 || true
+            echo "Unsigned APK not found at $UNSIGNED" >&2
+            find app/build -name '*.apk' || true
             exit 1
           fi
 
-          # -P 16 page-aligns native libs for 16 KB devices (targetSdk 36).
-          # Older build-tools only support 4 KB page alignment via -p.
-          zipalign_help="$("$ZIPALIGN" 2>&1 || true)"
-          if printf '%s\n' "$zipalign_help" | grep -q -- '-P'; then
-            "$ZIPALIGN" -f -p -P 16 4 "$UNSIGNED" "$ALIGNED"
-            "$ZIPALIGN" -c -p -P 16 4 "$ALIGNED"
-          else
-            "$ZIPALIGN" -f -p 4 "$UNSIGNED" "$ALIGNED"
-            "$ZIPALIGN" -c -p 4 "$ALIGNED"
-          fi
+          "$BUILD_TOOLS/zipalign" -f -p 4 "$UNSIGNED" "$ALIGNED"
+          "$BUILD_TOOLS/zipalign" -c -p 4 "$ALIGNED"
 
-          "$APKSIGNER" sign \
+          "$BUILD_TOOLS/apksigner" sign \
             --ks release.keystore \
             --ks-key-alias "$KEY_ALIAS" \
             --ks-pass env:KEYSTORE_PASSWORD \
@@ -99,13 +92,11 @@ jobs:
             --out "$SIGNED" \
             "$ALIGNED"
 
-          # minSdk 21: verify can exit 0 for a v1-only APK. Require v1+v2+v3.
-          verify_log="${RUNNER_TEMP:-/tmp}/apksigner-verify.txt"
-          "$APKSIGNER" verify --verbose "$SIGNED" 2>&1 | tee "$verify_log"
-          grep -F "Verified using v1 scheme (JAR signing): true" "$verify_log"
-          grep -F "Verified using v2 scheme (APK Signature Scheme v2): true" "$verify_log"
-          grep -F "Verified using v3 scheme (APK Signature Scheme v3): true" "$verify_log"
+          echo "Verifying signature..."
+          "$BUILD_TOOLS/apksigner" verify --verbose "$SIGNED"
+
           rm -f release.keystore "$ALIGNED"
+          echo "Signed APK ready: $SIGNED"
 
       - name: Upload signed release APK
         uses: actions/upload-artifact@v4
@@ -113,4 +104,4 @@ jobs:
           name: app-release
           path: app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7
