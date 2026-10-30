@@ -9,7 +9,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -72,11 +71,15 @@ fun QuranyTheme(
     val colors = if (darkTheme) DarkColors else LightColors
     val view = LocalView.current
     if (!view.isInEditMode) {
-        // keep the status bar the same colour as the teal top app bars
+        // edge-to-edge: the bars are transparent and the top app bars draw behind the status bar.
+        // Light theme: teal app bar -> white status icons, light background -> dark nav icons.
+        // Dark theme: light green app bar -> dark status icons, dark background -> light nav icons.
         SideEffect {
             val window = (view.context as? Activity)?.window ?: return@SideEffect
-            window.statusBarColor = colors.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).apply {
+                isAppearanceLightStatusBars = darkTheme
+                isAppearanceLightNavigationBars = !darkTheme
+            }
         }
     }
     MaterialTheme(
