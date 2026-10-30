@@ -41,6 +41,20 @@ class LocalShared(context: Application) {
             preferences.edit().putInt(Constants.BackColor_STATE, color).apply()
         }
 
+    /** Sura header style on reading pages, see SuraHeaderStyle (0 classic, 1 modern, 2 plain). */
+    var mushafHeaderStyle: Int
+        get() = preferences.getInt(MUSHAF_HEADER_STYLE, 0)
+        set(style) {
+            preferences.edit().putInt(MUSHAF_HEADER_STYLE, style).apply()
+        }
+
+    /** Draw the ornamental Mushaf frame around reading pages. */
+    var mushafPageFrame: Boolean
+        get() = preferences.getBoolean(MUSHAF_PAGE_FRAME, true)
+        set(enabled) {
+            preferences.edit().putBoolean(MUSHAF_PAGE_FRAME, enabled).apply()
+        }
+
     var score: Long
         get() = preferences.getLong(Constants.SCORE, 0)
         set(score) {
@@ -75,5 +89,7 @@ class LocalShared(context: Application) {
     private companion object {
         const val LISTEN_RECITER = "listen_reciter"
         const val PLAYBACK_SPEED = "playback_speed"
+        const val MUSHAF_HEADER_STYLE = "mushaf_header_style"
+        const val MUSHAF_PAGE_FRAME = "mushaf_page_frame"
     }
 }
