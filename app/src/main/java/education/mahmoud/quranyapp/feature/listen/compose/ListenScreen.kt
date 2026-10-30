@@ -184,9 +184,10 @@ private fun SelectionForm(viewModel: ListenViewModel, enabled: Boolean) {
         Column(Modifier.padding(16.dp)) {
             Text("اختر القراء", style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
+            // Compose foundation 1.4.x FlowRow has no verticalArrangement parameter,
+            // so the row spacing comes from the chips' vertical padding instead.
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Reciter.values().forEach { reciter ->
                     FilterChip(
@@ -194,6 +195,7 @@ private fun SelectionForm(viewModel: ListenViewModel, enabled: Boolean) {
                         onClick = { if (enabled) viewModel.toggleReciter(reciter) },
                         label = { Text(stringResource(reciter.nameRes)) },
                         enabled = enabled,
+                        modifier = Modifier.padding(vertical = 2.dp),
                     )
                 }
             }
