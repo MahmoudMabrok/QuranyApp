@@ -1,60 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".feature.read_log.ReadLogFragment"
-    android:padding="@dimen/_8sdp"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical">
+    android:background="@color/search_screen_bg"
+    android:clickable="true"
+    android:focusable="true"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    tools:context=".feature.read_log.ReadLogFragment">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal"
-       android:padding="@dimen/_8sdp">
+    <!-- teal app bar like the home screen; padded below the status bar in code -->
+    <LinearLayout
+        android:id="@+id/readLogToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary1"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp">
 
-      <TextView
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:gravity="center_horizontal"
-          android:textSize="@dimen/tv_read_log"
-          android:textColor="@color/tv_color"
-          android:text="@string/date"/>
+        <ImageView
+            android:id="@+id/readLogBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/read_log_back"
+            android:padding="12dp"
+            android:src="@drawable/ic_arrow_back_white" />
 
-      <TextView
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:gravity="center_horizontal"
-          android:layout_weight="1"
-          android:textColor="@color/tv_color"
-          android:textSize="@dimen/tv_read_log"
-          android:text="@string/no_pages"/>
+        <TextView
+            android:id="@+id/readLogTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/readlog"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
 
+    <TextView
+        android:id="@+id/readLogSummary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="4dp"
+        android:textAlignment="viewStart"
+        android:textColor="@color/search_muted"
+        android:textSize="13sp"
+        android:visibility="gone"
+        tools:text="٤٦ صفحة في ٤ أيام · اسحب اليوم يمينًا أو يسارًا لحذفه"
+        tools:visibility="visible" />
 
-      <TextView
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:textColor="@color/tv_color"
-          android:gravity="center_horizontal"
-          android:textSize="@dimen/tv_read_log"
-          android:ellipsize="end"
-          android:maxLines="1"
-          android:text="@string/pages_num"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvReadLog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/read_log_item" />
 
+        <LinearLayout
+            android:id="@+id/readLogEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:visibility="gone">
 
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_history_large" />
 
-   </LinearLayout>
+            <TextView
+                android:id="@+id/readLogEmptyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/read_log_empty_title"
+                android:textColor="@color/search_ayah_text"
+                android:textSize="18sp" />
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/rvReadLog"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical"
-       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
+            <TextView
+                android:id="@+id/readLogEmptyHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/read_log_empty_hint"
+                android:textColor="@color/search_muted"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>
