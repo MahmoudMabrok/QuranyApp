@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import android.view.LayoutInflater
+import androidx.core.graphics.Insets
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.databinding.PageItemBinding
@@ -16,6 +17,9 @@ class PageAdapter(
 ) : RecyclerView.Adapter<PageViewHolder>() {
 
     private val list: ArrayList<Page> = arrayListOf()
+
+    /** System bar + cutout insets; each page pads itself so its paper colour goes behind the bars. */
+    var systemInsets: Insets = Insets.NONE
 
     fun setPageList(newList: List<Page>) {
         val oldSize = list.size
@@ -34,6 +38,7 @@ class PageAdapter(
     override fun onBindViewHolder(holder: PageViewHolder, index: Int) {
         val page = list[index]
         holder.bind(page, ayahsColor, scrollColor, mushafOptions)
+        holder.applyInsets(systemInsets)
     }
 
     private fun flipState(holder: PageViewHolder) {

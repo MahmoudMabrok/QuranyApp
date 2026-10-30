@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.graphics.Insets
 import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.databinding.PageItemBinding
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.JuzNames
@@ -151,6 +152,11 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
         val lp = tv.layoutParams as? ViewGroup.MarginLayoutParams
         val margins = (lp?.leftMargin ?: 0) + (lp?.rightMargin ?: 0)
         return tv.resources.displayMetrics.widthPixels - margins - tv.paddingLeft - tv.paddingRight
+    }
+
+    /** Keeps the page bar, text and frame out of the status / navigation bars and cutouts. */
+    fun applyInsets(insets: Insets) {
+        binding.ayahsLayout.setPadding(insets.left, insets.top, insets.right, insets.bottom)
     }
 
     private fun setMargin(view: View, px: Int) {
