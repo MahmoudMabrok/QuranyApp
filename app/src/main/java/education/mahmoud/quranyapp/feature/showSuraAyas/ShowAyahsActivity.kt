@@ -84,7 +84,7 @@ class ShowAyahsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_show_ayahs)
+        setContentView(binding.root)
         ButterKnife.bind(this)
 
         pos = intent.getIntExtra(Constants.SURAH_INDEX, 1)
@@ -111,8 +111,9 @@ class ShowAyahsActivity : AppCompatActivity() {
         "$name   onCreate: $pos\"".log()
         initRV()
 
-        (application as? App)?.persistanscePages()
+        // subscribe first; relayPages replays the cached pages if they are already loaded
         startObserving()
+        (application as? App)?.persistanscePages()
     }
 
     private fun startObserving() {
