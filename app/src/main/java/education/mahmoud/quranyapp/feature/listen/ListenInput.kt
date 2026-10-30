@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.listen
 
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.feature.gotoscreen.GoToInput
 
 /**
