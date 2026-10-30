@@ -49,6 +49,12 @@ class QuranRepository(private var localShared: LocalShared, private var quranDB:
             localShared.listenReciter = id
         }
 
+    var playbackSpeed: Float
+        get() = localShared.playbackSpeed
+        set(speed) {
+            localShared.playbackSpeed = speed
+        }
+
     var score: Long
         get() = localShared.score
         set(score) {

@@ -3,6 +3,7 @@ package education.mahmoud.quranyapp.datalayer.local
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import education.mahmoud.quranyapp.feature.listen.playback.PlaybackSpeed
 import education.mahmoud.quranyapp.utils.Constants
 
 class LocalShared(context: Application) {
@@ -52,6 +53,13 @@ class LocalShared(context: Application) {
             preferences.edit().putString(LISTEN_RECITER, id).apply()
         }
 
+    /** Playback speed for every listening screen (stored as a float, e.g. 1.25). */
+    var playbackSpeed: Float
+        get() = PlaybackSpeed.normalize(preferences.getFloat(PLAYBACK_SPEED, PlaybackSpeed.DEFAULT))
+        set(speed) {
+            preferences.edit().putFloat(PLAYBACK_SPEED, PlaybackSpeed.normalize(speed)).apply()
+        }
+
     var userName: String?
         get() = preferences.getString(Constants.USER_NAME, "")
         set(userName) {
@@ -66,5 +74,6 @@ class LocalShared(context: Application) {
 
     private companion object {
         const val LISTEN_RECITER = "listen_reciter"
+        const val PLAYBACK_SPEED = "playback_speed"
     }
 }
