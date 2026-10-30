@@ -13,6 +13,7 @@ import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
 import education.mahmoud.quranyapp.feature.setting.compose.SettingsScreen
 import org.koin.android.ext.android.inject
+import education.mahmoud.quranyapp.utils.EdgeToEdge
 
 /**
  * Reading settings (night reading mode, page background colour, Mushaf header style and page frame), rendered with
@@ -29,6 +30,7 @@ class SettingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EdgeToEdge.enable(this)
         nightMode = quranRepository.nightModeState
         backgroundColor = quranRepository.backColorState
         headerStyle = quranRepository.mushafHeaderStyle
