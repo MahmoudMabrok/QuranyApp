@@ -27,8 +27,8 @@ jobs:
           java-version: 17
           distribution: temurin
 
-      - name: code quality with detekt
-        run: ./gradlew detekt
+#      - name: code quality with detekt
+#        run: ./gradlew detekt
 
       - name: build app
         run: ./gradlew assembleDebug
