@@ -37,8 +37,8 @@
     <ID>MaximumLineLength:education.mahmoud.quranyapp.datalayer.local.room.QuranDB.kt:7</ID>
     <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.showSuraAyas.Page.kt:44</ID>
     <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.showSuraAyas.PageViewHolder.kt:10</ID>
-    <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.splash.Splash.kt:110</ID>
-    <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.splash.Splash.kt:115</ID>
+    <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.splash.Splash.kt:111</ID>
+    <ID>MaximumLineLength:education.mahmoud.quranyapp.feature.splash.Splash.kt:116</ID>
     <ID>NestedBlockDepth:ListenFragment.kt$ListenFragment$fun startListening()</ID>
     <ID>NestedBlockDepth:Page.kt$Page$fun getText(): String</ID>
     <ID>NestedBlockDepth:TestFragment.kt$TestFragment$ private fun checkInput()</ID>

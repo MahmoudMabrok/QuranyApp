@@ -179,4 +179,69 @@
         <item>المفضلة</item>
     </string-array>
 
+    <!-- quick jump dialog -->
+    <string name="goto_tab_sura">سورة وآية</string>
+    <string name="goto_tab_juz">جزء</string>
+    <string name="goto_tab_page">صفحة</string>
+    <string name="goto_sura_label">رقم السورة</string>
+    <string name="goto_ayah_label">رقم الآية (اختياري)</string>
+    <string name="goto_juz_label">رقم الجزء</string>
+    <string name="goto_page_label">رقم الصفحة</string>
+    <string name="goto_range">من %1$d إلى %2$d</string>
+    <string name="goto_error_range">أدخل رقمًا من %1$d إلى %2$d</string>
+    <string name="goto_sura_info">%1$s · %2$d آية</string>
+    <string name="cancel_action">إلغاء</string>
+    <string name="data_offline">متاح بدون إنترنت</string>
+    <string name="data_quran_text">نص القرآن الكريم</string>
+    <string name="data_tafseer">التفسير</string>
+    <string name="data_ayah_count">%1$d من %2$d آية</string>
+    <string name="data_complete">مكتمل</string>
+    <string name="data_incomplete">غير مكتمل</string>
+    <string name="data_offline_hint">النص والتفسير مضمّنان في التطبيق ويتم تجهيزهما عند أول تشغيل.</string>
+    <string name="data_download_recitations">تحميل تلاوات من شاشة الاستماع</string>
+    <!-- settings -->
+    <string name="back">رجوع</string>
+    <string name="settings_section_reading">القراءة</string>
+    <string name="settings_section_preview">معاينة</string>
+    <string name="night_mode_summary">خلفية داكنة ونص فاتح لصفحات المصحف</string>
+    <string name="background_disabled_in_night_mode">لون الخلفية لا يُستخدم أثناء الوضع الليلي</string>
+    <string name="settings_preview_ayah">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</string>
+    <!-- listen screen -->
+    <string name="listen_reciter">القارئ</string>
+    <string name="listen_from">من</string>
+    <string name="listen_to">إلى</string>
+    <string name="listen_start_ayah">الآية</string>
+    <string name="listen_end_ayah">الآية</string>
+    <string name="listen_sura">السورة</string>
+    <string name="listen_empty_hint">اترك أرقام الآيات فارغة لتشغيل السورة كاملة</string>
+    <string name="listen_order_error">يجب أن تكون البداية قبل النهاية</string>
+    <string name="listen_repeat">التكرار</string>
+    <string name="listen_repeat_each">تكرار كل آية</string>
+    <string name="listen_repeat_all">تكرار المقطع</string>
+    <string name="listen_downloading">جاري تحميل الآيات %1$d من %2$d</string>
+    <string name="listen_download_error">تعذر تحميل التلاوة، تحقق من الاتصال بالإنترنت</string>
+    <string name="listen_finished">انتهى الاستماع</string>
+    <string name="listen_now_playing">التلاوة الحالية</string>
+    <string name="listen_ayah_n">الآية %1$d</string>
+    <string name="listen_position">%1$d من %2$d</string>
+    <string name="listen_play">تشغيل</string>
+    <string name="listen_pause">إيقاف مؤقت</string>
+    <string name="listen_stop">إيقاف</string>
+    <string name="listen_next">الآية التالية</string>
+    <string name="listen_previous">الآية السابقة</string>
+    <string name="downloads_title">التلاوات المحملة</string>
+    <string name="downloads_empty">لا توجد تلاوات محملة بعد</string>
+    <string name="downloads_summary">%1$d آية · %2$s</string>
+    <string name="downloads_total">الإجمالي: %1$s</string>
+    <string name="downloads_delete">حذف</string>
+    <string name="downloads_delete_all">حذف الكل</string>
+    <string name="downloads_delete_confirm">حذف التلاوات المحملة للقارئ %1$s؟</string>
+    <string name="downloads_delete_all_confirm">حذف كل التلاوات المحملة؟ ستحتاج إلى تحميلها مرة أخرى للاستماع.</string>
+    <string name="downloads_deleted">تم حذف التلاوات</string>
+    <string name="reciter_alafasy">مشاري راشد العفاسي</string>
+    <string name="reciter_husary">محمود خليل الحصري</string>
+    <string name="reciter_minshawi">محمد صديق المنشاوي</string>
+    <string name="reciter_abdul_basit">عبد الباسط عبد الصمد</string>
+    <string name="reciter_sudais">عبد الرحمن السديس</string>
+    <string name="reciter_maher">ماهر المعيقلي</string>
 </resources>

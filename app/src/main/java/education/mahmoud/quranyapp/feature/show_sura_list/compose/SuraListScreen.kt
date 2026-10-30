@@ -18,8 +18,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -33,12 +36,12 @@ import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.home_Activity.compose.EvenRowColor
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Compose replacement for the legacy Surah-list fragment + RecyclerView adapter.
- * Loads the Surah list off the main thread and renders it as a [LazyColumn].
+ * Observes the Surah list from Room off the main thread and renders it as a [LazyColumn].
  */
 @Composable
 fun SuraListScreen(
@@ -46,8 +49,15 @@ fun SuraListScreen(
     onSuraClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val surasState by produceState<List<SuraItem>?>(initialValue = null, repository) {
-        value = withContext(Dispatchers.IO) { repository.suras }
+    // Observe Room so the list fills in as soon as the first-launch import finishes,
+    // instead of showing "no data" until the app is restarted.
+    var surasState by remember { mutableStateOf<List<SuraItem>?>(null) }
+    DisposableEffect(repository) {
+        val disposable = repository.surasStream
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ list -> surasState = list }, { surasState = emptyList() })
+        onDispose { disposable.dispose() }
     }
     val suras = surasState
 

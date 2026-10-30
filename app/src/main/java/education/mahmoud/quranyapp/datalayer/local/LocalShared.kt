@@ -46,6 +46,12 @@ class LocalShared(context: Application) {
             preferences.edit().putLong(Constants.SCORE, score).apply()
         }
 
+    var listenReciter: String?
+        get() = preferences.getString(LISTEN_RECITER, null)
+        set(id) {
+            preferences.edit().putString(LISTEN_RECITER, id).apply()
+        }
+
     var userName: String?
         get() = preferences.getString(Constants.USER_NAME, "")
         set(userName) {
@@ -57,4 +63,8 @@ class LocalShared(context: Application) {
         set(uuid) {
             preferences.edit().putString(Constants.USER_UUID, uuid).apply()
         }
+
+    private companion object {
+        const val LISTEN_RECITER = "listen_reciter"
+    }
 }

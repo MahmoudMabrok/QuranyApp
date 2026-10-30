@@ -48,8 +48,9 @@ class Splash : DataLoadingBaseFragment() {
             )
         } else {
             binding.group.visibility = View.VISIBLE
-            startLoadingData()
+            // observe before loading so the "done" event can never be missed
             startObserving()
+            startLoadingData()
         }
     }
 

@@ -43,6 +43,12 @@ class QuranRepository(private var localShared: LocalShared, private var quranDB:
             localShared.backColorState = color
         }
 
+    var listenReciter: String?
+        get() = localShared.listenReciter
+        set(id) {
+            localShared.listenReciter = id
+        }
+
     var score: Long
         get() = localShared.score
         set(score) {
@@ -140,7 +146,11 @@ class QuranRepository(private var localShared: LocalShared, private var quranDB:
         return quranDB.ayahDAO().getAyahsByPage(i)
     }
 
-    val suras: List<SuraItem> = quranDB.surahDAO().allSurah
+    val suras: List<SuraItem>
+        get() = quranDB.surahDAO().allSurah
+
+    val surasStream: Flowable<List<SuraItem>>
+        get() = quranDB.surahDAO().observeAllSurah()
 
     fun getSuraStartpage(index: Int): Int {
         return quranDB.surahDAO().getSuraStartpage(index)

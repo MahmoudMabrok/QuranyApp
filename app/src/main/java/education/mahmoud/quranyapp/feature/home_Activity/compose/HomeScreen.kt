@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Headphones
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.MoreVert
@@ -50,6 +51,7 @@ data class HomeActions(
     val onSearch: () -> Unit,
     val onJump: () -> Unit,
     val onLastRead: () -> Unit,
+    val onListen: () -> Unit,
     val onReadLog: () -> Unit,
     val onScore: () -> Unit,
     val onDownload: () -> Unit,
@@ -119,6 +121,7 @@ private fun HomeOverflowMenu(actions: HomeActions) {
     DropdownMenu(expanded = expanded, onDismissRequest = dismiss) {
         MenuRow(stringResource(R.string.jump), Icons.Filled.Navigation, dismiss, actions.onJump)
         MenuRow(stringResource(R.string.go_to_latest_read), Icons.Filled.MenuBook, dismiss, actions.onLastRead)
+        MenuRow(stringResource(R.string.listen), Icons.Filled.Headphones, dismiss, actions.onListen)
         MenuRow(stringResource(R.string.readlog), Icons.Filled.History, dismiss, actions.onReadLog)
         MenuRow(stringResource(R.string.score), Icons.Filled.EmojiEvents, dismiss, actions.onScore)
         MenuRow(stringResource(R.string.download), Icons.Filled.Download, dismiss, actions.onDownload)

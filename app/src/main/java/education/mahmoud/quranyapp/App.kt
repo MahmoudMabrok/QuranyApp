@@ -1,6 +1,7 @@
 package education.mahmoud.quranyapp
 
 import android.app.Application
+import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
@@ -16,7 +17,11 @@ class App : Application() {
     val quranRepository: QuranRepository by inject()
     var quranPages: ArrayList<Page> = arrayListOf()
     val relay = PublishRelay.create<Boolean>()
-    val relayPages = PublishRelay.create<ArrayList<Page>>()
+    /**
+     * Holds the latest list of pages and replays it to every new subscriber, so a reading
+     * screen opened after the pages were already built (e.g. the second time) still gets them.
+     */
+    val relayPages = BehaviorRelay.create<ArrayList<Page>>()
 
     override fun onCreate() {
         super.onCreate()
@@ -34,6 +39,8 @@ class App : Application() {
     }
 
     fun persistanscePages() {
+        // pages already built and cached in [relayPages]; new subscribers get them immediately
+        if (quranPages.isNotEmpty() && relayPages.hasValue()) return
         Thread(
             Runnable {
                 try {
@@ -45,6 +52,7 @@ class App : Application() {
         ).start()
     }
 
+    @Synchronized
     fun loadFullQuran() {
         "loadFullQuran".log()
         if (quranPages.isEmpty()) {
