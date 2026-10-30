@@ -229,6 +229,9 @@
     <string name="listen_stop">إيقاف</string>
     <string name="listen_next">الآية التالية</string>
     <string name="listen_previous">الآية السابقة</string>
+    <string name="listen_speed">سرعة التلاوة</string>
+    <string name="listen_speed_current">السرعة: %1$s</string>
+    <string name="listen_speed_option">السرعة %1$s</string>
     <string name="downloads_title">التلاوات المحملة</string>
     <string name="downloads_empty">لا توجد تلاوات محملة بعد</string>
     <string name="downloads_summary">%1$d آية · %2$s</string>

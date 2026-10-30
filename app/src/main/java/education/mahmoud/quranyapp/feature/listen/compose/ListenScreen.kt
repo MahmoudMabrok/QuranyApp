@@ -312,6 +312,15 @@ private fun SelectionForm(viewModel: ListenViewModel, enabled: Boolean) {
             )
         }
     }
+
+    SectionHeader(R.string.listen_speed)
+    SettingsCard {
+        SpeedSelector(
+            speed = viewModel.speed,
+            onSpeed = viewModel::changeSpeed,
+            modifier = Modifier.padding(16.dp),
+        )
+    }
 }
 
 @Composable
@@ -362,6 +371,7 @@ private fun PlayerCard(phase: ListenPhase.Playing, viewModel: ListenViewModel) {
                     Icon(Icons.Filled.SkipNext, contentDescription = null)
                 }
             }
+            SpeedSelector(speed = viewModel.speed, onSpeed = viewModel::changeSpeed)
             OutlinedButton(onClick = viewModel::stop) {
                 Icon(Icons.Filled.Stop, contentDescription = null)
                 Text("إيقاف", modifier = Modifier.padding(start = 8.dp))
