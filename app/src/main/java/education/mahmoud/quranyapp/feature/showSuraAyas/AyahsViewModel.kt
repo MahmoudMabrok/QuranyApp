@@ -12,6 +12,8 @@ class AyahsViewModel(private val repo: QuranRepository) : ViewModel() {
 
     val backColorState = repo.backColorState
     val nightModeState = repo.nightModeState
+    val mushafHeaderStyle = repo.mushafHeaderStyle
+    val mushafPageFrame = repo.mushafPageFrame
     val hizbQuaterStart: List<Int> = repo.hizbQuaterStart
 
     val replay = PublishRelay.create<List<Page>>()

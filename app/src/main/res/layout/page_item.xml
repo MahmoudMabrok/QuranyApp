@@ -31,7 +31,6 @@
             app:autoSizeTextType="uniform"
             android:keepScreenOn="true"
             android:padding="10dp"
-            android:text="@{page.text}"
             app:layout_constraintBottom_toTopOf="@id/tvPageNumShowAyahs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
