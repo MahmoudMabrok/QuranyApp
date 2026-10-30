@@ -33,6 +33,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -44,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -53,6 +55,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import android.text.SpannableString
+import android.text.Spanned
+import android.view.Gravity
+import android.widget.TextView
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafFonts
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafPalette
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderInfo
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderSpan
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranFont
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
@@ -75,6 +87,10 @@ fun SettingsScreen(
     onNightModeChange: (Boolean) -> Unit,
     onBackgroundColorChange: (Int) -> Unit,
     onBack: () -> Unit,
+    headerStyle: Int = SuraHeaderStyle.DEFAULT.id,
+    pageFrame: Boolean = true,
+    onHeaderStyleChange: (Int) -> Unit = {},
+    onPageFrameChange: (Boolean) -> Unit = {},
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -157,6 +173,16 @@ fun SettingsScreen(
                 }
             }
 
+            SectionHeader(R.string.settings_section_mushaf)
+            MushafSettings(
+                headerStyle = headerStyle,
+                pageFrame = pageFrame,
+                nightMode = nightMode,
+                backgroundColor = backgroundColor,
+                onHeaderStyleChange = onHeaderStyleChange,
+                onPageFrameChange = onPageFrameChange,
+            )
+
             SectionHeader(R.string.settings_section_preview)
             ReadingPreview(nightMode = nightMode, backgroundColor = backgroundColor)
             Spacer(Modifier.height(24.dp))
@@ -224,12 +250,123 @@ private fun RowScope.ColorOption(
 }
 
 @Composable
-private fun ReadingPreview(nightMode: Boolean, backgroundColor: Int) {
-    val background = if (nightMode) {
-        colorResource(R.color.bg_ays_night_mode)
-    } else {
-        colorResource(backgroundOptions.firstOrNull { it.id == backgroundColor }?.color ?: R.color.bg_white)
+private fun readingBackground(nightMode: Boolean, backgroundColor: Int): Color = if (nightMode) {
+    colorResource(R.color.bg_ays_night_mode)
+} else {
+    colorResource(backgroundOptions.firstOrNull { it.id == backgroundColor }?.color ?: R.color.bg_white)
+}
+
+private data class HeaderOption(val style: SuraHeaderStyle, @StringRes val label: Int, @StringRes val summary: Int)
+
+private val headerOptions = listOf(
+    HeaderOption(SuraHeaderStyle.CLASSIC, R.string.mushaf_header_classic, R.string.mushaf_header_classic_summary),
+    HeaderOption(SuraHeaderStyle.MODERN, R.string.mushaf_header_modern, R.string.mushaf_header_modern_summary),
+    HeaderOption(SuraHeaderStyle.PLAIN, R.string.mushaf_header_plain, R.string.mushaf_header_plain_summary),
+)
+
+@Composable
+private fun MushafSettings(
+    headerStyle: Int,
+    pageFrame: Boolean,
+    nightMode: Boolean,
+    backgroundColor: Int,
+    onHeaderStyleChange: (Int) -> Unit,
+    onPageFrameChange: (Boolean) -> Unit,
+) {
+    SettingsCard {
+        Column(Modifier.padding(vertical = 8.dp).selectableGroup()) {
+            Text(
+                stringResource(R.string.mushaf_header_style),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+            )
+            headerOptions.forEach { option ->
+                val selected = option.style.id == headerStyle
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .selectable(selected = selected, role = Role.RadioButton, onClick = { onHeaderStyleChange(option.style.id) })
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selected, onClick = null)
+                        Column(Modifier.weight(1f).padding(start = 12.dp)) {
+                            Text(stringResource(option.label), style = MaterialTheme.typography.bodyLarge)
+                            Text(
+                                stringResource(option.summary),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                    if (option.style != SuraHeaderStyle.PLAIN) {
+                        SuraHeaderPreview(
+                            style = option.style,
+                            nightMode = nightMode,
+                            background = readingBackground(nightMode, backgroundColor),
+                            modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+                        )
+                    }
+                }
+            }
+        }
     }
+    Spacer(Modifier.height(12.dp))
+    SettingsCard {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .toggleable(value = pageFrame, role = Role.Switch, onValueChange = onPageFrameChange)
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(Modifier.weight(1f).padding(end = 16.dp)) {
+                Text(stringResource(R.string.mushaf_page_frame), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.mushaf_page_frame_summary),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Switch(checked = pageFrame, onCheckedChange = null)
+        }
+    }
+}
+
+/** Real sura header (same drawing code as the reading pages) for Al-Fatiha. */
+@Composable
+private fun SuraHeaderPreview(style: SuraHeaderStyle, nightMode: Boolean, background: Color, modifier: Modifier = Modifier) {
+    val ink = colorResource(if (nightMode) R.color.ayas_color_night_mode else R.color.ayas_color)
+    AndroidView(
+        modifier = modifier,
+        factory = { context ->
+            TextView(context).apply {
+                textSize = 17f
+                gravity = Gravity.CENTER
+                val pad = (4 * resources.displayMetrics.density).toInt()
+                setPadding(pad, pad, pad, pad)
+            }
+        },
+        update = { tv ->
+            val palette = MushafPalette.of(style, nightMode, background.toArgb(), ink.toArgb())
+            val info = SuraHeaderInfo(index = 1, name = "الفاتحة", revelationType = "Meccan", numOfAyahs = 7)
+            val text = SpannableString(info.name)
+            text.setSpan(
+                SuraHeaderSpan(info, style, palette, MushafFonts.get(tv.context)) {
+                    val w = tv.width - tv.totalPaddingLeft - tv.totalPaddingRight
+                    if (w > 0) w else tv.resources.displayMetrics.widthPixels - (96 * tv.resources.displayMetrics.density).toInt()
+                },
+                0, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+            )
+            tv.setBackgroundColor(background.toArgb())
+            tv.text = text
+        },
+    )
+}
+
+@Composable
+private fun ReadingPreview(nightMode: Boolean, backgroundColor: Int) {
+    val background = readingBackground(nightMode, backgroundColor)
     val textColor = colorResource(if (nightMode) R.color.ayas_color_night_mode else R.color.ayas_color)
     Card(
         shape = RoundedCornerShape(16.dp),

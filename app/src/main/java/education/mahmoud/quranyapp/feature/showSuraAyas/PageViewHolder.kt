@@ -3,7 +3,6 @@ package education.mahmoud.quranyapp.feature.showSuraAyas
 import android.graphics.Rect
 import android.graphics.text.LineBreaker
 import android.os.Build
-import android.text.Spannable
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.Gravity
@@ -25,9 +24,20 @@ import education.mahmoud.quranyapp.utils.Util
 class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapter.IBookmark?) : RecyclerView.ViewHolder(binding.root) {
 
     private val padding = Rect()
+    private var lastTextWidth = 0
 
     // defined here to not be created with each bind call.
     init {
+        // header spans take the text width; if it changes (first layout, rotation, split screen)
+        // set the text again so the headers are measured with the real width
+        binding.tvAyahs.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            val tv = v as TextView
+            val w = tv.width - tv.totalPaddingLeft - tv.totalPaddingRight
+            if (w > 0 && w != lastTextWidth) {
+                lastTextWidth = w
+                tv.post { tv.setText(tv.text, TextView.BufferType.SPANNABLE) }
+            }
+        }
         binding.imBookmark.setOnClickListener {
             binding.page?.let {
                 iBookmark?.onBookmarkClicked(it)
@@ -62,9 +72,7 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
                 spannable.getSpans(header.start, header.end, ForegroundColorSpan::class.java)
                     .forEach { spannable.removeSpan(it) }
                 spannable.setSpan(
-                    SuraHeaderSpan(info, options.headerStyle, palette, fonts) {
-                        tv.width - tv.totalPaddingLeft - tv.totalPaddingRight
-                    },
+                    SuraHeaderSpan(info, options.headerStyle, palette, fonts) { textWidth(tv) },
                     header.start, header.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
                 )
             }
@@ -135,6 +143,14 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
         bar.addView(binding.imBookmark)
         binding.tvSurahName.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         binding.tvJuz.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
+    }
+
+    /** Width of the text area; before the first layout it is estimated from the screen width. */
+    private fun textWidth(tv: TextView): Int {
+        if (tv.width > 0) return tv.width - tv.totalPaddingLeft - tv.totalPaddingRight
+        val lp = tv.layoutParams as? ViewGroup.MarginLayoutParams
+        val margins = (lp?.leftMargin ?: 0) + (lp?.rightMargin ?: 0)
+        return tv.resources.displayMetrics.widthPixels - margins - tv.paddingLeft - tv.paddingRight
     }
 
     private fun setMargin(view: View, px: Int) {

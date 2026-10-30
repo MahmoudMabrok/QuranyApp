@@ -205,6 +205,16 @@
     <string name="settings_section_preview">معاينة</string>
     <string name="night_mode_summary">خلفية داكنة ونص فاتح لصفحات المصحف</string>
     <string name="background_disabled_in_night_mode">لون الخلفية لا يُستخدم أثناء الوضع الليلي</string>
+    <string name="settings_section_mushaf">شكل المصحف</string>
+    <string name="mushaf_header_style">إطار اسم السورة</string>
+    <string name="mushaf_header_classic">كلاسيكي ذهبي</string>
+    <string name="mushaf_header_classic_summary">زخرفة ذهبية وخرطوشة خضراء مثل المصحف المطبوع</string>
+    <string name="mushaf_header_modern">عصري</string>
+    <string name="mushaf_header_modern_summary">شريط فاتح بلون أخضر مزرق وتصميم بسيط</string>
+    <string name="mushaf_header_plain">بسيط</string>
+    <string name="mushaf_header_plain_summary">اسم السورة فقط بدون زخرفة</string>
+    <string name="mushaf_page_frame">إطار الصفحة</string>
+    <string name="mushaf_page_frame_summary">إطار مزخرف مثل المصحف، يختلف بين الصفحة اليمنى واليسرى</string>
     <string name="settings_preview_ayah">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</string>
     <!-- listen screen -->
     <string name="listen_reciter">القارئ</string>
