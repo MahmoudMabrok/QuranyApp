@@ -46,8 +46,6 @@ class HomeActivity : AppCompatActivity() {
     private val quranRepository: QuranRepository by inject()
     var ahays = 0
 
-    private val listenFragment by lazy { ListenFragment() }
-
     private var selectedTab by mutableStateOf(0)
 
     private val binding by viewBinding(ActivityHomeBinding::inflate)
@@ -76,6 +74,7 @@ class HomeActivity : AppCompatActivity() {
                             onSearch = ::openSearch,
                             onJump = ::openGoToSura,
                             onLastRead = ::gotoLastRead,
+                            onListen = ::openListen,
                             onReadLog = ::goToReadLog,
                             onScore = ::gotoScore,
                             onDownload = ::gotoDownload,
@@ -135,7 +134,7 @@ class HomeActivity : AppCompatActivity() {
         if (requestCode == RC_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             isPermissionAllowed = true
             quranRepository.permissionState = true
-            listenFragment.downloadAyahs()
+            (supportFragmentManager.findFragmentByTag(LISTEN_TAG) as? ListenFragment)?.downloadAyahs()
         } else if (requestCode == RC_STORAGE) {
             showMessage(getString(R.string.down_permission))
             quranRepository.permissionState = false
@@ -185,6 +184,14 @@ class HomeActivity : AppCompatActivity() {
         startActivity(Intent(this, DownloadActivity::class.java))
     }
 
+    private fun openListen() {
+        if (supportFragmentManager.findFragmentByTag(LISTEN_TAG) != null) return
+        supportFragmentManager.beginTransaction()
+            .add(R.id.mainContainer, ListenFragment(), LISTEN_TAG)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun goToReadLog() {
         supportFragmentManager.beginTransaction()
             .add(R.id.mainContainer, ReadLogFragment())
@@ -195,5 +202,6 @@ class HomeActivity : AppCompatActivity() {
     companion object {
         private const val RC_STORAGE = 1001
         private const val TAG = "HomeActivity"
+        private const val LISTEN_TAG = "listen"
     }
 }
