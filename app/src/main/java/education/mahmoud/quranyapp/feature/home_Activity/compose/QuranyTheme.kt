@@ -1,6 +1,8 @@
 package education.mahmoud.quranyapp.feature.home_Activity.compose
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
@@ -75,7 +77,7 @@ fun QuranyTheme(
         // Light theme: teal app bar -> white status icons, light background -> dark nav icons.
         // Dark theme: light green app bar -> dark status icons, dark background -> light nav icons.
         SideEffect {
-            val window = (view.context as? Activity)?.window ?: return@SideEffect
+            val window = view.context.findActivity()?.window ?: return@SideEffect
             WindowCompat.getInsetsController(window, view).apply {
                 isAppearanceLightStatusBars = darkTheme
                 isAppearanceLightNavigationBars = !darkTheme
@@ -87,4 +89,10 @@ fun QuranyTheme(
         typography = QuranyTypography,
         content = content,
     )
+}
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

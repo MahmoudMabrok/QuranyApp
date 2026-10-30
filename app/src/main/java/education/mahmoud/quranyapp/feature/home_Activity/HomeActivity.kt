@@ -50,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // teal top app bar behind the status bar -> white status icons (QuranyTheme adjusts for dark theme)
+        // themed app bar behind the status bar: white icons on teal, dark icons on the dark theme's light green
         EdgeToEdge.enable(this)
         setContentView(binding.root)
         // let the splash / search / read-log overlays get the insets too

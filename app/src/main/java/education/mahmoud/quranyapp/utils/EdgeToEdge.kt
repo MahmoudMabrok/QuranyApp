@@ -30,17 +30,19 @@ object EdgeToEdge {
 
     /**
      * Enables edge-to-edge with transparent bars.
-     * @param darkStatusBarBackground true when the content behind the status bar is dark/coloured
-     * (teal app bars), so the status bar icons are white.
+     * @param darkStatusBarBackground true when the content behind the status bar is dark/coloured,
+     * so the status bar icons are white. null = the themed app bar: teal in the light theme
+     * (white icons), light green in the dark theme (dark icons).
      * @param nightContent whether the screen content is dark (night mode); picks the nav bar icon colour.
      * null follows the system dark theme.
      */
     @JvmStatic
     @JvmOverloads
-    fun enable(activity: ComponentActivity, darkStatusBarBackground: Boolean = true, nightContent: Boolean? = null) {
+    fun enable(activity: ComponentActivity, darkStatusBarBackground: Boolean? = null, nightContent: Boolean? = null) {
         val night = nightContent ?: isSystemNight(activity)
+        val darkBehindStatusBar = darkStatusBarBackground ?: !isSystemNight(activity)
         activity.enableEdgeToEdge(
-            statusBarStyle = if (darkStatusBarBackground) {
+            statusBarStyle = if (darkBehindStatusBar) {
                 SystemBarStyle.dark(Color.TRANSPARENT)
             } else {
                 SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
