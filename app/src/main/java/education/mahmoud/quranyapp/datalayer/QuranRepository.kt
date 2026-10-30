@@ -43,6 +43,12 @@ class QuranRepository(private var localShared: LocalShared, private var quranDB:
             localShared.backColorState = color
         }
 
+    var listenReciter: String?
+        get() = localShared.listenReciter
+        set(id) {
+            localShared.listenReciter = id
+        }
+
     var score: Long
         get() = localShared.score
         set(score) {

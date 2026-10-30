@@ -165,7 +165,7 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun SectionHeader(@StringRes text: Int) {
+internal fun SectionHeader(@StringRes text: Int) {
     Text(
         text = stringResource(text),
         style = MaterialTheme.typography.labelLarge,
@@ -176,7 +176,7 @@ private fun SectionHeader(@StringRes text: Int) {
 }
 
 @Composable
-private fun SettingsCard(content: @Composable () -> Unit) {
+internal fun SettingsCard(content: @Composable () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),

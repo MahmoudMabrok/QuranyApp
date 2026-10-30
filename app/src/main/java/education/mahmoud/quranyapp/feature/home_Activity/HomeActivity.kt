@@ -1,8 +1,6 @@
 package education.mahmoud.quranyapp.feature.home_Activity
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -24,7 +22,7 @@ import education.mahmoud.quranyapp.feature.gotoscreen.compose.GoToDialog
 import education.mahmoud.quranyapp.feature.home_Activity.compose.HomeActions
 import education.mahmoud.quranyapp.feature.home_Activity.compose.HomeScreen
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
-import education.mahmoud.quranyapp.feature.listening_activity.ListenFragment
+import education.mahmoud.quranyapp.feature.listen.ListenActivity
 import education.mahmoud.quranyapp.feature.read_log.ReadLogFragment
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity
 import education.mahmoud.quranyapp.feature.setting.SettingActivity
@@ -33,8 +31,6 @@ import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.viewBinding
 import org.koin.android.ext.android.inject
-import pub.devrel.easypermissions.EasyPermissions
-import pub.devrel.easypermissions.PermissionRequest
 
 /**
  * Home screen host. The two main working screens (Surah list + Bookmarks) are
@@ -43,7 +39,6 @@ import pub.devrel.easypermissions.PermissionRequest
  */
 class HomeActivity : AppCompatActivity() {
 
-    private var isPermissionAllowed: Boolean = false
     private val quranRepository: QuranRepository by inject()
     var ahays = 0
 
@@ -106,22 +101,8 @@ class HomeActivity : AppCompatActivity() {
         openRead()
     }
 
-    private fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun openRead() {
         selectedTab = 0
-    }
-
-    fun acquirePermission() {
-        val perms = arrayOf(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-        EasyPermissions.requestPermissions(
-            PermissionRequest.Builder(this, RC_STORAGE, *perms).build()
-        )
     }
 
     fun goToSplash() {
@@ -138,24 +119,6 @@ class HomeActivity : AppCompatActivity() {
             .add(R.id.mainContainer, ShowSearchResults())
             .addToBackStack(null)
             .commit()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == RC_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            isPermissionAllowed = true
-            quranRepository.permissionState = true
-            (supportFragmentManager.findFragmentByTag(LISTEN_TAG) as? ListenFragment)?.downloadAyahs()
-        } else if (requestCode == RC_STORAGE) {
-            showMessage(getString(R.string.down_permission))
-            quranRepository.permissionState = false
-            // user refuse to take permission
-            openRead()
-        }
     }
 
     private fun gotoLastRead() {
@@ -205,11 +168,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openListen() {
-        if (supportFragmentManager.findFragmentByTag(LISTEN_TAG) != null) return
-        supportFragmentManager.beginTransaction()
-            .add(R.id.mainContainer, ListenFragment(), LISTEN_TAG)
-            .addToBackStack(null)
-            .commit()
+        startActivity(Intent(this, ListenActivity::class.java))
     }
 
     private fun goToReadLog() {
@@ -220,8 +179,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val RC_STORAGE = 1001
         private const val TAG = "HomeActivity"
-        private const val LISTEN_TAG = "listen"
     }
 }
