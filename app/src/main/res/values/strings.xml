@@ -191,6 +191,14 @@
     <string name="goto_error_range">أدخل رقمًا من %1$d إلى %2$d</string>
     <string name="goto_sura_info">%1$s · %2$d آية</string>
     <string name="cancel_action">إلغاء</string>
+    <string name="data_offline">متاح بدون إنترنت</string>
+    <string name="data_quran_text">نص القرآن الكريم</string>
+    <string name="data_tafseer">التفسير</string>
+    <string name="data_ayah_count">%1$d من %2$d آية</string>
+    <string name="data_complete">مكتمل</string>
+    <string name="data_incomplete">غير مكتمل</string>
+    <string name="data_offline_hint">النص والتفسير مضمّنان في التطبيق ويتم تجهيزهما عند أول تشغيل.</string>
+    <string name="data_download_recitations">تحميل تلاوات من شاشة الاستماع</string>
     <!-- settings -->
     <string name="back">رجوع</string>
     <string name="settings_section_reading">القراءة</string>

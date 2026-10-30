@@ -352,7 +352,7 @@ private fun NumberInput(
 
 /** Downloaded audio per reciter with its size; delete one reciter or everything. */
 @Composable
-private fun DownloadsSection(
+internal fun DownloadsSection(
     downloads: List<ReciterDownloads>,
     enabled: Boolean,
     onDelete: (Reciter?) -> Unit,
