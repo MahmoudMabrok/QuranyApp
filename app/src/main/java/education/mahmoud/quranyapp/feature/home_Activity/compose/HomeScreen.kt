@@ -70,8 +70,10 @@ fun HomeScreen(
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = SafeInsets.content,
         topBar = {
             TopAppBar(
+                windowInsets = SafeInsets.topBar,
                 title = { Text(stringResource(R.string.app_name)) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
@@ -87,7 +89,8 @@ fun HomeScreen(
             )
         },
     ) { innerPadding ->
-        Column(Modifier.fillMaxSize().padding(innerPadding)) {
+        // lists draw behind the navigation bar; their last rows get the bottom inset as content padding
+        Column(Modifier.fillMaxSize().paddingExceptBottom(innerPadding)) {
             TabRow(
                 selectedTabIndex = selectedTab,
                 containerColor = MaterialTheme.colorScheme.surface,
@@ -103,8 +106,16 @@ fun HomeScreen(
             }
             Crossfade(targetState = selectedTab) { tab ->
                 when (tab) {
-                    0 -> SuraListScreen(repository = repository, onSuraClick = actions.onSuraClick)
-                    else -> BookmarkScreen(repository = repository, onBookmarkClick = actions.onBookmarkClick)
+                    0 -> SuraListScreen(
+                        repository = repository,
+                        onSuraClick = actions.onSuraClick,
+                        bottomInset = innerPadding.calculateBottomPadding(),
+                    )
+                    else -> BookmarkScreen(
+                        repository = repository,
+                        onBookmarkClick = actions.onBookmarkClick,
+                        bottomInset = innerPadding.calculateBottomPadding(),
+                    )
                 }
             }
         }

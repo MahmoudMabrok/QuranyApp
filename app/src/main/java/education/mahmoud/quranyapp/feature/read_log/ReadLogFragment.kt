@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.read_log
 
+import education.mahmoud.quranyapp.utils.EdgeToEdge
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,10 @@ class ReadLogFragment : DataLoadingBaseFragment() {
 
     override fun initViews(view: View) {
         super.initViews(view)
+        // full-screen overlay: background behind the bars, content inside them
+        EdgeToEdge.applyPadding(view)
+        // light green background -> dark status bar icons while shown
+        activity?.let { EdgeToEdge.setStatusBarIconsDark(it, true) }
         initRV()
         loadData()
     }
@@ -70,5 +75,11 @@ class ReadLogFragment : DataLoadingBaseFragment() {
 
     private fun loadData() {
         logAdapter.setReadLogList(quranRepository.readLog)
+    }
+
+    override fun onDestroyView() {
+        // back to the home teal app bar: white icons (dark icons in dark theme)
+        activity?.let { EdgeToEdge.setStatusBarIconsDark(it, EdgeToEdge.isSystemNight(it)) }
+        super.onDestroyView()
     }
 }

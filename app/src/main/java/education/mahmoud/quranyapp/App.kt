@@ -7,6 +7,9 @@ import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.di.dataModule
 import education.mahmoud.quranyapp.feature.showSuraAyas.Page
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.HizbMark
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderInfo
+import education.mahmoud.quranyapp.utils.getSuraNameFromIndex
 import education.mahmoud.quranyapp.utils.LocaleHelper
 import education.mahmoud.quranyapp.utils.log
 import org.koin.android.ext.android.inject
@@ -60,12 +63,31 @@ class App : Application() {
             var page: Page
             var ayahItems: List<AyahItem>
             val start = System.currentTimeMillis()
+            // sura header data (Makki/Madani, ayah count) for the Mushaf-style headers
+            val suraInfos = try {
+                quranRepository.suras.associate { sura ->
+                    sura.index to SuraHeaderInfo(
+                        index = sura.index,
+                        name = sura.index.getSuraNameFromIndex(),
+                        revelationType = sura.revelationType,
+                        numOfAyahs = sura.numOfAyahs,
+                    )
+                }
+            } catch (e: Exception) {
+                emptyMap()
+            }
+            var previousQuarter = 0
             for (i in 1..604) {
                 ayahItems = quranRepository.getAyahsByPage(i)
                 if (ayahItems.isNotEmpty()) {
                     page = Page(ayahItems)
                     page.pageNum = i
                     page.juz = ayahItems[0].juz
+                    page.suraInfos = ayahItems.filter { it.ayahInSurahIndex == 1 }
+                        .mapNotNull { suraInfos[it.surahIndex] }
+                        .associateBy { it.index }
+                    page.hizbMark = HizbMark.find(ayahItems.map { it.hizbQuarter }, previousQuarter)
+                    previousQuarter = ayahItems.last().hizbQuarter
                     pages.add(page)
                 }
             }

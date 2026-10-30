@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.utils.EdgeToEdge;
 import education.mahmoud.quranyapp.datalayer.QuranRepository;
 import education.mahmoud.quranyapp.utils.Util;
 
@@ -39,7 +40,10 @@ public class FeedbackActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // light green background -> dark status bar icons
+        EdgeToEdge.enable(this, false);
         setContentView(R.layout.activity_feedback);
+        EdgeToEdge.applyPaddingToContent(this);
         ButterKnife.bind(this);
 
 

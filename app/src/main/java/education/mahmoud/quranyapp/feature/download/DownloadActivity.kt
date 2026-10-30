@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import education.mahmoud.quranyapp.feature.download.compose.DataScreen
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
 import education.mahmoud.quranyapp.feature.listen.ListenActivity
+import education.mahmoud.quranyapp.utils.EdgeToEdge
 
 /**
  * "تحميل البيانات" screen. The old Java/ButterKnife version crashed on open (ButterKnife's
@@ -24,6 +25,7 @@ class DownloadActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EdgeToEdge.enable(this)
         setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 QuranyTheme {

@@ -29,6 +29,7 @@ import education.mahmoud.quranyapp.feature.setting.SettingActivity
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.utils.Constants
+import education.mahmoud.quranyapp.utils.EdgeToEdge
 import education.mahmoud.quranyapp.utils.viewBinding
 import org.koin.android.ext.android.inject
 
@@ -49,7 +50,11 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // themed app bar behind the status bar: white icons on teal, dark icons on the dark theme's light green
+        EdgeToEdge.enable(this)
         setContentView(binding.root)
+        // let the splash / search / read-log overlays get the insets too
+        EdgeToEdge.dispatchToAllChildren(binding.root)
 
         goToSplash()
         ahays = quranRepository.totlaAyahs

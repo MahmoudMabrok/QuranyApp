@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArraySet
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearSnapHelper
 import butterknife.ButterKnife
@@ -16,9 +17,12 @@ import education.mahmoud.quranyapp.databinding.ActivityShowAyahsBinding
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
 import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafOptions
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
+import education.mahmoud.quranyapp.utils.EdgeToEdge
 import education.mahmoud.quranyapp.utils.log
 import education.mahmoud.quranyapp.utils.viewBinding
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -84,7 +88,23 @@ class ShowAyahsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // edge-to-edge: page paper goes behind the bars; icons follow the page colour (night mode)
+        val night = model.nightModeState
+        EdgeToEdge.enable(this, darkStatusBarBackground = night, nightContent = night)
         setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val bars = insets.getInsets(EdgeToEdge.SAFE_TYPES)
+            pageAdapter?.let { adapter ->
+                if (adapter.systemInsets != bars) {
+                    adapter.systemInsets = bars
+                    val rv = binding.rvAyahsPages
+                    for (i in 0 until rv.childCount) {
+                        (rv.getChildViewHolder(rv.getChildAt(i)) as? PageViewHolder)?.applyInsets(bars)
+                    }
+                }
+            }
+            insets
+        }
         ButterKnife.bind(this)
 
         pos = intent.getIntExtra(Constants.SURAH_INDEX, 1)
@@ -162,7 +182,12 @@ class ShowAyahsActivity : AppCompatActivity() {
         prepareColors()
         with(binding) {
             rvAyahsPages.setHasFixedSize(true)
-            pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener)
+            val mushafOptions = MushafOptions(
+                headerStyle = SuraHeaderStyle.fromId(model.mushafHeaderStyle),
+                pageFrame = model.mushafPageFrame,
+                nightMode = model.nightModeState,
+            )
+            pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener, mushafOptions = mushafOptions)
             rvAyahsPages.adapter = pageAdapter
             rvAyahsPages.itemAnimator = DefaultItemAnimator()
             LinearSnapHelper().attachToRecyclerView(rvAyahsPages)

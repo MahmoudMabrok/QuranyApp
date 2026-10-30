@@ -72,6 +72,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.feature.home_Activity.compose.SafeInsets
+import education.mahmoud.quranyapp.feature.home_Activity.compose.paddingExceptBottom
 import education.mahmoud.quranyapp.feature.gotoscreen.GoToInput
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranFont
 import education.mahmoud.quranyapp.feature.listen.ListenInput
@@ -119,9 +121,11 @@ fun ListenScreen(viewModel: ListenViewModel, onBack: () -> Unit) {
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = SafeInsets.content,
         snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
             TopAppBar(
+                windowInsets = SafeInsets.topBar,
                 title = { Text(stringResource(R.string.listen)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -144,8 +148,10 @@ fun ListenScreen(viewModel: ListenViewModel, onBack: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .paddingExceptBottom(padding)
                 .verticalScroll(scrollState)
+                // bottom inset inside the scroll: content scrolls behind the nav bar but ends above it
+                .padding(bottom = padding.calculateBottomPadding())
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             when (val phase = viewModel.phase) {

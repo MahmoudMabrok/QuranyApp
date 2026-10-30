@@ -43,6 +43,18 @@ class QuranRepository(private var localShared: LocalShared, private var quranDB:
             localShared.backColorState = color
         }
 
+    var mushafHeaderStyle: Int
+        get() = localShared.mushafHeaderStyle
+        set(style) {
+            localShared.mushafHeaderStyle = style
+        }
+
+    var mushafPageFrame: Boolean
+        get() = localShared.mushafPageFrame
+        set(enabled) {
+            localShared.mushafPageFrame = enabled
+        }
+
     var listenReciter: String?
         get() = localShared.listenReciter
         set(id) {

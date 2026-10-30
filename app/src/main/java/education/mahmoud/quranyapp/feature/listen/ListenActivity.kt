@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
 import education.mahmoud.quranyapp.feature.listen.compose.ListenScreen
+import education.mahmoud.quranyapp.utils.EdgeToEdge
 
 /** Listen to a range of ayahs with a chosen reciter (Compose, follows [QuranyTheme]). */
 class ListenActivity : AppCompatActivity() {
@@ -17,6 +18,7 @@ class ListenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        EdgeToEdge.enable(this)
         setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
                 QuranyTheme {

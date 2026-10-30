@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.utils.EdgeToEdge;
 
 public class ShowAyahsPDF extends AppCompatActivity {
 
@@ -25,7 +26,9 @@ public class ShowAyahsPDF extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_show_ayahs_pdf);
+        EdgeToEdge.applyPaddingToContent(this);
         ButterKnife.bind(this);
 
    /*     pdfView.fromAsset("final.pdf")

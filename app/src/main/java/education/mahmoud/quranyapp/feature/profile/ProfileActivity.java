@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.utils.EdgeToEdge;
 import education.mahmoud.quranyapp.datalayer.QuranRepository;
 import education.mahmoud.quranyapp.datalayer.model.User;
 
@@ -29,7 +30,9 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
+        EdgeToEdge.applyPaddingToContent(this);
         ButterKnife.bind(this);
 
 
