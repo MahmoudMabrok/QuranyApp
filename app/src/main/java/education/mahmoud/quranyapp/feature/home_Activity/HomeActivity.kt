@@ -19,7 +19,8 @@ import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
-import education.mahmoud.quranyapp.feature.gotoscreen.GoToSurah
+import education.mahmoud.quranyapp.feature.gotoscreen.compose.GoToActions
+import education.mahmoud.quranyapp.feature.gotoscreen.compose.GoToDialog
 import education.mahmoud.quranyapp.feature.home_Activity.compose.HomeActions
 import education.mahmoud.quranyapp.feature.home_Activity.compose.HomeScreen
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
@@ -47,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
     var ahays = 0
 
     private var selectedTab by mutableStateOf(0)
+    private var showGoTo by mutableStateOf(false)
 
     private val binding by viewBinding(ActivityHomeBinding::inflate)
 
@@ -81,6 +83,19 @@ class HomeActivity : AppCompatActivity() {
                             onSettings = ::openSetting,
                         ),
                     )
+                    if (showGoTo) {
+                        GoToDialog(
+                            repository = quranRepository,
+                            onDismiss = { showGoTo = false },
+                            actions = GoToActions(
+                                onSuraAyah = { sura, ayah ->
+                                    openAyahs(Constants.SURAH_GO_INDEX to sura, Constants.AYAH_GO_INDEX to ayah)
+                                },
+                                onJuz = { openAyahs(Constants.JUZ_INDEX to it) },
+                                onPage = { openAyahs(Constants.PAGE_INDEX to it) },
+                            ),
+                        )
+                    }
                 }
             }
         }
@@ -167,9 +182,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun openGoToSura() {
-        val a = supportFragmentManager.beginTransaction()
-        val goToSurah = GoToSurah()
-        goToSurah.show(a, null)
+        showGoTo = true
+    }
+
+    private fun openAyahs(vararg extras: Pair<String, Int>) {
+        showGoTo = false
+        val intent = Intent(this, ShowAyahsActivity::class.java)
+        extras.forEach { (key, value) -> intent.putExtra(key, value) }
+        startActivity(intent)
     }
 
     private fun openSetting() {

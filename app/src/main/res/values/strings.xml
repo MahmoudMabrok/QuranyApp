@@ -179,4 +179,16 @@
         <item>المفضلة</item>
     </string-array>
 
+    <!-- quick jump dialog -->
+    <string name="goto_tab_sura">سورة وآية</string>
+    <string name="goto_tab_juz">جزء</string>
+    <string name="goto_tab_page">صفحة</string>
+    <string name="goto_sura_label">رقم السورة</string>
+    <string name="goto_ayah_label">رقم الآية (اختياري)</string>
+    <string name="goto_juz_label">رقم الجزء</string>
+    <string name="goto_page_label">رقم الصفحة</string>
+    <string name="goto_range">من %1$d إلى %2$d</string>
+    <string name="goto_error_range">أدخل رقمًا من %1$d إلى %2$d</string>
+    <string name="goto_sura_info">%1$s · %2$d آية</string>
+    <string name="cancel_action">إلغاء</string>
 </resources>
