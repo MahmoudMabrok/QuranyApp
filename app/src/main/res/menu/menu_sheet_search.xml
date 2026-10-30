@@ -3,18 +3,14 @@
 
     <item
         android:id="@+id/menuOpen"
-        android:iconTintMode="screen"
-        android:title="Go to  Page" />
-
+        android:title="@string/search_open_page" />
 
     <item
         android:id="@+id/menuTafser"
-        android:title="Show Tafser" />
-
+        android:title="@string/search_show_tafseer" />
 
     <item
         android:id="@+id/menuPlaySound"
-        android:title="Play Sound" />
-
+        android:title="@string/search_play_sound" />
 
 </menu>
