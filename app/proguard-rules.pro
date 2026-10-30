@@ -23,8 +23,24 @@
 
 
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
-# EnclosingMethod is required to use InnerClasses.
--keepattributes Signature, InnerClasses, EnclosingMethod
+# EnclosingMethod is required to use InnerClasses. *Annotation* keeps @SerializedName / @Expose.
+-keepattributes Signature, InnerClasses, EnclosingMethod, *Annotation*
+
+# Gson + R8 full mode.
+# Model types below are instantiated only by Gson.fromJson (assets/quran.json,
+# quran_clean.json, tafseer.json, and Room TypeConverters). R8 full mode otherwise
+# treats them as never constructed, merges or deletes them, and rewrites
+# Util.getFullQuranSurahs so the cast fails and the method returns null.
+-keep class education.mahmoud.quranyapp.datalayer.model.** { *; }
+-keep class education.mahmoud.quranyapp.model.** { *; }
+# TypeToken<List<AyahItem>> in Util (no @SerializedName; Gson uses the field names).
+-keep class education.mahmoud.quranyapp.datalayer.local.room.AyahItem { *; }
+
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+-keepclassmembers,allowobfuscation class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
 
 # Retain service method parameters when optimizing.
 -keepclassmembers,allowshrinking,allowobfuscation interface * {
