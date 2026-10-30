@@ -50,12 +50,12 @@ jobs:
       - name: Bump versionCode and versionName
         run: |
           VERSION_NAME="${{ github.event.inputs.version_name }}"
-          CURRENT_CODE=$(grep 'versionCode = ' app/build.gradle.kts | grep -o '[0-9]*')
+          CURRENT_CODE=$(grep 'versionCode = ' app/build.gradle | grep -o '[0-9]*')
           NEW_CODE=$((CURRENT_CODE + 1))
           echo "versionCode: $CURRENT_CODE → $NEW_CODE"
           echo "versionName: $VERSION_NAME"
-          sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle.kts
-          sed -i "s/versionName = \"[^\"]*\"/versionName = \"$VERSION_NAME\"/" app/build.gradle.kts
+          sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle
+          sed -i "s/versionName = \"[^\"]*\"/versionName = \"$VERSION_NAME\"/" app/build.gradle
 
           {
             echo "## 📦 Android version dump"
@@ -137,10 +137,10 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
           if [ "${{ needs.deploy-android.result }}" = "success" ]; then
-            CURRENT_CODE=$(grep 'versionCode = ' app/build.gradle.kts | grep -o '[0-9]*')
+            CURRENT_CODE=$(grep 'versionCode = ' app/build.gradle | grep -o '[0-9]*')
             NEW_CODE=$((CURRENT_CODE + 1))
-            sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle.kts
-            sed -i "s/versionName = \"[^\"]*\"/versionName = \"$VERSION_NAME\"/" app/build.gradle.kts
+            sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle
+            sed -i "s/versionName = \"[^\"]*\"/versionName = \"$VERSION_NAME\"/" app/build.gradle
             echo "Android versionCode: $CURRENT_CODE → $NEW_CODE"
             echo "ANDROID_VERSION_CODE=$NEW_CODE" >> "$GITHUB_ENV"
             echo "| Android | versionCode | \`$CURRENT_CODE\` | \`$NEW_CODE\` |" >> "$GITHUB_STEP_SUMMARY"
@@ -169,7 +169,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app/build.gradle.kts iosApp/iosApp.xcodeproj/project.pbxproj
+          git add app/build.gradle
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "chore: bump version to ${{ github.event.inputs.version_name }} [skip ci]"
           git push origin HEAD:${{ github.ref_name }}
@@ -180,7 +180,6 @@ jobs:
         run: |
           VERSION="${{ github.event.inputs.version_name }}"
           ANDROID="${{ needs.deploy-android.result }}"
-          IOS="${{ needs.deploy-ios.result }}"
           NOTES_FILE="$RUNNER_TEMP/release-notes.md"
 
           {
@@ -191,11 +190,6 @@ jobs:
               echo "- ✅ Android published to Google Play (${{ github.event.inputs.track }})"
             else
               echo "- ❌ Android deploy failed"
-            fi
-            if [ "$IOS" = "success" ]; then
-              echo "- ✅ iOS published to App Store Connect"
-            else
-              echo "- ℹ️ iOS: ${IOS:-skipped}"
             fi
           } > "$NOTES_FILE"
 
