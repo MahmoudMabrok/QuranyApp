@@ -1,7 +1,6 @@
 name: Build Debug APK
 
 on:
-  push:
   workflow_dispatch:
 
 jobs:
