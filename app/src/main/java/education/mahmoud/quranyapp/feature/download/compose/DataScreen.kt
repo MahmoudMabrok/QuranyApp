@@ -41,6 +41,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.feature.home_Activity.compose.SafeInsets
+import education.mahmoud.quranyapp.feature.home_Activity.compose.paddingExceptBottom
 import education.mahmoud.quranyapp.feature.download.DataViewModel
 import education.mahmoud.quranyapp.feature.listen.compose.DownloadsSection
 import education.mahmoud.quranyapp.feature.setting.compose.SectionHeader
@@ -61,9 +63,11 @@ fun DataScreen(viewModel: DataViewModel, onBack: () -> Unit, onOpenListen: () ->
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = SafeInsets.content,
         snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
             TopAppBar(
+                windowInsets = SafeInsets.topBar,
                 title = { Text(stringResource(R.string.download).trim()) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -86,8 +90,10 @@ fun DataScreen(viewModel: DataViewModel, onBack: () -> Unit, onOpenListen: () ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .paddingExceptBottom(padding)
                 .verticalScroll(rememberScrollState())
+                // bottom inset inside the scroll: content scrolls behind the nav bar but ends above it
+                .padding(bottom = padding.calculateBottomPadding())
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             SectionHeader(R.string.data_offline)

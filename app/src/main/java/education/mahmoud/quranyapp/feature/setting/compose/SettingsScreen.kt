@@ -66,6 +66,8 @@ import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderInfo
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderSpan
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.R
+import education.mahmoud.quranyapp.feature.home_Activity.compose.SafeInsets
+import education.mahmoud.quranyapp.feature.home_Activity.compose.paddingExceptBottom
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranFont
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
 import education.mahmoud.quranyapp.utils.Constants
@@ -94,8 +96,10 @@ fun SettingsScreen(
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = SafeInsets.content,
         topBar = {
             TopAppBar(
+                windowInsets = SafeInsets.topBar,
                 title = { Text(stringResource(R.string.setting)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
@@ -119,8 +123,10 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .paddingExceptBottom(padding)
                 .verticalScroll(rememberScrollState())
+                // bottom inset inside the scroll: content scrolls behind the nav bar but ends above it
+                .padding(bottom = padding.calculateBottomPadding())
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             SectionHeader(R.string.settings_section_reading)
