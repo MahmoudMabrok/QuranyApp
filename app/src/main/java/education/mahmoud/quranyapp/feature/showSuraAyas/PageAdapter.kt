@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import education.mahmoud.quranyapp.databinding.PageItemBinding
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafOptions
 
 class PageAdapter(
     private val ayahsColor: Int,
@@ -11,6 +12,7 @@ class PageAdapter(
     val iOnClick: IOnClick? = null,
     private val pageShown: PageShown? = null,
     private val iBookmark: IBookmark? = null,
+    private val mushafOptions: MushafOptions = MushafOptions(),
 ) : RecyclerView.Adapter<PageViewHolder>() {
 
     private val list: ArrayList<Page> = arrayListOf()
@@ -31,7 +33,7 @@ class PageAdapter(
 
     override fun onBindViewHolder(holder: PageViewHolder, index: Int) {
         val page = list[index]
-        holder.bind(page, ayahsColor, scrollColor)
+        holder.bind(page, ayahsColor, scrollColor, mushafOptions)
     }
 
     private fun flipState(holder: PageViewHolder) {

@@ -16,6 +16,8 @@ import education.mahmoud.quranyapp.databinding.ActivityShowAyahsBinding
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
 import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafOptions
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
@@ -162,7 +164,12 @@ class ShowAyahsActivity : AppCompatActivity() {
         prepareColors()
         with(binding) {
             rvAyahsPages.setHasFixedSize(true)
-            pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener)
+            val mushafOptions = MushafOptions(
+                headerStyle = SuraHeaderStyle.fromId(model.mushafHeaderStyle),
+                pageFrame = model.mushafPageFrame,
+                nightMode = model.nightModeState,
+            )
+            pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener, mushafOptions = mushafOptions)
             rvAyahsPages.adapter = pageAdapter
             rvAyahsPages.itemAnimator = DefaultItemAnimator()
             LinearSnapHelper().attachToRecyclerView(rvAyahsPages)
