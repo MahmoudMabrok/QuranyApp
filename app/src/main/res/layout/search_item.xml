@@ -1,108 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- One ayah search result: sura + ayah/page on top, the ayah text with the match highlighted. -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="@dimen/_10sdp"
-    android:background="@drawable/setting_border"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    android:clickable="true"
+    android:focusable="true"
     android:layoutDirection="rtl"
-    app:cardCornerRadius="@dimen/_10sdp">
+    app:cardBackgroundColor="@color/search_card_bg"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="1dp"
+    app:strokeColor="@color/search_card_stroke"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="@dimen/_5sdp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvSearchSuraName"
-                android:layout_width="match_parent"
-                style="bold"
-                android:textAlignment="center"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/search_text_size"
-                tools:text="aaa" />
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textAlignment="viewStart"
+                android:textColor="@color/primary1"
+                android:textSize="15sp"
+                tools:text="البقرة" />
 
             <TextView
                 android:id="@+id/tvSearchAyahNum"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                app:autoSizeTextType="uniform"
-                android:textSize="@dimen/search_text_size"
-                tools:text="10" />
+                android:background="@drawable/bg_search_chip"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:textColor="@color/primary1"
+                android:textSize="12sp"
+                tools:text="الآية ١٦٣" />
 
-
+            <TextView
+                android:id="@+id/tvSearchPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/bg_search_chip"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:textColor="@color/search_muted"
+                android:textSize="12sp"
+                tools:text="صفحة ٢٥" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:background="?android:attr/listDivider" />
 
         <TextView
             android:id="@+id/tvSearchResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/whiteTextColor"
-            android:gravity="center"
-            android:padding="@dimen/_8sdp"
+            android:layout_marginTop="8dp"
             android:ellipsize="end"
-            android:maxLines="5"
-            android:text="TextViewaaasa"
-            android:textSize="@dimen/ayahs_size" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageButton
-                android:id="@+id/btnPlayInSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/ic_play" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:background="?android:attr/listDivider" />
-
-
-            <Button
-                android:id="@+id/btnShowTafseer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tafseerbtn" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:background="?android:attr/listDivider" />
-
-
-            <Button
-                android:id="@+id/btnShowTashkeel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:text="@string/tashkeel" />
-
-
-        </LinearLayout>
-
-
+            app:fontFamily="@font/amiri_regular"
+            android:lineSpacingMultiplier="1.15"
+            android:maxLines="6"
+            android:textAlignment="viewStart"
+            android:textColor="@color/search_ayah_text"
+            android:textDirection="rtl"
+            android:textSize="19sp"
+            tools:text="وإلهكم إله واحد لا إله إلا هو الرحمن الرحيم" />
     </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
