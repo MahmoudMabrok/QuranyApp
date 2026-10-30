@@ -1,12 +1,21 @@
-name: Build signed release APK
+name: Build APK
 
 # Manual only. A tag or GitHub Release trigger is intentionally not enabled.
 on:
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - debug
 
 jobs:
   build:
-    name: Build signed release APK
+    name: Build ${{ inputs.build_type }} APK
     runs-on: ubuntu-latest
 
     steps:
@@ -24,15 +33,22 @@ jobs:
           cache-read-only: false
 
       - name: Decode keystore
+        if: inputs.build_type == 'release'
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build release APK
-        run: ./gradlew :app:assembleRelease --no-daemon
+      - name: Build APK
+        run: |
+          if [ "${{ inputs.build_type }}" = "debug" ]; then
+            ./gradlew :app:assembleDebug --no-daemon
+          else
+            ./gradlew :app:assembleRelease --no-daemon
+          fi
 
       - name: Install build-tools and sign APK
+        if: inputs.build_type == 'release'
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
@@ -98,10 +114,10 @@ jobs:
           rm -f release.keystore "$ALIGNED"
           echo "Signed APK ready: $SIGNED"
 
-      - name: Upload signed release APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: app/build/outputs/apk/release/app-release.apk
+          name: app-${{ inputs.build_type }}
+          path: app/build/outputs/apk/${{ inputs.build_type }}/app-${{ inputs.build_type }}*.apk
           if-no-files-found: error
           retention-days: 7
