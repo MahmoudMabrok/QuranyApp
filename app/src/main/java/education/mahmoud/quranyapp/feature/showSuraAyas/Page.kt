@@ -33,33 +33,48 @@ data class Page(
         var isFirst = true
         for (ayahItem in ayhas) {
             aya = ayahItem.text
-            ayahStarts.add(builder.length)
             // add sura name
             if (ayahItem.ayahInSurahIndex == 1) {
                 val tempSuraName = ayahItem.surahIndex.getSuraNameFromIndex()
                 // handle first name in page that not need a previous new line
                 if (!isFirst) builder.append("\n")
+                ayahStarts.add(builder.length)
                 val start = builder.length
                 builder.append(tempSuraName)
                 headers.add(HeaderRange(ayahItem.surahIndex, start, builder.length))
                 builder.append("\n")
-                // AlFatiha(index = 1 ) has a Basmallah in first ayah.
+                // AlFatiha(index = 1 ) has the Basmallah as its first ayah; others carry it before ayah 1
                 if (ayahItem.surahIndex != 1) {
-                    var pos = aya.indexOf("ٱلرَّحِيم")
-                    if (pos >= 0) {
-                        pos += "ٱلرَّحِيم".length
-                        // insert  البسملة
-                        builder.append(aya.substring(0, minOf(pos + 1, aya.length))) // +1 as substring upper bound is excluded
+                    val split = splitBasmala(aya)
+                    if (split != null) {
+                        builder.append(split.first)
                         builder.append("\n")
-                        // cut ayah
-                        aya = if (pos + 1 < aya.length) aya.substring(pos + 1) else "" // start after البسملة
+                        aya = split.second
                     }
                 }
+            } else {
+                ayahStarts.add(builder.length)
             }
             isFirst = false
             builder.append(NumberHelper.formatAyahWithNumber(aya, ayahItem.ayahInSurahIndex))
         }
         return Content(builder.toString(), headers, ayahStarts)
+    }
+
+    companion object {
+        private val DIACRITICS = Regex("[\\u064B-\\u065F\\u0670\\u06D6-\\u06ED]")
+
+        /**
+         * Splits "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ <ayah>" into the Basmala (first four words)
+         * and the ayah text, whatever diacritics order the text uses. Returns null when the
+         * ayah does not start with a Basmala.
+         */
+        fun splitBasmala(aya: String): Pair<String, String>? {
+            val words = aya.trim().split(" ", limit = 5)
+            if (words.size < 5) return null
+            if (words[0].replace(DIACRITICS, "") != "بسم") return null
+            return words.take(4).joinToString(" ") to words[4]
+        }
     }
 
     /**
