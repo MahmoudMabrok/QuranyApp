@@ -7,6 +7,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.PlaybackParams;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.datalayer.local.LocalShared;
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem;
 import education.mahmoud.quranyapp.utils.Constants;
 
@@ -76,6 +79,7 @@ public class ListenServie extends Service {
                 player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
+                        applySavedSpeed(mp);
                         mp.start();
                         Log.d(TAG, "onPrepared: ");
                     }
@@ -100,6 +104,17 @@ public class ListenServie extends Service {
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    /** Uses the same saved speed as the Listen screen. */
+    private void applySavedSpeed(MediaPlayer mp) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
+        float speed = new LocalShared(getApplication()).getPlaybackSpeed();
+        try {
+            mp.setPlaybackParams(new PlaybackParams().setSpeed(speed));
+        } catch (Exception e) {
+            Log.w(TAG, "applySavedSpeed: ", e);
         }
     }
 
