@@ -198,4 +198,33 @@
     <string name="night_mode_summary">خلفية داكنة ونص فاتح لصفحات المصحف</string>
     <string name="background_disabled_in_night_mode">لون الخلفية لا يُستخدم أثناء الوضع الليلي</string>
     <string name="settings_preview_ayah">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</string>
+    <!-- listen screen -->
+    <string name="listen_reciter">القارئ</string>
+    <string name="listen_from">من</string>
+    <string name="listen_to">إلى</string>
+    <string name="listen_start_ayah">الآية</string>
+    <string name="listen_end_ayah">الآية</string>
+    <string name="listen_sura">السورة</string>
+    <string name="listen_empty_hint">اترك أرقام الآيات فارغة لتشغيل السورة كاملة</string>
+    <string name="listen_order_error">يجب أن تكون البداية قبل النهاية</string>
+    <string name="listen_repeat">التكرار</string>
+    <string name="listen_repeat_each">تكرار كل آية</string>
+    <string name="listen_repeat_all">تكرار المقطع</string>
+    <string name="listen_downloading">جاري تحميل الآيات %1$d من %2$d</string>
+    <string name="listen_download_error">تعذر تحميل التلاوة، تحقق من الاتصال بالإنترنت</string>
+    <string name="listen_finished">انتهى الاستماع</string>
+    <string name="listen_now_playing">التلاوة الحالية</string>
+    <string name="listen_ayah_n">الآية %1$d</string>
+    <string name="listen_position">%1$d من %2$d</string>
+    <string name="listen_play">تشغيل</string>
+    <string name="listen_pause">إيقاف مؤقت</string>
+    <string name="listen_stop">إيقاف</string>
+    <string name="listen_next">الآية التالية</string>
+    <string name="listen_previous">الآية السابقة</string>
+    <string name="reciter_alafasy">مشاري راشد العفاسي</string>
+    <string name="reciter_husary">محمود خليل الحصري</string>
+    <string name="reciter_minshawi">محمد صديق المنشاوي</string>
+    <string name="reciter_abdul_basit">عبد الباسط عبد الصمد</string>
+    <string name="reciter_sudais">عبد الرحمن السديس</string>
+    <string name="reciter_maher">ماهر المعيقلي</string>
 </resources>
