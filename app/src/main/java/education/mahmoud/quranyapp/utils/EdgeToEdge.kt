@@ -72,12 +72,13 @@ object EdgeToEdge {
         top: Boolean = true,
         right: Boolean = true,
         bottom: Boolean = true,
+        types: Int = SAFE_TYPES,
     ) {
         val initial = (view.getTag(R.id.tag_initial_padding) as? Insets) ?: Insets.of(
             view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom,
         ).also { view.setTag(R.id.tag_initial_padding, it) }
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowInsets ->
-            val bars = windowInsets.getInsets(SAFE_TYPES)
+            val bars = windowInsets.getInsets(types)
             v.setPadding(
                 initial.left + if (left) bars.left else 0,
                 initial.top + if (top) bars.top else 0,
@@ -89,12 +90,15 @@ object EdgeToEdge {
         requestApplyInsetsWhenAttached(view)
     }
 
-    /** Applies padding to the root of an activity content view (all sides). */
+    /**
+     * Applies padding to the root of an activity content view (all sides), including the
+     * keyboard, since adjustResize no longer resizes edge-to-edge windows.
+     */
     @JvmStatic
     fun applyPaddingToContent(activity: Activity) {
         val content = activity.findViewById<android.view.ViewGroup>(android.R.id.content)
         val root = content?.getChildAt(0) ?: return
-        applyPadding(root)
+        applyPadding(root, types = SAFE_TYPES or WindowInsetsCompat.Type.ime())
     }
 
     /**

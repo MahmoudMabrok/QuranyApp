@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import education.mahmoud.quranyapp.R;
+import education.mahmoud.quranyapp.utils.EdgeToEdge;
 import education.mahmoud.quranyapp.datalayer.QuranRepository;
 import education.mahmoud.quranyapp.feature.register.RegisterActivity;
 import education.mahmoud.quranyapp.utils.Util;
@@ -71,8 +72,27 @@ public class ScoreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // light green background -> dark status bar icons
+        EdgeToEdge.enable(this, false);
         setContentView(R.layout.activity_score);
+        EdgeToEdge.applyPaddingToContent(this);
         ButterKnife.bind(this);
+        // ButterKnife leaves the views null here (crashed on open), bind them directly
+        tvTotalScore = findViewById(R.id.tvTotalScore);
+        tvWelcomeUser = findViewById(R.id.tvWelcomeUser);
+        loggedLayout = findViewById(R.id.loggedLayout);
+        btnUploadScore = findViewById(R.id.btnUploadScore);
+        btnOpenLogin = findViewById(R.id.btnOpenLogin);
+        rvScoreboard = findViewById(R.id.rvScoreboard);
+        tvNoScores = findViewById(R.id.tvNoScores);
+        btnShowScoreBoard = findViewById(R.id.btnShowScoreBoard);
+        tvScoreuserName = findViewById(R.id.tvScoreuserName);
+        tvScore = findViewById(R.id.tvScore);
+        lnScoreboard = findViewById(R.id.lnScoreboard);
+        spScoreboard = findViewById(R.id.spScoreboard);
+        btnUploadScore.setOnClickListener(v -> onBtnUploadScoreClicked());
+        btnOpenLogin.setOnClickListener(v -> onBtnOpenLoginClicked());
+        btnShowScoreBoard.setOnClickListener(v -> onViewClicked());
 
 
         score = quranRepository.getScore();
