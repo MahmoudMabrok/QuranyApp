@@ -136,7 +136,7 @@
     <string name="readlog">سجل القراءة</string>
     <string name="msg_deleted">تم الحذف بنجاح</string>
     <string name="date">التاريخ</string>
-    <string name="no_pages">عددالصفحات</string>
+    <string name="no_pages">عدد الصفحات</string>
     <string name="pages_num">أرقام الصفحات</string>
     <string name="setting_updated">تم حفظ الاعدادات بنجاح</string>
     <string name="tap_to_record">اختر الايات \n ثم اضغط لبدأ التسجيل</string>
@@ -271,4 +271,10 @@
     <string name="search_open_page">فتح الصفحة في المصحف</string>
     <string name="search_show_tafseer">عرض التفسير</string>
     <string name="search_play_sound">تشغيل التلاوة</string>
+
+    <!-- reading log screen -->
+    <string name="read_log_back">رجوع</string>
+    <string name="read_log_empty_title">لا يوجد سجل قراءة بعد</string>
+    <string name="read_log_empty_hint">الصفحات التي تقرؤها في المصحف تُسجَّل هنا تلقائيًا لكل يوم</string>
+    <string name="read_log_summary">%1$s في %2$s · اسحب اليوم لحذفه</string>
 </resources>
