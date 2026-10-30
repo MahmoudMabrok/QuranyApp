@@ -28,6 +28,7 @@ import education.mahmoud.quranyapp.feature.scores.ScoreActivity
 import education.mahmoud.quranyapp.feature.setting.SettingActivity
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.feature.splash.Splash
+import education.mahmoud.quranyapp.feature.test_quran.TestFragment
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.EdgeToEdge
 import education.mahmoud.quranyapp.utils.viewBinding
@@ -78,6 +79,7 @@ class HomeActivity : AppCompatActivity() {
                             onLastRead = ::gotoLastRead,
                             onListen = ::openListen,
                             onReadLog = ::goToReadLog,
+                            onMemorizationTest = ::openMemorizationTest,
                             onScore = ::gotoScore,
                             onDownload = ::gotoDownload,
                             onSettings = ::openSetting,
@@ -179,6 +181,14 @@ class HomeActivity : AppCompatActivity() {
     private fun goToReadLog() {
         supportFragmentManager.beginTransaction()
             .add(R.id.mainContainer, ReadLogFragment())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    /** memorization (حفظ) test; its bottom-nav entry was hidden and then removed with the old tabs */
+    private fun openMemorizationTest() {
+        supportFragmentManager.beginTransaction()
+            .add(R.id.mainContainer, TestFragment())
             .addToBackStack(null)
             .commit()
     }
