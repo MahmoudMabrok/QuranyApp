@@ -1,9 +1,15 @@
 package education.mahmoud.quranyapp.feature.listen.compose
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,8 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Speed
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,7 +39,6 @@ import education.mahmoud.quranyapp.feature.listen.playback.PlaybackSpeed
  * Playback speed chips (0.5x … 2x). Used on the Listen form and in the player card; the
  * chosen speed is saved and applied to the background player immediately.
  */
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun SpeedSelector(
     speed: Float,
@@ -57,22 +60,42 @@ internal fun SpeedSelector(
             )
         }
         Spacer(Modifier.height(8.dp))
-        // numbers read left-to-right (slow → fast) even in the Arabic layout
+        // numbers read left-to-right (slow → fast) even in the Arabic layout; one segmented
+        // row so all six speeds fit on a phone screen without wrapping
         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                PlaybackSpeed.OPTIONS.forEach { option ->
-                    val label = PlaybackSpeed.label(option)
-                    val description = stringResource(R.string.listen_speed_option, label)
-                    FilterChip(
-                        selected = PlaybackSpeed.normalize(speed) == option,
-                        onClick = { onSpeed(option) },
-                        label = {
-                            Text(label, style = MaterialTheme.typography.labelLarge.copy(fontFamily = FontFamily.Default))
-                        },
-                        modifier = Modifier
-                            .padding(vertical = 2.dp)
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(50))
+                    .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(50)),
+            ) {
+                PlaybackSpeed.OPTIONS.forEachIndexed { index, option ->
+                    val selected = PlaybackSpeed.normalize(speed) == option
+                    val description = stringResource(R.string.listen_speed_option, PlaybackSpeed.label(option))
+                    if (index > 0) {
+                        Box(
+                            Modifier
+                                .width(1.dp)
+                                .height(40.dp)
+                                .background(MaterialTheme.colorScheme.outline),
+                        )
+                    }
+                    Box(
+                        Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                            .background(if (selected) MaterialTheme.colorScheme.primary else Color.Transparent)
+                            .selectable(selected = selected, role = Role.RadioButton) { onSpeed(option) }
                             .semantics { contentDescription = description },
-                    )
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            PlaybackSpeed.label(option),
+                            style = MaterialTheme.typography.labelLarge.copy(fontFamily = FontFamily.Default),
+                            color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                        )
+                    }
                 }
             }
         }
