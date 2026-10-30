@@ -82,6 +82,26 @@ object ReadLogFormat {
         return "$day $dayOfMonth $month $year"
     }
 
+    /**
+     * Start of the day written in a log's strDate ("d-M-yyyy", e.g. "30-10-2026"), or null.
+     * Preferred over the stored `date` column, which older builds saved one month ahead.
+     */
+    fun parseStrDate(strDate: String?, calendar: Calendar = Calendar.getInstance()): Long? {
+        val parts = strDate?.trim()?.split("-") ?: return null
+        if (parts.size != 3) return null
+        val day = parts[0].toIntOrNull() ?: return null
+        val month = parts[1].toIntOrNull() ?: return null
+        val year = parts[2].toIntOrNull() ?: return null
+        if (day !in 1..31 || month !in 1..12 || year < 1900) return null
+        calendar.clear()
+        calendar.set(year, month - 1, day)
+        return calendar.timeInMillis
+    }
+
+    /** Day shown for a log row: from strDate when valid, else the stored millis. */
+    fun dayMillis(strDate: String?, storedMillis: Long): Long? =
+        parseStrDate(strDate) ?: storedMillis.takeIf { it > 0 }
+
     /** "اليوم" / "أمس" for the two most recent days, otherwise null. */
     fun relativeDay(millis: Long, now: Long = System.currentTimeMillis()): String? {
         val day = Calendar.getInstance().apply { timeInMillis = millis }

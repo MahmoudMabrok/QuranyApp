@@ -9,6 +9,8 @@ import androidx.collection.ArraySet
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearSnapHelper
 import butterknife.ButterKnife
 import education.mahmoud.quranyapp.App
@@ -126,6 +128,7 @@ class ShowAyahsActivity : AppCompatActivity() {
             pos = getPageFromJuz(pos)
         }
         pos -= 1
+        lastpageShown = pos + 1
 
         //endregion
         "$name   onCreate: $pos\"".log()
@@ -148,6 +151,8 @@ class ShowAyahsActivity : AppCompatActivity() {
                     "data found ${it.size}".log()
                     pageAdapter?.setPageList(it)
                     binding.rvAyahsPages.scrollToPosition(pos)
+                    // the page the reader opens on counts as read
+                    onPageShown(pos)
                     "data pageAdapter ${pageAdapter?.itemCount} , ${Thread.currentThread()}".log()
                     foundState()
                 },
@@ -162,8 +167,21 @@ class ShowAyahsActivity : AppCompatActivity() {
         binding.group2.visibility = View.GONE
     }
 
-    private fun addToReadLog(pos: Int) {
-        pagesReadLogNumber.add(pos)
+    private fun addToReadLog(pageNum: Int) {
+        if (pageNum in 1..LAST_PAGE) pagesReadLogNumber.add(pageNum)
+    }
+
+    /**
+     * Called with the adapter position of the page that is now on screen: remembers it as the
+     * latest read page and adds it to today's reading log. (This used to be wired through
+     * PageAdapter.setPageShown, which was commented out, so the log stayed empty.)
+     */
+    private fun onPageShown(position: Int) {
+        val adapter = pageAdapter ?: return
+        if (position < 0 || position >= adapter.itemCount) return
+        val pageNum = adapter.getPage(position).pageNum
+        lastpageShown = pageNum
+        addToReadLog(pageNum)
     }
 
     private fun getPosFromSurahAndAyah(surah: Int, ayah: Int): Int {
@@ -191,6 +209,15 @@ class ShowAyahsActivity : AppCompatActivity() {
             rvAyahsPages.adapter = pageAdapter
             rvAyahsPages.itemAnimator = DefaultItemAnimator()
             LinearSnapHelper().attachToRecyclerView(rvAyahsPages)
+            rvAyahsPages.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (newState != RecyclerView.SCROLL_STATE_IDLE) return
+                    val lm = recyclerView.layoutManager as? LinearLayoutManager ?: return
+                    var shown = lm.findFirstCompletelyVisibleItemPosition()
+                    if (shown == RecyclerView.NO_POSITION) shown = lm.findFirstVisibleItemPosition()
+                    onPageShown(shown)
+                }
+            })
             /*        pageAdapter.setPageShown(object : PageShown {
                         override fun onDiplayed(pos: Int, holder: PageAdapter.Holder) {
                             // items start from 0 increase 1 to get real page num,
@@ -269,13 +296,12 @@ class ShowAyahsActivity : AppCompatActivity() {
     private fun loadPagesReadLoge() {
         currentDate = DateOperation.getCurrentDateExact().time
         currentDateStr = DateOperation.getCurrentDateAsString()
-        readLog = model.getLReadLogByDate(currentDateStr)
-        readLog?.let {
-            pagesReadLogNumber.apply {
-                clear()
-                addAll(it.pages)
-            }
-        }
+        val saved = model.getLReadLogByDate(currentDateStr)
+        // pages from an earlier session were saved in onStop; start from what is stored today
+        pagesReadLogNumber.clear()
+        saved?.pages?.let { pagesReadLogNumber.addAll(it) }
+        // first reading today: create the row; it is inserted on the first save
+        readLog = saved ?: ReadLog(currentDate, currentDateStr, ArraySet())
     }
 
     /**
@@ -316,6 +342,7 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun saveReadLog() {
+        if (pagesReadLogNumber.isEmpty()) return
         readLog?.let {
             it.pages = ArraySet<Int>().apply { addAll(pagesReadLogNumber) }
             // exception used to indicate its update or add case when update it will make exception as there is item in db
@@ -328,6 +355,7 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val LAST_PAGE = 604
         private const val TAG = "TestApp"
     }
 }

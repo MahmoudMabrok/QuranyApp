@@ -59,4 +59,22 @@ class ReadLogFormatTest {
         assertNull(ReadLogFormat.relativeDay(at(2026, Calendar.OCTOBER, 28), now))
         assertEquals("أمس", ReadLogFormat.relativeDay(at(2025, Calendar.DECEMBER, 31), at(2026, Calendar.JANUARY, 1)))
     }
+
+    @Test
+    fun `parseStrDate reads d-M-yyyy and rejects junk`() {
+        val expected = Calendar.getInstance().apply { clear(); set(2026, Calendar.OCTOBER, 30) }.timeInMillis
+        assertEquals(expected, ReadLogFormat.parseStrDate("30-10-2026"))
+        assertNull(ReadLogFormat.parseStrDate("2026/10/30"))
+        assertNull(ReadLogFormat.parseStrDate("31-13-2026"))
+        assertNull(ReadLogFormat.parseStrDate(null))
+    }
+
+    @Test
+    fun `dayMillis prefers strDate over the stored millis`() {
+        val oct30 = ReadLogFormat.parseStrDate("30-10-2026")
+        val nov30 = Calendar.getInstance().apply { clear(); set(2026, Calendar.NOVEMBER, 30) }.timeInMillis
+        assertEquals(oct30, ReadLogFormat.dayMillis("30-10-2026", nov30))
+        assertEquals(nov30, ReadLogFormat.dayMillis("", nov30))
+        assertNull(ReadLogFormat.dayMillis(null, 0))
+    }
 }
