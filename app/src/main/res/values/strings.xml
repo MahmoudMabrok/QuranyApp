@@ -191,4 +191,11 @@
     <string name="goto_error_range">أدخل رقمًا من %1$d إلى %2$d</string>
     <string name="goto_sura_info">%1$s · %2$d آية</string>
     <string name="cancel_action">إلغاء</string>
+    <!-- settings -->
+    <string name="back">رجوع</string>
+    <string name="settings_section_reading">القراءة</string>
+    <string name="settings_section_preview">معاينة</string>
+    <string name="night_mode_summary">خلفية داكنة ونص فاتح لصفحات المصحف</string>
+    <string name="background_disabled_in_night_mode">لون الخلفية لا يُستخدم أثناء الوضع الليلي</string>
+    <string name="settings_preview_ayah">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</string>
 </resources>
