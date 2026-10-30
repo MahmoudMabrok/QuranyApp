@@ -93,4 +93,84 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+
+    <!-- memorization test screen -->
+    <style name="TestCard">
+        <item name="cardBackgroundColor">@color/search_card_bg</item>
+        <item name="cardCornerRadius">14dp</item>
+        <item name="cardElevation">1dp</item>
+        <item name="strokeColor">@color/search_card_stroke</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="TestLabel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textColor">@color/search_muted</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="TestHelp" parent="TestLabel">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TestAyahText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textDirection">rtl</item>
+        <item name="android:textColor">@color/search_ayah_text</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="fontFamily">@font/amiri_regular</item>
+    </style>
+
+    <style name="TestNumberInput">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:background">@drawable/bg_test_input</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">3</item>
+        <item name="android:importantForAutofill">no</item>
+        <item name="android:textColor">@color/search_ayah_text</item>
+        <item name="android:textColorHint">@color/search_muted</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TestPrimaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="backgroundTint">@color/primary1</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="TestSecondaryButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="strokeColor">@color/primary1</item>
+        <item name="android:textColor">@color/primary1</item>
+        <item name="android:textSize">15sp</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="TestTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_height">52dp</item>
+        <item name="android:textColor">@color/search_muted</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
 </resources>
