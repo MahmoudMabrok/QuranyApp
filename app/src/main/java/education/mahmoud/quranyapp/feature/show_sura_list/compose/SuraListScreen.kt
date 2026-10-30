@@ -73,7 +73,11 @@ fun SuraListScreen(
                 SuraHeaderRow()
                 Divider()
                 LazyColumn(Modifier.fillMaxSize()) {
-                    items(suras, key = { it.index }) { sura ->
+                    items(
+                        items = suras,
+                        key = { it.index },
+                        contentType = { "sura" },
+                    ) { sura ->
                         SuraRow(
                             sura = sura,
                             even = sura.index % 2 == 0,
@@ -123,6 +127,11 @@ private fun SuraRow(
     even: Boolean,
     onClick: () -> Unit,
 ) {
+    val iconRes = remember(sura.revelationType) {
+        if (sura.revelationType == "Meccan") R.drawable.ic_makka else R.drawable.ic_madinah
+    }
+    val icon = painterResource(iconRes)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -147,9 +156,7 @@ private fun SuraRow(
             style = MaterialTheme.typography.titleMedium,
         )
         Icon(
-            painter = painterResource(
-                if (sura.revelationType == "Meccan") R.drawable.ic_makka else R.drawable.ic_madinah,
-            ),
+            painter = icon,
             contentDescription = sura.revelationType,
             tint = MaterialTheme.colorScheme.secondary,
             modifier = Modifier.weight(1f).padding(horizontal = 4.dp),
