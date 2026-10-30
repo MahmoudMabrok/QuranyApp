@@ -1,5 +1,10 @@
 package education.mahmoud.quranyapp.feature.listen.compose
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -58,6 +63,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.feature.gotoscreen.GoToInput
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranFont
@@ -77,6 +83,21 @@ fun ListenScreen(viewModel: ListenViewModel, onBack: () -> Unit) {
     val message = viewModel.message
     val scrollState = rememberScrollState()
     val downloading = viewModel.phase is ListenPhase.Downloading
+    // Android 13+: ask once for the notification permission so the playback controls
+    // can be shown; playback starts whatever the answer is.
+    val notificationPermission = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { viewModel.start() }
+    val onPlay: () -> Unit = {
+        val needsPermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        if (needsPermission) {
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            viewModel.start()
+        }
+    }
     LaunchedEffect(downloading) {
         // bring the progress card (shown above the form) into view
         if (downloading) scrollState.animateScrollTo(0)
@@ -129,7 +150,7 @@ fun ListenScreen(viewModel: ListenViewModel, onBack: () -> Unit) {
                     SelectionForm(viewModel, enabled = phase !is ListenPhase.Downloading)
                     Spacer(Modifier.height(20.dp))
                     if (phase !is ListenPhase.Downloading) {
-                        Button(onClick = viewModel::start, modifier = Modifier.fillMaxWidth().height(52.dp)) {
+                        Button(onClick = onPlay, modifier = Modifier.fillMaxWidth().height(52.dp)) {
                             Icon(Icons.Filled.PlayArrow, contentDescription = null)
                             Text(stringResource(R.string.listen_play), modifier = Modifier.padding(start = 8.dp))
                         }

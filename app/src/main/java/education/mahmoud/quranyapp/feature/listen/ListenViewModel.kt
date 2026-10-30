@@ -1,18 +1,27 @@
 package education.mahmoud.quranyapp.feature.listen
 
 import android.app.Application
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.util.Log
+import android.content.ComponentName
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
+import com.google.common.util.concurrent.ListenableFuture
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
+import education.mahmoud.quranyapp.feature.listen.playback.PlaybackQueue
+import education.mahmoud.quranyapp.feature.listen.playback.QuranPlaybackService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -23,7 +32,6 @@ import okhttp3.OkHttpClient
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
-import java.io.IOException
 
 /** What the Listen screen is doing right now. */
 sealed class ListenPhase {
@@ -42,7 +50,9 @@ sealed class ListenPhase {
 
 /**
  * Downloads the selected ayahs into app-specific storage (getExternalFilesDir, no runtime
- * permission needed on any API level) and plays them in order with [MediaPlayer].
+ * permission needed on any API level) and hands them to [QuranPlaybackService], which keeps
+ * playing in the background with notification controls. This view model only talks to the
+ * service through a media3 [MediaController].
  */
 @Suppress("TooManyFunctions") // one small function per player control
 class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
@@ -65,16 +75,48 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
     var message by mutableStateOf<Int?>(null)
         private set
 
-    private var player: MediaPlayer? = null
-    private var playlist: List<AyahItem> = emptyList()
-    private var position = 0
+    private val controllerFuture: ListenableFuture<MediaController> = MediaController.Builder(
+        app,
+        SessionToken(app, ComponentName(app, QuranPlaybackService::class.java)),
+    ).buildAsync()
+    private var controller: MediaController? = null
     private var workJob: Job? = null
     private var tickerJob: Job? = null
+
+    private val playerListener = object : Player.Listener {
+        override fun onEvents(player: Player, events: Player.Events) {
+            publishPlaying()
+        }
+
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            if (playbackState == Player.STATE_ENDED) finishPlayback()
+        }
+
+        override fun onPlayerError(error: PlaybackException) {
+            // a corrupt / partial file: drop it so the next attempt downloads it again
+            val ayah = PlaybackQueue.ayahs.getOrNull(controller?.currentMediaItemIndex ?: -1)
+            ayah?.let { PlaybackQueue.reciter.cacheFile(audioRoot, it.ayahIndex).delete() }
+            message = R.string.error
+            stop()
+        }
+    }
 
     init {
         viewModelScope.launch {
             suras = withContext(Dispatchers.IO) { repository.suras }
+            publishPlaying()
         }
+        controllerFuture.addListener(
+            {
+                controller = runCatching { controllerFuture.get() }.getOrNull()?.also {
+                    it.addListener(playerListener)
+                    // playback may still be running from an earlier visit to this screen
+                    if (it.mediaItemCount > 0) startTicker()
+                    publishPlaying()
+                }
+            },
+            ContextCompat.getMainExecutor(app),
+        )
     }
 
     fun ayahCount(sura: Int): Int = suras.firstOrNull { it.index == sura }?.numOfAyahs ?: 0
@@ -121,67 +163,72 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
                 }
                 phase = ListenPhase.Downloading(index + 1, missing.size)
             }
-            playlist = ListenInput.playlist(ayahs, range.repeatEach, range.repeatAll)
-            playAt(0, currentReciter)
+            phase = ListenPhase.Idle
+            val queue = ListenInput.playlist(ayahs, range.repeatEach, range.repeatAll)
+            play(queue, currentReciter)
         }
     }
 
     fun togglePlayPause() {
-        val mp = player ?: return
-        if (mp.isPlaying) mp.pause() else mp.start()
-        publishPlaying()
+        val c = controller ?: return
+        if (c.isPlaying) c.pause() else c.play()
     }
 
     fun next() {
-        if (position + 1 < playlist.size) playAt(position + 1, reciter)
+        controller?.takeIf { it.hasNextMediaItem() }?.seekToNextMediaItem()
     }
 
     fun previous() {
-        if (playlist.isNotEmpty()) playAt((position - 1).coerceAtLeast(0), reciter)
+        val c = controller ?: return
+        if (c.hasPreviousMediaItem()) c.seekToPreviousMediaItem() else c.seekTo(0)
     }
 
     fun seekTo(ms: Int) {
-        player?.seekTo(ms)
-        publishPlaying()
+        controller?.seekTo(ms.toLong())
     }
 
     fun stop() {
         workJob?.cancel()
         tickerJob?.cancel()
-        releasePlayer()
-        playlist = emptyList()
+        controller?.let {
+            it.stop()
+            it.clearMediaItems()
+        }
+        PlaybackQueue.ayahs = emptyList()
         phase = ListenPhase.Idle
     }
 
-    private fun playAt(index: Int, playReciter: Reciter) {
-        releasePlayer()
-        position = index
-        val ayah = playlist.getOrNull(index) ?: return finishPlayback()
-        val file = playReciter.cacheFile(audioRoot, ayah.ayahIndex)
-        try {
-            player = MediaPlayer().apply {
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                        .build(),
-                )
-                setDataSource(file.absolutePath)
-                setOnCompletionListener { playAt(position + 1, playReciter) }
-                prepare()
-                start()
-            }
-        } catch (e: IOException) {
-            // corrupt / partial file: drop it so the next attempt downloads it again
-            Log.w(TAG, "cannot play ${file.name}", e)
-            file.delete()
-            message = R.string.error
-            stop()
+    private fun play(queue: List<AyahItem>, playReciter: Reciter) {
+        val c = controller
+        if (c == null || queue.isEmpty()) {
+            if (queue.isEmpty()) finishPlayback() else message = R.string.error
             return
         }
-        publishPlaying()
+        PlaybackQueue.ayahs = queue
+        PlaybackQueue.reciter = playReciter
+        val artist = getApplication<Application>().getString(playReciter.nameRes)
+        val items = queue.mapIndexed { index, ayah ->
+            val suraName = suraName(ayah)
+            MediaItem.Builder()
+                .setMediaId("$index:${ayah.ayahIndex}")
+                .setUri(Uri.fromFile(playReciter.cacheFile(audioRoot, ayah.ayahIndex)))
+                .setMediaMetadata(
+                    MediaMetadata.Builder()
+                        .setTitle("$suraName \u00B7 ${ayah.ayahInSurahIndex}")
+                        .setArtist(artist)
+                        .setAlbumTitle(suraName)
+                        .build(),
+                )
+                .build()
+        }
+        c.setMediaItems(items, 0, 0L)
+        c.prepare()
+        c.play()
         startTicker()
     }
+
+    private fun suraName(ayah: AyahItem): String =
+        suras.firstOrNull { it.index == ayah.surahIndex }?.name.orEmpty()
 
     private fun finishPlayback() {
         stop()
@@ -189,16 +236,20 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
     }
 
     private fun publishPlaying() {
-        val mp = player ?: return
-        val ayah = playlist.getOrNull(position) ?: return
+        val c = controller ?: return
+        if (c.mediaItemCount == 0) return
+        val index = c.currentMediaItemIndex
+        val ayah = PlaybackQueue.ayahs.getOrNull(index) ?: return
+        if (phase is ListenPhase.Downloading) return
+        reciter = PlaybackQueue.reciter
         phase = ListenPhase.Playing(
-            position = position,
-            total = playlist.size,
+            position = index,
+            total = c.mediaItemCount,
             ayah = ayah,
-            suraName = suras.firstOrNull { it.index == ayah.surahIndex }?.name.orEmpty(),
-            isPlaying = mp.isPlaying,
-            progressMs = mp.currentPosition,
-            durationMs = mp.duration.coerceAtLeast(0),
+            suraName = suraName(ayah),
+            isPlaying = c.playWhenReady,
+            progressMs = c.currentPosition.toInt(),
+            durationMs = c.duration.takeIf { it > 0 }?.toInt() ?: 0,
         )
     }
 
@@ -212,20 +263,15 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
         }
     }
 
-    private fun releasePlayer() {
-        player?.setOnCompletionListener(null)
-        player?.release()
-        player = null
-    }
-
     override fun onCleared() {
         super.onCleared()
         tickerJob?.cancel()
-        releasePlayer()
+        // only disconnect: the service keeps playing in the background
+        controller?.removeListener(playerListener)
+        MediaController.releaseFuture(controllerFuture)
     }
 
     companion object {
-        private const val TAG = "ListenViewModel"
         private const val TICK_MS = 250L
     }
 }

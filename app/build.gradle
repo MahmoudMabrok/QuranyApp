@@ -139,6 +139,11 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation 'androidx.compose.material3:material3:1.1.1'
     implementation 'androidx.activity:activity-compose:1.7.2'
+
+    // Background playback with media notification controls (Listen screen)
+    def media3_version = '1.5.1'
+    implementation "androidx.media3:media3-exoplayer:$media3_version"
+    implementation "androidx.media3:media3-session:$media3_version"
 }
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"
