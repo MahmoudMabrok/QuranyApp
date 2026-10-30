@@ -10,14 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog;
+import education.mahmoud.quranyapp.utils.UiFont;
 import education.mahmoud.quranyapp.utils.Util;
 
+/**
+ * Reading log rows. Views are looked up with findViewById: ButterKnife bindings are not
+ * generated in this module (kapt is applied, so the annotationProcessor dependency is
+ * ignored) and every row crashed with a null TextView as soon as the log had an entry.
+ */
 public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> {
 
     private List<ReadLog> list;
@@ -29,7 +32,6 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
     public void addReadLog(ReadLog item) {
         list.add(item);
         notifyItemInserted(list.size() - 1);
-        notifyItemRangeChanged(list.size() - 1, list.size());
     }
 
     public void setReadLogList(List<ReadLog> newList) {
@@ -46,37 +48,31 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
         return list;
     }
 
+    @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.read_log_item, viewGroup, false);
-        Holder holder = new Holder(view);
-        return holder;
+        return new Holder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int i) {
         ReadLog item = list.get(i);
-        holder.readLogDate.setText(item.getStrDate());
-        holder.readLogNPages.setText(String.valueOf(item.getPages().size()));
-        holder.readLogPagesNum.setText(getNums(item.getPages()));
+        int count = item.getPages() == null ? 0 : item.getPages().size();
+        String date = item.getDate() > 0 ? ReadLogFormat.INSTANCE.fullDate(item.getDate(), java.util.Calendar.getInstance())
+                : String.valueOf(item.getStrDate());
+        String relative = item.getDate() > 0
+                ? ReadLogFormat.INSTANCE.relativeDay(item.getDate(), System.currentTimeMillis()) : null;
+        String ranges = ReadLogFormat.INSTANCE.pageRanges(item.getPages());
 
+        holder.readLogDate.setText(date);
+        holder.readLogDay.setVisibility(relative == null ? View.GONE : View.VISIBLE);
+        holder.readLogDay.setText(relative);
+        holder.readLogNPages.setText(ReadLogFormat.INSTANCE.pagesCount(count));
+        holder.readLogPagesNum.setText(ranges);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msg = getNums(item.getPages());
-                Util.getDialog(holder.itemView.getContext(),msg,item.getStrDate()).show();
-            }
-        });
-    }
-
-    private String getNums(Set<Integer> pages) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Integer integer:pages){
-            stringBuilder.append(integer);
-            stringBuilder.append(",");
-        }
-        return stringBuilder.toString();
+        holder.itemView.setOnClickListener(v ->
+                Util.getDialog(holder.itemView.getContext(), ranges, date).show());
     }
 
     @Override
@@ -85,28 +81,31 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
     }
 
     public ReadLog getItem(int pos) {
-        return  list.get(pos);
+        return list.get(pos);
     }
 
     public void deleteitem(int pos) {
-        list.remove((int)pos);
+        list.remove(pos);
         notifyItemRemoved(pos);
-        notifyItemRangeChanged(pos,list.size());
     }
 
-    class Holder extends RecyclerView.ViewHolder {
+    static class Holder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.readLogDate)
-        TextView readLogDate;
-        @BindView(R.id.readLogNPages)
-        TextView readLogNPages;
-        @BindView(R.id.readLogPagesNum)
-        TextView readLogPagesNum;
+        final TextView readLogDay;
+        final TextView readLogDate;
+        final TextView readLogNPages;
+        final TextView readLogPagesLabel;
+        final TextView readLogPagesNum;
 
-        public Holder(@NonNull View itemView) {
+        Holder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            readLogDay = itemView.findViewById(R.id.readLogDay);
+            readLogDate = itemView.findViewById(R.id.readLogDate);
+            readLogNPages = itemView.findViewById(R.id.readLogNPages);
+            readLogPagesLabel = itemView.findViewById(R.id.readLogPagesLabel);
+            readLogPagesNum = itemView.findViewById(R.id.readLogPagesNum);
+            UiFont.applyBold(readLogDate, readLogDay, readLogNPages);
+            UiFont.apply(readLogPagesLabel, readLogPagesNum);
         }
     }
-
 }
