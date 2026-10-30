@@ -81,4 +81,5 @@
     <color name="fragment_bg">@color/primaryColor</color>
 
 
+    <color name="status_bar">#00A388</color>
 </resources>

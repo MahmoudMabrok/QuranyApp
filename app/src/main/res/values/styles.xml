@@ -5,6 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#7cb342</item>
         <item name="colorPrimaryDark">#4b830d</item>
+        <!-- match the teal top app bars of the Compose screens -->
+        <item name="android:statusBarColor">@color/status_bar</item>
         <item name="android:textColorSecondary">@color/primary1</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">#519657</item>
