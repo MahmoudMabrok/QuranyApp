@@ -221,6 +221,15 @@
     <string name="listen_stop">إيقاف</string>
     <string name="listen_next">الآية التالية</string>
     <string name="listen_previous">الآية السابقة</string>
+    <string name="downloads_title">التلاوات المحملة</string>
+    <string name="downloads_empty">لا توجد تلاوات محملة بعد</string>
+    <string name="downloads_summary">%1$d آية · %2$s</string>
+    <string name="downloads_total">الإجمالي: %1$s</string>
+    <string name="downloads_delete">حذف</string>
+    <string name="downloads_delete_all">حذف الكل</string>
+    <string name="downloads_delete_confirm">حذف التلاوات المحملة للقارئ %1$s؟</string>
+    <string name="downloads_delete_all_confirm">حذف كل التلاوات المحملة؟ ستحتاج إلى تحميلها مرة أخرى للاستماع.</string>
+    <string name="downloads_deleted">تم حذف التلاوات</string>
     <string name="reciter_alafasy">مشاري راشد العفاسي</string>
     <string name="reciter_husary">محمود خليل الحصري</string>
     <string name="reciter_minshawi">محمد صديق المنشاوي</string>

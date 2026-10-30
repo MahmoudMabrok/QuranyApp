@@ -19,12 +19,15 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -71,6 +74,7 @@ import education.mahmoud.quranyapp.feature.listen.ListenInput
 import education.mahmoud.quranyapp.feature.listen.ListenPhase
 import education.mahmoud.quranyapp.feature.listen.ListenViewModel
 import education.mahmoud.quranyapp.feature.listen.Reciter
+import education.mahmoud.quranyapp.feature.listen.ReciterDownloads
 import education.mahmoud.quranyapp.feature.setting.compose.SectionHeader
 import education.mahmoud.quranyapp.feature.setting.compose.SettingsCard
 import education.mahmoud.quranyapp.utils.NumberHelper
@@ -155,6 +159,7 @@ fun ListenScreen(viewModel: ListenViewModel, onBack: () -> Unit) {
                             Text(stringResource(R.string.listen_play), modifier = Modifier.padding(start = 8.dp))
                         }
                     }
+                    DownloadsSection(viewModel.downloads, enabled = phase !is ListenPhase.Downloading, onDelete = viewModel::deleteDownloads)
                 }
             }
             Spacer(Modifier.height(24.dp))
@@ -343,6 +348,96 @@ private fun NumberInput(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = modifier,
     )
+}
+
+/** Downloaded audio per reciter with its size; delete one reciter or everything. */
+@Composable
+private fun DownloadsSection(
+    downloads: List<ReciterDownloads>,
+    enabled: Boolean,
+    onDelete: (Reciter?) -> Unit,
+) {
+    val context = LocalContext.current
+    // null = no dialog; (true, null) = delete all; (false, reciter) = delete that reciter
+    var pending by remember { mutableStateOf<Pair<Boolean, Reciter?>?>(null) }
+    fun size(bytes: Long) = android.text.format.Formatter.formatShortFileSize(context, bytes)
+
+    SectionHeader(R.string.downloads_title)
+    SettingsCard {
+        Column(Modifier.padding(vertical = 8.dp)) {
+            if (downloads.isEmpty()) {
+                Text(
+                    stringResource(R.string.downloads_empty),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                )
+            }
+            downloads.forEachIndexed { index, item ->
+                if (index > 0) Divider(Modifier.padding(horizontal = 16.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(item.reciter.nameRes), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.downloads_summary, item.files, size(item.bytes)),
+                            style = numberStyle(),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    IconButton(onClick = { pending = false to item.reciter }, enabled = enabled) {
+                        Icon(
+                            Icons.Filled.Delete,
+                            contentDescription = stringResource(R.string.downloads_delete),
+                            tint = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                }
+            }
+            if (downloads.isNotEmpty()) {
+                Divider(Modifier.padding(horizontal = 16.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 4.dp),
+                ) {
+                    Text(
+                        stringResource(R.string.downloads_total, size(downloads.sumOf { it.bytes })),
+                        style = numberStyle(),
+                        modifier = Modifier.weight(1f),
+                    )
+                    TextButton(onClick = { pending = true to null }, enabled = enabled) {
+                        Text(stringResource(R.string.downloads_delete_all), color = MaterialTheme.colorScheme.error)
+                    }
+                }
+            }
+        }
+    }
+
+    pending?.let { (all, reciter) ->
+        AlertDialog(
+            onDismissRequest = { pending = null },
+            text = {
+                Text(
+                    if (all || reciter == null) {
+                        stringResource(R.string.downloads_delete_all_confirm)
+                    } else {
+                        stringResource(R.string.downloads_delete_confirm, stringResource(reciter.nameRes))
+                    },
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    pending = null
+                    onDelete(if (all) null else reciter)
+                }) { Text(stringResource(R.string.downloads_delete), color = MaterialTheme.colorScheme.error) }
+            },
+            dismissButton = {
+                TextButton(onClick = { pending = null }) { Text(stringResource(R.string.cancel_action)) }
+            },
+        )
+    }
 }
 
 @Composable

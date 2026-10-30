@@ -61,6 +61,7 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
     private val http: OkHttpClient by inject()
     private val audioRoot: File = app.getExternalFilesDir("audio") ?: File(app.filesDir, "audio")
     private val downloader by lazy { AudioDownloader(http, audioRoot) }
+    private val storage = AudioStorage(audioRoot)
 
     var suras by mutableStateOf<List<SuraItem>>(emptyList())
         private set
@@ -69,6 +70,10 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
     var reciter by mutableStateOf(Reciter.fromId(repository.listenReciter))
         private set
     var phase by mutableStateOf<ListenPhase>(ListenPhase.Idle)
+        private set
+
+    /** Downloaded audio per reciter, shown in the "downloaded audio" card. */
+    var downloads by mutableStateOf<List<ReciterDownloads>>(emptyList())
         private set
 
     /** String resource of a one-shot message for the snackbar. */
@@ -106,6 +111,7 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
             suras = withContext(Dispatchers.IO) { repository.suras }
             publishPlaying()
         }
+        refreshDownloads()
         controllerFuture.addListener(
             {
                 controller = runCatching { controllerFuture.get() }.getOrNull()?.also {
@@ -164,8 +170,28 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
                 phase = ListenPhase.Downloading(index + 1, missing.size)
             }
             phase = ListenPhase.Idle
+            refreshDownloads()
             val queue = ListenInput.playlist(ayahs, range.repeatEach, range.repeatAll)
             play(queue, currentReciter)
+        }
+    }
+
+    fun refreshDownloads() {
+        viewModelScope.launch {
+            downloads = withContext(Dispatchers.IO) { storage.usage() }
+        }
+    }
+
+    /** Deletes the downloaded audio of [target], or of every reciter when it is null. */
+    fun deleteDownloads(target: Reciter?) {
+        val playing = PlaybackQueue.reciter
+        if ((controller?.mediaItemCount ?: 0) > 0 && (target == null || target == playing)) stop()
+        viewModelScope.launch {
+            val ok = withContext(Dispatchers.IO) {
+                if (target == null) storage.deleteAll() else storage.delete(target)
+            }
+            message = if (ok) R.string.downloads_deleted else R.string.error
+            refreshDownloads()
         }
     }
 
