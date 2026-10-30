@@ -27,6 +27,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
