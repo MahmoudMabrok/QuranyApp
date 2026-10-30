@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import education.mahmoud.quranyapp.R
@@ -48,6 +50,8 @@ fun SuraListScreen(
     repository: QuranRepository,
     onSuraClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    /** extra bottom space so the last rows scroll above the navigation bar (edge-to-edge) */
+    bottomInset: Dp = 0.dp,
 ) {
     // Observe Room so the list fills in as soon as the first-launch import finishes,
     // instead of showing "no data" until the app is restarted.
@@ -72,7 +76,7 @@ fun SuraListScreen(
             else -> Column(Modifier.fillMaxSize()) {
                 SuraHeaderRow()
                 Divider()
-                LazyColumn(Modifier.fillMaxSize()) {
+                LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = bottomInset)) {
                     items(
                         items = suras,
                         key = { it.index },

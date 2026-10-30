@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import education.mahmoud.quranyapp.R
@@ -47,6 +49,8 @@ fun BookmarkScreen(
     repository: QuranRepository,
     onBookmarkClick: (BookmarkItem) -> Unit,
     modifier: Modifier = Modifier,
+    /** extra bottom space so the last items scroll above the navigation bar (edge-to-edge) */
+    bottomInset: Dp = 0.dp,
 ) {
     var bookmarks by remember { mutableStateOf<List<BookmarkItem>?>(null) }
 
@@ -65,7 +69,8 @@ fun BookmarkScreen(
             list == null -> CircularProgressIndicator(Modifier.align(Alignment.Center))
             list.isEmpty() -> EmptyBookmarks(Modifier.align(Alignment.Center))
             else -> LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(12.dp),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 12.dp + bottomInset),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 items(list, key = { it.id }) { item ->
