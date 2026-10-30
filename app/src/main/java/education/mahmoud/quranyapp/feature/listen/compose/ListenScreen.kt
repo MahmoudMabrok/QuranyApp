@@ -83,6 +83,8 @@ import education.mahmoud.quranyapp.feature.setting.compose.SectionHeader
 import education.mahmoud.quranyapp.feature.setting.compose.SettingsCard
 import education.mahmoud.quranyapp.utils.NumberHelper
 
+private const val SURA_WEIGHT = 1.6f
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListenScreen(viewModel: ListenViewModel, onBack: () -> Unit) {
@@ -356,5 +358,182 @@ private fun PlayerCard(phase: ListenPhase.Playing, viewModel: ListenViewModel) {
     }
 }
 
-// ... (rest of the file: SuraAyahRow, NumberInput, DownloadsSection, DownloadCard remain the same)
-// Note: Full file content truncated in this payload for length; in actual commit the complete updated file is used.
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SuraAyahRow(
+    viewModel: ListenViewModel,
+    sura: Int,
+    onSura: (Int) -> Unit,
+    ayah: String,
+    onAyah: (String) -> Unit,
+    ayahLabel: String,
+    hint: String,
+    error: Boolean,
+    enabled: Boolean,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val suras = viewModel.suras
+    Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { if (enabled) expanded = it },
+            modifier = Modifier.weight(SURA_WEIGHT),
+        ) {
+            OutlinedTextField(
+                value = suras.firstOrNull { it.index == sura }?.name.orEmpty(),
+                onValueChange = {},
+                readOnly = true,
+                enabled = enabled,
+                label = { Text(stringResource(R.string.listen_sura)) },
+                supportingText = { Text(" ") },
+                singleLine = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+                modifier = Modifier.menuAnchor().fillMaxWidth(),
+            )
+            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                suras.forEach { item ->
+                    DropdownMenuItem(
+                        text = { Text("${item.index}   ${item.name}") },
+                        onClick = {
+                            onSura(item.index)
+                            expanded = false
+                        },
+                    )
+                }
+            }
+        }
+        NumberInput(ayah, onAyah, ayahLabel, hint, error, enabled, Modifier.weight(1f))
+    }
+}
+
+@Composable
+private fun NumberInput(
+    value: String,
+    onValue: (String) -> Unit,
+    label: String,
+    hint: String,
+    isError: Boolean,
+    enabled: Boolean,
+    modifier: Modifier,
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { onValue(GoToInput.sanitize(it)) },
+        label = { Text(label) },
+        supportingText = { Text(hint) },
+        isError = isError,
+        enabled = enabled,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        modifier = modifier,
+    )
+}
+
+@Composable
+internal fun DownloadsSection(
+    downloads: List<ReciterDownloads>,
+    enabled: Boolean,
+    onDelete: (Reciter?) -> Unit,
+) {
+    val context = LocalContext.current
+    var pending by remember { mutableStateOf<Pair<Boolean, Reciter?>?>(null) }
+    fun size(bytes: Long) = android.text.format.Formatter.formatShortFileSize(context, bytes)
+
+    SectionHeader(R.string.downloads_title)
+    SettingsCard {
+        Column(Modifier.padding(vertical = 8.dp)) {
+            if (downloads.isEmpty()) {
+                Text(
+                    stringResource(R.string.downloads_empty),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                )
+            }
+            downloads.forEachIndexed { index, item ->
+                if (index > 0) Divider(Modifier.padding(horizontal = 16.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text(stringResource(item.reciter.nameRes), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.downloads_summary, item.files, size(item.bytes)),
+                            style = numberStyle(),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    IconButton(onClick = { pending = false to item.reciter }, enabled = enabled) {
+                        Icon(
+                            Icons.Filled.Delete,
+                            contentDescription = stringResource(R.string.downloads_delete),
+                            tint = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                }
+            }
+            if (downloads.isNotEmpty()) {
+                Divider(Modifier.padding(horizontal = 16.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 4.dp),
+                ) {
+                    Text(
+                        stringResource(R.string.downloads_total, size(downloads.sumOf { it.bytes })),
+                        style = numberStyle(),
+                        modifier = Modifier.weight(1f),
+                    )
+                    TextButton(onClick = { pending = true to null }, enabled = enabled) {
+                        Text(stringResource(R.string.downloads_delete_all), color = MaterialTheme.colorScheme.error)
+                    }
+                }
+            }
+        }
+    }
+
+    pending?.let { (all, reciter) ->
+        AlertDialog(
+            onDismissRequest = { pending = null },
+            text = {
+                Text(
+                    if (all || reciter == null) {
+                        stringResource(R.string.downloads_delete_all_confirm)
+                    } else {
+                        stringResource(R.string.downloads_delete_confirm, stringResource(reciter.nameRes))
+                    },
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    pending = null
+                    onDelete(if (all) null else reciter)
+                }) { Text(stringResource(R.string.downloads_delete), color = MaterialTheme.colorScheme.error) }
+            },
+            dismissButton = {
+                TextButton(onClick = { pending = null }) { Text(stringResource(R.string.cancel_action)) }
+            },
+        )
+    }
+}
+
+@Composable
+private fun DownloadCard(phase: ListenPhase.Downloading, onCancel: () -> Unit) {
+    SettingsCard {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text(
+                stringResource(R.string.listen_downloading, phase.done, phase.total),
+                style = MaterialTheme.typography.titleMedium,
+                fontFamily = FontFamily.Default,
+            )
+            val fraction = if (phase.total == 0) 0f else phase.done / phase.total.toFloat()
+            LinearProgressIndicator(progress = fraction, modifier = Modifier.fillMaxWidth())
+            OutlinedButton(onClick = onCancel, modifier = Modifier.align(Alignment.End)) {
+                Text(stringResource(R.string.cancel_action))
+            }
+        }
+    }
+}
+
+@Composable
+private fun numberStyle() = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Default)
