@@ -276,5 +276,7 @@
     <string name="read_log_back">رجوع</string>
     <string name="read_log_empty_title">لا يوجد سجل قراءة بعد</string>
     <string name="read_log_empty_hint">الصفحات التي تقرؤها في المصحف تُسجَّل هنا تلقائيًا لكل يوم</string>
+    <string name="read_log_dialog_message">%1$s\n\nأرقام الصفحات:\n%2$s</string>
+    <string name="read_log_dialog_ok">حسنًا</string>
     <string name="read_log_summary">%1$s في %2$s · اسحب اليوم لحذفه</string>
 </resources>

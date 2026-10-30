@@ -14,7 +14,6 @@ import java.util.List;
 import education.mahmoud.quranyapp.R;
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog;
 import education.mahmoud.quranyapp.utils.UiFont;
-import education.mahmoud.quranyapp.utils.Util;
 
 /**
  * Reading log rows. Views are looked up with findViewById: ButterKnife bindings are not
@@ -59,10 +58,11 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
     public void onBindViewHolder(@NonNull Holder holder, int i) {
         ReadLog item = list.get(i);
         int count = item.getPages() == null ? 0 : item.getPages().size();
-        String date = item.getDate() > 0 ? ReadLogFormat.INSTANCE.fullDate(item.getDate(), java.util.Calendar.getInstance())
+        Long day = ReadLogFormat.INSTANCE.dayMillis(item.getStrDate(), item.getDate());
+        String date = day != null ? ReadLogFormat.INSTANCE.fullDate(day, java.util.Calendar.getInstance())
                 : String.valueOf(item.getStrDate());
-        String relative = item.getDate() > 0
-                ? ReadLogFormat.INSTANCE.relativeDay(item.getDate(), System.currentTimeMillis()) : null;
+        String relative = day != null
+                ? ReadLogFormat.INSTANCE.relativeDay(day, System.currentTimeMillis()) : null;
         String ranges = ReadLogFormat.INSTANCE.pageRanges(item.getPages());
 
         holder.readLogDate.setText(date);
@@ -71,8 +71,9 @@ public class ReadLogAdapter extends RecyclerView.Adapter<ReadLogAdapter.Holder> 
         holder.readLogNPages.setText(ReadLogFormat.INSTANCE.pagesCount(count));
         holder.readLogPagesNum.setText(ranges);
 
+        String countText = ReadLogFormat.INSTANCE.pagesCount(count);
         holder.itemView.setOnClickListener(v ->
-                Util.getDialog(holder.itemView.getContext(), ranges, date).show());
+                ReadLogDialog.show(holder.itemView.getContext(), date, countText, ranges));
     }
 
     @Override
