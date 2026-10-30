@@ -82,4 +82,14 @@
 
 
     <color name="status_bar">#00A388</color>
+
+    <!-- search + read log screens -->
+    <color name="search_screen_bg">#F3F7F5</color>
+    <color name="search_card_bg">#FFFFFF</color>
+    <color name="search_card_stroke">#E1ECE7</color>
+    <color name="search_chip_bg">#E6F5F1</color>
+    <color name="search_muted">#5F6F6A</color>
+    <color name="search_ayah_text">#1F2A27</color>
+    <color name="search_highlight_bg">#FFE9A8</color>
+    <color name="search_highlight_fg">#7A4B00</color>
 </resources>

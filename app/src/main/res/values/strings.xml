@@ -257,4 +257,18 @@
     <string name="reciter_abdul_basit">عبد الباسط عبد الصمد</string>
     <string name="reciter_sudais">عبد الرحمن السديس</string>
     <string name="reciter_maher">ماهر المعيقلي</string>
+
+    <!-- search screen -->
+    <string name="search_results_count">عدد النتائج: %s</string>
+    <string name="search_empty_title">ابحث في القرآن الكريم</string>
+    <string name="search_empty_hint">اكتب كلمة أو جزءًا من آية لعرض الآيات التي تحتويها</string>
+    <string name="search_not_found_title">لا توجد نتائج</string>
+    <string name="search_not_found_hint">لم نجد آيات تحتوي على «%s». جرّب كلمة أخرى أو اكتبها بدون تشكيل.</string>
+    <string name="search_ayah_num">الآية %s</string>
+    <string name="search_page_num">صفحة %s</string>
+    <string name="search_clear">مسح</string>
+    <string name="search_options">خيارات الآية</string>
+    <string name="search_open_page">فتح الصفحة في المصحف</string>
+    <string name="search_show_tafseer">عرض التفسير</string>
+    <string name="search_play_sound">تشغيل التلاوة</string>
 </resources>
