@@ -1,0 +1,212 @@
+name: Deploy to Play store
+
+permissions:
+  contents: write
+  packages: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version name (e.g. 1.2.0) — used for Android versionName and iOS MARKETING_VERSION'
+        required: true
+        default: ''
+      track:
+        description: 'Google Play track'
+        required: true
+        type: choice
+        default: 'internal'
+        options:
+          - internal
+          - alpha
+          - beta
+          - production
+      submit_for_review:
+        description: 'Submit for review (uncheck to upload only)'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+
+  deploy-android:
+    name: Deploy Android → Google Play
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: false
+
+      - name: Bump versionCode and versionName
+        run: |
+          VERSION_NAME="${{ github.event.inputs.version_name }}"
+          CURRENT_CODE=$(grep 'versionCode = ' app/build.gradle.kts | grep -o '[0-9]*')
+          NEW_CODE=$((CURRENT_CODE + 1))
+          echo "versionCode: $CURRENT_CODE → $NEW_CODE"
+          echo "versionName: $VERSION_NAME"
+          sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle.kts
+          sed -i "s/versionName = \"[^\"]*\"/versionName = \"$VERSION_NAME\"/" app/build.gradle.kts
+
+          {
+            echo "## 📦 Android version dump"
+            echo ""
+            echo "| Field | Old | New |"
+            echo "|-------|-----|-----|"
+            echo "| versionCode | \`$CURRENT_CODE\` | \`$NEW_CODE\` |"
+            echo "| versionName | — | \`$VERSION_NAME\` |"
+            echo ""
+            echo "**Track:** \`${{ github.event.inputs.track }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # - name: Decode google-services.json
+      #   env:
+      #     GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      #   run: printf '%s' "$GOOGLE_SERVICES_JSON" > app/google-services.json
+
+
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build release AAB
+        run: ./gradlew :app:bundleRelease --no-daemon
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Sign AAB
+        run: |
+          jarsigner \
+            -verbose \
+            -sigalg SHA256withRSA \
+            -digestalg SHA-256 \
+            -keystore release.keystore \
+            -storepass "${{ secrets.KEYSTORE_PASSWORD }}" \
+            -keypass "${{ secrets.KEY_PASSWORD }}" \
+            app/build/outputs/bundle/release/app-release.aab \
+            "${{ secrets.KEY_ALIAS }}"
+
+
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: education.mahmoud.quranyapp
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: ${{ github.event.inputs.track }}
+          status: ${{ github.event.inputs.submit_for_review == 'true' && 'completed' || 'draft' }}
+
+  commit-version-bump:
+    name: Commit version bump
+    runs-on: ubuntu-latest
+    needs: [deploy-android]
+    if: always() && (needs.deploy-android.result == 'success' || needs.deploy-ios.result == 'success')
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Apply version bumps for succeeded jobs
+        run: |
+          VERSION_NAME="${{ github.event.inputs.version_name }}"
+
+          {
+            echo "## 🏷️ Committed version dump"
+            echo ""
+            echo "**Version name:** \`$VERSION_NAME\`"
+            echo ""
+            echo "| Platform | Field | Old | New |"
+            echo "|----------|-------|-----|-----|"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "${{ needs.deploy-android.result }}" = "success" ]; then
+            CURRENT_CODE=$(grep 'versionCode = ' app/build.gradle.kts | grep -o '[0-9]*')
+            NEW_CODE=$((CURRENT_CODE + 1))
+            sed -i "s/versionCode = $CURRENT_CODE/versionCode = $NEW_CODE/" app/build.gradle.kts
+            sed -i "s/versionName = \"[^\"]*\"/versionName = \"$VERSION_NAME\"/" app/build.gradle.kts
+            echo "Android versionCode: $CURRENT_CODE → $NEW_CODE"
+            echo "ANDROID_VERSION_CODE=$NEW_CODE" >> "$GITHUB_ENV"
+            echo "| Android | versionCode | \`$CURRENT_CODE\` | \`$NEW_CODE\` |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Android | versionName | — | \`$VERSION_NAME\` |" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Android deploy failed — skipping Android version bump"
+            echo "| Android | — | _skipped (deploy failed)_ | |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          if [ "${{ needs.deploy-ios.result }}" = "success" ]; then
+            PBXPROJ="iosApp/iosApp.xcodeproj/project.pbxproj"
+            CURRENT_BUILD=$(grep 'CURRENT_PROJECT_VERSION' "$PBXPROJ" | head -1 | grep -o '[0-9]*')
+            NEW_BUILD=$((CURRENT_BUILD + 1))
+            sed -i "s/CURRENT_PROJECT_VERSION = $CURRENT_BUILD/CURRENT_PROJECT_VERSION = $NEW_BUILD/g" "$PBXPROJ"
+            sed -i "s/MARKETING_VERSION = [^;]*/MARKETING_VERSION = $VERSION_NAME/g" "$PBXPROJ"
+            echo "iOS build: $CURRENT_BUILD → $NEW_BUILD"
+            echo "| iOS | CURRENT_PROJECT_VERSION | \`$CURRENT_BUILD\` | \`$NEW_BUILD\` |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| iOS | MARKETING_VERSION | — | \`$VERSION_NAME\` |" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "iOS deploy failed — skipping iOS version bump"
+          fi
+
+          echo "Version name: $VERSION_NAME"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add app/build.gradle.kts iosApp/iosApp.xcodeproj/project.pbxproj
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: bump version to ${{ github.event.inputs.version_name }} [skip ci]"
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ github.event.inputs.version_name }}"
+          ANDROID="${{ needs.deploy-android.result }}"
+          IOS="${{ needs.deploy-ios.result }}"
+          NOTES_FILE="$RUNNER_TEMP/release-notes.md"
+
+          {
+            echo "## v${VERSION}"
+            echo "- **Version name:** ${VERSION}"
+            if [ -n "${ANDROID_VERSION_CODE:-}" ]; then echo "- **Version code:** ${ANDROID_VERSION_CODE}"; fi
+            if [ "$ANDROID" = "success" ]; then
+              echo "- ✅ Android published to Google Play (${{ github.event.inputs.track }})"
+            else
+              echo "- ❌ Android deploy failed"
+            fi
+            if [ "$IOS" = "success" ]; then
+              echo "- ✅ iOS published to App Store Connect"
+            else
+              echo "- ℹ️ iOS: ${IOS:-skipped}"
+            fi
+          } > "$NOTES_FILE"
+
+          # Re-running a version (or deploying the same version from another branch)
+          # must not fail the job on "Release.tag_name already exists".
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            echo "Release v${VERSION} already exists - updating its notes"
+            gh release edit "v${VERSION}" --notes-file "$NOTES_FILE"
+          else
+            gh release create "v${VERSION}" \
+              --title "v${VERSION}" \
+              --notes-file "$NOTES_FILE" \
+              --target "${{ github.ref_name }}"
+          fi
