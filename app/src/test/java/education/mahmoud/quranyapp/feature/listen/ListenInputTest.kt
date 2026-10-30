@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.listen
 
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -14,7 +15,13 @@ class ListenInputTest {
     @Test
     fun `empty ayah fields cover the whole sura`() {
         val (range, errors) = ListenInput.validate(ListenInput.Form(startSura = 2, endSura = 2), ayahCount)
-        assertEquals(ListenInput.Range(2, 1, 2, 286, 1, 1), range)
+        assertEquals(
+            ListenInput.Range(
+                2, 1, 2, 286, 1, 1,
+                SessionMode.CHUNK, ListenInput.DEFAULT_CHUNK_SIZE, listOf(Reciter.ALAFASY),
+            ),
+            range,
+        )
         assertEquals(false, errors.any)
     }
 
@@ -42,5 +49,45 @@ class ListenInputTest {
     @Test
     fun `playlist repeats each ayah then the whole range`() {
         assertEquals(listOf(1, 1, 2, 2, 1, 1, 2, 2), ListenInput.playlist(listOf(1, 2), 2, 2))
+    }
+
+    @Test
+    fun `no selected reciter and bad chunk size are rejected`() {
+        val (range, errors) = ListenInput.validate(
+            ListenInput.Form(selectedReciters = emptySet(), chunkSize = "0"),
+            ayahCount,
+        )
+        assertNull(range)
+        assertTrue(errors.noReciters)
+        assertTrue(errors.chunkSize)
+    }
+
+    private val a1 = AyahItem(ayahIndex = 1, text = "1")
+    private val a2 = AyahItem(ayahIndex = 2, text = "2")
+    private val a3 = AyahItem(ayahIndex = 3, text = "3")
+    private val reciters = listOf(Reciter.ALAFASY, Reciter.HUSARY)
+
+    @Test
+    fun `session playlist full mode plays the whole range per reciter`() {
+        assertEquals(
+            listOf(a1 to Reciter.ALAFASY, a2 to Reciter.ALAFASY, a1 to Reciter.HUSARY, a2 to Reciter.HUSARY),
+            ListenInput.sessionPlaylist(listOf(a1, a2), reciters, SessionMode.FULL, 5),
+        )
+    }
+
+    @Test
+    fun `session playlist chunk mode alternates reciters every chunk`() {
+        assertEquals(
+            listOf(a1 to Reciter.ALAFASY, a2 to Reciter.ALAFASY, a3 to Reciter.HUSARY),
+            ListenInput.sessionPlaylist(listOf(a1, a2, a3), reciters, SessionMode.CHUNK, 2),
+        )
+    }
+
+    @Test
+    fun `session playlist per ayah mode plays every reciter for each ayah`() {
+        assertEquals(
+            listOf(a1 to Reciter.ALAFASY, a1 to Reciter.HUSARY, a2 to Reciter.ALAFASY, a2 to Reciter.HUSARY),
+            ListenInput.sessionPlaylist(listOf(a1, a2), reciters, SessionMode.PER_AYAH, 5),
+        )
     }
 }

@@ -42,6 +42,7 @@ sealed class ListenPhase {
         val total: Int,
         val ayah: AyahItem,
         val suraName: String,
+        val currentReciter: Reciter,
         val isPlaying: Boolean,
         val progressMs: Int,
         val durationMs: Int,
@@ -67,8 +68,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
         private set
     var form by mutableStateOf(ListenInput.Form())
         private set
-    var reciter by mutableStateOf(Reciter.fromId(repository.listenReciter))
-        private set
     var phase by mutableStateOf<ListenPhase>(ListenPhase.Idle)
         private set
 
@@ -88,6 +87,8 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
     private var workJob: Job? = null
     private var tickerJob: Job? = null
 
+    private var currentQueue: List<Pair<AyahItem, Reciter>> = emptyList()
+
     private val playerListener = object : Player.Listener {
         override fun onEvents(player: Player, events: Player.Events) {
             publishPlaying()
@@ -98,9 +99,9 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
         }
 
         override fun onPlayerError(error: PlaybackException) {
-            // a corrupt / partial file: drop it so the next attempt downloads it again
-            val ayah = PlaybackQueue.ayahs.getOrNull(controller?.currentMediaItemIndex ?: -1)
-            ayah?.let { PlaybackQueue.reciter.cacheFile(audioRoot, it.ayahIndex).delete() }
+            val index = controller?.currentMediaItemIndex ?: -1
+            val pair = currentQueue.getOrNull(index)
+            pair?.let { (ayah, reciter) -> reciter.cacheFile(audioRoot, ayah.ayahIndex).delete() }
             message = R.string.error
             stop()
         }
@@ -116,7 +117,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
             {
                 controller = runCatching { controllerFuture.get() }.getOrNull()?.also {
                     it.addListener(playerListener)
-                    // playback may still be running from an earlier visit to this screen
                     if (it.mediaItemCount > 0) startTicker()
                     publishPlaying()
                 }
@@ -131,7 +131,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
 
     fun updateForm(newForm: ListenInput.Form) {
         val previous = form
-        // keep the end sura in step when the start sura moves past it
         form = if (newForm.startSura != previous.startSura && newForm.endSura < newForm.startSura) {
             newForm.copy(endSura = newForm.startSura)
         } else {
@@ -139,9 +138,14 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
         }
     }
 
-    fun selectReciter(value: Reciter) {
-        reciter = value
-        repository.listenReciter = value.id
+    fun toggleReciter(reciter: Reciter) {
+        val current = form.selectedReciters.toMutableSet()
+        if (current.contains(reciter)) {
+            if (current.size > 1) current.remove(reciter)
+        } else {
+            current.add(reciter)
+        }
+        form = form.copy(selectedReciters = current)
     }
 
     fun consumeMessage() {
@@ -152,16 +156,24 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
         val (range, _) = validation()
         if (range == null || suras.isEmpty()) return
         stop()
-        val currentReciter = reciter
         workJob = viewModelScope.launch {
             val first = ListenInput.globalIndex(::ayahCount, range.startSura, range.startAyah)
             val last = ListenInput.globalIndex(::ayahCount, range.endSura, range.endAyah)
             val ayahs = withContext(Dispatchers.IO) { repository.getAyahSInRange(first, last) }
-            val missing = ayahs.filterNot { currentReciter.cacheFile(audioRoot, it.ayahIndex).exists() }
+
+            val missing = mutableListOf<Pair<Reciter, AyahItem>>()
+            for (reciter in range.selectedReciters) {
+                for (ayah in ayahs) {
+                    if (!reciter.cacheFile(audioRoot, ayah.ayahIndex).exists()) {
+                        missing.add(reciter to ayah)
+                    }
+                }
+            }
+
             phase = ListenPhase.Downloading(0, missing.size)
-            missing.forEachIndexed { index, ayah ->
+            missing.forEachIndexed { index, (reciter, ayah) ->
                 if (!isActive) return@launch
-                val ok = withContext(Dispatchers.IO) { downloader.download(currentReciter, ayah.ayahIndex) }
+                val ok = withContext(Dispatchers.IO) { downloader.download(reciter, ayah.ayahIndex) }
                 if (!ok) {
                     phase = ListenPhase.Idle
                     message = R.string.listen_download_error
@@ -171,8 +183,15 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
             }
             phase = ListenPhase.Idle
             refreshDownloads()
-            val queue = ListenInput.playlist(ayahs, range.repeatEach, range.repeatAll)
-            play(queue, currentReciter)
+
+            val sessionQueue = ListenInput.sessionPlaylist(
+                ayahs,
+                range.selectedReciters,
+                range.sessionMode,
+                range.chunkSize,
+            )
+            val finalQueue = ListenInput.playlist(sessionQueue, range.repeatEach, range.repeatAll)
+            play(finalQueue)
         }
     }
 
@@ -182,10 +201,8 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
         }
     }
 
-    /** Deletes the downloaded audio of [target], or of every reciter when it is null. */
     fun deleteDownloads(target: Reciter?) {
-        val playing = PlaybackQueue.reciter
-        if ((controller?.mediaItemCount ?: 0) > 0 && (target == null || target == playing)) stop()
+        if ((controller?.mediaItemCount ?: 0) > 0) stop()
         viewModelScope.launch {
             val ok = withContext(Dispatchers.IO) {
                 if (target == null) storage.deleteAll() else storage.delete(target)
@@ -220,24 +237,23 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
             it.stop()
             it.clearMediaItems()
         }
-        PlaybackQueue.ayahs = emptyList()
+        currentQueue = emptyList()
         phase = ListenPhase.Idle
     }
 
-    private fun play(queue: List<AyahItem>, playReciter: Reciter) {
+    private fun play(queue: List<Pair<AyahItem, Reciter>>) {
         val c = controller
         if (c == null || queue.isEmpty()) {
             if (queue.isEmpty()) finishPlayback() else message = R.string.error
             return
         }
-        PlaybackQueue.ayahs = queue
-        PlaybackQueue.reciter = playReciter
-        val artist = getApplication<Application>().getString(playReciter.nameRes)
-        val items = queue.mapIndexed { index, ayah ->
+        currentQueue = queue
+        val items = queue.mapIndexed { index, (ayah, reciter) ->
             val suraName = suraName(ayah)
+            val artist = getApplication<Application>().getString(reciter.nameRes)
             MediaItem.Builder()
-                .setMediaId("$index:${ayah.ayahIndex}")
-                .setUri(Uri.fromFile(playReciter.cacheFile(audioRoot, ayah.ayahIndex)))
+                .setMediaId("$index:${ayah.ayahIndex}:${reciter.id}")
+                .setUri(Uri.fromFile(reciter.cacheFile(audioRoot, ayah.ayahIndex)))
                 .setMediaMetadata(
                     MediaMetadata.Builder()
                         .setTitle("$suraName \u00B7 ${ayah.ayahInSurahIndex}")
@@ -265,14 +281,15 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
         val c = controller ?: return
         if (c.mediaItemCount == 0) return
         val index = c.currentMediaItemIndex
-        val ayah = PlaybackQueue.ayahs.getOrNull(index) ?: return
+        val pair = currentQueue.getOrNull(index) ?: return
+        val (ayah, reciter) = pair
         if (phase is ListenPhase.Downloading) return
-        reciter = PlaybackQueue.reciter
         phase = ListenPhase.Playing(
             position = index,
             total = c.mediaItemCount,
             ayah = ayah,
             suraName = suraName(ayah),
+            currentReciter = reciter,
             isPlaying = c.playWhenReady,
             progressMs = c.currentPosition.toInt(),
             durationMs = c.duration.takeIf { it > 0 }?.toInt() ?: 0,
@@ -292,7 +309,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
     override fun onCleared() {
         super.onCleared()
         tickerJob?.cancel()
-        // only disconnect: the service keeps playing in the background
         controller?.removeListener(playerListener)
         MediaController.releaseFuture(controllerFuture)
     }
