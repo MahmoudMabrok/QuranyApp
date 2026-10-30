@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Teal search bar matching the home top app bar; padded below the status bar in code. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
-    style="@style/Widget.AppCompat.Toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white_ec"
+    android:background="@color/primary1"
     android:gravity="center_vertical"
     android:layoutDirection="rtl"
-    android:minHeight="?attr/actionBarSize">
+    android:minHeight="?attr/actionBarSize"
+    android:orientation="horizontal"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="8dp">
 
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_search" />
-
-    <EditText
-        android:id="@+id/edSearch"
-        style="@style/style_18_med_primary2"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_round_search"
-        android:hint="@string/search_hint"
-        android:padding="10dp"
-        android:textAlignment="viewStart"
-        android:textColorHint="@color/primary2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imSearch"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_search_field"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
 
-        />
+        <ImageView
+            android:id="@+id/imSearch"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/search"
+            android:src="@drawable/ic_search" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/edSearch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionSearch"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textAlignment="viewStart"
+            android:textColor="@color/search_ayah_text"
+            android:textColorHint="@color/search_muted"
+            android:textDirection="rtl"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imClear"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/search_clear"
+            android:padding="6dp"
+            android:src="@drawable/ic_close_small"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

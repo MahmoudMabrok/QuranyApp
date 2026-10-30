@@ -1,52 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- One day in the reading log: date, how many pages, and which pages (as ranges). -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_16sdp">
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:layoutDirection="rtl"
+    app:cardBackgroundColor="@color/search_card_bg"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="1dp"
+    app:strokeColor="@color/search_card_stroke"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/bg_items"
-        android:padding="@dimen/_8sdp">
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/readLogDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary1"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:text="اليوم"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/readLogDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/search_ayah_text"
+                    android:textSize="16sp"
+                    tools:text="الجمعة ٣٠ أكتوبر ٢٠٢٦" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/readLogNPages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_search_chip"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:textColor="@color/primary1"
+                android:textSize="13sp"
+                tools:text="١٥ صفحة" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/readLogDate"
-            android:layout_width="0dp"
+            android:id="@+id/readLogPagesLabel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textSize="@dimen/tv_read_log"
-            android:textColor="@color/tv_color"
-            android:text="test"/>
-
-        <TextView
-            android:id="@+id/readLogNPages"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_weight="1"
-            android:textColor="@color/tv_color"
-            android:textSize="@dimen/tv_read_log"
-            android:text="test"/>
-
+            android:layout_marginTop="10dp"
+            android:text="@string/pages_num"
+            android:textAlignment="viewStart"
+            android:textColor="@color/search_muted"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/readLogPagesNum"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textSize="@dimen/tv_read_log"
+            android:layout_marginTop="2dp"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/tv_color"
-            android:text="testsssssss"/>
-
-
-
-
+            android:maxLines="2"
+            android:textAlignment="viewStart"
+            android:textColor="@color/search_ayah_text"
+            android:textSize="14sp"
+            tools:text="١–١٢، ٥٠–٥٢" />
     </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

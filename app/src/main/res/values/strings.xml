@@ -136,7 +136,7 @@
     <string name="readlog">سجل القراءة</string>
     <string name="msg_deleted">تم الحذف بنجاح</string>
     <string name="date">التاريخ</string>
-    <string name="no_pages">عددالصفحات</string>
+    <string name="no_pages">عدد الصفحات</string>
     <string name="pages_num">أرقام الصفحات</string>
     <string name="setting_updated">تم حفظ الاعدادات بنجاح</string>
     <string name="tap_to_record">اختر الايات \n ثم اضغط لبدأ التسجيل</string>
@@ -257,4 +257,26 @@
     <string name="reciter_abdul_basit">عبد الباسط عبد الصمد</string>
     <string name="reciter_sudais">عبد الرحمن السديس</string>
     <string name="reciter_maher">ماهر المعيقلي</string>
+
+    <!-- search screen -->
+    <string name="search_results_count">عدد النتائج: %s</string>
+    <string name="search_empty_title">ابحث في القرآن الكريم</string>
+    <string name="search_empty_hint">اكتب كلمة أو جزءًا من آية لعرض الآيات التي تحتويها</string>
+    <string name="search_not_found_title">لا توجد نتائج</string>
+    <string name="search_not_found_hint">لم نجد آيات تحتوي على «%s». جرّب كلمة أخرى أو اكتبها بدون تشكيل.</string>
+    <string name="search_ayah_num">الآية %s</string>
+    <string name="search_page_num">صفحة %s</string>
+    <string name="search_clear">مسح</string>
+    <string name="search_options">خيارات الآية</string>
+    <string name="search_open_page">فتح الصفحة في المصحف</string>
+    <string name="search_show_tafseer">عرض التفسير</string>
+    <string name="search_play_sound">تشغيل التلاوة</string>
+
+    <!-- reading log screen -->
+    <string name="read_log_back">رجوع</string>
+    <string name="read_log_empty_title">لا يوجد سجل قراءة بعد</string>
+    <string name="read_log_empty_hint">الصفحات التي تقرؤها في المصحف تُسجَّل هنا تلقائيًا لكل يوم</string>
+    <string name="read_log_dialog_message">%1$s\n\nأرقام الصفحات:\n%2$s</string>
+    <string name="read_log_dialog_ok">حسنًا</string>
+    <string name="read_log_summary">%1$s في %2$s · اسحب اليوم لحذفه</string>
 </resources>

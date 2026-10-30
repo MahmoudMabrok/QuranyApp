@@ -35,7 +35,9 @@ public class DateOperation {
         int year = getCurrentYear();
         int month = getCurrentMonth();
         int day = getCurrentDay();
-        calendar.set(year, month, day);
+        // getCurrentMonth() is 1-based, Calendar months are 0-based (this used to store the
+        // reading-log day one month ahead)
+        calendar.set(year, month - 1, day);
 
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.MINUTE, 0);

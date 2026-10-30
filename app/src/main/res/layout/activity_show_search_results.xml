@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.flipboard.bottomsheet.BottomSheetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottomSearch"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSearch"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
@@ -11,8 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/search_screen_bg"
+        android:layoutDirection="rtl"
         android:orientation="vertical"
-        android:background="@drawable/bg"
         tools:context=".feature.ayahs_search.ShowSearchResults">
 
         <include layout="@layout/header_search" />
@@ -21,41 +22,70 @@
             android:id="@+id/tvSearchCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:paddingStart="10dp"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="4dp"
             android:textAlignment="viewStart"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:textColor="@color/primary1"
-            android:textSize="@dimen/_17ssp"
-            tools:text="ssdww" />
+            android:textColor="@color/search_muted"
+            android:textSize="13sp"
+            android:visibility="gone"
+            tools:text="عدد النتائج: ٤٨"
+            tools:visibility="visible" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tvNotFound"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_horizontal"
-                android:text="@string/notfound"
-                android:textColor="@color/ayas_color"
-                android:textSize="22sp"
-                android:visibility="gone" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSearch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"
+                android:clipToPadding="false"
                 android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="12dp"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_search" />
+                tools:listitem="@layout/search_item" />
 
+            <!-- shown before searching and when nothing matches -->
+            <LinearLayout
+                android:id="@+id/searchEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp">
 
+                <ImageView
+                    android:id="@+id/imSearchEmpty"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_search_large" />
+
+                <TextView
+                    android:id="@+id/tvSearchEmptyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="@string/search_empty_title"
+                    android:textColor="@color/search_ayah_text"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvNotFound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="@string/search_empty_hint"
+                    android:textColor="@color/search_muted"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </FrameLayout>
-
-
     </LinearLayout>
 </com.flipboard.bottomsheet.BottomSheetLayout>
