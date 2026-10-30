@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -85,7 +86,7 @@ import education.mahmoud.quranyapp.utils.NumberHelper
 
 private const val SURA_WEIGHT = 1.6f
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ListenScreen(viewModel: ListenViewModel, onBack: () -> Unit) {
     val snackbar = remember { SnackbarHostState() }
@@ -170,6 +171,7 @@ fun ListenScreen(viewModel: ListenViewModel, onBack: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun SelectionForm(viewModel: ListenViewModel, enabled: Boolean) {
     val form = viewModel.form
@@ -182,7 +184,10 @@ private fun SelectionForm(viewModel: ListenViewModel, enabled: Boolean) {
         Column(Modifier.padding(16.dp)) {
             Text("اختر القراء", style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
                 Reciter.values().forEach { reciter ->
                     FilterChip(
                         selected = form.selectedReciters.contains(reciter),
@@ -198,7 +203,12 @@ private fun SelectionForm(viewModel: ListenViewModel, enabled: Boolean) {
         }
     }
 
-    SectionHeader("نظام الجلسة")
+    Text(
+        "نظام الجلسة",
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(start = 8.dp, top = 16.dp, bottom = 4.dp),
+    )
     SettingsCard {
         Column(Modifier.padding(16.dp)) {
             SessionMode.values().forEach { mode ->
