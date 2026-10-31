@@ -23,6 +23,7 @@ import education.mahmoud.quranyapp.databinding.ActivityShowSearchResultsBinding
 import education.mahmoud.quranyapp.databinding.HeaderSearchBinding
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
+import education.mahmoud.quranyapp.feature.ayah_actions.TafseerSheet
 import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
@@ -30,7 +31,6 @@ import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.KeyboardHelper
 import education.mahmoud.quranyapp.utils.NumberHelper
 import education.mahmoud.quranyapp.utils.UiFont
-import education.mahmoud.quranyapp.utils.Util
 import org.koin.java.KoinJavaComponent
 import java.util.* // ktlint-disable no-wildcard-imports
 
@@ -158,13 +158,7 @@ class ShowSearchResults : BaseFragment() {
     }
 
     private fun showTafseer(ayahItem: AyahItem) {
-        val title = this.getString(
-            R.string.tafserr_info,
-            ayahItem.ayahInSurahIndex,
-            ayahItem.pageNum,
-            ayahItem.juz
-        )
-        Util.getDialog(requireContext(), ayahItem.tafseer, title).show()
+        activity?.let { TafseerSheet.show(it, ayahItem) }
     }
 
     private fun adapterListeners() {
