@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.QuranRepository
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.feature.bookmark_fragment.compose.BookmarkScreen
 import education.mahmoud.quranyapp.feature.show_sura_list.compose.SuraListScreen
@@ -58,6 +59,7 @@ data class HomeActions(
     val onScore: () -> Unit,
     val onDownload: () -> Unit,
     val onSettings: () -> Unit,
+    val onHighlightClick: (AyahItem) -> Unit = {},
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,6 +119,7 @@ fun HomeScreen(
                         repository = repository,
                         onBookmarkClick = actions.onBookmarkClick,
                         bottomInset = innerPadding.calculateBottomPadding(),
+                        onHighlightClick = actions.onHighlightClick,
                     )
                 }
             }
