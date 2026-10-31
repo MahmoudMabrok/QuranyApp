@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.splitcompat.SplitCompat
 import education.mahmoud.quranyapp.asr.R
+import education.mahmoud.quranyapp.feature.asr.AsrEntryPoint
 
 /**
  * Main recitation tracking screen.
@@ -29,9 +30,14 @@ class RecitationTrackingActivity : AppCompatActivity() {
         val btnToggle = findViewById<Button>(R.id.btnToggle)
         val tvAyah = findViewById<TextView>(R.id.tvAyah)
         val tvStatus = findViewById<TextView>(R.id.tvStatus)
+        val tvSurah = findViewById<TextView>(R.id.tvSurah)
 
-        // TODO: Load current ayah from memorization test intent extras
-        tvAyah.text = "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ"
+        intent.getStringExtra(AsrEntryPoint.EXTRA_RANGE_LABEL)
+            ?.takeIf { it.isNotBlank() }
+            ?.let { tvSurah.text = it }
+        tvAyah.text = intent.getStringExtra(AsrEntryPoint.EXTRA_AYAH_TEXT)
+            ?.takeIf { it.isNotBlank() }
+            ?: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ"
 
         btnToggle.setOnClickListener {
             isRecording = !isRecording

@@ -27,6 +27,7 @@ import education.mahmoud.quranyapp.databinding.FragmentTestBinding
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
+import education.mahmoud.quranyapp.feature.asr.AsrEntryPoint
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity
 import education.mahmoud.quranyapp.feature.scores.ScoreLevels
 import education.mahmoud.quranyapp.feature.test_quran.MemorizationTest.Level
@@ -114,6 +115,7 @@ class TestFragment : BaseFragment() {
             edEndSuraAyah.doAfterTextChanged { updateRangeSummary() }
             btnTestSave.setOnClickListener { start(random = false) }
             btnTestSaveRandom.setOnClickListener { start(random = true) }
+            btnReciteVoice.setOnClickListener { launchRecitation() }
             btnCheckTest.setOnClickListener { check() }
             btnHint.setOnClickListener { showHint() }
             btnSkip.setOnClickListener { check(skipped = true) }
@@ -174,6 +176,34 @@ class TestFragment : BaseFragment() {
                 )
             }
         }
+    }
+
+    private fun launchRecitation() {
+        val (range, error) = readRange()
+        if (range == null) {
+            binding.tvSetupError.visibility = View.VISIBLE
+            binding.tvSetupError.text = error
+            return
+        }
+        val ayahText = runCatching {
+            quranRepository.getAyahByInSurahIndex(range.startSura.index, range.startAyah).text
+        }.getOrNull()
+        val label = getString(
+            R.string.test_range_short,
+            suraName(range.startSura), getArabicNumber(range.startAyah),
+            suraName(range.endSura), getArabicNumber(range.endAyah),
+        )
+        AsrEntryPoint.launch(
+            requireContext(),
+            AsrEntryPoint.RecitationRange(
+                startSura = range.startSura.index,
+                startAyah = range.startAyah,
+                endSura = range.endSura.index,
+                endAyah = range.endAyah,
+                label = label,
+                ayahText = ayahText,
+            ),
+        )
     }
 
     private fun start(random: Boolean) {
