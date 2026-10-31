@@ -8,7 +8,8 @@ import education.mahmoud.quranyapp.feature.gotoscreen.GoToInput
  */
 object ListenInput {
     const val MAX_REPEAT = 20
-    const val DEFAULT_CHUNK_SIZE = 5
+    const val DEFAULT_CHUNK_SIZE = 10
+    const val MIN_CHUNK_SIZE = 10
 
     /** Raw form values as typed by the user. Empty ayah fields mean "first" / "last" ayah. */
     data class Form(
@@ -58,7 +59,7 @@ object ListenInput {
         val endAyah = valueOrDefault(GoToInput.parse(form.endAyah, 1, endMax), endMax)
         val repeatEach = valueOrDefault(GoToInput.parse(form.repeatEach, 1, MAX_REPEAT), 1)
         val repeatAll = valueOrDefault(GoToInput.parse(form.repeatAll, 1, MAX_REPEAT), 1)
-        val chunkSize = valueOrDefault(GoToInput.parse(form.chunkSize, 1, 50), DEFAULT_CHUNK_SIZE)
+        val chunkSize = valueOrDefault(GoToInput.parse(form.chunkSize, MIN_CHUNK_SIZE, 50), DEFAULT_CHUNK_SIZE)
         val orderOk = startAyah == null || endAyah == null ||
             form.startSura < form.endSura || (form.startSura == form.endSura && startAyah <= endAyah)
         val errors = Errors(
