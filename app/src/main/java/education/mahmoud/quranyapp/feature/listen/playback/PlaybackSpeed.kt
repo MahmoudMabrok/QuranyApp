@@ -7,7 +7,7 @@ import kotlin.math.abs
 object PlaybackSpeed {
     const val DEFAULT = 1f
 
-    val OPTIONS: List<Float> = listOf(0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f)
+    val OPTIONS: List<Float> = listOf(0.8f, 0.9f, 1f, 1.1f, 1.2f, 1.3f, 1.4f, 1.5f)
 
     /**
      * Snaps any stored or requested value to the closest supported speed, so a corrupt or
@@ -19,10 +19,10 @@ object PlaybackSpeed {
         return OPTIONS.minByOrNull { abs(it - speed) } ?: DEFAULT
     }
 
-    /** Short label such as "1x", "0.75x" or "1.5x" (always Latin digits). */
+    /** Short label such as "1x", "0.8x" or "1.5x" (always Latin digits). */
     fun label(speed: Float): String {
         val s = normalize(speed)
-        val text = if (s % 1f == 0f) s.toInt().toString() else String.format(Locale.US, "%.2f", s).trimEnd('0')
+        val text = if (s % 1f == 0f) s.toInt().toString() else String.format(Locale.US, "%.1f", s).trimEnd('0').trimEnd('.')
         return "${text}x"
     }
 
