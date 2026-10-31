@@ -1,0 +1,37 @@
+# Startup profile seed for Qurany.
+# R8 (AGP 8.3+) uses these rules to place startup code in the primary DEX.
+# Human-readable names are rewritten to the obfuscated release names automatically.
+# Replace / extend by running: ./gradlew :app:generateReleaseBaselineProfile
+# The generator writes app/src/release/generated/baselineProfiles/startup-prof.txt
+# which is merged with this file.
+
+Leducation/mahmoud/quranyapp/App;
+HSPLeducation/mahmoud/quranyapp/App;-><init>()V
+HSPLeducation/mahmoud/quranyapp/App;->attachBaseContext(Landroid/content/Context;)V
+HSPLeducation/mahmoud/quranyapp/App;->onCreate()V
+
+Leducation/mahmoud/quranyapp/di/ModulesKt;
+Leducation/mahmoud/quranyapp/utils/LocaleHelper;
+Leducation/mahmoud/quranyapp/utils/EdgeToEdge;
+
+Leducation/mahmoud/quranyapp/datalayer/QuranRepository;
+Leducation/mahmoud/quranyapp/datalayer/local/room/QuranDB;
+Leducation/mahmoud/quranyapp/datalayer/local/room/AyahDAO;
+Leducation/mahmoud/quranyapp/datalayer/local/room/SurahDAO;
+
+Leducation/mahmoud/quranyapp/feature/home_Activity/HomeActivity;
+HSPLeducation/mahmoud/quranyapp/feature/home_Activity/HomeActivity;-><init>()V
+HSPLeducation/mahmoud/quranyapp/feature/home_Activity/HomeActivity;->onCreate(Landroid/os/Bundle;)V
+
+Leducation/mahmoud/quranyapp/feature/splash/Splash;
+HSPLeducation/mahmoud/quranyapp/feature/splash/Splash;-><init>()V
+HSPLeducation/mahmoud/quranyapp/feature/splash/Splash;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+HSPLeducation/mahmoud/quranyapp/feature/splash/Splash;->onViewCreated(Landroid/view/View;Landroid/os/Bundle;)V
+
+Leducation/mahmoud/quranyapp/databinding/ActivityHomeBinding;
+Leducation/mahmoud/quranyapp/databinding/ActivitySplashBinding;
+
+Leducation/mahmoud/quranyapp/feature/home_Activity/compose/HomeScreenKt;
+Leducation/mahmoud/quranyapp/feature/home_Activity/compose/QuranyThemeKt;
+Leducation/mahmoud/quranyapp/feature/home_Activity/compose/SafeInsetsKt;
+Leducation/mahmoud/quranyapp/feature/show_sura_list/compose/SuraListScreenKt;

@@ -1,0 +1,48 @@
+apply plugin: 'com.android.test'
+apply plugin: 'kotlin-android'
+apply plugin: 'androidx.baselineprofile'
+
+android {
+    namespace 'education.mahmoud.quranyapp.baselineprofile'
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 28
+        targetSdk 36
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        // This module only generates profiles. Without this, the runner also
+        // tries to execute macrobenchmarks and the generator fails.
+        testInstrumentationRunnerArguments['androidx.benchmark.enabledRules'] = 'BaselineProfile'
+    }
+
+    targetProjectPath = ':app'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+// Profiles are collected from a non-obfuscated release build (the plugin creates
+// :app:nonMinifiedRelease). R8 on the real release rewrites these rules.
+// Needs a connected emulator or device, API 28+, that can be rooted
+// (AOSP / userdebug image — not a Play Store system image):
+//
+//   ./gradlew :app:generateReleaseBaselineProfile
+//
+// Output is copied to app/src/release/generated/baselineProfiles/:
+//   baseline-prof.txt  — ART ahead-of-time compilation (Play install)
+//   startup-prof.txt   — R8 DEX layout for the startup path
+baselineProfile {
+    useConnectedDevices = true
+}
+
+dependencies {
+    implementation 'androidx.test.ext:junit:1.2.1'
+    implementation 'androidx.test.espresso:espresso-core:3.6.1'
+    implementation 'androidx.test.uiautomator:uiautomator:2.3.0'
+    implementation 'androidx.benchmark:benchmark-macro-junit4:1.5.0'
+}
