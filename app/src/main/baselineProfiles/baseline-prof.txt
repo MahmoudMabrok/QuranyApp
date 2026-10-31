@@ -1,0 +1,53 @@
+# Baseline profile seed for Qurany.
+# Play uses this to ahead-of-time compile hot code at install time.
+# This file is a superset of the startup path plus the surah list and the reader.
+# A measured profile from :baselineprofile is more accurate — generate it with:
+#   ./gradlew :app:generateReleaseBaselineProfile
+# and commit app/src/release/generated/baselineProfiles/baseline-prof.txt
+
+Leducation/mahmoud/quranyapp/App;
+HSPLeducation/mahmoud/quranyapp/App;-><init>()V
+HSPLeducation/mahmoud/quranyapp/App;->attachBaseContext(Landroid/content/Context;)V
+HSPLeducation/mahmoud/quranyapp/App;->onCreate()V
+
+Leducation/mahmoud/quranyapp/di/ModulesKt;
+Leducation/mahmoud/quranyapp/utils/LocaleHelper;
+Leducation/mahmoud/quranyapp/utils/EdgeToEdge;
+
+Leducation/mahmoud/quranyapp/datalayer/QuranRepository;
+Leducation/mahmoud/quranyapp/datalayer/local/room/QuranDB;
+Leducation/mahmoud/quranyapp/datalayer/local/room/AyahDAO;
+Leducation/mahmoud/quranyapp/datalayer/local/room/SurahDAO;
+Leducation/mahmoud/quranyapp/datalayer/local/room/AyahItem;
+Leducation/mahmoud/quranyapp/datalayer/local/room/SuraItem;
+
+Leducation/mahmoud/quranyapp/feature/home_Activity/HomeActivity;
+HSPLeducation/mahmoud/quranyapp/feature/home_Activity/HomeActivity;-><init>()V
+HSPLeducation/mahmoud/quranyapp/feature/home_Activity/HomeActivity;->onCreate(Landroid/os/Bundle;)V
+
+Leducation/mahmoud/quranyapp/feature/splash/Splash;
+HSPLeducation/mahmoud/quranyapp/feature/splash/Splash;-><init>()V
+HSPLeducation/mahmoud/quranyapp/feature/splash/Splash;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+HSPLeducation/mahmoud/quranyapp/feature/splash/Splash;->onViewCreated(Landroid/view/View;Landroid/os/Bundle;)V
+
+Leducation/mahmoud/quranyapp/databinding/ActivityHomeBinding;
+Leducation/mahmoud/quranyapp/databinding/ActivitySplashBinding;
+Leducation/mahmoud/quranyapp/databinding/ActivityShowAyahsBinding;
+
+Leducation/mahmoud/quranyapp/feature/home_Activity/compose/HomeScreenKt;
+Leducation/mahmoud/quranyapp/feature/home_Activity/compose/QuranyThemeKt;
+Leducation/mahmoud/quranyapp/feature/home_Activity/compose/SafeInsetsKt;
+Leducation/mahmoud/quranyapp/feature/show_sura_list/compose/SuraListScreenKt;
+Leducation/mahmoud/quranyapp/feature/bookmark_fragment/compose/BookmarkScreenKt;
+
+# Opened from the surah list. Not part of startup DEX layout (no S on its own
+# beyond the class rule); ART still compiles it from this baseline profile.
+Leducation/mahmoud/quranyapp/feature/showSuraAyas/ShowAyahsActivity;
+PLeducation/mahmoud/quranyapp/feature/showSuraAyas/ShowAyahsActivity;-><init>()V
+PLeducation/mahmoud/quranyapp/feature/showSuraAyas/ShowAyahsActivity;->onCreate(Landroid/os/Bundle;)V
+Leducation/mahmoud/quranyapp/feature/showSuraAyas/PageAdapter;
+Leducation/mahmoud/quranyapp/feature/showSuraAyas/Page;
+
+Leducation/mahmoud/quranyapp/feature/listen/ListenActivity;
+Leducation/mahmoud/quranyapp/feature/setting/SettingActivity;
+Leducation/mahmoud/quranyapp/feature/setting/compose/SettingsScreenKt;

@@ -15,6 +15,12 @@ android {
         release {
             proguardFiles 'proguard-rules.pro'
         }
+        // The Baseline Profile plugin adds this build type on :app so it can
+        // trace a non-obfuscated release. Dynamic features must declare the
+        // same build types as the base module.
+        nonMinifiedRelease {
+            matchingFallbacks = ['release']
+        }
     }
 
     compileOptions {

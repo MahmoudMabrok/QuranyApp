@@ -1,0 +1,190 @@
+name: Perf numbers
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      measure_startup:
+        description: Measure cold start on an emulator
+        type: boolean
+        default: true
+      pr_number:
+        description: PR to comment on when not a pull_request event
+        default: "125"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: perf-numbers-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-stats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch base commit
+        if: github.event_name == 'pull_request'
+        run: git fetch --depth=1 origin ${{ github.event.pull_request.base.sha }}
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: temurin
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Keep the collector script
+        run: cp .github/scripts/collect-perf-numbers.py /tmp/collect-perf-numbers.py
+
+      - name: More heap for R8
+        run: sed -i 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=768m -Dfile.encoding=UTF-8/' gradle.properties
+
+      - name: Build this branch
+        run: chmod +x gradlew && ./gradlew :app:assembleRelease :app:assembleDebug :app:bundleRelease --no-daemon
+
+      - name: Stash this branch outputs
+        run: |
+          mkdir -p /tmp/perf/head
+          cp -a app/build/outputs /tmp/perf/head/outputs
+
+      - name: Build master for comparison
+        id: base
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          git checkout --force ${{ github.event.pull_request.base.sha }}
+          sed -i 's/^org.gradle.jvmargs=.*/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=768m -Dfile.encoding=UTF-8/' gradle.properties
+          rm -rf app/build quran_asr/build
+          chmod +x gradlew
+          ./gradlew :app:assembleRelease :app:bundleRelease --no-daemon
+          mkdir -p /tmp/perf/base
+          cp -a app/build/outputs /tmp/perf/base/outputs
+
+      - name: Play download size
+        id: size
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          KS="${RUNNER_TEMP}/perf-debug.jks"
+          keytool -genkeypair -keystore "$KS" -storepass android -alias androiddebugkey \
+            -keypass android -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Qurany Perf,O=Qurany,C=US"
+          JAR="${RUNNER_TEMP}/bundletool-all-1.18.3.jar"
+          curl -fsSL -o "$JAR" https://github.com/google/bundletool/releases/download/1.18.3/bundletool-all-1.18.3.jar
+          size_of() {
+            local aab="$1"
+            local apks="${RUNNER_TEMP}/$(basename "$aab").apks"
+            java -jar "$JAR" build-apks --bundle="$aab" --output="$apks" --overwrite \
+              --ks="$KS" --ks-pass=pass:android --ks-key-alias=androiddebugkey --key-pass=pass:android
+            java -jar "$JAR" get-size total --apks="$apks" | awk -F, 'NR > 1 { gsub(/[^0-9]/, "", $1); gsub(/[^0-9]/, "", $2); print $1 "," $2; exit }'
+          }
+          pick() {
+            find "$1" -type f -name "$2" | head -1
+          }
+          HEAD_AAB="$(pick /tmp/perf/head/outputs 'app-release.aab')"
+          echo "head=$(size_of "$HEAD_AAB")" >> "$GITHUB_OUTPUT"
+          if [[ -d /tmp/perf/base/outputs ]]; then
+            BASE_AAB="$(pick /tmp/perf/base/outputs 'app-release.aab')"
+            echo "base=$(size_of "$BASE_AAB")" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Write report
+        run: |
+          set -euo pipefail
+          pick() { find "$1" -type f -name "$2" | head -1; }
+          args=(--out "$RUNNER_TEMP/perf-report.md")
+          args+=(--head-apk "$(pick /tmp/perf/head/outputs 'app-release*.apk')")
+          args+=(--head-aab "$(pick /tmp/perf/head/outputs 'app-release.aab')")
+          args+=(--debug-apk "$(pick /tmp/perf/head/outputs 'app-debug.apk')")
+          args+=(--mapping-dir /tmp/perf/head/outputs/mapping/release)
+          if [[ -n "${{ steps.size.outputs.head }}" ]]; then
+            args+=(--head-download "${{ steps.size.outputs.head }}")
+          fi
+          if [[ -d /tmp/perf/base/outputs ]]; then
+            args+=(--base-apk "$(pick /tmp/perf/base/outputs 'app-release*.apk')")
+            args+=(--base-aab "$(pick /tmp/perf/base/outputs 'app-release.aab')")
+            if [[ -n "${{ steps.size.outputs.base }}" ]]; then
+              args+=(--base-download "${{ steps.size.outputs.base }}")
+            fi
+          fi
+          python3 /tmp/collect-perf-numbers.py "${args[@]}"
+          mkdir -p perf-out
+          cp "$RUNNER_TEMP/perf-report.md" perf-out/perf-report.md
+          cp "$RUNNER_TEMP/perf-report.md" "$GITHUB_STEP_SUMMARY"
+          find /tmp/perf/head/outputs/apk/release -type f -name 'app-release*.apk' -exec cp {} perf-out/ \;
+
+      - name: Upload report and release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: qurany-perf
+          path: perf-out/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Comment on the PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          set -euo pipefail
+          BODY="$(cat "$RUNNER_TEMP/perf-report.md")"
+          ID="$(gh api --paginate "repos/${{ github.repository }}/issues/${PR}/comments" --jq '.[] | select(.body | contains("qurany-perf-numbers")) | .id' | head -1 || true)"
+          if [[ -n "${ID:-}" ]]; then
+            gh api --method PATCH "repos/${{ github.repository }}/issues/comments/${ID}" -f body="$BODY" >/dev/null
+          else
+            gh pr comment "$PR" --repo "${{ github.repository }}" --body "$BODY"
+          fi
+
+  startup:
+    needs: build-stats
+    if: needs.build-stats.result == 'success' && (github.event_name == 'pull_request' || inputs.measure_startup)
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: qurany-perf
+          path: perf-apk
+
+      - name: Cold start on emulator
+        id: measure
+        continue-on-error: true
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back none
+          script: |
+            set -euo pipefail
+            APK="$(find perf-apk -type f -name 'app-release*.apk' | head -1)"
+            chmod +x .github/scripts/measure-startup.sh
+            .github/scripts/measure-startup.sh "$APK" "$RUNNER_TEMP/startup.md"
+
+      - name: Publish startup numbers
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          set -euo pipefail
+          if [[ ! -f "$RUNNER_TEMP/startup.md" ]]; then
+            echo "Startup measurement produced no report." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          cat "$RUNNER_TEMP/startup.md" >> "$GITHUB_STEP_SUMMARY"
+          BODY="$(cat "$RUNNER_TEMP/startup.md")"
+          ID="$(gh api --paginate "repos/${{ github.repository }}/issues/${PR}/comments" --jq '.[] | select(.body | contains("qurany-startup-numbers")) | .id' | head -1 || true)"
+          if [[ -n "${ID:-}" ]]; then
+            gh api --method PATCH "repos/${{ github.repository }}/issues/comments/${ID}" -f body="$BODY" >/dev/null
+          else
+            gh pr comment "$PR" --repo "${{ github.repository }}" --body "$BODY"
+          fi
