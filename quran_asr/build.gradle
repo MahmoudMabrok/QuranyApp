@@ -1,0 +1,19 @@
+apply plugin: 'com.android.dynamic-feature'
+
+android {
+    namespace 'education.mahmoud.quranyapp.asr'
+    compileSdk 36
+
+    defaultConfig {
+        minSdkVersion 21
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation project(':app')
+}
