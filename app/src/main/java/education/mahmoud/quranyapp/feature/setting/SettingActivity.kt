@@ -16,7 +16,7 @@ import org.koin.android.ext.android.inject
 import education.mahmoud.quranyapp.utils.EdgeToEdge
 
 /**
- * Reading settings (night reading mode, page background colour, Mushaf header style and page frame), rendered with
+ * Reading settings (night reading mode, page background, book-flip, Mushaf header and page frame), rendered with
  * Compose and [QuranyTheme] so it matches the home screen. Changes are saved immediately.
  */
 class SettingActivity : AppCompatActivity() {
@@ -27,6 +27,7 @@ class SettingActivity : AppCompatActivity() {
     private var backgroundColor by mutableStateOf(0)
     private var headerStyle by mutableStateOf(0)
     private var pageFrame by mutableStateOf(true)
+    private var bookFlip by mutableStateOf(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,7 @@ class SettingActivity : AppCompatActivity() {
         backgroundColor = quranRepository.backColorState
         headerStyle = quranRepository.mushafHeaderStyle
         pageFrame = quranRepository.mushafPageFrame
+        bookFlip = quranRepository.bookFlipEnabled
 
         setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -60,6 +62,11 @@ class SettingActivity : AppCompatActivity() {
                         onPageFrameChange = {
                             pageFrame = it
                             quranRepository.mushafPageFrame = it
+                        },
+                        bookFlip = bookFlip,
+                        onBookFlipChange = {
+                            bookFlip = it
+                            quranRepository.bookFlipEnabled = it
                         },
                     )
                 }

@@ -19,6 +19,7 @@ import education.mahmoud.quranyapp.databinding.ActivityShowAyahsBinding
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
 import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
+import education.mahmoud.quranyapp.feature.showSuraAyas.flip.BookFlipController
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafOptions
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.utils.Constants
@@ -207,17 +208,23 @@ class ShowAyahsActivity : AppCompatActivity() {
             )
             pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener, mushafOptions = mushafOptions)
             rvAyahsPages.adapter = pageAdapter
-            rvAyahsPages.itemAnimator = DefaultItemAnimator()
-            LinearSnapHelper().attachToRecyclerView(rvAyahsPages)
-            rvAyahsPages.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if (newState != RecyclerView.SCROLL_STATE_IDLE) return
-                    val lm = recyclerView.layoutManager as? LinearLayoutManager ?: return
-                    var shown = lm.findFirstCompletelyVisibleItemPosition()
-                    if (shown == RecyclerView.NO_POSITION) shown = lm.findFirstVisibleItemPosition()
-                    onPageShown(shown)
-                }
-            })
+            // Quran is read right to left: the next page enters from the left.
+            rvAyahsPages.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            if (model.bookFlipEnabled) {
+                BookFlipController(onPageSettled = ::onPageShown).attach(rvAyahsPages)
+            } else {
+                rvAyahsPages.itemAnimator = DefaultItemAnimator()
+                LinearSnapHelper().attachToRecyclerView(rvAyahsPages)
+                rvAyahsPages.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        if (newState != RecyclerView.SCROLL_STATE_IDLE) return
+                        val lm = recyclerView.layoutManager as? LinearLayoutManager ?: return
+                        var shown = lm.findFirstCompletelyVisibleItemPosition()
+                        if (shown == RecyclerView.NO_POSITION) shown = lm.findFirstVisibleItemPosition()
+                        onPageShown(shown)
+                    }
+                })
+            }
             /*        pageAdapter.setPageShown(object : PageShown {
                         override fun onDiplayed(pos: Int, holder: PageAdapter.Holder) {
                             // items start from 0 increase 1 to get real page num,
@@ -245,8 +252,6 @@ class ShowAyahsActivity : AppCompatActivity() {
                         }
                     })*/
 
-            // to preserver quran direction from right to left
-            rvAyahsPages.layoutDirection = View.LAYOUT_DIRECTION_RTL
             /*        pageAdapter?.setiOnClick(IOnClick { pos ->
                         // pos represent page and need to be updated by 1 to be as recyclerview
                         // +2 to be as Mushaf

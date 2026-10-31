@@ -204,6 +204,8 @@
     <string name="settings_section_reading">القراءة</string>
     <string name="settings_section_preview">معاينة</string>
     <string name="night_mode_summary">خلفية داكنة ونص فاتح لصفحات المصحف</string>
+    <string name="book_flip">تقليب الصفحات</string>
+    <string name="book_flip_summary">قلب الصفحة حول الكعب كالمصحف. عند الإيقاف تُسحب الصفحات بشكل عادي</string>
     <string name="background_disabled_in_night_mode">لون الخلفية لا يُستخدم أثناء الوضع الليلي</string>
     <string name="settings_section_mushaf">شكل المصحف</string>
     <string name="mushaf_header_style">إطار اسم السورة</string>
