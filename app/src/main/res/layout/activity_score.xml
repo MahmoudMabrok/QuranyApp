@@ -1,150 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Points screen: total memorization-test points, level and progress, or an empty state -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scoreRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/search_screen_bg"
+    android:layoutDirection="rtl"
     android:orientation="vertical"
-    android:padding="@dimen/_16sdp"
     tools:context=".feature.scores.ScoreActivity">
 
-
-    <TextView
-        android:id="@+id/tvWelcomeUser"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/_10sdp"
-        android:text="@string/welcome"
-        android:textSize="@dimen/textRange"
-        android:visibility="gone" />
-
+    <!-- teal app bar; padded below the status bar in code -->
     <LinearLayout
-        android:id="@+id/loggedLayout"
+        android:id="@+id/scoreToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/primary1"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp">
 
-        android:orientation="vertical">
-
+        <ImageView
+            android:id="@+id/scoreBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/read_log_back"
+            android:padding="12dp"
+            android:src="@drawable/ic_arrow_back_white" />
 
         <TextView
-            android:id="@+id/tvTotalScore"
-            android:layout_width="match_parent"
+            android:id="@+id/scoreTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@drawable/back_edit_search"
-            android:gravity="center_horizontal"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:text="@string/score_str"
-            android:textSize="@dimen/score_value" />
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/score_screen_title"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
-
+        <ImageView
+            android:id="@+id/scoreShare"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/score_share"
+            android:padding="12dp"
+            android:src="@drawable/ic_share_white" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnUploadScore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16sp"
-        android:background="@drawable/login_button_bk"
-        android:text="@string/upload"
-        android:textColor="@color/bg_white"
-        android:visibility="gone" />
-
-
-    <Button
-        android:id="@+id/btnOpenLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16sp"
-        android:background="@drawable/login_button_bk"
-        android:text="@string/go_to_login"
-        android:textColor="@color/bg_white"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/btnShowScoreBoard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@drawable/login_button_bk"
-        android:gravity="center"
-        android:text="Scoreboard"
-        android:textColor="@color/bg_white"
-        android:visibility="gone" />
-
-
-    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/spScoreboard"
-        style="@style/SpinKitView.Large.Circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:visibility="gone"
-        app:SpinKit_Color="@color/spin_color" />
-
-
-    <LinearLayout
-        android:id="@+id/lnScoreboard"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scoreScroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/tvScoreuserName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_16sdp"
-                android:layout_weight="2"
-                android:background="@drawable/back_edit_search"
-                android:gravity="center_horizontal"
-                android:text="User Name"
-                android:textSize="@dimen/_17ssp" />
+                android:id="@+id/tvWelcomeUser"
+                style="@style/TestLabel"
+                android:layout_marginBottom="8dp"
+                android:textSize="15sp"
+                android:visibility="gone"
+                tools:text="مرحبا محمود"
+                tools:visibility="visible" />
 
-            <TextView
-                android:id="@+id/tvScore"
-                android:layout_width="0dp"
+            <!-- points > 0 -->
+            <LinearLayout
+                android:id="@+id/scoreContent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/back_edit_search"
-                android:gravity="center_horizontal"
-                android:text="Score"
-                android:textSize="@dimen/_17ssp" />
+                android:orientation="vertical">
 
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/TestCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp">
+
+                        <ImageView
+                            android:id="@+id/ivLevelIcon"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_trophy"
+                            app:tint="@color/primary1" />
+
+                        <TextView
+                            android:id="@+id/tvTotalLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/score_total_label"
+                            android:textColor="@color/search_muted"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvTotalScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:textColor="@color/primary1"
+                            android:textSize="56sp"
+                            tools:text="١٢" />
+
+                        <TextView
+                            android:id="@+id/tvScoreWords"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center"
+                            android:textColor="@color/search_muted"
+                            android:textSize="14sp"
+                            tools:text="نقطة" />
+
+                        <TextView
+                            android:id="@+id/tvLevelBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_score_badge"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="5dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp"
+                            tools:text="مستواك: مبتدئ" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/TestCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/tvNextLevel"
+                            style="@style/TestLabel"
+                            android:textColor="@color/search_ayah_text"
+                            android:textSize="15sp"
+                            tools:text="المستوى التالي: مجتهد" />
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/scoreProgress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:max="100"
+                            app:indicatorColor="@color/primary1"
+                            app:trackColor="@color/search_chip_bg"
+                            app:trackCornerRadius="4dp"
+                            app:trackThickness="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvRemaining"
+                            style="@style/TestLabel"
+                            android:layout_marginTop="8dp"
+                            tools:text="باقي ٣٨ نقطة للوصول إلى «مجتهد»" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/TestCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/tvLevelsTitle"
+                            style="@style/TestLabel"
+                            android:text="@string/score_levels_title"
+                            android:textColor="@color/search_ayah_text"
+                            android:textSize="15sp" />
+
+                        <!-- one row per level, built in code -->
+                        <LinearLayout
+                            android:id="@+id/levelsList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="vertical" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- points == 0 -->
+            <LinearLayout
+                android:id="@+id/scoreEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="32dp"
+                android:paddingBottom="16dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_trophy"
+                    app:tint="@color/search_card_stroke" />
+
+                <TextView
+                    android:id="@+id/tvEmptyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/score_empty_title"
+                    android:textColor="@color/search_ayah_text"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvEmptyDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:paddingHorizontal="24dp"
+                    android:text="@string/score_empty_desc"
+                    android:textColor="@color/search_muted"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- how points are earned (both states) -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/TestCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvHowTitle"
+                        style="@style/TestLabel"
+                        android:text="@string/score_how_title"
+                        android:textColor="@color/search_ayah_text"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/TestLabel"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/score_how_correct"
+                        android:textColor="@color/test_correct"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/TestLabel"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/score_how_wrong"
+                        android:textColor="@color/test_wrong"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        style="@style/TestLabel"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/score_how_floor" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStartTest"
+                style="@style/TestPrimaryButton"
+                android:layout_marginTop="16dp"
+                android:text="@string/score_start_test" />
         </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvScoreboard"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_weight="1" />
-
-
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/tvNoScores"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_22sdp"
-        android:gravity="center"
-        android:text="No Scores recoreded yet"
-        android:textColor="@color/bg_white"
-        android:textSize="@dimen/_25ssp"
-        android:visibility="gone" />
-
-
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

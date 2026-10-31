@@ -47,6 +47,9 @@ class HomeActivity : AppCompatActivity() {
     private var selectedTab by mutableStateOf(0)
     private var showGoTo by mutableStateOf(false)
 
+    /** open the memorization test once the splash is gone (launched from the points screen) */
+    private var pendingMemorizationTest = false
+
     private val binding by viewBinding(ActivityHomeBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +64,24 @@ class HomeActivity : AppCompatActivity() {
         ahays = quranRepository.totlaAyahs
 
         setupCompose()
+        pendingMemorizationTest = intent.wantsMemorizationTest()
     }
+
+    /** ScoreActivity's "start a memorization test" brings this activity back with an extra. */
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (intent.wantsMemorizationTest()) {
+            intent.removeExtra(EXTRA_OPEN_MEMORIZATION_TEST)
+            if (supportFragmentManager.findFragmentById(R.id.mainContainer) is Splash) {
+                pendingMemorizationTest = true
+            } else {
+                openMemorizationTest()
+            }
+        }
+    }
+
+    private fun Intent?.wantsMemorizationTest() = this?.getBooleanExtra(EXTRA_OPEN_MEMORIZATION_TEST, false) == true
 
     private fun setupCompose() {
         binding.composeHome.setContent {
@@ -106,6 +126,10 @@ class HomeActivity : AppCompatActivity() {
     fun afterSplash() {
         supportFragmentManager.popBackStackImmediate()
         openRead()
+        if (pendingMemorizationTest) {
+            pendingMemorizationTest = false
+            openMemorizationTest()
+        }
     }
 
     private fun openRead() {
@@ -187,6 +211,8 @@ class HomeActivity : AppCompatActivity() {
 
     /** memorization (حفظ) test; its bottom-nav entry was hidden and then removed with the old tabs */
     private fun openMemorizationTest() {
+        // already showing (e.g. the points screen was opened from the test's points pill)
+        if (supportFragmentManager.findFragmentById(R.id.mainContainer) is TestFragment) return
         supportFragmentManager.beginTransaction()
             .add(R.id.mainContainer, TestFragment())
             .addToBackStack(null)
@@ -195,5 +221,8 @@ class HomeActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "HomeActivity"
+
+        /** boolean extra: open the memorization test (sent by ScoreActivity) */
+        const val EXTRA_OPEN_MEMORIZATION_TEST = "open_memorization_test"
     }
 }
