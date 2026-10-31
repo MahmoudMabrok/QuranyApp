@@ -100,4 +100,11 @@
     <color name="test_wrong_bg">#FDECEA</color>
     <color name="test_extra">#B26A00</color>
     <color name="test_extra_bg">#FFF3E0</color>
+    <!-- points screen level colours -->
+    <color name="score_level_none">#9E9E9E</color>
+    <color name="score_level_beginner">#5C7F67</color>
+    <color name="score_level_diligent">#00A388</color>
+    <color name="score_level_advanced">#1E78C8</color>
+    <color name="score_level_proficient">#7B3FA6</color>
+    <color name="score_level_distinguished">#C99400</color>
 </resources>

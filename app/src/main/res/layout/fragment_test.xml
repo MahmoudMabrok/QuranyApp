@@ -45,6 +45,8 @@
 
         <TextView
             android:id="@+id/testTotalPoints"
+            android:contentDescription="@string/score_screen_title"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"

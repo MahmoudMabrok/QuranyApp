@@ -327,6 +327,30 @@
     <string name="test_result_total">مجموع نقاطك</string>
     <string name="test_retry">إعادة الاختبار</string>
     <string name="test_new">اختبار جديد</string>
-    <string name="test_points">%s نقطة</string>
     <string name="test_no_data">بيانات القرآن غير متاحة بعد. افتح التطبيق وانتظر حتى يكتمل التحميل ثم حاول مرة أخرى.</string>
+
+    <!-- points (score) screen -->
+    <string name="score_screen_title">النقاط</string>
+    <string name="score_share">مشاركة النقاط</string>
+    <string name="score_total_label">مجموع نقاطك</string>
+    <string name="score_your_level">مستواك: %s</string>
+    <string name="score_next_level">المستوى التالي: %s</string>
+    <string name="score_remaining">باقي %1$s للوصول إلى «%2$s»</string>
+    <string name="score_top_level">ما شاء الله! وصلت لأعلى مستوى</string>
+    <string name="score_levels_title">المستويات</string>
+    <string name="score_level_from">من %s</string>
+    <string name="score_level_current">مستواك</string>
+    <string name="score_how_title">كيف تكسب النقاط؟</string>
+    <string name="score_how_correct">+٢ لكل كلمة صحيحة في إجابتك</string>
+    <string name="score_how_wrong">−١ لكل كلمة ناقصة أو زائدة</string>
+    <string name="score_how_floor">نقاط الآية لا تقل عن صفر، والتشكيل وأشكال الهمزة لا تؤثر</string>
+    <string name="score_empty_title">لم تسجل أي نقاط بعد</string>
+    <string name="score_empty_desc">اختبر حفظك آية بآية، وكل كلمة صحيحة تضيف لك نقاطًا هنا.</string>
+    <string name="score_start_test">ابدأ اختبار الحفظ</string>
+    <string name="score_share_text">جمعت %1$s في اختبار الحفظ (مستوى %2$s) على تطبيق قرآني</string>
+    <string name="score_level_beginner">مبتدئ</string>
+    <string name="score_level_diligent">مجتهد</string>
+    <string name="score_level_advanced">متقدم</string>
+    <string name="score_level_proficient">متقن</string>
+    <string name="score_level_distinguished">حافظ متميز</string>
 </resources>

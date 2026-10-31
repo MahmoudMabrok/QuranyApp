@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.test_quran
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -26,6 +27,8 @@ import education.mahmoud.quranyapp.databinding.FragmentTestBinding
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
+import education.mahmoud.quranyapp.feature.scores.ScoreActivity
+import education.mahmoud.quranyapp.feature.scores.ScoreLevels
 import education.mahmoud.quranyapp.feature.test_quran.MemorizationTest.Level
 import education.mahmoud.quranyapp.feature.test_quran.MemorizationTest.WordState
 import education.mahmoud.quranyapp.utils.Data
@@ -68,6 +71,8 @@ class TestFragment : BaseFragment() {
             applyUiFont(root)
             UiFont.applyBold(testTitle, tvFeedbackTitle, tvResultLevel, tvResultPercent, tvQuestion)
             testBack.setOnClickListener { activity?.onBackPressedDispatcher?.onBackPressed() }
+            // points pill -> the points screen (same saved total)
+            testTotalPoints.setOnClickListener { startActivity(Intent(requireContext(), ScoreActivity::class.java)) }
         }
         activity?.let { EdgeToEdge.setStatusBarIconsDark(it, false) }
         updateTotalPoints()
@@ -369,7 +374,7 @@ class TestFragment : BaseFragment() {
         statRow(R.string.test_result_perfect, getArabicNumber(grades.count { it.isPerfect }))
         statRow(R.string.test_result_words, "${getArabicNumber(correct)} / ${getArabicNumber(expected)}")
         statRow(R.string.test_result_points, "+" + getArabicNumber(grades.sumOf { it.points }))
-        statRow(R.string.test_result_total, getArabicNumber(quranRepository.score.toInt()))
+        statRow(R.string.test_result_total, getArabicNumber(quranRepository.score))
         testScroll.scrollTo(0, 0)
     }
 
@@ -408,7 +413,7 @@ class TestFragment : BaseFragment() {
     }
 
     private fun updateTotalPoints() {
-        binding.testTotalPoints.text = getString(R.string.test_points, getArabicNumber(quranRepository.score.toInt()))
+        binding.testTotalPoints.text = ScoreLevels.pointsLabel(quranRepository.score)
     }
 
     private fun suraName(s: SuraItem) = Data.SURA_NAMES.getOrElse(s.index - 1) { s.name }
@@ -445,6 +450,12 @@ class TestFragment : BaseFragment() {
     }
 
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
+
+    override fun onResume() {
+        super.onResume()
+        // back from the points screen
+        if (view != null) updateTotalPoints()
+    }
 
     override fun onDestroyView() {
         view?.let { KeyboardHelper.hideKeyboard(it) }
