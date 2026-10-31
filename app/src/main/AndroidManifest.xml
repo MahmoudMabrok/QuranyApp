@@ -88,7 +88,7 @@
         <activity
             android:name=".feature.scores.ScoreActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".feature.profile.ProfileActivity"
             android:exported="true" />

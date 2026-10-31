@@ -25,6 +25,12 @@ class NumberHelper {
                 if (c in '0'..'9') ARABIC_INDIC_ZERO + (c - '0') else c
             }.joinToString("")
 
+        /** Same as [getArabicNumber] for Long values (e.g. the saved points total). */
+        fun getArabicNumber(num: Long): String =
+            num.toString().map { c ->
+                if (c in '0'..'9') ARABIC_INDIC_ZERO + (c - '0') else c
+            }.joinToString("")
+
         /** Ayah text followed by a closed, non-wrapping ayah-number marker, e.g. "… ﴿١٢﴾ ". */
         fun formatAyahWithNumber(text: String, ayahNumber: Int): String =
             "${text.trimEnd()}$NBSP$AYAH_OPEN${getArabicNumber(ayahNumber)}$AYAH_CLOSE "
