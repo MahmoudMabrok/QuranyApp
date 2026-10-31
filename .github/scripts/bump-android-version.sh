@@ -1,18 +1,24 @@
 #!/usr/bin/env bash
-# Increment versionCode and set versionName in an Android Gradle file.
+# Increase versionCode and set versionName in an Android Gradle file.
 # Supports Groovy (`versionCode 31`, `versionName "1.0"`) and Kotlin DSL
 # (`versionCode = 31`, `versionName = "1.0"`), including mixed spacing.
 #
 # Expects VERSION_NAME in the environment. Optional GRADLE_FILE
-# (default: app/build.gradle). On success, sets CURRENT_CODE and NEW_CODE
+# (default: app/build.gradle) and VERSION_CODE_STEP (default: 5), how much
+# versionCode grows per release. On success, sets CURRENT_CODE and NEW_CODE
 # in the caller when this file is sourced.
 
 bump_android_version() {
   local gradle_file="${GRADLE_FILE:-app/build.gradle}"
   local version_name="${VERSION_NAME-}"
+  local step="${VERSION_CODE_STEP:-5}"
 
   if [ -z "$version_name" ]; then
     echo "VERSION_NAME is required" >&2
+    return 1
+  fi
+  if ! [[ "$step" =~ ^[1-9][0-9]*$ ]]; then
+    echo "VERSION_CODE_STEP must be a positive integer (got '$step')" >&2
     return 1
   fi
   if [ ! -f "$gradle_file" ]; then
@@ -32,7 +38,7 @@ bump_android_version() {
     return 1
   fi
 
-  local new_code=$((current_code + 1))
+  local new_code=$((current_code + step))
   # Escape sed replacement metacharacters so a version name cannot alter the edit.
   local escaped_name
   escaped_name=$(printf '%s\n' "$version_name" | sed -e 's/[&/\]/\\&/g')
