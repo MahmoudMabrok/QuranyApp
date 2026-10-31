@@ -20,8 +20,27 @@ data class Page(
     /** Where a sura-name line sits inside [getText], so it can be drawn as a Mushaf header. */
     data class HeaderRange(val surahIndex: Int, val start: Int, val end: Int)
 
-    /** Page text plus the ranges of the sura-name lines and the start offset of every ayah. */
-    class Content(val text: String, val headers: List<HeaderRange>, val ayahStarts: List<Int>)
+    /**
+     * Page text plus the ranges of the sura-name lines and the start offset of every ayah.
+     * [ayahStarts] includes a sura header / Basmala before an ayah 1 (used for touch lookup);
+     * [ayahTextRanges] covers only the ayah words and its number marker (used for highlights).
+     */
+    class Content(
+        val text: String,
+        val headers: List<HeaderRange>,
+        val ayahStarts: List<Int>,
+        val ayahTextRanges: List<IntRange> = emptyList(),
+    ) {
+        /** Index in [ayhas] of the ayah at [offset] in [text], or -1. */
+        fun ayahAt(offset: Int): Int {
+            if (ayahStarts.isEmpty() || offset < 0) return -1
+            var found = -1
+            for (i in ayahStarts.indices) {
+                if (ayahStarts[i] <= offset) found = i else break
+            }
+            return found
+        }
+    }
 
     fun getText(): String = buildContent().text
 
@@ -29,6 +48,7 @@ data class Page(
         val builder = StringBuilder()
         val headers = mutableListOf<HeaderRange>()
         val ayahStarts = mutableListOf<Int>()
+        val ayahTextRanges = mutableListOf<IntRange>()
         var aya: String
         var isFirst = true
         for (ayahItem in ayhas) {
@@ -56,9 +76,13 @@ data class Page(
                 ayahStarts.add(builder.length)
             }
             isFirst = false
-            builder.append(NumberHelper.formatAyahWithNumber(aya, ayahItem.ayahInSurahIndex))
+            val textStart = builder.length
+            val formatted = NumberHelper.formatAyahWithNumber(aya, ayahItem.ayahInSurahIndex)
+            builder.append(formatted)
+            // without the trailing space, so neighbouring highlights do not merge
+            ayahTextRanges.add(textStart until textStart + formatted.trimEnd().length)
         }
-        return Content(builder.toString(), headers, ayahStarts)
+        return Content(builder.toString(), headers, ayahStarts, ayahTextRanges)
     }
 
     companion object {
