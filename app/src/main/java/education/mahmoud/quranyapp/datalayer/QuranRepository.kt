@@ -55,6 +55,12 @@ class QuranRepository(private var localShared: LocalShared, private var quranDB:
             localShared.mushafPageFrame = enabled
         }
 
+    var bookFlipEnabled: Boolean
+        get() = localShared.bookFlipEnabled
+        set(enabled) {
+            localShared.bookFlipEnabled = enabled
+        }
+
     var listenReciter: String?
         get() = localShared.listenReciter
         set(id) {

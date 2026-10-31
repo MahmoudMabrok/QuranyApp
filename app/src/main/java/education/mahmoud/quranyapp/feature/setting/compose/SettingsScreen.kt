@@ -93,6 +93,8 @@ fun SettingsScreen(
     pageFrame: Boolean = true,
     onHeaderStyleChange: (Int) -> Unit = {},
     onPageFrameChange: (Boolean) -> Unit = {},
+    bookFlip: Boolean = true,
+    onBookFlipChange: (Boolean) -> Unit = {},
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -148,6 +150,27 @@ fun SettingsScreen(
                         )
                     }
                     Switch(checked = nightMode, onCheckedChange = null)
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+            SettingsCard {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .toggleable(value = bookFlip, role = Role.Switch, onValueChange = onBookFlipChange)
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(Modifier.weight(1f).padding(end = 16.dp)) {
+                        Text(stringResource(R.string.book_flip), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.book_flip_summary),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Switch(checked = bookFlip, onCheckedChange = null)
                 }
             }
 

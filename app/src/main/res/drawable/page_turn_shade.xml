@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Darker toward the free edge (left); the hinge is the right side of an RTL page. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="0"
+        android:endColor="#33000000"
+        android:startColor="#E6000000" />
+</shape>

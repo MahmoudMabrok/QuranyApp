@@ -55,6 +55,13 @@ class LocalShared(context: Application) {
             preferences.edit().putBoolean(MUSHAF_PAGE_FRAME, enabled).apply()
         }
 
+    /** Book-flip page turns in the reader. On unless the reader switches it off. */
+    var bookFlipEnabled: Boolean
+        get() = preferences.getBoolean(BOOK_FLIP_ENABLED, true)
+        set(enabled) {
+            preferences.edit().putBoolean(BOOK_FLIP_ENABLED, enabled).apply()
+        }
+
     var score: Long
         get() = preferences.getLong(Constants.SCORE, 0)
         set(score) {
@@ -91,5 +98,6 @@ class LocalShared(context: Application) {
         const val PLAYBACK_SPEED = "playback_speed"
         const val MUSHAF_HEADER_STYLE = "mushaf_header_style"
         const val MUSHAF_PAGE_FRAME = "mushaf_page_frame"
+        const val BOOK_FLIP_ENABLED = "book_flip_enabled"
     }
 }

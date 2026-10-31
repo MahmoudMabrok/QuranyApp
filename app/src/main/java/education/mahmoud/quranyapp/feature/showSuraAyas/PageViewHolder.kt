@@ -47,6 +47,7 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
     }
 
     fun bind(page: Page, ayahsColor: Int, scrollColor: Int, options: MushafOptions = MushafOptions()) {
+        resetPageTurn()
         binding.page = page
         // apply data binding now, so it does not overwrite the texts set below on the next frame
         binding.executePendingBindings()
@@ -152,6 +153,28 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
         val lp = tv.layoutParams as? ViewGroup.MarginLayoutParams
         val margins = (lp?.leftMargin ?: 0) + (lp?.rightMargin ?: 0)
         return tv.resources.displayMetrics.widthPixels - margins - tv.paddingLeft - tv.paddingRight
+    }
+
+    /** Overlay strength for the book-flip. Zero hides it so it cannot take taps. */
+    fun setPageTurnShade(alpha: Float) {
+        val shade = binding.pageTurnShade
+        if (alpha <= 0f) {
+            shade.alpha = 0f
+            if (shade.visibility != View.INVISIBLE) shade.visibility = View.INVISIBLE
+        } else {
+            if (shade.visibility != View.VISIBLE) shade.visibility = View.VISIBLE
+            shade.alpha = alpha
+        }
+    }
+
+    /** Drop a turn transform before the view is reused or leaves the window. */
+    fun resetPageTurn() {
+        itemView.translationX = 0f
+        itemView.rotationY = 0f
+        if (itemView.layerType != View.LAYER_TYPE_NONE) {
+            itemView.setLayerType(View.LAYER_TYPE_NONE, null)
+        }
+        setPageTurnShade(0f)
     }
 
     /** Keeps the page bar, text and frame out of the status / navigation bars and cutouts. */

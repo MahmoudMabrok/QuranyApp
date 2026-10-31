@@ -57,6 +57,11 @@ class PageAdapter(
         pageShown?.onDiplayed(holder.adapterPosition, holder)
     }
 
+    override fun onViewRecycled(holder: PageViewHolder) {
+        holder.resetPageTurn()
+        super.onViewRecycled(holder)
+    }
+
     fun getPage(pos: Int): Page {
         return list[pos]
     }
