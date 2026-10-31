@@ -1,6 +1,8 @@
 package education.mahmoud.quranyapp
 
 import android.app.Application
+import android.content.Context
+import com.google.android.play.core.splitcompat.SplitCompat
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.datalayer.QuranRepository
@@ -25,6 +27,12 @@ class App : Application() {
      * screen opened after the pages were already built (e.g. the second time) still gets them.
      */
     val relayPages = BehaviorRelay.create<ArrayList<Page>>()
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        // Required so on-demand code in :quran_asr is visible as soon as it is installed.
+        SplitCompat.install(this)
+    }
 
     override fun onCreate() {
         super.onCreate()

@@ -1,9 +1,11 @@
 package education.mahmoud.quranyapp.asr.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.play.core.splitcompat.SplitCompat
 import education.mahmoud.quranyapp.asr.ModelDownloader
 import education.mahmoud.quranyapp.asr.R
 
@@ -12,6 +14,11 @@ import education.mahmoud.quranyapp.asr.R
  * Lives entirely inside the dynamic feature module.
  */
 class DownloadModelActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(newBase)
+        SplitCompat.installActivity(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

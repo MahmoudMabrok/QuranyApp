@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">القران الكريم</string>
+    <!-- Play Console title for the :quran_asr on-demand module. Must live in the base module. -->
+    <string name="title_quran_asr">التعرف على التلاوة</string>
     <string name="title_activity_sura_details">SuraDetails</string>
     <string name="action_settings">اذهب الى السورة..</string>
     <string name="enter_surah_num">ادخل رقم السورة</string>

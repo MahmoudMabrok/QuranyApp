@@ -1,4 +1,5 @@
 apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'kotlin-android'
 
 android {
     namespace 'education.mahmoud.quranyapp.asr'
@@ -8,12 +9,29 @@ android {
         minSdkVersion 21
     }
 
+    // Minification is enabled on :app. AGP runs R8 for this feature too and
+    // already applies the default optimize file from the base module.
+    buildTypes {
+        release {
+            proguardFiles 'proguard-rules.pro'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
     }
 }
 
 dependencies {
     implementation project(':app')
+    // The base module's implementation dependencies are not visible here.
+    // These libraries are already packaged in :app; redeclare them so this
+    // module can compile against the same versions.
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.play:feature-delivery:2.1.0'
+    implementation 'com.github.amitshekhariitbhu:PRDownloader:1.0.2'
 }

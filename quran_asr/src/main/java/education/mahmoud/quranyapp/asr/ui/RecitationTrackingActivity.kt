@@ -1,9 +1,11 @@
 package education.mahmoud.quranyapp.asr.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.play.core.splitcompat.SplitCompat
 import education.mahmoud.quranyapp.asr.R
 
 /**
@@ -14,6 +16,11 @@ import education.mahmoud.quranyapp.asr.R
 class RecitationTrackingActivity : AppCompatActivity() {
 
     private var isRecording = false
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(newBase)
+        SplitCompat.installActivity(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
