@@ -1,5 +1,7 @@
 package education.mahmoud.quranyapp.feature.scores
 
+import education.mahmoud.quranyapp.utils.NumberHelper
+
 /**
  * Levels for the saved memorization-test points ([education.mahmoud.quranyapp.datalayer.QuranRepository.score]).
  * A perfect 4-word ayah is worth 8 points, so the first levels come quickly and the last ones
@@ -27,6 +29,18 @@ data class ScoreProgress(
 )
 
 object ScoreLevels {
+
+    /** Counted noun after a number: ٣–١٠ take the plural "نقاط", everything else "نقطة". */
+    @JvmStatic
+    fun pointsUnit(points: Long): String = if (points.mod(100L) in 3L..10L) "نقاط" else "نقطة"
+
+    /** "١٢ نقطة", "٥ نقاط", with the dual and singular forms for 2 and 1. */
+    @JvmStatic
+    fun pointsLabel(points: Long): String = when (points) {
+        1L -> "نقطة واحدة"
+        2L -> "نقطتان"
+        else -> "${NumberHelper.getArabicNumber(points)} ${pointsUnit(points)}"
+    }
 
     /** Ranked levels a user can earn (NONE is the empty state, not a level). */
     @JvmStatic

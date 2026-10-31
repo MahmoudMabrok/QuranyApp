@@ -72,4 +72,16 @@ class ScoreLevelsTest {
         assertEquals("١٢", NumberHelper.getArabicNumber(12L))
         assertEquals("٣٠٠٠٠٠٠٠٠٠", NumberHelper.getArabicNumber(3_000_000_000L))
     }
+
+    @Test
+    fun pointsLabelUsesArabicCountedNouns() {
+        assertEquals("٠ نقطة", ScoreLevels.pointsLabel(0))
+        assertEquals("نقطة واحدة", ScoreLevels.pointsLabel(1))
+        assertEquals("نقطتان", ScoreLevels.pointsLabel(2))
+        assertEquals("٣ نقاط", ScoreLevels.pointsLabel(3))
+        assertEquals("١٠ نقاط", ScoreLevels.pointsLabel(10))
+        assertEquals("١١ نقطة", ScoreLevels.pointsLabel(11))
+        assertEquals("١٠٥ نقاط", ScoreLevels.pointsLabel(105))
+        assertEquals("١٢٥٠ نقطة", ScoreLevels.pointsLabel(1250))
+    }
 }
