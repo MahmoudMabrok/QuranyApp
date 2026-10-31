@@ -12,4 +12,13 @@
         <dist:fusing dist:include="true" />
     </dist:module>
 
+    <application>
+        <activity
+            android:name=".ui.DownloadModelActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.RecitationTrackingActivity"
+            android:exported="true" />
+    </application>
+
 </manifest>

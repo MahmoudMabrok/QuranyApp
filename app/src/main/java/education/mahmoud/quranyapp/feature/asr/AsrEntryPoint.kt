@@ -27,15 +27,15 @@ object AsrEntryPoint {
 
         manager.startInstall(request)
             .addOnSuccessListener {
-                // In a real app listen to state updates; simplified here
                 startFeature(context)
             }
     }
 
     private fun startFeature(context: Context) {
+        // Prefer tracking screen; download screen is shown internally if model missing
         val intent = Intent().setClassName(
             context.packageName,
-            "education.mahmoud.quranyapp.asr.ui.DownloadModelActivity"
+            "education.mahmoud.quranyapp.asr.ui.RecitationTrackingActivity"
         )
         context.startActivity(intent)
     }
