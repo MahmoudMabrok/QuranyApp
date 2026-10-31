@@ -256,23 +256,6 @@ public class Util {
     }
 
 
-    public static Dialog getDialog(Context context, String message, String title) {
-        View view = LayoutInflater.from(context).inflate(R.layout.custome_dialoge_title, null);
-        TextView titleTextView = view.findViewById(R.id.tvInfo);
-        titleTextView.setText(title);
-
-        TextView textView = view.findViewById(R.id.tvDialogeText);
-        textView.setText(message);
-
-        Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(view);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        return dialog;
-
-    }
-
     public static Dialog getLoadingDialog(Context context, String message) {
         View view = LayoutInflater.from(context).inflate(R.layout.loading_dialoge, null);
         Dialog dialog = new Dialog(context);

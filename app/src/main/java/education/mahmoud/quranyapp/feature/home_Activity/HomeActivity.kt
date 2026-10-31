@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.databinding.ActivityHomeBinding
 import education.mahmoud.quranyapp.datalayer.QuranRepository
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.feature.ayahs_search.ShowSearchResults
 import education.mahmoud.quranyapp.feature.download.DownloadActivity
@@ -103,6 +104,7 @@ class HomeActivity : AppCompatActivity() {
                             onScore = ::gotoScore,
                             onDownload = ::gotoDownload,
                             onSettings = ::openSetting,
+                            onHighlightClick = ::openHighlightedAyah,
                         ),
                     )
                     if (showGoTo) {
@@ -173,6 +175,13 @@ class HomeActivity : AppCompatActivity() {
         val openAcivity = Intent(this, ShowAyahsActivity::class.java)
         openAcivity.putExtra(Constants.PAGE_INDEX, item.pageNum)
         startActivity(openAcivity)
+    }
+
+    /** Opens the reader on the page of a highlighted ayah. */
+    private fun openHighlightedAyah(ayah: AyahItem) {
+        val open = Intent(this, ShowAyahsActivity::class.java)
+        open.putExtra(Constants.PAGE_INDEX, ayah.pageNum)
+        startActivity(open)
     }
 
     private fun openGoToSura() {

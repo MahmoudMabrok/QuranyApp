@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -16,8 +17,13 @@ import butterknife.ButterKnife
 import education.mahmoud.quranyapp.App
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.databinding.ActivityShowAyahsBinding
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
+import education.mahmoud.quranyapp.feature.ayah_actions.AyahActionsSheet
+import education.mahmoud.quranyapp.feature.ayah_actions.TafseerSheet
+import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen
+import education.mahmoud.quranyapp.feature.listening_activity.ListenServie
 import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
 import education.mahmoud.quranyapp.feature.showSuraAyas.flip.BookFlipController
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafOptions
@@ -87,6 +93,54 @@ class ShowAyahsActivity : AppCompatActivity() {
             model.addBookmark(bookmarkItem)
             showMessage("Saved")
         }
+    }
+
+    /** Long press on an ayah: tafseer, highlight as a reference point, copy, share, play. */
+    private val ayahLongPressListener = object : PageAdapter.IAyahLongPress {
+        override fun onAyahLongPressed(ayah: AyahItem, position: Int) {
+            val item = model.getAyah(ayah.ayahIndex) ?: ayah
+            AyahActionsSheet.show(
+                this@ShowAyahsActivity,
+                item,
+                highlighted = item.ayahIndex in model.highlightedAyahs,
+                night = model.nightModeState,
+                listener = object : AyahActionsSheet.Listener {
+                    override fun onShowTafseer(ayah: AyahItem) {
+                        TafseerSheet.show(this@ShowAyahsActivity, ayah, model.nightModeState)
+                    }
+
+                    override fun onToggleHighlight(ayah: AyahItem, highlight: Boolean) {
+                        model.setAyahHighlighted(ayah.ayahIndex, highlight)
+                        refreshHighlights(ayah.ayahIndex, position)
+                        showMessage(getString(if (highlight) R.string.ayah_highlighted else R.string.ayah_highlight_removed))
+                    }
+
+                    override fun onPlay(ayah: AyahItem) {
+                        playAyah(ayah)
+                    }
+                },
+            )
+        }
+    }
+
+    private fun refreshHighlights(ayahIndex: Int, position: Int) {
+        val adapter = pageAdapter ?: return
+        adapter.highlightedAyahs = model.highlightedAyahs
+        val pos = if (position in 0 until adapter.itemCount) position else adapter.positionOfAyah(ayahIndex)
+        if (pos >= 0) adapter.notifyItemChanged(pos)
+    }
+
+    private var listenIntent: Intent? = null
+
+    private fun playAyah(ayah: AyahItem) {
+        if (ayah.audioPath == null) {
+            showMessage(getString(R.string.not_downlod_audio))
+            return
+        }
+        listenIntent?.let { stopService(it) }
+        val listen = AyahsListen()
+        listen.ayahItemList = listOf(ayah)
+        listenIntent = ListenServie.createService(applicationContext, listen)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -206,7 +260,13 @@ class ShowAyahsActivity : AppCompatActivity() {
                 pageFrame = model.mushafPageFrame,
                 nightMode = model.nightModeState,
             )
-            pageAdapter = PageAdapter(ayahsColor, scrollorColor, iBookmark = bookmarkListener, mushafOptions = mushafOptions)
+            pageAdapter = PageAdapter(
+                ayahsColor,
+                scrollorColor,
+                iBookmark = bookmarkListener,
+                mushafOptions = mushafOptions,
+                ayahLongPress = ayahLongPressListener,
+            ).also { it.highlightedAyahs = model.highlightedAyahs }
             rvAyahsPages.adapter = pageAdapter
             // Quran is read right to left: the next page enters from the left.
             rvAyahsPages.layoutDirection = View.LAYOUT_DIRECTION_RTL

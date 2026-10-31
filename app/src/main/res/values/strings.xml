@@ -102,7 +102,6 @@
     <string name="na">لم يسجل اى نقاط</string>
     <string name="empty">لا يجب ان تكون فارغة </string>
     <string name="feedback">أرسل تقييمك </string>
-    <string name="tafserr_info">رقم الاية %d \n  رقم الصفحة %d \n رقم الجزء %d</string>
     <string name="created_Account">تم انشاء الحساب بنجاح</string>
     <string name="logged_success">Logged Successfuly, now you can  upload points</string>
     <string name="uploaded">تم الرفع</string>
@@ -368,4 +367,24 @@
     <string name="score_level_advanced">متقدم</string>
     <string name="score_level_proficient">متقن</string>
     <string name="score_level_distinguished">حافظ متميز</string>
+    <!-- ayah sheets: tafseer and the long-press options in the reader -->
+    <string name="sheet_close">إغلاق</string>
+    <string name="ayah_chip_ayah">الآية %s</string>
+    <string name="ayah_chip_page">الصفحة %s</string>
+    <string name="ayah_chip_juz">الجزء %s</string>
+    <string name="ayah_action_tafseer">عرض التفسير</string>
+    <string name="ayah_action_copy">نسخ الآية</string>
+    <string name="ayah_action_share">مشاركة الآية</string>
+    <string name="ayah_action_play">تشغيل التلاوة</string>
+    <string name="ayah_action_highlight">تظليل الآية</string>
+    <string name="ayah_action_remove_highlight">إزالة التظليل</string>
+    <string name="ayah_copied">تم النسخ</string>
+    <string name="ayah_highlighted">تم تظليل الآية</string>
+    <string name="ayah_highlight_removed">تمت إزالة التظليل</string>
+    <string name="ayah_share_title">مشاركة عبر</string>
+    <string name="ayah_reference">%1$s - الآية %2$s</string>
+    <string name="tafseer_empty">التفسير غير متاح لهذه الآية. حمّل ملفات التفسير من صفحة التحميل.</string>
+    <string name="highlights_title">الآيات المظللة</string>
+    <string name="bookmarked_pages_title">الصفحات المحفوظة</string>
+    <string name="highlight_hint">اضغط مطولًا على أي آية في المصحف لعرض التفسير أو تظليلها</string>
 </resources>

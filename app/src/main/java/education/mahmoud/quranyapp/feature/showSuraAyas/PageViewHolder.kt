@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.View
@@ -22,10 +23,19 @@ import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.isRightPage
 import education.mahmoud.quranyapp.utils.Util
 
-class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapter.IBookmark?) : RecyclerView.ViewHolder(binding.root) {
+class PageViewHolder(
+    private val binding: PageItemBinding,
+    iBookmark: PageAdapter.IBookmark?,
+    ayahLongPress: PageAdapter.IAyahLongPress? = null,
+) : RecyclerView.ViewHolder(binding.root) {
 
     private val padding = Rect()
     private var lastTextWidth = 0
+
+    /** Text layout of the bound page; maps a long-press position back to its ayah. */
+    private var content: Page.Content? = null
+    private var touchX = 0f
+    private var touchY = 0f
 
     // defined here to not be created with each bind call.
     init {
@@ -39,6 +49,21 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
                 tv.post { tv.setText(tv.text, TextView.BufferType.SPANNABLE) }
             }
         }
+        // long press on an ayah (its words or its number) opens the ayah options
+        if (ayahLongPress != null) {
+            binding.tvAyahs.setOnTouchListener { _, event ->
+                touchX = event.x
+                touchY = event.y
+                false
+            }
+            binding.tvAyahs.setOnLongClickListener { v ->
+                val page = binding.page ?: return@setOnLongClickListener false
+                val index = content?.ayahAt((v as TextView).getOffsetForPosition(touchX, touchY)) ?: -1
+                val ayah = page.ayhas.getOrNull(index) ?: return@setOnLongClickListener false
+                ayahLongPress.onAyahLongPressed(ayah, adapterPosition)
+                true
+            }
+        }
         binding.imBookmark.setOnClickListener {
             binding.page?.let {
                 iBookmark?.onBookmarkClicked(it)
@@ -46,7 +71,13 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
         }
     }
 
-    fun bind(page: Page, ayahsColor: Int, scrollColor: Int, options: MushafOptions = MushafOptions()) {
+    fun bind(
+        page: Page,
+        ayahsColor: Int,
+        scrollColor: Int,
+        options: MushafOptions = MushafOptions(),
+        highlighted: Set<Int> = emptySet(),
+    ) {
         resetPageTurn()
         binding.page = page
         // apply data binding now, so it does not overwrite the texts set below on the next frame
@@ -66,7 +97,17 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
 
         // text with Mushaf-style sura headers
         val content = page.buildContent()
+        this.content = content
         val spannable = Util.getSpannable(content.text)
+        // ayahs the reader highlighted as reference points get a soft background tint
+        if (highlighted.isNotEmpty()) {
+            val tint = if (options.nightMode) HIGHLIGHT_NIGHT else HIGHLIGHT_DAY
+            page.ayhas.forEachIndexed { i, ayah ->
+                if (ayah.ayahIndex !in highlighted) return@forEachIndexed
+                val range = content.ayahTextRanges.getOrNull(i) ?: return@forEachIndexed
+                spannable.setSpan(BackgroundColorSpan(tint), range.first, range.last + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        }
         if (options.headerStyle != SuraHeaderStyle.PLAIN) {
             for (header in content.headers) {
                 val info = page.suraInfos[header.surahIndex] ?: continue
@@ -187,5 +228,10 @@ class PageViewHolder(private val binding: PageItemBinding, iBookmark: PageAdapte
         if (lp.leftMargin == px && lp.topMargin == px) return
         lp.setMargins(px, px, px, px)
         view.layoutParams = lp
+    }
+
+    private companion object {
+        const val HIGHLIGHT_DAY = 0x66FFD54F
+        const val HIGHLIGHT_NIGHT = 0x5CFFC107
     }
 }

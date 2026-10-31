@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import androidx.core.graphics.Insets
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.databinding.PageItemBinding
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafOptions
 
@@ -14,12 +15,16 @@ class PageAdapter(
     private val pageShown: PageShown? = null,
     private val iBookmark: IBookmark? = null,
     private val mushafOptions: MushafOptions = MushafOptions(),
+    private val ayahLongPress: IAyahLongPress? = null,
 ) : RecyclerView.Adapter<PageViewHolder>() {
 
     private val list: ArrayList<Page> = arrayListOf()
 
     /** System bar + cutout insets; each page pads itself so its paper colour goes behind the bars. */
     var systemInsets: Insets = Insets.NONE
+
+    /** Global indexes of highlighted ayahs, drawn with a soft background on their page. */
+    var highlightedAyahs: Set<Int> = emptySet()
 
     fun setPageList(newList: List<Page>) {
         val oldSize = list.size
@@ -32,12 +37,12 @@ class PageAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): PageViewHolder {
         val binding =
             PageItemBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-        return PageViewHolder(binding, iBookmark)
+        return PageViewHolder(binding, iBookmark, ayahLongPress)
     }
 
     override fun onBindViewHolder(holder: PageViewHolder, index: Int) {
         val page = list[index]
-        holder.bind(page, ayahsColor, scrollColor, mushafOptions)
+        holder.bind(page, ayahsColor, scrollColor, mushafOptions, highlightedAyahs)
         holder.applyInsets(systemInsets)
     }
 
@@ -68,6 +73,13 @@ class PageAdapter(
 
     interface PageShown {
         fun onDiplayed(pos: Int, holder: PageViewHolder)
+    }
+
+    /** Index of the page that holds the ayah with global index [ayahIndex], or -1. */
+    fun positionOfAyah(ayahIndex: Int): Int = list.indexOfFirst { page -> page.ayhas.any { it.ayahIndex == ayahIndex } }
+
+    interface IAyahLongPress {
+        fun onAyahLongPressed(ayah: AyahItem, position: Int)
     }
 
     interface IBookmark {
