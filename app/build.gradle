@@ -51,6 +51,10 @@ android {
         compose = true
     }
     namespace 'education.mahmoud.quranyapp'
+
+    // Registers :quran_asr with the base module so AGP writes its feature name
+    // into feature-metadata.json. Without this, :quran_asr:process*Manifest fails.
+    dynamicFeatures = [':quran_asr']
 }
 
 dependencies {
@@ -150,6 +154,9 @@ dependencies {
     def media3_version = '1.5.1'
     implementation "androidx.media3:media3-exoplayer:$media3_version"
     implementation "androidx.media3:media3-session:$media3_version"
+
+    // On-demand install API for the :quran_asr dynamic feature.
+    implementation 'com.google.android.play:feature-delivery:2.1.0'
 }
 
 apply plugin: "org.jlleitschuh.gradle.ktlint"

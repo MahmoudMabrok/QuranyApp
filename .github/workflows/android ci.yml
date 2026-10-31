@@ -30,8 +30,21 @@ jobs:
 #      - name: code quality with detekt
 #        run: ./gradlew detekt
 
-      - name: build app
-        run: ./gradlew assembleDebug
+      - name: build app bundle
+        run: |
+          chmod +x gradlew .github/scripts/build-universal-apk.sh
+          ./gradlew :app:bundleDebug
+
+      - name: build universal debug APK
+        run: .github/scripts/build-universal-apk.sh debug
+
+      - name: Upload universal debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-universal
+          path: app/build/outputs/apk/debug/app-debug-universal.apk
+          if-no-files-found: error
+          retention-days: 7
 
 #      - name: test
 #        run: ./gradlew test

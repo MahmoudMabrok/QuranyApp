@@ -199,6 +199,17 @@
                     android:id="@+id/tvRandomDesc"
                     style="@style/TestHelp"
                     android:text="@string/test_random_desc" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnReciteVoice"
+                    style="@style/TestSecondaryButton"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/test_recite" />
+
+                <TextView
+                    android:id="@+id/tvReciteHelp"
+                    style="@style/TestHelp"
+                    android:text="@string/test_recite_desc" />
             </LinearLayout>
 
             <!-- ============ question / feedback ============ -->

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">القران الكريم</string>
+    <!-- Play Console title for the :quran_asr on-demand module. Must live in the base module. -->
+    <string name="title_quran_asr">التعرف على التلاوة</string>
     <string name="title_activity_sura_details">SuraDetails</string>
     <string name="action_settings">اذهب الى السورة..</string>
     <string name="enter_surah_num">ادخل رقم السورة</string>
@@ -294,6 +296,17 @@
     <string name="test_full_desc">اكتب كل آيات النطاق بالترتيب، آية بعد آية.</string>
     <string name="test_random">اختبار عشوائي</string>
     <string name="test_random_desc">نعرض عليك آية عشوائية من النطاق وتكتب الآية التي تليها.</string>
+    <string name="test_recite">اختبر تلاوتك بالصوت</string>
+    <string name="test_recite_desc">افتح شاشة التلاوة للنطاق الذي اخترته وتابع قراءتك صوتًا.</string>
+    <string name="asr_install_title">التعرف على التلاوة</string>
+    <string name="asr_install_message">جارٍ تجهيز ميزة التعرف على التلاوة…</string>
+    <string name="asr_downloading">جارٍ تحميل الميزة (%1$d%%)</string>
+    <string name="asr_installing">جارٍ تثبيت الميزة…</string>
+    <string name="asr_install_confirm">يلزم تأكيد التثبيت من متجر بلاي</string>
+    <string name="asr_install_cancel">إلغاء</string>
+    <string name="asr_install_unavailable">هذه الميزة غير مثبّتة في هذه النسخة. ثبّتها من متجر بلاي، أو استخدم النسخة الكاملة من التطبيق.</string>
+    <string name="asr_install_network">تعذر التحميل. تحقق من الاتصال وحاول مرة أخرى.</string>
+    <string name="asr_install_failed">تعذر تثبيت ميزة التعرف على التلاوة.</string>
     <string name="test_err_ayah_number">اكتب رقم آية صحيح</string>
     <string name="test_err_out_of_range">سورة %1$s آياتها %2$s فقط</string>
     <string name="test_err_order">بداية النطاق يجب أن تكون قبل نهايته</string>
