@@ -61,6 +61,16 @@ class AyahsViewModel(private val repo: QuranRepository) : ViewModel() {
         repo.addBookmark(bookmarkItem)
     }
 
+    val highlightedAyahs: Set<Int>
+        get() = repo.highlightedAyahs
+
+    fun setAyahHighlighted(ayahIndex: Int, highlighted: Boolean) {
+        repo.setAyahHighlighted(ayahIndex, highlighted)
+    }
+
+    /** Fresh copy from the database (tafseer and audio path may have been downloaded since). */
+    fun getAyah(ayahIndex: Int): AyahItem? = runCatching { repo.getAyahByIndex(ayahIndex) }.getOrNull()
+
     override fun onCleared() {
         super.onCleared()
         bg.clear()

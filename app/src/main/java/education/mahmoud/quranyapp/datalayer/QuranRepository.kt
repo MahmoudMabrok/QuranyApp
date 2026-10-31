@@ -15,6 +15,22 @@ class QuranRepository(private var localShared: LocalShared, private var quranDB:
         localShared.addLatestread(index)
     }
 
+    /** Global indexes of the ayahs highlighted as reference points. */
+    val highlightedAyahs: Set<Int>
+        get() = localShared.highlightedAyahs
+
+    fun isAyahHighlighted(ayahIndex: Int): Boolean = ayahIndex in localShared.highlightedAyahs
+
+    fun setAyahHighlighted(ayahIndex: Int, highlighted: Boolean) {
+        localShared.setAyahHighlighted(ayahIndex, highlighted)
+    }
+
+    /** Highlighted ayahs in Mushaf order. */
+    fun getHighlightedAyahItems(): List<AyahItem> =
+        localShared.highlightedAyahs.sorted().mapNotNull { index ->
+            runCatching { quranDB.ayahDAO().getAyahByIndex(index) }.getOrNull()
+        }
+
     fun addLatestreadWithScroll(index: Int) {
         localShared.addLatestreadWithScroll(index)
     }

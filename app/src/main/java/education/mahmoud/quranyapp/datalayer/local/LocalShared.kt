@@ -93,7 +93,23 @@ class LocalShared(context: Application) {
             preferences.edit().putString(Constants.USER_UUID, uuid).apply()
         }
 
+    /**
+     * Ayahs the reader highlighted as reference points, by their global ayah index (1..6236).
+     * A copy is returned; use [setAyahHighlighted] to change it.
+     */
+    val highlightedAyahs: Set<Int>
+        get() = preferences.getStringSet(HIGHLIGHTED_AYAHS, null)
+            ?.mapNotNull { it.toIntOrNull() }?.toSet() ?: emptySet()
+
+    fun setAyahHighlighted(ayahIndex: Int, highlighted: Boolean) {
+        val current = highlightedAyahs.toMutableSet()
+        if (highlighted) current.add(ayahIndex) else current.remove(ayahIndex)
+        // always write a new set: SharedPreferences must not get back the instance it returned
+        preferences.edit().putStringSet(HIGHLIGHTED_AYAHS, current.map { it.toString() }.toSet()).apply()
+    }
+
     private companion object {
+        const val HIGHLIGHTED_AYAHS = "highlighted_ayahs"
         const val LISTEN_RECITER = "listen_reciter"
         const val PLAYBACK_SPEED = "playback_speed"
         const val MUSHAF_HEADER_STYLE = "mushaf_header_style"
