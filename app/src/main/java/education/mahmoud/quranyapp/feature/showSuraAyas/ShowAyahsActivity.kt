@@ -35,15 +35,15 @@ import education.mahmoud.quranyapp.utils.EdgeToEdge
 import education.mahmoud.quranyapp.utils.log
 import education.mahmoud.quranyapp.utils.viewBinding
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
-import org.koin.android.ext.android.inject
+import io.reactivex.disposables.Disposable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Date
 
 class ShowAyahsActivity : AppCompatActivity() {
 
     private val name = javaClass.simpleName
 
-    private val model: AyahsViewModel by inject()
+    private val model: AyahsViewModel by viewModel()
     var pageAdapter: PageAdapter? = null
     var pos = 0
     var pageList: List<Page> = listOf()
@@ -130,6 +130,7 @@ class ShowAyahsActivity : AppCompatActivity() {
         if (pos >= 0) adapter.notifyItemChanged(pos)
     }
 
+    private var pagesDisposable: Disposable? = null
     private var listenIntent: Intent? = null
 
     private fun playAyah(ayah: AyahItem) {
@@ -194,28 +195,60 @@ class ShowAyahsActivity : AppCompatActivity() {
         (application as? App)?.persistanscePages()
     }
 
+    /**
+     * First open: pages are still loading, so the list arrives after the recycler has laid out
+     * and the surah draws fine. Second open: the same list is replayed immediately, during the
+     * first layout. Submitting it there (and scrolling in the same turn) crashes the book-flip
+     * recycler. Always apply the pages on the next loop, and again after layout if needed.
+     */
     private fun startObserving() {
         Log.d(TAG, "stratObserving:qw ${Thread.currentThread()}")
-        (application as? App)?.relayPages
+        pagesDisposable?.dispose()
+        pagesDisposable = (application as? App)?.relayPages
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.doAfterNext {
-                hideLoading()
-            }
             ?.subscribe(
-                {
-                    "data found ${it.size}".log()
-                    pageAdapter?.setPageList(it)
-                    binding.rvAyahsPages.scrollToPosition(pos)
-                    // the page the reader opens on counts as read
-                    onPageShown(pos)
-                    "data pageAdapter ${pageAdapter?.itemCount} , ${Thread.currentThread()}".log()
-                    foundState()
-                },
-                {
-                    "error ${it.message}".log()
-                }
+                { pages -> deliverPages(ArrayList(pages)) },
+                { error -> "error ${error.message}".log() },
             )
-            ?.addTo(model.bg)
+    }
+
+    private fun deliverPages(pages: List<Page>) {
+        if (isDestroyed) return
+        val rv = binding.rvAyahsPages
+        rv.post {
+            if (isDestroyed) return@post
+            if (rv.isComputingLayout) {
+                deliverPages(pages)
+                return@post
+            }
+            applyPages(pages)
+        }
+    }
+
+    private fun applyPages(pages: List<Page>) {
+        if (pages.isEmpty()) {
+            hideLoading()
+            notFound()
+            return
+        }
+        pageAdapter?.setPageList(pages)
+        hideLoading()
+        val count = pageAdapter?.itemCount ?: 0
+        if (count == 0) {
+            notFound()
+            return
+        }
+        val target = pos.coerceIn(0, count - 1)
+        binding.rvAyahsPages.scrollToPosition(target)
+        onPageShown(target)
+        "data pageAdapter $count , ${Thread.currentThread()}".log()
+        foundState()
+    }
+
+    override fun onDestroy() {
+        pagesDisposable?.dispose()
+        pagesDisposable = null
+        super.onDestroy()
     }
 
     private fun hideLoading() {
@@ -359,14 +392,27 @@ class ShowAyahsActivity : AppCompatActivity() {
     }
 
     private fun loadPagesReadLoge() {
-        currentDate = DateOperation.getCurrentDateExact().time
-        currentDateStr = DateOperation.getCurrentDateAsString()
-        val saved = model.getLReadLogByDate(currentDateStr)
-        // pages from an earlier session were saved in onStop; start from what is stored today
-        pagesReadLogNumber.clear()
-        saved?.pages?.let { pagesReadLogNumber.addAll(it) }
-        // first reading today: create the row; it is inserted on the first save
-        readLog = saved ?: ReadLog(currentDate, currentDateStr, ArraySet())
+        try {
+            currentDate = DateOperation.getCurrentDateExact().time
+            currentDateStr = DateOperation.getCurrentDateAsString()
+            val saved = model.getLReadLogByDate(currentDateStr)
+            // pages from an earlier session were saved in onStop; start from what is stored today.
+            // The blob is read only on the second open, so a bad value must not take the reader down.
+            pagesReadLogNumber.clear()
+            saved?.pages?.let { stored ->
+                for (page in stored) {
+                    if (page in 1..LAST_PAGE) pagesReadLogNumber.add(page)
+                }
+            }
+            readLog = saved ?: ReadLog(currentDate, currentDateStr, ArraySet())
+        } catch (e: RuntimeException) {
+            "read log skipped ${e.message}".log()
+            pagesReadLogNumber.clear()
+            if (!::currentDateStr.isInitialized) {
+                currentDateStr = ""
+            }
+            readLog = ReadLog(currentDate, currentDateStr, ArraySet())
+        }
     }
 
     /**
@@ -408,14 +454,17 @@ class ShowAyahsActivity : AppCompatActivity() {
 
     private fun saveReadLog() {
         if (pagesReadLogNumber.isEmpty()) return
-        readLog?.let {
-            it.pages = ArraySet<Int>().apply { addAll(pagesReadLogNumber) }
+        val item = readLog ?: return
+        try {
+            item.pages = ArraySet<Int>().apply { addAll(pagesReadLogNumber) }
             // exception used to indicate its update or add case when update it will make exception as there is item in db
             try {
-                model.addReadLog(it)
+                model.addReadLog(item)
             } catch (e: Exception) {
-                model.updateReadLog(it)
+                model.updateReadLog(item)
             }
+        } catch (e: RuntimeException) {
+            "read log not saved ${e.message}".log()
         }
     }
 
