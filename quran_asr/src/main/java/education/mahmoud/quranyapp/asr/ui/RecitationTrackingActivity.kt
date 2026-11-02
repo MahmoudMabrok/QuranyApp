@@ -5,13 +5,20 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.graphics.Typeface
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.splitcompat.SplitCompat
+import education.mahmoud.quranyapp.asr.AyahReference
 import education.mahmoud.quranyapp.asr.ModelDownloader
+import education.mahmoud.quranyapp.asr.PhonemeCompare
 import education.mahmoud.quranyapp.asr.R
 import education.mahmoud.quranyapp.asr.RecitationEngine
 import education.mahmoud.quranyapp.asr.RecitationSession
@@ -20,7 +27,7 @@ import java.util.Locale
 
 /**
  * Main recitation tracking screen.
- * Shows the selected ayah, downloads the model, then listens and prints what was recognized.
+ * Listens to the recitation and shows the tajweed rulings, not a spelling score.
  */
 class RecitationTrackingActivity : AppCompatActivity() {
 
@@ -34,6 +41,11 @@ class RecitationTrackingActivity : AppCompatActivity() {
     private lateinit var progressModel: ProgressBar
     private lateinit var tvModelDetail: TextView
     private lateinit var tvResults: TextView
+    private var words: List<AyahReference.Word> = emptyList()
+    private var startSura = 1
+    private var startAyah = 1
+    private var endSura = 1
+    private var endAyah = 1
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(newBase)
@@ -51,6 +63,11 @@ class RecitationTrackingActivity : AppCompatActivity() {
         progressModel = findViewById(R.id.progressModel)
         tvModelDetail = findViewById(R.id.tvModelDetail)
         tvResults = findViewById(R.id.tvResults)
+        tvResults.textSize = 22f
+        startSura = intent.getIntExtra(AsrEntryPoint.EXTRA_START_SURA, 1).coerceAtLeast(1)
+        startAyah = intent.getIntExtra(AsrEntryPoint.EXTRA_START_AYAH, 1).coerceAtLeast(1)
+        endSura = intent.getIntExtra(AsrEntryPoint.EXTRA_END_SURA, startSura).coerceAtLeast(startSura)
+        endAyah = intent.getIntExtra(AsrEntryPoint.EXTRA_END_AYAH, startAyah).coerceAtLeast(1)
 
         intent.getStringExtra(AsrEntryPoint.EXTRA_RANGE_LABEL)
             ?.takeIf { it.isNotBlank() }
@@ -117,13 +134,20 @@ class RecitationTrackingActivity : AppCompatActivity() {
 
         Thread {
             try {
+                words = AyahReference.words(
+                    applicationContext,
+                    startSura,
+                    startAyah,
+                    endSura,
+                    endAyah,
+                )
                 val engine = RecitationEngine.get(applicationContext)
                 runOnUiThread {
                     if (isDestroyed || generation != listenGeneration) return@runOnUiThread
                     val created = RecitationSession(
                         recognizer = engine,
                         onPartial = { text ->
-                            if (!isDestroyed && text.isNotBlank()) tvResults.text = text
+                            if (!isDestroyed) showRulings(text, finished = false)
                         },
                         onDone = { text ->
                             if (isDestroyed) return@RecitationSession
@@ -133,11 +157,10 @@ class RecitationTrackingActivity : AppCompatActivity() {
                             btnToggle.isEnabled = true
                             btnToggle.text = getString(R.string.asr_start)
                             if (text.isBlank()) {
+                                showRulings("", finished = false)
                                 showProblem(getString(R.string.asr_empty), getString(R.string.asr_start))
                             } else {
-                                tvModelDetail.visibility = View.GONE
-                                tvStatus.text = getString(R.string.asr_result)
-                                tvResults.text = text
+                                showRulings(text, finished = true)
                             }
                         },
                         onError = { message ->
@@ -157,9 +180,8 @@ class RecitationTrackingActivity : AppCompatActivity() {
                         return@runOnUiThread
                     }
                     session = created
+                    showRulings("", finished = false)
                     progressModel.visibility = View.GONE
-                    tvModelDetail.visibility = View.VISIBLE
-                    tvModelDetail.text = getString(R.string.asr_speak_now)
                     tvStatus.text = getString(R.string.asr_listening)
                     btnToggle.isEnabled = true
                     btnToggle.text = getString(R.string.asr_stop)
@@ -185,6 +207,76 @@ class RecitationTrackingActivity : AppCompatActivity() {
     private fun hasMicPermission(): Boolean {
         if (Build.VERSION.SDK_INT < 23) return true
         return checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun showRulings(heard: String, finished: Boolean) {
+        val lines = PhonemeCompare.grade(heard, words, finished)
+        if (lines.isEmpty()) {
+            tvResults.text = getString(R.string.asr_no_rules)
+            tvModelDetail.visibility = View.GONE
+            if (finished) tvStatus.text = getString(R.string.asr_result)
+            return
+        }
+        val text = SpannableStringBuilder()
+        var index = 0
+        while (index < lines.size) {
+            var end = index + 1
+            while (end < lines.size && lines[end].arabic == lines[index].arabic && !lines[end].newAyah) end++
+            val group = lines.subList(index, end)
+            if (text.isNotEmpty()) text.append("\n")
+            val wordStart = text.length
+            text.append(lines[index].arabic)
+            text.setSpan(StyleSpan(Typeface.BOLD), wordStart, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            text.setSpan(
+                ForegroundColorSpan(wordColor(group)),
+                wordStart,
+                text.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+            )
+            for (line in group) {
+                text.append("\n")
+                val start = text.length
+                text.append(line.rule)
+                text.append(" — ")
+                text.append(statusLabel(line.status))
+                text.setSpan(
+                    ForegroundColorSpan(statusColor(line.status)),
+                    start,
+                    text.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+                )
+            }
+            index = end
+        }
+        tvResults.text = text
+        val ok = lines.count { it.status == PhonemeCompare.Status.OK }
+        val review = lines.count { it.status == PhonemeCompare.Status.MISSING || it.status == PhonemeCompare.Status.SHORT }
+        tvModelDetail.visibility = View.VISIBLE
+        tvModelDetail.text = getString(R.string.asr_rules_summary, ok, review)
+        if (finished) {
+            tvStatus.text = if (review == 0) getString(R.string.asr_rules_match) else getString(R.string.asr_result)
+        }
+    }
+
+    private fun wordColor(lines: List<PhonemeCompare.Line>): Int {
+        return when {
+            lines.any { it.status == PhonemeCompare.Status.MISSING || it.status == PhonemeCompare.Status.SHORT } -> 0xFFC62828.toInt()
+            lines.all { it.status == PhonemeCompare.Status.OK } -> 0xFF2E7D32.toInt()
+            else -> 0xFF607D8B.toInt()
+        }
+    }
+
+    private fun statusColor(status: PhonemeCompare.Status): Int = when (status) {
+        PhonemeCompare.Status.OK -> 0xFF2E7D32.toInt()
+        PhonemeCompare.Status.SHORT, PhonemeCompare.Status.MISSING -> 0xFFC62828.toInt()
+        PhonemeCompare.Status.WAIT -> 0xFF78909C.toInt()
+    }
+
+    private fun statusLabel(status: PhonemeCompare.Status): String = when (status) {
+        PhonemeCompare.Status.OK -> getString(R.string.asr_rule_ok)
+        PhonemeCompare.Status.MISSING -> getString(R.string.asr_rule_missing)
+        PhonemeCompare.Status.SHORT -> getString(R.string.asr_rule_short)
+        PhonemeCompare.Status.WAIT -> getString(R.string.asr_rule_wait)
     }
 
     private fun beginDownload() {

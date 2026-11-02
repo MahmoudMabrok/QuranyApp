@@ -7,6 +7,7 @@ import android.media.MediaRecorder
 import android.os.Handler
 import android.os.Looper
 import com.k2fsa.sherpa.onnx.OnlineRecognizer
+import com.k2fsa.sherpa.onnx.OnlineRecognizerResult
 import java.io.IOException
 import kotlin.math.max
 
@@ -76,12 +77,12 @@ class RecitationSession(
                 val samples = FloatArray(read) { index -> pcm[index] / 32768.0f }
                 stream.acceptWaveform(samples, SAMPLE_RATE)
                 while (recognizer.isReady(stream)) recognizer.decode(stream)
-                val text = recognizer.getResult(stream).text
+                val text = spoken(recognizer.getResult(stream))
                 main.post { if (running) onPartial(text) }
             }
             stream.inputFinished()
             while (recognizer.isReady(stream)) recognizer.decode(stream)
-            val text = recognizer.getResult(stream).text
+            val text = spoken(recognizer.getResult(stream))
             main.post { onDone(text) }
         } catch (error: Exception) {
             val message = error.message?.takeIf { it.isNotBlank() } ?: "توقف التعرف بسبب خطأ."
@@ -91,6 +92,11 @@ class RecitationSession(
             audio.release()
             runCatching { stream.release() }
         }
+    }
+
+    private fun spoken(result: OnlineRecognizerResult): String {
+        val tokens = result.tokens.filter { it.isNotBlank() && it != "<blank>" }
+        return if (tokens.isEmpty()) result.text else tokens.joinToString("")
     }
 
     private companion object {
