@@ -29,6 +29,10 @@ object RecitationEngine {
                         numThreads = 2,
                         modelType = "zipformer2",
                     ),
+                    // Keep one hypothesis for the whole recitation. The default
+                    // endpoint cuts the result after a short silence, so the
+                    // screen never shows what was just read.
+                    enableEndpoint = false,
                 ),
             )
             recognizer = created

@@ -25,17 +25,17 @@ object PhonemeCompare {
         var pos = 0
         val lines = ArrayList<Line>()
         for (word in words) {
-            val expected = extract(word.phonemes, word.arabic)
-            if (expected.isEmpty()) continue
             val target = normalize(word.phonemes)
             val (cost, used) = alignPrefix(audio, pos, target)
             val reached = target.isNotEmpty() && used > 0 && cost * 3 <= target.length
+            if (reached) pos += used
+            val expected = extract(word.phonemes, word.arabic)
+            if (expected.isEmpty()) continue
             val heardRules = if (reached) {
-                extract(audio.substring(pos, pos + used), word.arabic)
+                extract(audio.substring(pos - used, pos), word.arabic)
             } else {
                 emptyList()
             }
-            if (reached) pos += used
             val remaining = heardRules.toMutableList()
             var first = true
             for (rule in expected) {
