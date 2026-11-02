@@ -24,6 +24,7 @@ object AsrEntryPoint {
 
     const val EXTRA_RANGE_LABEL = "asr_range_label"
     const val EXTRA_AYAH_TEXT = "asr_ayah_text"
+    const val EXTRA_AYAH_TEXTS = "asr_ayah_texts"
     const val EXTRA_START_SURA = "asr_start_sura"
     const val EXTRA_START_AYAH = "asr_start_ayah"
     const val EXTRA_END_SURA = "asr_end_sura"
@@ -43,6 +44,7 @@ object AsrEntryPoint {
         val endAyah: Int,
         val label: String,
         val ayahText: String? = null,
+        val ayahTexts: List<String> = emptyList(),
     )
 
     private var installInProgress = false
@@ -203,6 +205,7 @@ object AsrEntryPoint {
         if (range != null) {
             intent.putExtra(EXTRA_RANGE_LABEL, range.label)
             intent.putExtra(EXTRA_AYAH_TEXT, range.ayahText)
+            intent.putStringArrayListExtra(EXTRA_AYAH_TEXTS, ArrayList(range.ayahTexts))
             intent.putExtra(EXTRA_START_SURA, range.startSura)
             intent.putExtra(EXTRA_START_AYAH, range.startAyah)
             intent.putExtra(EXTRA_END_SURA, range.endSura)

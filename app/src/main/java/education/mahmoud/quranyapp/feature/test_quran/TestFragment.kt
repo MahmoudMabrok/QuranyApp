@@ -185,9 +185,10 @@ class TestFragment : BaseFragment() {
             binding.tvSetupError.text = error
             return
         }
-        val ayahText = runCatching {
-            quranRepository.getAyahByInSurahIndex(range.startSura.index, range.startAyah).text
-        }.getOrNull()
+        val bounds = globalBounds(range)
+        val texts = bounds?.let { (from, to) ->
+            quranRepository.getAyahSInRange(from, to).map { it.text }
+        }.orEmpty()
         val label = getString(
             R.string.test_range_short,
             suraName(range.startSura), getArabicNumber(range.startAyah),
@@ -201,7 +202,8 @@ class TestFragment : BaseFragment() {
                 endSura = range.endSura.index,
                 endAyah = range.endAyah,
                 label = label,
-                ayahText = ayahText,
+                ayahText = texts.firstOrNull(),
+                ayahTexts = texts,
             ),
         )
     }

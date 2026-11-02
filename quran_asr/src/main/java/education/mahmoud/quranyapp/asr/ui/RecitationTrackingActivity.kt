@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
+import android.widget.ScrollView
 import android.graphics.Typeface
 import android.view.View
 import android.widget.Button
@@ -36,7 +38,12 @@ class RecitationTrackingActivity : AppCompatActivity() {
     private var stopping = false
     private var listenGeneration = 0
 
+    private lateinit var scroll: ScrollView
     private lateinit var btnToggle: Button
+    private lateinit var tvAyah: TextView
+    private var ayahTexts: List<String> = emptyList()
+    private var ayahEnds: IntArray = intArrayOf()
+    private var shownAyah = -1
     private lateinit var tvStatus: TextView
     private lateinit var progressModel: ProgressBar
     private lateinit var tvModelDetail: TextView
@@ -56,8 +63,9 @@ class RecitationTrackingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recitation_tracking)
 
+        scroll = findViewById(R.id.scroll)
         btnToggle = findViewById(R.id.btnToggle)
-        val tvAyah = findViewById<TextView>(R.id.tvAyah)
+        tvAyah = findViewById(R.id.tvAyah)
         tvStatus = findViewById(R.id.tvStatus)
         val tvSurah = findViewById<TextView>(R.id.tvSurah)
         progressModel = findViewById(R.id.progressModel)
@@ -69,17 +77,21 @@ class RecitationTrackingActivity : AppCompatActivity() {
         tvSurah.typeface = ui
         tvStatus.typeface = ui
         tvModelDetail.typeface = ui
+        intent.getStringExtra(AsrEntryPoint.EXTRA_RANGE_LABEL)
+            ?.takeIf { it.isNotBlank() }
+            ?.let { tvSurah.text = it }
         startSura = intent.getIntExtra(AsrEntryPoint.EXTRA_START_SURA, 1).coerceAtLeast(1)
         startAyah = intent.getIntExtra(AsrEntryPoint.EXTRA_START_AYAH, 1).coerceAtLeast(1)
         endSura = intent.getIntExtra(AsrEntryPoint.EXTRA_END_SURA, startSura).coerceAtLeast(startSura)
         endAyah = intent.getIntExtra(AsrEntryPoint.EXTRA_END_AYAH, startAyah).coerceAtLeast(1)
 
-        intent.getStringExtra(AsrEntryPoint.EXTRA_RANGE_LABEL)
-            ?.takeIf { it.isNotBlank() }
-            ?.let { tvSurah.text = it }
-        tvAyah.text = intent.getStringExtra(AsrEntryPoint.EXTRA_AYAH_TEXT)
-            ?.takeIf { it.isNotBlank() }
-            ?: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ"
+        ayahTexts = intent.getStringArrayListExtra(AsrEntryPoint.EXTRA_AYAH_TEXTS).orEmpty()
+        if (ayahTexts.isEmpty()) {
+            intent.getStringExtra(AsrEntryPoint.EXTRA_AYAH_TEXT)
+                ?.takeIf { it.isNotBlank() }
+                ?.let { ayahTexts = listOf(it) }
+        }
+        renderAyahs(0)
 
         btnToggle.setOnClickListener { onToggle() }
         if (!ModelDownloader.isModelReady(this)) {
@@ -146,6 +158,13 @@ class RecitationTrackingActivity : AppCompatActivity() {
                     endSura,
                     endAyah,
                 )
+                val ends = wordEnds(words)
+                val texts = if (ayahTexts.size == ends.size) ayahTexts else textsFrom(words, ends)
+                runOnUiThread {
+                    ayahEnds = ends
+                    ayahTexts = texts
+                    renderAyahs(shownAyah.coerceAtLeast(0))
+                }
                 val engine = RecitationEngine.get(applicationContext)
                 runOnUiThread {
                     if (isDestroyed || generation != listenGeneration) return@runOnUiThread
@@ -214,8 +233,65 @@ class RecitationTrackingActivity : AppCompatActivity() {
         return checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
     }
 
+    /** Exclusive word index where each ayah ends, in recitation order. */
+    private fun wordEnds(words: List<AyahReference.Word>): IntArray {
+        val cuts = ArrayList<Int>()
+        for (i in words.indices) {
+            if (i > 0 && words[i].newAyah) cuts.add(i)
+        }
+        if (words.isNotEmpty()) cuts.add(words.size)
+        return cuts.toIntArray()
+    }
+
+    private fun textsFrom(words: List<AyahReference.Word>, ends: IntArray): List<String> {
+        var from = 0
+        return ends.map { end ->
+            words.subList(from, end).joinToString(" ") { it.arabic }.also { from = end }
+        }
+    }
+
+    private fun renderAyahs(active: Int) {
+        if (ayahTexts.isEmpty()) return
+        val index = active.coerceIn(0, ayahTexts.lastIndex)
+        if (index == shownAyah && tvAyah.text.isNotEmpty()) return
+        val flip = shownAyah >= 0 && index != shownAyah
+        shownAyah = index
+        val text = SpannableStringBuilder()
+        val offsets = IntArray(ayahTexts.size)
+        ayahTexts.forEachIndexed { i, ayah ->
+            if (text.isNotEmpty()) text.append("\n\n")
+            offsets[i] = text.length
+            val start = text.length
+            text.append(ayah)
+            val color = when {
+                i < index -> 0xFF2E7D32.toInt()
+                i == index -> 0xFF1B1B1B.toInt()
+                else -> 0xFFB0B8B4.toInt()
+            }
+            text.setSpan(ForegroundColorSpan(color), start, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            text.setSpan(RelativeSizeSpan(if (i == index) 1.12f else 0.92f), start, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            if (i == index) {
+                text.setSpan(StyleSpan(Typeface.BOLD), start, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        }
+        tvAyah.text = text
+        if (!flip) return
+        tvAyah.post {
+            val layout = tvAyah.layout ?: return@post
+            val line = layout.getLineForOffset(offsets[index].coerceAtMost(text.length))
+            val top = (tvAyah.top + layout.getLineTop(line) - scroll.paddingTop).coerceAtLeast(0)
+            scroll.smoothScrollTo(0, top)
+        }
+    }
+
     private fun showRulings(heard: String, finished: Boolean) {
-        val lines = PhonemeCompare.grade(heard, words, finished)
+        val grade = PhonemeCompare.grade(heard, words, finished)
+        val lines = grade.lines
+        val active = when {
+            ayahEnds.isEmpty() -> 0
+            else -> ayahEnds.indexOfFirst { it > grade.reachedWords }.let { if (it < 0) ayahEnds.lastIndex else it }
+        }
+        renderAyahs(active)
         if (lines.isEmpty()) {
             tvResults.text = getString(R.string.asr_no_rules)
             tvModelDetail.visibility = View.GONE

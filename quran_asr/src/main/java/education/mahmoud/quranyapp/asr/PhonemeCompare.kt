@@ -20,15 +20,21 @@ object PhonemeCompare {
 
     private data class Rule(val name: String, val amount: Int)
 
-    fun grade(heard: String, words: List<AyahReference.Word>, finished: Boolean): List<Line> {
+    data class Grade(val lines: List<Line>, val reachedWords: Int)
+
+    fun grade(heard: String, words: List<AyahReference.Word>, finished: Boolean): Grade {
         val audio = normalize(heard)
         var pos = 0
+        var reachedWords = 0
         val lines = ArrayList<Line>()
-        for (word in words) {
+        for ((index, word) in words.withIndex()) {
             val target = normalize(word.phonemes)
             val (cost, used) = alignPrefix(audio, pos, target)
             val reached = target.isNotEmpty() && used > 0 && cost * 3 <= target.length
-            if (reached) pos += used
+            if (reached) {
+                pos += used
+                reachedWords = index + 1
+            }
             val expected = extract(word.phonemes, word.arabic)
             if (expected.isEmpty()) continue
             val heardRules = if (reached) {
@@ -55,7 +61,7 @@ object PhonemeCompare {
                 first = false
             }
         }
-        return lines
+        return Grade(lines, reachedWords)
     }
 
     private fun takeStatus(rule: Rule, heard: MutableList<Rule>): Status {
