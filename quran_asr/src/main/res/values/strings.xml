@@ -16,7 +16,7 @@
     <string name="asr_listening">جاري الاستماع…</string>
     <string name="asr_waiting_audio">في انتظار الصوت من الميكروفون</string>
     <string name="asr_heard_now">المسموع: %1$s</string>
-    <string name="asr_speak_now">اقرأ، والأحكام تتحدث مع التلاوة.</string>
+    <string name="asr_speak_now">اقرأ. النص يظهر لما التلاوة تتظبط.</string>
     <string name="asr_finishing">جاري إنهاء التعرف…</string>
     <string name="asr_result">نتيجة التجويد</string>
     <string name="asr_rules_summary">مطابق %1$d · للمراجعة %2$d</string>

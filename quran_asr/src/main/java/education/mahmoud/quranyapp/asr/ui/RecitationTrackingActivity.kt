@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.widget.ScrollView
 import android.graphics.Typeface
@@ -43,7 +42,7 @@ class RecitationTrackingActivity : AppCompatActivity() {
     private lateinit var tvAyah: TextView
     private var ayahTexts: List<String> = emptyList()
     private var ayahEnds: IntArray = intArrayOf()
-    private var shownAyah = -1
+    private var revealedWords = -1
     private lateinit var tvStatus: TextView
     private lateinit var progressModel: ProgressBar
     private lateinit var tvModelDetail: TextView
@@ -86,12 +85,7 @@ class RecitationTrackingActivity : AppCompatActivity() {
         endAyah = intent.getIntExtra(AsrEntryPoint.EXTRA_END_AYAH, startAyah).coerceAtLeast(1)
 
         ayahTexts = intent.getStringArrayListExtra(AsrEntryPoint.EXTRA_AYAH_TEXTS).orEmpty()
-        if (ayahTexts.isEmpty()) {
-            intent.getStringExtra(AsrEntryPoint.EXTRA_AYAH_TEXT)
-                ?.takeIf { it.isNotBlank() }
-                ?.let { ayahTexts = listOf(it) }
-        }
-        renderAyahs(0)
+        showHiddenPrompt()
 
         btnToggle.setOnClickListener { onToggle() }
         if (!ModelDownloader.isModelReady(this)) {
@@ -163,7 +157,6 @@ class RecitationTrackingActivity : AppCompatActivity() {
                 runOnUiThread {
                     ayahEnds = ends
                     ayahTexts = texts
-                    renderAyahs(shownAyah.coerceAtLeast(0))
                 }
                 val engine = RecitationEngine.get(applicationContext)
                 runOnUiThread {
@@ -250,52 +243,71 @@ class RecitationTrackingActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderAyahs(active: Int) {
-        if (ayahTexts.isEmpty()) return
-        val index = active.coerceIn(0, ayahTexts.lastIndex)
-        if (index == shownAyah && tvAyah.text.isNotEmpty()) return
-        val flip = shownAyah >= 0 && index != shownAyah
-        shownAyah = index
+    private fun showHiddenPrompt() {
+        revealedWords = -1
+        tvAyah.text = getString(R.string.asr_speak_now)
+        tvResults.text = ""
+        tvModelDetail.visibility = View.VISIBLE
+        tvModelDetail.text = getString(R.string.asr_rules_summary, 0, 0)
+    }
+
+    /** The words the reciter has already got right. The rest stays hidden. */
+    private fun reveal(reachedWords: Int) {
+        if (reachedWords <= 0) {
+            if (revealedWords != 0) showHiddenPrompt()
+            revealedWords = 0
+            return
+        }
+        if (reachedWords == revealedWords) return
+        revealedWords = reachedWords
         val text = SpannableStringBuilder()
-        val offsets = IntArray(ayahTexts.size)
-        ayahTexts.forEachIndexed { i, ayah ->
+        val ends = if (ayahEnds.isEmpty()) intArrayOf(words.size) else ayahEnds
+        var from = 0
+        var ayah = 0
+        for (end in ends) {
+            if (from >= reachedWords) break
             if (text.isNotEmpty()) text.append("\n\n")
-            offsets[i] = text.length
             val start = text.length
-            text.append(ayah)
-            val color = when {
-                i < index -> 0xFF2E7D32.toInt()
-                i == index -> 0xFF1B1B1B.toInt()
-                else -> 0xFFB0B8B4.toInt()
+            val complete = reachedWords >= end
+            if (complete && ayah < ayahTexts.size) {
+                text.append(ayahTexts[ayah])
+            } else {
+                text.append(words.subList(from, reachedWords.coerceAtMost(end)).joinToString(" ") { it.arabic })
             }
-            text.setSpan(ForegroundColorSpan(color), start, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            text.setSpan(RelativeSizeSpan(if (i == index) 1.12f else 0.92f), start, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            if (i == index) {
-                text.setSpan(StyleSpan(Typeface.BOLD), start, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
+            text.setSpan(ForegroundColorSpan(0xFF1B1B1B.toInt()), start, text.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            from = end
+            ayah++
         }
         tvAyah.text = text
-        if (!flip) return
         tvAyah.post {
             val layout = tvAyah.layout ?: return@post
-            val line = layout.getLineForOffset(offsets[index].coerceAtMost(text.length))
-            val top = (tvAyah.top + layout.getLineTop(line) - scroll.paddingTop).coerceAtLeast(0)
-            scroll.smoothScrollTo(0, top)
+            if (layout.lineCount == 0) return@post
+            val top = tvAyah.top + layout.getLineTop(layout.lineCount - 1)
+            scroll.smoothScrollTo(0, top.coerceAtLeast(0))
         }
     }
 
     private fun showRulings(heard: String, finished: Boolean) {
         val grade = PhonemeCompare.grade(heard, words, finished)
-        val lines = grade.lines
-        val active = when {
-            ayahEnds.isEmpty() -> 0
-            else -> ayahEnds.indexOfFirst { it > grade.reachedWords }.let { if (it < 0) ayahEnds.lastIndex else it }
+        reveal(grade.reachedWords)
+        val lines = if (finished) grade.lines else grade.lines.filter { it.matched }
+        val ok = lines.count { it.status == PhonemeCompare.Status.OK }
+        val review = if (finished) {
+            lines.count { it.status == PhonemeCompare.Status.MISSING || it.status == PhonemeCompare.Status.SHORT }
+        } else {
+            lines.count { it.status == PhonemeCompare.Status.SHORT }
         }
-        renderAyahs(active)
+        tvModelDetail.visibility = View.VISIBLE
+        tvModelDetail.text = getString(R.string.asr_rules_summary, ok, review)
+        tvStatus.text = if (!finished) {
+            getString(R.string.asr_listening)
+        } else if (review == 0 && ok > 0) {
+            getString(R.string.asr_rules_match)
+        } else {
+            getString(R.string.asr_result)
+        }
         if (lines.isEmpty()) {
-            tvResults.text = getString(R.string.asr_no_rules)
-            tvModelDetail.visibility = View.GONE
-            if (finished) tvStatus.text = getString(R.string.asr_result)
+            tvResults.text = ""
             return
         }
         val text = SpannableStringBuilder()
@@ -330,24 +342,6 @@ class RecitationTrackingActivity : AppCompatActivity() {
             index = end
         }
         tvResults.text = text
-        val ok = lines.count { it.status == PhonemeCompare.Status.OK }
-        val review = lines.count { it.status == PhonemeCompare.Status.MISSING || it.status == PhonemeCompare.Status.SHORT }
-        tvModelDetail.visibility = View.VISIBLE
-        if (!finished) {
-            tvStatus.text = getString(R.string.asr_listening)
-            tvModelDetail.text = if (heard.isBlank()) {
-                getString(R.string.asr_waiting_audio)
-            } else {
-                getString(R.string.asr_heard_now, heard.takeLast(40))
-            }
-            return
-        }
-        tvModelDetail.text = getString(R.string.asr_rules_summary, ok, review)
-        tvStatus.text = if (review == 0 && ok > 0) {
-            getString(R.string.asr_rules_match)
-        } else {
-            getString(R.string.asr_result)
-        }
     }
 
     private fun wordColor(lines: List<PhonemeCompare.Line>): Int {
