@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="asr_model_downloading">جاري تحميل النموذج…</string>
+    <string name="asr_model_progress">%1$d%% · %2$s من %3$s</string>
+    <string name="asr_model_progress_unknown">تم تحميل %1$s</string>
+    <string name="asr_model_ready">النموذج جاهز. اضغط لبدء التلاوة</string>
+    <string name="asr_model_failed">تعذر تحميل النموذج</string>
+    <string name="asr_error_title">حدث خطأ</string>
+    <string name="asr_model_cancelled">تم إيقاف التحميل</string>
+    <string name="asr_model_cancel">إلغاء</string>
+    <string name="asr_model_retry">إعادة المحاولة</string>
+    <string name="asr_start">ابدأ التلاوة</string>
+    <string name="asr_stop">إيقاف</string>
+    <string name="asr_recognizing">جاري التعرف على التلاوة…</string>
+    <string name="asr_preparing">جاري تجهيز النموذج…</string>
+    <string name="asr_listening">جاري الاستماع…</string>
+    <string name="asr_speak_now">اقرأ الآن. النص يظهر أثناء التلاوة.</string>
+    <string name="asr_finishing">جاري إنهاء التعرف…</string>
+    <string name="asr_result">نتيجة التعرف</string>
+    <string name="asr_empty">لم يُلتقط كلام. قرّب الجهاز منك وحاول مرة أخرى.</string>
+    <string name="asr_mic_denied">يلزم السماح باستخدام الميكروفون للتعرف على التلاوة.</string>
+    <string name="asr_mic_failed">تعذر فتح الميكروفون.</string>
+    <string name="asr_engine_failed">تعذر تجهيز نموذج التعرف.</string>
+    <string name="asr_library_missing">مكتبة التعرف غير موجودة في هذه النسخة.</string>
+    <string name="asr_stopped">تم إيقاف التسجيل</string>
+    <string name="asr_tap_to_start">اضغط لبدء التلاوة</string>
+</resources>
