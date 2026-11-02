@@ -20,6 +20,12 @@ Open Source Holy Quran app: read in a mushaf layout, listen, tafseer, memorizati
 - [Building the app, in Arabic](https://www.linkedin.com/pulse/%D8%B1%D8%AD%D9%84%D8%AA%D9%89-%D9%84%D8%A8%D9%86%D8%A7%D8%A1-%D8%AA%D8%B7%D8%A8%D9%8A%D9%82-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85-mahmoud-mabrouk-fouad/)
 - Last Java version: [branch](https://github.com/MahmoudMabrok/QuranyApp/tree/java_last_version)
 
+## المميزات / Features
+
+<p align="center">
+<img src="images/showcase.svg" width="100%" alt="QuranyApp features showcase">
+</p>
+
 # الآن وقبل كده
 
 The 3.0 screens replace the old XML layout. Same jobs (read, listen, test), different shape.
