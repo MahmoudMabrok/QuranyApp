@@ -32,6 +32,7 @@ import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.EdgeToEdge
+import education.mahmoud.quranyapp.utils.StoreReview
 import education.mahmoud.quranyapp.utils.viewBinding
 import org.koin.android.ext.android.inject
 
@@ -131,6 +132,14 @@ class HomeActivity : AppCompatActivity() {
         if (pendingMemorizationTest) {
             pendingMemorizationTest = false
             openMemorizationTest()
+        }
+        StoreReview.maybeAsk(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (supportFragmentManager.findFragmentById(R.id.mainContainer) !is Splash) {
+            StoreReview.maybeAsk(this)
         }
     }
 

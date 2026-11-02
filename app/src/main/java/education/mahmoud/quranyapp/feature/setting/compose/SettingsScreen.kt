@@ -3,6 +3,8 @@ package education.mahmoud.quranyapp.feature.setting.compose
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -95,6 +97,8 @@ fun SettingsScreen(
     onPageFrameChange: (Boolean) -> Unit = {},
     bookFlip: Boolean = true,
     onBookFlipChange: (Boolean) -> Unit = {},
+    versionName: String = "",
+    onRate: () -> Unit = {},
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -214,6 +218,38 @@ fun SettingsScreen(
 
             SectionHeader(R.string.settings_section_preview)
             ReadingPreview(nightMode = nightMode, backgroundColor = backgroundColor)
+
+            SectionHeader(R.string.settings_section_about)
+            SettingsCard {
+                Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
+                    Text(stringResource(R.string.settings_version), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        versionName,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+            SettingsCard {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = onRate)
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(Icons.Filled.Star, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                    Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
+                        Text(stringResource(R.string.settings_rate), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.settings_rate_summary),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
             Spacer(Modifier.height(24.dp))
         }
     }
