@@ -64,6 +64,11 @@ class RecitationTrackingActivity : AppCompatActivity() {
         tvModelDetail = findViewById(R.id.tvModelDetail)
         tvResults = findViewById(R.id.tvResults)
         tvResults.textSize = 22f
+        // The app theme font is for Quran text and overlaps ordinary labels.
+        val ui = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL)
+        tvSurah.typeface = ui
+        tvStatus.typeface = ui
+        tvModelDetail.typeface = ui
         startSura = intent.getIntExtra(AsrEntryPoint.EXTRA_START_SURA, 1).coerceAtLeast(1)
         startAyah = intent.getIntExtra(AsrEntryPoint.EXTRA_START_AYAH, 1).coerceAtLeast(1)
         endSura = intent.getIntExtra(AsrEntryPoint.EXTRA_END_SURA, startSura).coerceAtLeast(startSura)
@@ -252,9 +257,20 @@ class RecitationTrackingActivity : AppCompatActivity() {
         val ok = lines.count { it.status == PhonemeCompare.Status.OK }
         val review = lines.count { it.status == PhonemeCompare.Status.MISSING || it.status == PhonemeCompare.Status.SHORT }
         tvModelDetail.visibility = View.VISIBLE
+        if (!finished) {
+            tvStatus.text = getString(R.string.asr_listening)
+            tvModelDetail.text = if (heard.isBlank()) {
+                getString(R.string.asr_waiting_audio)
+            } else {
+                getString(R.string.asr_heard_now, heard.takeLast(40))
+            }
+            return
+        }
         tvModelDetail.text = getString(R.string.asr_rules_summary, ok, review)
-        if (finished) {
-            tvStatus.text = if (review == 0) getString(R.string.asr_rules_match) else getString(R.string.asr_result)
+        tvStatus.text = if (review == 0 && ok > 0) {
+            getString(R.string.asr_rules_match)
+        } else {
+            getString(R.string.asr_result)
         }
     }
 
@@ -345,9 +361,9 @@ class RecitationTrackingActivity : AppCompatActivity() {
     private fun formatBytes(bytes: Long): String {
         val mb = bytes / (1024.0 * 1024.0)
         return if (mb >= 0.1) {
-            String.format(Locale.US, "%.1f م.ب", mb)
+            String.format(Locale.US, "%.1f ميجا", mb)
         } else {
-            String.format(Locale.US, "%.0f ك.ب", bytes / 1024.0)
+            String.format(Locale.US, "%.0f كيلو", bytes / 1024.0)
         }
     }
 
