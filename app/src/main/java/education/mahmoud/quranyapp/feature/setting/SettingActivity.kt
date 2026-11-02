@@ -14,6 +14,7 @@ import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
 import education.mahmoud.quranyapp.feature.setting.compose.SettingsScreen
 import org.koin.android.ext.android.inject
 import education.mahmoud.quranyapp.utils.EdgeToEdge
+import education.mahmoud.quranyapp.utils.StoreReview
 
 /**
  * Reading settings (night reading mode, page background, book-flip, Mushaf header and page frame), rendered with
@@ -68,6 +69,8 @@ class SettingActivity : AppCompatActivity() {
                             bookFlip = it
                             quranRepository.bookFlipEnabled = it
                         },
+                        versionName = StoreReview.versionName(this@SettingActivity),
+                        onRate = { StoreReview.openStore(this@SettingActivity) },
                     )
                 }
             }
