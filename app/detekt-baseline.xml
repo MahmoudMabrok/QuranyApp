@@ -79,12 +79,15 @@
     <ID>ReturnCount:ListenFragment.kt$ListenFragment$fun startListening()</ID>
     <ID>ReturnCount:TestFragment.kt$TestFragment$ private fun checkInput()</ID>
     <ID>SpreadOperator:HomeActivity.kt$HomeActivity$(this, RC_STORAGE, *perms)</ID>
-    <ID>SwallowedException:ShowAyahsActivity.kt$ShowAyahsActivity$catch (e: Exception) { model.updateReadLog(it) }</ID>
+    <ID>SwallowedException:ShowAyahsActivity.kt$ShowAyahsActivity$catch (e: Exception) { model.updateReadLog(item) }</ID>
     <ID>SwallowedException:TafseerDetails.kt$TafseerDetails$catch (e: Exception) { }</ID>
     <ID>TooGenericExceptionCaught:App.kt$App$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ListenFragment.kt$ListenFragment$e: Exception</ID>
     <ID>TooGenericExceptionCaught:ListenFragment.kt$ListenFragment.&lt;no name provided&gt;$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:BookFlipController.kt$BookFlipController$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:PageViewHolder.kt$PageViewHolder$e: RuntimeException</ID>
     <ID>TooGenericExceptionCaught:ShowAyahsActivity.kt$ShowAyahsActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:ShowAyahsActivity.kt$ShowAyahsActivity$e: RuntimeException</ID>
     <ID>TooGenericExceptionCaught:Splash.kt$Splash$e: Exception</ID>
     <ID>TooGenericExceptionCaught:TafseerDetails.kt$TafseerDetails$e: Exception</ID>
     <ID>TooManyFunctions:AyahDAO.kt$AyahDAO</ID>

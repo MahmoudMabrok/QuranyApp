@@ -27,11 +27,11 @@ class PageAdapter(
     var highlightedAyahs: Set<Int> = emptySet()
 
     fun setPageList(newList: List<Page>) {
-        val oldSize = list.size
         list.clear()
         list.addAll(newList)
-        notifyItemRangeRemoved(0, oldSize)
-        notifyItemRangeInserted(0, newList.size)
+        // One notification. remove+insert in two steps crashes the second open, when the
+        // cached pages arrive while the RecyclerView is still doing its first layout.
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): PageViewHolder {

@@ -1,5 +1,6 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas.flip
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ class BookFlipController(
     private var recyclerView: RecyclerView? = null
     private var layoutManager: QuranPageLayoutManager? = null
     private var applying = false
+    private var cachedLefts = IntArray(0)
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
@@ -71,14 +73,38 @@ class BookFlipController(
         rv.layoutManager = lm
         // Snap helper first, so its idle callback runs before [scrollListener].
         BookPageSnapHelper().attachToRecyclerView(rv)
+        // Never call getChildAt from this callback. RecyclerView invokes it during draw,
+        // while ChildHelper can be mid-layout (the second time a surah is opened the pages
+        // are already cached, so the first draw happens in that state and getChildAt throws).
         rv.setChildDrawingOrderCallback { childCount, i ->
-            val lefts = IntArray(childCount) { index -> rv.getChildAt(index)?.left ?: 0 }
-            BookFlipMath.drawingOrder(childCount, i, lefts)
+            if (childCount <= 1) return@setChildDrawingOrderCallback 0
+            val safe = i.coerceIn(0, childCount - 1)
+            val lefts = if (cachedLefts.size == childCount) cachedLefts else IntArray(childCount)
+            BookFlipMath.drawingOrder(childCount, safe, lefts).coerceIn(0, childCount - 1)
         }
         rv.addOnScrollListener(scrollListener)
         rv.addOnChildAttachStateChangeListener(childAttachListener)
         rv.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            rememberChildLefts(rv)
             applyTransforms()
+        }
+    }
+
+    private fun rememberChildLefts(rv: RecyclerView) {
+        val n = rv.childCount
+        if (n <= 0) {
+            cachedLefts = IntArray(0)
+            return
+        }
+        if (cachedLefts.size != n) cachedLefts = IntArray(n)
+        for (i in 0 until n) {
+            val child = try {
+                rv.getChildAt(i)
+            } catch (e: RuntimeException) {
+                Log.w("BookFlip", "child left skipped", e)
+                null
+            }
+            cachedLefts[i] = child?.left ?: 0
         }
     }
 
@@ -87,6 +113,7 @@ class BookFlipController(
         if (applying) return
         applying = true
         try {
+            rememberChildLefts(rv)
             val scrolling = rv.scrollState != RecyclerView.SCROLL_STATE_IDLE
             val density = rv.resources.displayMetrics.density
             for (i in 0 until rv.childCount) {

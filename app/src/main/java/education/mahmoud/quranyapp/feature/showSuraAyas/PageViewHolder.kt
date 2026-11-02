@@ -6,6 +6,7 @@ import android.os.Build
 import android.text.Spanned
 import android.text.style.BackgroundColorSpan
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,14 @@ class PageViewHolder(
             val w = tv.width - tv.totalPaddingLeft - tv.totalPaddingRight
             if (w > 0 && w != lastTextWidth) {
                 lastTextWidth = w
-                tv.post { tv.setText(tv.text, TextView.BufferType.SPANNABLE) }
+                tv.post {
+                    if (!tv.isAttachedToWindow) return@post
+                    try {
+                        tv.setText(tv.text, TextView.BufferType.SPANNABLE)
+                    } catch (e: RuntimeException) {
+                        Log.w(TAG, "header remeasure skipped", e)
+                    }
+                }
             }
         }
         // long press on an ayah (its words or its number) opens the ayah options
@@ -231,6 +239,7 @@ class PageViewHolder(
     }
 
     private companion object {
+        const val TAG = "PageViewHolder"
         const val HIGHLIGHT_DAY = 0x66FFD54F
         const val HIGHLIGHT_NIGHT = 0x5CFFC107
     }
