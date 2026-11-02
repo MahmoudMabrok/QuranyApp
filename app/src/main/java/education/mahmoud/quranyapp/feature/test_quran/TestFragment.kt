@@ -65,8 +65,10 @@ class TestFragment : BaseFragment() {
         with(binding) {
             // edge-to-edge: teal bar behind the status bar, content above the nav bar / keyboard
             EdgeToEdge.applyPadding(testToolbar, bottom = false)
+            // keyboard lifts the footer so the field stays above it; the footer also clears the nav bar
+            EdgeToEdge.applyPadding(testScroll, top = false, bottom = false)
             EdgeToEdge.applyPadding(
-                testScroll, top = false,
+                testFooter, top = false,
                 types = EdgeToEdge.SAFE_TYPES or WindowInsetsCompat.Type.ime(),
             )
             applyUiFont(root)
@@ -280,8 +282,8 @@ class TestFragment : BaseFragment() {
         }
         edUserTextForAyahs.setText("")
         edUserTextForAyahs.isEnabled = true
+        showAnswerEntry(true)
         tvHint.visibility = View.GONE
-        answerButtons.visibility = View.VISIBLE
         feedbackCard.visibility = View.GONE
         btnNext.visibility = View.GONE
         testScroll.scrollTo(0, 0)
@@ -305,34 +307,58 @@ class TestFragment : BaseFragment() {
         KeyboardHelper.hideKeyboard(edUserTextForAyahs)
         edUserTextForAyahs.isEnabled = false
         edUserTextForAyahs.clearFocus()
-        answerButtons.visibility = View.GONE
+        showAnswerEntry(false)
         bindFeedback(grade, answer)
         btnNext.visibility = View.VISIBLE
         btnNext.setText(if (current == questions.lastIndex) R.string.test_show_result else R.string.test_next)
-        testScroll.post { testScroll.smoothScrollTo(0, feedbackCard.top) }
+        testScroll.scrollTo(0, 0)
+    }
+
+    /** writing area before "تحقق"; hidden afterwards so the answer is not shown twice */
+    private fun showAnswerEntry(show: Boolean) = with(binding) {
+        val visibility = if (show) View.VISIBLE else View.GONE
+        tvQuestion.visibility = visibility
+        edUserTextForAyahs.visibility = visibility
+        answerButtons.visibility = visibility
+        if (!show) tvHint.visibility = View.GONE
     }
 
     private fun bindFeedback(grade: MemorizationTest.Grade, answer: AyahItem) = with(binding) {
         val level = MemorizationTest.level(grade.accuracy)
         val color = color(levelColor(level))
+        val perfect = grade.isPerfect
+        val empty = grade.correctCount == 0 && grade.extraCount == 0
         feedbackCard.visibility = View.VISIBLE
         feedbackCard.strokeColor = color
         tvFeedbackTitle.setText(levelText(level))
         tvFeedbackTitle.setTextColor(color)
         tvFeedbackScore.text = percent(grade.accuracy)
         tvFeedbackScore.background = pill(color)
-        tvFeedbackStats.text = getString(
-            R.string.test_feedback_stats, getArabicNumber(grade.correctCount),
-            getArabicNumber(grade.missingCount), getArabicNumber(grade.extraCount), getArabicNumber(grade.points),
-        )
-        tvFeedbackDiff.text = if (grade.correctCount == 0 && grade.extraCount == 0) {
-            SpannableStringBuilder(getString(R.string.test_empty_answer)).also {
-                it.setSpan(ForegroundColorSpan(color(R.color.test_wrong)), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
+        if (perfect) {
+            tvFeedbackStats.text = getString(R.string.test_feedback_points, getArabicNumber(grade.points))
+            tvFeedbackStats.setTextColor(color)
         } else {
-            diffText(grade)
+            tvFeedbackStats.text = getString(
+                R.string.test_feedback_stats, getArabicNumber(grade.correctCount),
+                getArabicNumber(grade.missingCount), getArabicNumber(grade.extraCount), getArabicNumber(grade.points),
+            )
+            tvFeedbackStats.setTextColor(color(R.color.search_muted))
         }
-        tvLegend.text = legend()
+        val showDiff = !perfect
+        tvYourAnswerLabel.visibility = if (showDiff) View.VISIBLE else View.GONE
+        tvFeedbackDiff.visibility = if (showDiff) View.VISIBLE else View.GONE
+        tvLegend.visibility = if (showDiff && !empty) View.VISIBLE else View.GONE
+        if (showDiff) {
+            tvFeedbackDiff.text = if (empty) {
+                SpannableStringBuilder(getString(R.string.test_empty_answer)).also {
+                    it.setSpan(ForegroundColorSpan(color(R.color.test_wrong)), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                }
+            } else {
+                diffText(grade)
+            }
+            if (!empty) tvLegend.text = legend()
+        }
+        tvCorrectLabel.setText(if (perfect) R.string.test_ayah_short else R.string.test_correct_ayah)
         tvCorrectAyah.text = answer.text
     }
 
@@ -441,6 +467,7 @@ class TestFragment : BaseFragment() {
         lnTestLayout.visibility = if (state == State.QUESTION) View.VISIBLE else View.GONE
         resultLayout.visibility = if (state == State.RESULT) View.VISIBLE else View.GONE
         testEmpty.visibility = if (state == State.EMPTY) View.VISIBLE else View.GONE
+        if (state != State.QUESTION) btnNext.visibility = View.GONE
         if (state == State.SETUP) updateRangeSummary()
     }
 

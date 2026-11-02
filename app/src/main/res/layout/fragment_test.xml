@@ -306,7 +306,8 @@
                     android:hint="@string/test_answer_hint"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine|textNoSuggestions"
-                    android:minLines="3"
+                    android:minLines="2"
+                    android:includeFontPadding="false"
                     android:padding="12dp"
                     android:textAlignment="viewStart"
                     android:textColor="@color/search_ayah_text"
@@ -446,14 +447,6 @@
                             tools:text="الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnNext"
-                    style="@style/TestPrimaryButton"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/test_next"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
             </LinearLayout>
 
             <!-- ============ result ============ -->
@@ -565,4 +558,22 @@
             </LinearLayout>
         </FrameLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- pinned under the question; hidden until the answer is checked -->
+    <LinearLayout
+        android:id="@+id/testFooter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNext"
+            style="@style/TestPrimaryButton"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/test_next"
+            android:visibility="gone"
+            tools:visibility="gone" />
+    </LinearLayout>
 </LinearLayout>

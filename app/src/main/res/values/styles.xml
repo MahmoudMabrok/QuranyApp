@@ -125,7 +125,10 @@
         <item name="android:textDirection">rtl</item>
         <item name="android:textColor">@color/search_ayah_text</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">4dp</item>
         <item name="fontFamily">@font/amiri_regular</item>
     </style>
 

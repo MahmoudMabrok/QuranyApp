@@ -335,6 +335,8 @@
     <string name="test_correct_ayah">الآية الصحيحة</string>
     <string name="test_empty_answer">لم تكتب شيئًا</string>
     <string name="test_feedback_stats">%1$s صحيحة · %2$s ناقصة · %3$s زائدة · +%4$s نقاط</string>
+    <string name="test_feedback_points">+%1$s نقاط</string>
+    <string name="test_ayah_short">الآية</string>
     <string name="test_legend_correct">● صحيح</string>
     <string name="test_legend_missing">● ناقص</string>
     <string name="test_legend_extra">● زائد</string>
