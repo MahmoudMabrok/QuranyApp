@@ -1,7 +1,6 @@
 name: Perf numbers
 
 on:
-  pull_request:
   workflow_dispatch:
     inputs:
       measure_startup:

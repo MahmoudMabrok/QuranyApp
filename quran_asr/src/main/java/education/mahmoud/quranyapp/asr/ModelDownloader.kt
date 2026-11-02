@@ -19,6 +19,9 @@ object ModelDownloader {
     private const val TOKENS_NAME = "tokens.txt"
     private const val TOKENS_URL =
         "https://raw.githubusercontent.com/yazinsai/tilawa/main/lab/experiments/zipformer-ctc/tokens.txt"
+    private const val CORPUS_NAME = "quran_phonemes.json"
+    private const val CORPUS_URL =
+        "https://github.com/yazinsai/tilawa/releases/download/v0.3.0/zipformer_quran.json"
     private const val MIN_MODEL_BYTES = 1_000_000L
 
     private val main = Handler(Looper.getMainLooper())
@@ -51,8 +54,14 @@ object ModelDownloader {
         return File(getModelDir(context), TOKENS_NAME)
     }
 
+    fun getCorpusFile(context: Context): File {
+        return File(getModelDir(context), CORPUS_NAME)
+    }
+
     fun isModelReady(context: Context): Boolean {
-        return isValidModel(getModelFile(context)) && isValidTokens(getTokensFile(context))
+        return isValidModel(getModelFile(context)) &&
+            isValidTokens(getTokensFile(context)) &&
+            isValidCorpus(getCorpusFile(context))
     }
 
     /**
@@ -72,7 +81,8 @@ object ModelDownloader {
         val app = context.applicationContext
         val modelFile = getModelFile(app)
         val tokensFile = getTokensFile(app)
-        if (isValidModel(modelFile) && isValidTokens(tokensFile)) {
+        val corpusFile = getCorpusFile(app)
+        if (isValidModel(modelFile) && isValidTokens(tokensFile) && isValidCorpus(corpusFile)) {
             main.post { if (!handle.cancelled) onComplete() }
             return handle
         }
@@ -131,6 +141,30 @@ object ModelDownloader {
                         return@execute
                     }
                     replaceFile(part, tokensFile)
+                }
+                if (!isValidCorpus(corpusFile)) {
+                    val part = File(corpusFile.parentFile, "$CORPUS_NAME.${System.nanoTime()}.part")
+                    try {
+                        downloadTo(CORPUS_URL, part, handle) { downloaded, total ->
+                            report(handle, onProgress, onBytes, downloaded, total)
+                        }
+                    } catch (stopped: Stopped) {
+                        part.delete()
+                        return@execute
+                    } catch (error: Exception) {
+                        part.delete()
+                        throw error
+                    }
+                    if (handle.cancelled || active !== handle) {
+                        part.delete()
+                        return@execute
+                    }
+                    if (!isValidCorpus(part)) {
+                        part.delete()
+                        postError(handle, onError, "مرجع مقارنة التلاوة غير صالح.")
+                        return@execute
+                    }
+                    replaceFile(part, corpusFile)
                 }
                 main.post { if (!handle.cancelled) onComplete() }
             } catch (error: Exception) {
@@ -239,6 +273,13 @@ object ModelDownloader {
             part.copyTo(dest, overwrite = true)
             part.delete()
         }
+    }
+
+    private fun isValidCorpus(file: File): Boolean {
+        if (!file.isFile || file.length() < 100_000L) return false
+        val head = ByteArray(1)
+        val read = file.inputStream().use { it.read(head) }
+        return read == 1 && head[0] == '{'.code.toByte()
     }
 
     private fun isValidTokens(file: File): Boolean {
