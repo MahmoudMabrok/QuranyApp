@@ -2,6 +2,7 @@ name: Deploy to Play store
 
 permissions:
   contents: write
+  pull-requests: write
   packages: read
 
 on:
@@ -47,13 +48,20 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: Bump versionCode and versionName
+      - name: Set Play versionName
         run: |
           VERSION_NAME="${{ github.event.inputs.version_name }}"
+          if [ -z "$VERSION_NAME" ]; then
+            echo "version_name is required" >&2
+            exit 1
+          fi
+          # versionCode is +1 on every merge to master. Do not bump it again here,
+          # or the AAB would not match the code committed in git.
+          VERSION_CODE_STEP=0
           # Groovy (`versionCode 31`) and Kotlin DSL (`versionCode = 31`).
           source .github/scripts/bump-android-version.sh
           bump_android_version
-          echo "versionCode: $CURRENT_CODE → $NEW_CODE"
+          echo "versionCode: $NEW_CODE (unchanged)"
           echo "versionName: $VERSION_NAME"
 
           {
@@ -115,7 +123,7 @@ jobs:
     name: Commit version bump
     runs-on: ubuntu-latest
     needs: [deploy-android]
-    if: always() && (needs.deploy-android.result == 'success' || needs.deploy-ios.result == 'success')
+    if: always() && needs.deploy-android.result == 'success'
 
     steps:
       - uses: actions/checkout@v4
@@ -136,12 +144,15 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
           if [ "${{ needs.deploy-android.result }}" = "success" ]; then
-            # Same Groovy / Kotlin DSL tolerant bump as the deploy job.
+            VERSION_NAME="${{ github.event.inputs.version_name }}"
+            # versionCode is owned by the merge workflow. Only the name is stored here.
+            VERSION_CODE_STEP=0
+            # shellcheck disable=SC1091
             source .github/scripts/bump-android-version.sh
             bump_android_version
-            echo "Android versionCode: $CURRENT_CODE → $NEW_CODE"
+            echo "Android versionCode: $NEW_CODE (unchanged)"
             echo "ANDROID_VERSION_CODE=$NEW_CODE" >> "$GITHUB_ENV"
-            echo "| Android | versionCode | \`$CURRENT_CODE\` | \`$NEW_CODE\` |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Android | versionCode | \`$NEW_CODE\` | \`$NEW_CODE\` |" >> "$GITHUB_STEP_SUMMARY"
             echo "| Android | versionName | — | \`$VERSION_NAME\` |" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "Android deploy failed — skipping Android version bump"
@@ -163,14 +174,40 @@ jobs:
 
           echo "Version name: $VERSION_NAME"
 
-      - name: Commit and push
+      - name: Commit versionName through a pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add app/build.gradle
-          git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "chore: bump version to ${{ github.event.inputs.version_name }} [skip ci]"
-          git push origin HEAD:${{ github.ref_name }}
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          name="${{ github.event.inputs.version_name }}"
+          branch="chore/version-name-${name}-${GITHUB_RUN_ID}"
+          git checkout -b "$branch"
+          git commit -m "chore: set versionName to ${name} [skip version]"
+          git push origin "HEAD:${branch}"
+          # master rejects a direct push. A pull request is required, and this
+          # commit skips the +1 workflow so a name change does not burn a code.
+          pr=$(gh pr create \
+            --base "${{ github.ref_name }}" \
+            --head "$branch" \
+            --title "chore: set versionName to ${name} [skip version]" \
+            --body "Persist the version name used for the Play release.")
+          for attempt in 1 2 3 4 5 6; do
+            if gh pr merge "$pr" --squash --delete-branch; then
+              echo "Merged $pr"
+              exit 0
+            fi
+            echo "Merge not ready (attempt ${attempt}); retrying"
+            sleep 5
+          done
+          echo "Could not merge ${pr}" >&2
+          exit 1
 
       - name: Create GitHub release
         env:

@@ -1,0 +1,83 @@
+name: Bump versionCode
+
+# master only accepts pull requests, so a direct push of the version bump is
+# rejected. After every other merge, open a one-line PR that adds 1 to
+# versionCode and merge it. The bump commit is marked [skip version] so this
+# workflow does not bump itself again.
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: bump-version-code
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    name: versionCode + 1
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[skip version]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run bump script tests
+        run: bash .github/scripts/bump-android-version.test.sh
+
+      - name: Bump versionCode by 1
+        id: bump
+        run: |
+          set -euo pipefail
+          VERSION_CODE_STEP=1
+          export VERSION_CODE_STEP
+          # shellcheck disable=SC1091
+          source .github/scripts/bump-android-version.sh
+          bump_android_version
+          echo "code=$NEW_CODE" >> "$GITHUB_OUTPUT"
+          echo "name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "versionCode $CURRENT_CODE → $NEW_CODE"
+
+          if git diff --exit-code -- app/build.gradle >/dev/null; then
+            echo "versionCode did not change" >&2
+            exit 1
+          fi
+
+      - name: Open and merge the bump pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_CODE: ${{ steps.bump.outputs.code }}
+          VERSION_NAME: ${{ steps.bump.outputs.name }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          branch="chore/version-code-${NEW_CODE}-${GITHUB_RUN_ID}"
+          git checkout -b "$branch"
+          git add app/build.gradle
+          git commit -m "chore: bump versionCode to ${NEW_CODE} [skip version]"
+          git push origin "HEAD:${branch}"
+
+          pr=$(gh pr create \
+            --base master \
+            --head "$branch" \
+            --title "chore: bump versionCode to ${NEW_CODE} [skip version]" \
+            --body "Automatic +1 after a merge to master. versionName stays \`${VERSION_NAME}\`.")
+
+          # Branch protection requires a pull request. No review is required, but
+          # mergeability can lag a couple of seconds behind PR creation.
+          for attempt in 1 2 3 4 5 6; do
+            if gh pr merge "$pr" --squash --delete-branch; then
+              echo "Merged $pr"
+              exit 0
+            fi
+            echo "Merge not ready (attempt ${attempt}); retrying"
+            sleep 5
+          done
+          echo "Could not merge ${pr}" >&2
+          exit 1

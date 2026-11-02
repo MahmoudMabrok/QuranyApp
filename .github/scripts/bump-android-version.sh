@@ -1,24 +1,21 @@
 #!/usr/bin/env bash
-# Increase versionCode and set versionName in an Android Gradle file.
+# Increase versionCode and/or set versionName in an Android Gradle file.
 # Supports Groovy (`versionCode 31`, `versionName "1.0"`) and Kotlin DSL
 # (`versionCode = 31`, `versionName = "1.0"`), including mixed spacing.
 #
-# Expects VERSION_NAME in the environment. Optional GRADLE_FILE
-# (default: app/build.gradle) and VERSION_CODE_STEP (default: 5), how much
-# versionCode grows per release. On success, sets CURRENT_CODE and NEW_CODE
-# in the caller when this file is sourced.
+# Optional GRADLE_FILE (default: app/build.gradle).
+# VERSION_CODE_STEP: how much versionCode grows. Default 1. Use 0 to keep it.
+# VERSION_NAME: new versionName. Empty keeps the name already in the file.
+# On success, sets CURRENT_CODE, NEW_CODE, and VERSION_NAME in the caller
+# when this file is sourced.
 
 bump_android_version() {
   local gradle_file="${GRADLE_FILE:-app/build.gradle}"
   local version_name="${VERSION_NAME-}"
-  local step="${VERSION_CODE_STEP:-5}"
+  local step="${VERSION_CODE_STEP:-1}"
 
-  if [ -z "$version_name" ]; then
-    echo "VERSION_NAME is required" >&2
-    return 1
-  fi
-  if ! [[ "$step" =~ ^[1-9][0-9]*$ ]]; then
-    echo "VERSION_CODE_STEP must be a positive integer (got '$step')" >&2
+  if ! [[ "$step" =~ ^[0-9]+$ ]]; then
+    echo "VERSION_CODE_STEP must be a non-negative integer (got '$step')" >&2
     return 1
   fi
   if [ ! -f "$gradle_file" ]; then
@@ -33,9 +30,14 @@ bump_android_version() {
     return 1
   fi
 
-  if ! grep -qE '^[[:space:]]*versionName[[:space:]]*=?[[:space:]]*"[^"]*"' "$gradle_file"; then
+  local current_name
+  current_name=$(grep -m 1 -E '^[[:space:]]*versionName[[:space:]]*=?[[:space:]]*"[^"]*"' "$gradle_file" | sed -E 's/^[^"]*"([^"]*)".*/\1/' || true)
+  if [ -z "$current_name" ]; then
     echo "Could not read versionName from $gradle_file (expected 'versionName \"1.0\"' or 'versionName = \"1.0\"')" >&2
     return 1
+  fi
+  if [ -z "$version_name" ]; then
+    version_name="$current_name"
   fi
 
   local new_code=$((current_code + step))
@@ -57,6 +59,7 @@ bump_android_version() {
 
   CURRENT_CODE=$current_code
   NEW_CODE=$new_code
+  VERSION_NAME=$version_name
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
