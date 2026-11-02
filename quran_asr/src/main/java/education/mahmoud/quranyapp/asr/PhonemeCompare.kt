@@ -16,6 +16,7 @@ object PhonemeCompare {
         val rule: String,
         val status: Status,
         val newAyah: Boolean,
+        val matched: Boolean,
     )
 
     private data class Rule(val name: String, val amount: Int)
@@ -27,16 +28,20 @@ object PhonemeCompare {
         var pos = 0
         var reachedWords = 0
         val lines = ArrayList<Line>()
+        var stalled = false
         for ((index, word) in words.withIndex()) {
+            if (stalled && !finished) break
             val target = normalize(word.phonemes)
             val (cost, used) = alignPrefix(audio, pos, target)
-            val reached = target.isNotEmpty() && used > 0 && cost * 3 <= target.length
+            val reached = !stalled && target.isNotEmpty() && used > 0 && cost * 3 <= target.length
             if (reached) {
                 pos += used
                 reachedWords = index + 1
+            } else {
+                stalled = true
             }
             val expected = extract(word.phonemes, word.arabic)
-            if (expected.isEmpty()) continue
+            if (expected.isEmpty() || (stalled && !finished)) continue
             val heardRules = if (reached) {
                 extract(audio.substring(pos - used, pos), word.arabic)
             } else {
@@ -56,6 +61,7 @@ object PhonemeCompare {
                         rule = rule.name,
                         status = status,
                         newAyah = first && word.newAyah && lines.isNotEmpty(),
+                        matched = reached,
                     ),
                 )
                 first = false
