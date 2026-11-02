@@ -12,7 +12,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
-import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
@@ -22,7 +21,6 @@ import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
 import education.mahmoud.quranyapp.feature.listen.playback.PlaybackQueue
-import education.mahmoud.quranyapp.feature.listen.playback.PlaybackSpeed
 import education.mahmoud.quranyapp.feature.listen.playback.QuranPlaybackService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -77,10 +75,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
     var downloads by mutableStateOf<List<ReciterDownloads>>(emptyList())
         private set
 
-    /** Playback speed (persisted); applied to the service's player through the controller. */
-    var speed by mutableStateOf(repository.playbackSpeed)
-        private set
-
     /** String resource of a one-shot message for the snackbar. */
     var message by mutableStateOf<Int?>(null)
         private set
@@ -98,10 +92,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
     private val playerListener = object : Player.Listener {
         override fun onEvents(player: Player, events: Player.Events) {
             publishPlaying()
-        }
-
-        override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
-            speed = PlaybackSpeed.normalize(playbackParameters.speed)
         }
 
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -127,7 +117,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
             {
                 controller = runCatching { controllerFuture.get() }.getOrNull()?.also {
                     it.addListener(playerListener)
-                    it.setPlaybackSpeed(speed)
                     if (it.mediaItemCount > 0) startTicker()
                     publishPlaying()
                 }
@@ -223,13 +212,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
         }
     }
 
-    fun changeSpeed(newSpeed: Float) {
-        val s = PlaybackSpeed.normalize(newSpeed)
-        speed = s
-        repository.playbackSpeed = s
-        controller?.setPlaybackSpeed(s)
-    }
-
     fun togglePlayPause() {
         val c = controller ?: return
         if (c.isPlaying) c.pause() else c.play()
@@ -282,7 +264,6 @@ class ListenViewModel(app: Application) : AndroidViewModel(app), KoinComponent {
                 .build()
         }
         c.setMediaItems(items, 0, 0L)
-        c.setPlaybackSpeed(speed)
         c.prepare()
         c.play()
         startTicker()
