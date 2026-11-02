@@ -16,6 +16,9 @@ object ModelDownloader {
     private const val MODEL_URL =
         "https://drive.usercontent.google.com/download?id=$FILE_ID&export=download&confirm=t"
     private const val MODEL_NAME = "zipformer_p_arabic_v3.1.int8.onnx"
+    private const val TOKENS_NAME = "tokens.txt"
+    private const val TOKENS_URL =
+        "https://raw.githubusercontent.com/yazinsai/tilawa/main/lab/experiments/zipformer-ctc/tokens.txt"
     private const val MIN_MODEL_BYTES = 1_000_000L
 
     private val main = Handler(Looper.getMainLooper())
@@ -44,8 +47,12 @@ object ModelDownloader {
         return File(getModelDir(context), MODEL_NAME)
     }
 
+    fun getTokensFile(context: Context): File {
+        return File(getModelDir(context), TOKENS_NAME)
+    }
+
     fun isModelReady(context: Context): Boolean {
-        return isValidModel(getModelFile(context))
+        return isValidModel(getModelFile(context)) && isValidTokens(getTokensFile(context))
     }
 
     /**
@@ -64,7 +71,8 @@ object ModelDownloader {
         val handle = Handle()
         val app = context.applicationContext
         val modelFile = getModelFile(app)
-        if (isValidModel(modelFile)) {
+        val tokensFile = getTokensFile(app)
+        if (isValidModel(modelFile) && isValidTokens(tokensFile)) {
             main.post { if (!handle.cancelled) onComplete() }
             return handle
         }
@@ -75,40 +83,57 @@ object ModelDownloader {
         }
 
         io.execute {
-            val part = File(modelFile.parentFile, "$MODEL_NAME.${System.nanoTime()}.part")
             try {
-                downloadTo(part, handle) { downloaded, total ->
-                    if (handle.cancelled) return@downloadTo
-                    val percent = if (total > 0) {
-                        ((downloaded * 100) / total).toInt().coerceIn(0, 100)
-                    } else {
-                        -1
+                if (!isValidModel(modelFile)) {
+                    val part = File(modelFile.parentFile, "$MODEL_NAME.${System.nanoTime()}.part")
+                    try {
+                        downloadTo(MODEL_URL, part, handle) { downloaded, total ->
+                            report(handle, onProgress, onBytes, downloaded, total)
+                        }
+                    } catch (stopped: Stopped) {
+                        part.delete()
+                        return@execute
+                    } catch (error: Exception) {
+                        part.delete()
+                        throw error
                     }
-                    main.post {
-                        if (handle.cancelled) return@post
-                        onProgress(percent)
-                        onBytes?.invoke(downloaded, total)
+                    if (handle.cancelled || active !== handle) {
+                        part.delete()
+                        return@execute
                     }
+                    if (!isValidModel(part)) {
+                        part.delete()
+                        postError(handle, onError, "الملف الذي تم تحميله ليس نموذج التعرف.")
+                        return@execute
+                    }
+                    replaceFile(part, modelFile)
                 }
-                if (handle.cancelled || active !== handle) {
-                    part.delete()
-                    return@execute
-                }
-                if (!isValidModel(part)) {
-                    part.delete()
-                    postError(handle, onError, "الملف الذي تم تحميله ليس نموذج التعرف.")
-                    return@execute
-                }
-                if (modelFile.exists()) modelFile.delete()
-                if (!part.renameTo(modelFile)) {
-                    part.copyTo(modelFile, overwrite = true)
-                    part.delete()
+                if (!isValidTokens(tokensFile)) {
+                    val part = File(tokensFile.parentFile, "$TOKENS_NAME.${System.nanoTime()}.part")
+                    try {
+                        downloadTo(TOKENS_URL, part, handle) { downloaded, total ->
+                            report(handle, onProgress, onBytes, downloaded, total)
+                        }
+                    } catch (stopped: Stopped) {
+                        part.delete()
+                        return@execute
+                    } catch (error: Exception) {
+                        part.delete()
+                        throw error
+                    }
+                    if (handle.cancelled || active !== handle) {
+                        part.delete()
+                        return@execute
+                    }
+                    if (!isValidTokens(part)) {
+                        part.delete()
+                        postError(handle, onError, "ملف رموز النموذج غير صالح.")
+                        return@execute
+                    }
+                    replaceFile(part, tokensFile)
                 }
                 main.post { if (!handle.cancelled) onComplete() }
-            } catch (stopped: Stopped) {
-                part.delete()
             } catch (error: Exception) {
-                part.delete()
                 if (!handle.cancelled) postError(handle, onError, messageFor(error))
             }
         }
@@ -116,11 +141,12 @@ object ModelDownloader {
     }
 
     private fun downloadTo(
+        url: String,
         dest: File,
         handle: Handle,
         onBytes: (downloaded: Long, total: Long) -> Unit,
     ) {
-        val connection = openModelConnection(MODEL_URL, redirectsLeft = 3)
+        val connection = openConnection(url, redirectsLeft = 3)
         try {
             val total = connection.contentLengthLong
             connection.inputStream.use { input ->
@@ -152,7 +178,7 @@ object ModelDownloader {
         }
     }
 
-    private fun openModelConnection(url: String, redirectsLeft: Int): HttpURLConnection {
+    private fun openConnection(url: String, redirectsLeft: Int): HttpURLConnection {
         val connection = (URL(url).openConnection() as HttpURLConnection).apply {
             instanceFollowRedirects = true
             connectTimeout = 20_000
@@ -170,7 +196,7 @@ object ModelDownloader {
             connection.disconnect()
             if (redirectsLeft <= 0) throw IOException("تعذر الوصول إلى ملف النموذج.")
             val next = confirmUrl(html) ?: throw IOException("تعذر الوصول إلى ملف النموذج.")
-            return openModelConnection(next, redirectsLeft - 1)
+            return openConnection(next, redirectsLeft - 1)
         }
         return connection
     }
@@ -182,12 +208,50 @@ object ModelDownloader {
             return "https://drive.usercontent.google.com/download?id=$FILE_ID&export=download&confirm=t&uuid=$uuid"
         }
         val href = Regex("""href="([^"]*confirm=[^"]*)"""").find(html)?.groupValues?.get(1)
-            ?.replace("&", "&")
+            ?.replace("amp;", "")
             ?: return null
         return when {
             href.startsWith("http") -> href
             href.startsWith("/") -> "https://drive.google.com$href"
             else -> null
+        }
+    }
+
+    private fun report(
+        handle: Handle,
+        onProgress: (Int) -> Unit,
+        onBytes: ((Long, Long) -> Unit)?,
+        downloaded: Long,
+        total: Long,
+    ) {
+        if (handle.cancelled) return
+        val percent = if (total > 0) ((downloaded * 100) / total).toInt().coerceIn(0, 100) else -1
+        main.post {
+            if (handle.cancelled) return@post
+            onProgress(percent)
+            onBytes?.invoke(downloaded, total)
+        }
+    }
+
+    private fun replaceFile(part: File, dest: File) {
+        if (dest.exists()) dest.delete()
+        if (!part.renameTo(dest)) {
+            part.copyTo(dest, overwrite = true)
+            part.delete()
+        }
+    }
+
+    private fun isValidTokens(file: File): Boolean {
+        if (!file.isFile || file.length() < 200) return false
+        val head = ByteArray(64)
+        val read = file.inputStream().use { it.read(head) }
+        if (read <= 0) return false
+        val start = String(head, 0, read, Charsets.UTF_8).trimStart()
+        if (start.startsWith("<") || start.startsWith("{")) return false
+        return file.bufferedReader().use { reader ->
+            var lines = 0
+            while (reader.readLine() != null && lines < 200) lines++
+            lines >= 200
         }
     }
 

@@ -39,4 +39,5 @@ dependencies {
     // module can compile against the same versions.
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.play:feature-delivery:2.1.0'
+    implementation 'com.github.k2-fsa.sherpa-onnx:sherpa-onnx:v1.13.5'
 }

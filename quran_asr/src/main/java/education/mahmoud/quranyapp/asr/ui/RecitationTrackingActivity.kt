@@ -1,6 +1,9 @@
 package education.mahmoud.quranyapp.asr.ui
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -10,23 +13,27 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.splitcompat.SplitCompat
 import education.mahmoud.quranyapp.asr.ModelDownloader
 import education.mahmoud.quranyapp.asr.R
+import education.mahmoud.quranyapp.asr.RecitationEngine
+import education.mahmoud.quranyapp.asr.RecitationSession
 import education.mahmoud.quranyapp.feature.asr.AsrEntryPoint
 import java.util.Locale
 
 /**
  * Main recitation tracking screen.
- * Integrates with memorization test: shows ayah, highlights words, tracks errors.
- * Entirely inside the dynamic feature module.
+ * Shows the selected ayah, downloads the model, then listens and prints what was recognized.
  */
 class RecitationTrackingActivity : AppCompatActivity() {
 
-    private var isRecording = false
     private var download: ModelDownloader.Handle? = null
+    private var session: RecitationSession? = null
+    private var stopping = false
+    private var listenGeneration = 0
 
     private lateinit var btnToggle: Button
     private lateinit var tvStatus: TextView
     private lateinit var progressModel: ProgressBar
     private lateinit var tvModelDetail: TextView
+    private lateinit var tvResults: TextView
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(newBase)
@@ -43,6 +50,7 @@ class RecitationTrackingActivity : AppCompatActivity() {
         val tvSurah = findViewById<TextView>(R.id.tvSurah)
         progressModel = findViewById(R.id.progressModel)
         tvModelDetail = findViewById(R.id.tvModelDetail)
+        tvResults = findViewById(R.id.tvResults)
 
         intent.getStringExtra(AsrEntryPoint.EXTRA_RANGE_LABEL)
             ?.takeIf { it.isNotBlank() }
@@ -64,20 +72,119 @@ class RecitationTrackingActivity : AppCompatActivity() {
             showIdle(getString(R.string.asr_model_cancelled), getString(R.string.asr_model_retry))
             return
         }
+        if (session != null) {
+            if (stopping) return
+            stopping = true
+            tvStatus.text = getString(R.string.asr_finishing)
+            btnToggle.isEnabled = false
+            session?.stop()
+            return
+        }
         if (!ModelDownloader.isModelReady(this)) {
             beginDownload()
             return
         }
-        isRecording = !isRecording
-        if (isRecording) {
-            btnToggle.text = getString(R.string.asr_stop)
-            tvStatus.text = getString(R.string.asr_recognizing)
-            // TODO: start audio recording + Sherpa-ONNX / ONNX inference
-        } else {
-            btnToggle.text = getString(R.string.asr_start)
-            tvStatus.text = getString(R.string.asr_stopped)
-            // TODO: show results / update memorization score
+        if (!hasMicPermission()) {
+            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), MIC_REQUEST)
+            return
         }
+        startListening()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode != MIC_REQUEST) return
+        if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+            startListening()
+        } else {
+            showProblem(getString(R.string.asr_mic_denied), getString(R.string.asr_model_retry))
+        }
+    }
+
+    private fun startListening() {
+        val generation = ++listenGeneration
+        stopping = false
+        progressModel.visibility = View.VISIBLE
+        progressModel.isIndeterminate = true
+        tvModelDetail.visibility = View.GONE
+        tvResults.text = ""
+        tvStatus.text = getString(R.string.asr_preparing)
+        btnToggle.isEnabled = false
+
+        Thread {
+            try {
+                val engine = RecitationEngine.get(applicationContext)
+                runOnUiThread {
+                    if (isDestroyed || generation != listenGeneration) return@runOnUiThread
+                    val created = RecitationSession(
+                        recognizer = engine,
+                        onPartial = { text ->
+                            if (!isDestroyed && text.isNotBlank()) tvResults.text = text
+                        },
+                        onDone = { text ->
+                            if (isDestroyed) return@RecitationSession
+                            session = null
+                            stopping = false
+                            progressModel.visibility = View.GONE
+                            btnToggle.isEnabled = true
+                            btnToggle.text = getString(R.string.asr_start)
+                            if (text.isBlank()) {
+                                showProblem(getString(R.string.asr_empty), getString(R.string.asr_start))
+                            } else {
+                                tvModelDetail.visibility = View.GONE
+                                tvStatus.text = getString(R.string.asr_result)
+                                tvResults.text = text
+                            }
+                        },
+                        onError = { message ->
+                            if (isDestroyed) return@RecitationSession
+                            session = null
+                            stopping = false
+                            showProblem(message, getString(R.string.asr_model_retry))
+                        },
+                    )
+                    try {
+                        created.start()
+                    } catch (error: Exception) {
+                        showProblem(
+                            error.message ?: getString(R.string.asr_mic_failed),
+                            getString(R.string.asr_model_retry),
+                        )
+                        return@runOnUiThread
+                    }
+                    session = created
+                    progressModel.visibility = View.GONE
+                    tvModelDetail.visibility = View.VISIBLE
+                    tvModelDetail.text = getString(R.string.asr_speak_now)
+                    tvStatus.text = getString(R.string.asr_listening)
+                    btnToggle.isEnabled = true
+                    btnToggle.text = getString(R.string.asr_stop)
+                }
+            } catch (error: Throwable) {
+                runOnUiThread {
+                    if (isDestroyed) return@runOnUiThread
+                    val missingLibrary = error is UnsatisfiedLinkError ||
+                        error.cause is UnsatisfiedLinkError ||
+                        error is ExceptionInInitializerError
+                    val detail = if (missingLibrary) {
+                        getString(R.string.asr_library_missing)
+                    } else {
+                        error.message?.takeIf { it.isNotBlank() }
+                            ?: getString(R.string.asr_engine_failed)
+                    }
+                    showProblem(detail, getString(R.string.asr_model_retry))
+                }
+            }
+        }.apply { isDaemon = true }.start()
+    }
+
+    private fun hasMicPermission(): Boolean {
+        if (Build.VERSION.SDK_INT < 23) return true
+        return checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun beginDownload() {
@@ -86,7 +193,9 @@ class RecitationTrackingActivity : AppCompatActivity() {
         progressModel.progress = 0
         tvModelDetail.visibility = View.VISIBLE
         tvModelDetail.text = getString(R.string.asr_model_progress_unknown, "0 ك.ب")
+        tvResults.text = ""
         tvStatus.text = getString(R.string.asr_model_downloading)
+        btnToggle.isEnabled = true
         btnToggle.text = getString(R.string.asr_model_cancel)
 
         download = ModelDownloader.downloadModel(
@@ -104,14 +213,11 @@ class RecitationTrackingActivity : AppCompatActivity() {
             onError = { message ->
                 if (isDestroyed) return@downloadModel
                 download = null
-                progressModel.visibility = View.GONE
-                tvModelDetail.visibility = View.VISIBLE
-                tvModelDetail.text = message
-                tvStatus.text = getString(R.string.asr_model_failed)
-                btnToggle.text = getString(R.string.asr_model_retry)
+                showProblem(message, getString(R.string.asr_model_retry))
             },
             onBytes = { downloaded, total ->
                 if (isDestroyed) return@downloadModel
+                tvModelDetail.visibility = View.VISIBLE
                 tvModelDetail.text = if (total > 0) {
                     val percent = ((downloaded * 100) / total).toInt().coerceIn(0, 100)
                     getString(
@@ -131,8 +237,17 @@ class RecitationTrackingActivity : AppCompatActivity() {
         progressModel.visibility = View.GONE
         tvModelDetail.visibility = View.GONE
         tvStatus.text = status
+        btnToggle.isEnabled = true
         btnToggle.text = button
-        isRecording = false
+    }
+
+    private fun showProblem(message: String, button: String) {
+        progressModel.visibility = View.GONE
+        tvModelDetail.visibility = View.VISIBLE
+        tvModelDetail.text = message
+        tvStatus.text = getString(R.string.asr_error_title)
+        btnToggle.isEnabled = true
+        btnToggle.text = button
     }
 
     private fun formatBytes(bytes: Long): String {
@@ -145,7 +260,13 @@ class RecitationTrackingActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        listenGeneration++
         download?.cancel()
+        session?.stop()
         super.onDestroy()
+    }
+
+    private companion object {
+        const val MIC_REQUEST = 41
     }
 }
