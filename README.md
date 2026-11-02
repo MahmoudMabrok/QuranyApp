@@ -9,25 +9,71 @@
 <img src="logo/horizontal.png" width=55%>
 </h1>
 
-Open Source HolyQuran app that provide Read, Listen, Tafseer, Test all of them and app is very small size
+Open Source Holy Quran app: read in a mushaf layout, listen, tafseer, memorization, and tajweed tracking. The text and tafseer stay inside the app. The recitation model downloads only when you use it.
 
-- [Google Play Link ](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
-- [F-Droid link](https://apt.izzysoft.de/fdroid/index/apk/education.mahmoud.quranyapp) 
-- App Reviews 
-  - [Youtube Playsit, Journey with App](https://www.youtube.com/watch?v=L4ElhxFyjKA&list=PL7ZA5t6QDessHFv0JplnjqyCb066QCIyc).
-  - [Versions Demos](https://www.youtube.com/watch?v=BrAeS9-woW0&list=PL7ZA5t6QDesvQGUUa0NxfAog0GwYc0g7T).
-- apk
-  - [latest](https://github.com/MahmoudMabrok/QuranyApp/releases/tag/2.6)
-- [My Journey to build App in Arabic](https://www.linkedin.com/pulse/%D8%B1%D8%AD%D9%84%D8%AA%D9%89-%D9%84%D8%A8%D9%86%D8%A7%D8%A1-%D8%AA%D8%B7%D8%A8%D9%8A%D9%82-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85-mahmoud-mabrouk-fouad/)  
-- Last Version with Java [Branch](https://github.com/MahmoudMabrok/QuranyApp/tree/java_last_version)
-# Screens
-<div>
- <img src="https://user-images.githubusercontent.com/13488900/122588290-32578880-d05f-11eb-9891-f0e438e51f18.png" width = 20%>
- <img src="https://user-images.githubusercontent.com/13488900/122588274-2d92d480-d05f-11eb-83d1-1b39d039caa0.png" width = 20%>
- <img src="https://user-images.githubusercontent.com/13488900/122588266-2bc91100-d05f-11eb-9323-abeb0f88a316.png" width = 20%>
-  </div>
-  
-# Note : App is being refactored into Kotlin (Reach now MVP stage from app with Kotlin)  
+- [Google Play](https://play.google.com/store/apps/details?id=education.mahmoud.quranyapp)
+- [F-Droid](https://apt.izzysoft.de/fdroid/index/apk/education.mahmoud.quranyapp)
+- App reviews
+  - [YouTube playlist](https://www.youtube.com/watch?v=L4ElhxFyjKA&list=PL7ZA5t6QDessHFv0JplnjqyCb066QCIyc)
+  - [Version demos](https://www.youtube.com/watch?v=BrAeS9-woW0&list=PL7ZA5t6QDesvQGUUa0NxfAog0GwYc0g7T)
+- [Latest release](https://github.com/MahmoudMabrok/QuranyApp/releases)
+- [Building the app, in Arabic](https://www.linkedin.com/pulse/%D8%B1%D8%AD%D9%84%D8%AA%D9%89-%D9%84%D8%A8%D9%86%D8%A7%D8%A1-%D8%AA%D8%B7%D8%A8%D9%8A%D9%82-%D8%A7%D9%84%D9%82%D8%B1%D8%A7%D9%86-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85-mahmoud-mabrouk-fouad/)
+- Last Java version: [branch](https://github.com/MahmoudMabrok/QuranyApp/tree/java_last_version)
+
+# الآن وقبل كده
+
+The 3.0 screens replace the old XML layout. Same jobs (read, listen, test), different shape.
+
+| | حتى 2.6 | 3.0 |
+| --- | --- | --- |
+| الواجهة | XML وشريط تنقل سفلي | Jetpack Compose وشريط علوي وتبويبان |
+| القراءة | نص الآيات في صفحة بيضاء | مصحف بإطار، عنوان السورة، وتقليب الصفحات |
+| الاستماع | قائمة قديمة للقارئ | سرعة التلاوة، تكرار الآية والمقطع |
+| التسميع | المستخدم يكتب الآية | متابعة أحكام التجويد بالميكروفون |
+| الإعدادات | لون الخلفية | وضع ليلي، شكل المصحف، رقم الإصدار، وتقييم المتجر |
+| التعرف | غير موجود | وحدة تتنزل عند أول استخدام، والنموذج ليس داخل التثبيت |
+
+### الرئيسية
+
+<table>
+<tr>
+<td align="center" width="50%"><b>قبل</b><br><img src="images/0.jpg" width="240"></td>
+<td align="center" width="50%"><b>الآن</b><br><img src="images/v3/home.png" width="240"></td>
+</tr>
+</table>
+
+### القراءة
+
+<table>
+<tr>
+<td align="center" width="50%"><b>قبل</b><br><img src="images/1.jpg" width="240"></td>
+<td align="center" width="50%"><b>الآن</b><br><img src="images/v3/mushaf.png" width="240"></td>
+</tr>
+</table>
+
+### الاستماع
+
+<table>
+<tr>
+<td align="center" width="50%"><b>قبل</b><br><img src="images/2.jpg" width="240"></td>
+<td align="center" width="50%"><b>الآن</b><br><img src="images/v3/listen.png" width="240"></td>
+</tr>
+</table>
+
+### التسميع والتجويد
+
+<table>
+<tr>
+<td align="center" width="50%"><b>قبل</b><br><img src="images/4.jpg" width="240"></td>
+<td align="center" width="50%"><b>الآن</b><br><img src="images/v3/tajweed.png" width="240"></td>
+</tr>
+</table>
+
+### الإعدادات
+
+الوضع الليلي وتقليب الصفحات وشكل المصحف ورقم الإصدار وتقييم التطبيق.
+
+<p align="center"><img src="images/v3/settings.png" width="240"></p>
 
 # Features[of full App]
 - Go to specific sura by Scrolling and click.
