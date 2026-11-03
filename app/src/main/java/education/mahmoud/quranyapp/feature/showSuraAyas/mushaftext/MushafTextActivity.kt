@@ -20,11 +20,10 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -44,8 +43,6 @@ import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import io.github.sherifshabans.mushaf.Ayah
 import io.github.sherifshabans.mushaf.MushafColors
-import io.github.sherifshabans.mushaf.MushafPager
-import io.github.sherifshabans.mushaf.rememberMushafPagerState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Date
 
@@ -63,6 +60,7 @@ class MushafTextActivity : AppCompatActivity() {
     private var toast: Toast? = null
     private var listenIntent: Intent? = null
     private var highlights by mutableStateOf<Set<Int>>(emptySet())
+    private val readLog by lazy { ReadLogRecorder(model) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,10 +73,7 @@ class MushafTextActivity : AppCompatActivity() {
     @Composable
     private fun Reader(night: Boolean) {
         val colors = if (night) MushafColors.Dark else MushafColors.Light
-        val state = rememberMushafPagerState(initialPage = currentPage)
-        LaunchedEffect(state) {
-            snapshotFlow { state.currentPage }.collect { currentPage = it + 1 }
-        }
+        val startPage = remember { currentPage }
         val highlightColor = if (night) Color(0x66B8860B) else Color(0x66FFC107)
         Column(
             Modifier.fillMaxSize().background(colors.paper).statusBarsPadding().navigationBarsPadding(),
@@ -91,12 +86,16 @@ class MushafTextActivity : AppCompatActivity() {
                 Chip(getString(R.string.mushaf_text_bookmark), colors.marker) { bookmarkCurrentPage() }
             }
             Box(Modifier.weight(1f).fillMaxWidth()) {
-                MushafPager(
+                MushafView(
+                    startPage = startPage,
                     modifier = Modifier.fillMaxSize(),
-                    state = state,
                     colors = colors,
                     highlightedAyahs = highlights.associateWith { highlightColor },
                     onAyahLongClick = ::onAyahLongPressed,
+                    onPageChanged = { page ->
+                        currentPage = page
+                        readLog.onPageShown(page)
+                    },
                 )
             }
         }
@@ -174,9 +173,16 @@ class MushafTextActivity : AppCompatActivity() {
         finish()
     }
 
+    override fun onResume() {
+        super.onResume()
+        readLog.load()
+        readLog.onPageShown(currentPage)
+    }
+
     override fun onStop() {
         super.onStop()
         model.addLatestread(currentPage)
+        readLog.save()
     }
 
     private fun showMessage(message: String) {
