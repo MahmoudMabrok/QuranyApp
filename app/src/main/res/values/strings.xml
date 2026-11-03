@@ -207,7 +207,9 @@
     <string name="settings_section_about">التطبيق</string>
     <string name="settings_version">الإصدار</string>
     <string name="settings_rate">تقييم التطبيق</string>
-    <string name="settings_rate_summary">افتح صفحة التطبيق في المتجر</string>
+    <string name="settings_rate_summary">قيّم التطبيق على متجر بلاي</string>
+    <string name="settings_update">آخر التحديثات</string>
+    <string name="settings_update_summary">افتح صفحة التطبيق في المتجر لتنزيل التحديث</string>
     <string name="review_title">قيّم التطبيق</string>
     <string name="review_message">لو التطبيق نفعك، قيّمه في المتجر. تقييمك يساعد غيرك يجده.</string>
     <string name="review_rate">تقييم التطبيق</string>
