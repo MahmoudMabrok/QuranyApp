@@ -14,16 +14,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -32,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.feature.ayah_actions.AyahActionsSheet
@@ -40,7 +40,6 @@ import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie
 import education.mahmoud.quranyapp.feature.showSuraAyas.AyahsViewModel
 import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
-import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import io.github.sherifshabans.mushaf.Ayah
@@ -165,10 +164,12 @@ class MushafTextActivity : AppCompatActivity() {
         showMessage(getString(R.string.mushaf_text_bookmark_saved))
     }
 
+    /** Opens the old reader on the same page, once; the default renderer stays mushaf-text. */
     private fun openOldView() {
-        MushafTextPrefs.setEnabled(this, false)
         startActivity(
-            Intent(this, ShowAyahsActivity::class.java).putExtra(Constants.PAGE_INDEX, currentPage),
+            Intent(this, ShowAyahsActivity::class.java)
+                .putExtra(Constants.PAGE_INDEX, currentPage)
+                .putExtra(ShowAyahsActivity.EXTRA_OLD_VIEW, true),
         )
         finish()
     }

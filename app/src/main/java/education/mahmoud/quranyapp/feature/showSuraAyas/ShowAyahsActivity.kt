@@ -28,6 +28,8 @@ import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
 import education.mahmoud.quranyapp.feature.showSuraAyas.flip.BookFlipController
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafOptions
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafTextActivity
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafTextPrefs
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
@@ -187,6 +189,14 @@ class ShowAyahsActivity : AppCompatActivity() {
         lastpageShown = pos + 1
 
         //endregion
+
+        // Pages are drawn by mushaf-text unless the reader asked for the old view.
+        if (!intent.getBooleanExtra(EXTRA_OLD_VIEW, false) && MushafTextPrefs.isEnabled(this)) {
+            startActivity(MushafTextActivity.intent(this, (pos + 1).coerceIn(1, LAST_PAGE)))
+            finish()
+            return
+        }
+
         "$name   onCreate: $pos\"".log()
         initRV()
 
@@ -471,5 +481,8 @@ class ShowAyahsActivity : AppCompatActivity() {
     companion object {
         private const val LAST_PAGE = 604
         private const val TAG = "TestApp"
+
+        /** Opens this (image-free, RecyclerView) reader even when the mushaf-text reader is on. */
+        const val EXTRA_OLD_VIEW = "mushafOldView"
     }
 }
