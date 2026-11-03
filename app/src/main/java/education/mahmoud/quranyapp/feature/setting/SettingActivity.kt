@@ -71,6 +71,7 @@ class SettingActivity : AppCompatActivity() {
                         },
                         versionName = StoreReview.versionName(this@SettingActivity),
                         onRate = { StoreReview.openStore(this@SettingActivity) },
+                        onUpdate = { StoreReview.openListing(this@SettingActivity) },
                     )
                 }
             }
