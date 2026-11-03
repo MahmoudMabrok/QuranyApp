@@ -61,11 +61,24 @@ object StoreReview {
     }
 
     fun openStore(context: Context) {
-        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        if (launchStore(context)) {
+            context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean(WENT, true)
+                .apply()
+        }
+    }
+
+    /** Play listing for updates. Does not count as a rating visit. */
+    fun openListing(context: Context) {
+        launchStore(context)
+    }
+
+    private fun launchStore(context: Context): Boolean {
         val id = context.packageName
         val market = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$id"))
             .setPackage("com.android.vending")
-        val opened = try {
+        return try {
             context.startActivity(market)
             true
         } catch (_: ActivityNotFoundException) {
@@ -78,7 +91,6 @@ object StoreReview {
                 false
             }
         }
-        if (opened) prefs.edit().putBoolean(WENT, true).apply()
     }
 
     private fun postpone(context: Context) {

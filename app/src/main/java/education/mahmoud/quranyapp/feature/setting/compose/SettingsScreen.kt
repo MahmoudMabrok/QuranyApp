@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.SystemUpdate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -99,6 +100,7 @@ fun SettingsScreen(
     onBookFlipChange: (Boolean) -> Unit = {},
     versionName: String = "",
     onRate: () -> Unit = {},
+    onUpdate: () -> Unit = {},
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -244,6 +246,26 @@ fun SettingsScreen(
                         Text(stringResource(R.string.settings_rate), style = MaterialTheme.typography.titleMedium)
                         Text(
                             stringResource(R.string.settings_rate_summary),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+            SettingsCard {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = onUpdate)
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(Icons.Filled.SystemUpdate, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                    Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
+                        Text(stringResource(R.string.settings_update), style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            stringResource(R.string.settings_update_summary),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
