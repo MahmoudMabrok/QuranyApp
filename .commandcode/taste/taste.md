@@ -1,0 +1,1 @@
+- Prefers reviewing an HTML UI prototype before implementation begins. Confidence: 0.8

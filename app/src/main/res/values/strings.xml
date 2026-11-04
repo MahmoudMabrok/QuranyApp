@@ -202,6 +202,12 @@
     <string name="data_download_recitations">تحميل تلاوات من شاشة الاستماع</string>
     <!-- settings -->
     <string name="back">رجوع</string>
+    <string name="settings_mode">طريقة عرض المصحف</string>
+    <string name="settings_mode_full">عرض المصحف الكامل</string>
+    <string name="settings_mode_full_summary">استخدام عرض المصحف النصي الكامل دون إعدادات إضافية</string>
+    <string name="settings_mode_custom">العرض المخصص</string>
+    <string name="settings_mode_custom_summary">اختر شكل الصفحة وخلفية الآيات وطريقة تقليب الصفحات</string>
+    <string name="settings_section_ayah_background">خلفية الآيات</string>
     <string name="settings_section_reading">القراءة</string>
     <string name="settings_section_preview">معاينة</string>
     <string name="settings_section_about">التطبيق</string>

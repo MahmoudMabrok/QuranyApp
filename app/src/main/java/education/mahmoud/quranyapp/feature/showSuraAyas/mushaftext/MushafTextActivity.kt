@@ -7,44 +7,28 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
-import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.feature.ayah_actions.AyahActionsSheet
 import education.mahmoud.quranyapp.feature.ayah_actions.TafseerSheet
 import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie
 import education.mahmoud.quranyapp.feature.showSuraAyas.AyahsViewModel
-import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
 import education.mahmoud.quranyapp.utils.Constants
-import education.mahmoud.quranyapp.utils.Data
 import io.github.sherifshabans.mushaf.Ayah
 import io.github.sherifshabans.mushaf.MushafColors
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Date
 
 /**
  * Reader that draws the Madinah mushaf as text with
@@ -75,43 +59,21 @@ class MushafTextActivity : AppCompatActivity() {
         val colors = if (night) MushafColors.Dark else MushafColors.Light
         val startPage = remember { currentPage }
         val highlightColor = if (night) Color(0x66B8860B) else Color(0x66FFC107)
-        Column(
+        Box(
             Modifier.fillMaxSize().background(colors.paper).statusBarsPadding().navigationBarsPadding(),
         ) {
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Chip(getString(R.string.mushaf_text_old_view), colors.marker) { openOldView() }
-                Chip(getString(R.string.mushaf_text_bookmark), colors.marker) { bookmarkCurrentPage() }
-            }
-            Box(Modifier.weight(1f).fillMaxWidth()) {
-                MushafView(
-                    startPage = startPage,
-                    modifier = Modifier.fillMaxSize(),
-                    colors = colors,
-                    highlightedAyahs = highlights.associateWith { highlightColor },
-                    onAyahLongClick = ::onAyahLongPressed,
-                    onPageChanged = { page ->
-                        currentPage = page
-                        readLog.onPageShown(page)
-                    },
-                )
-            }
+            MushafView(
+                startPage = startPage,
+                modifier = Modifier.fillMaxSize(),
+                colors = colors,
+                highlightedAyahs = highlights.associateWith { highlightColor },
+                onAyahLongClick = ::onAyahLongPressed,
+                onPageChanged = { page ->
+                    currentPage = page
+                    readLog.onPageShown(page)
+                },
+            )
         }
-    }
-
-    @Composable
-    private fun Chip(text: String, color: Color, onClick: () -> Unit) {
-        BasicText(
-            text = text,
-            style = TextStyle(fontSize = 14.sp, color = color),
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-                .background(color.copy(alpha = 0.12f))
-                .clickable(onClick = onClick)
-                .padding(horizontal = 12.dp, vertical = 6.dp),
-        )
     }
 
     private fun onAyahLongPressed(ayah: Ayah) {
@@ -151,26 +113,6 @@ class MushafTextActivity : AppCompatActivity() {
         val listen = AyahsListen()
         listen.ayahItemList = listOf(ayah)
         listenIntent = ListenServie.createService(applicationContext, listen)
-    }
-
-    private fun bookmarkCurrentPage() {
-        val first = model.getAyahsByPage(currentPage).firstOrNull()
-        val bookmark = BookmarkItem()
-        bookmark.timemills = Date().time
-        bookmark.pageNum = currentPage
-        bookmark.suraName = first?.let { Data.SURA_NAMES.getOrNull(it.surahIndex - 1) }.orEmpty()
-        model.addBookmark(bookmark)
-        showMessage(getString(R.string.mushaf_text_bookmark_saved))
-    }
-
-    /** Opens the old reader on the same page, once; the default renderer stays mushaf-text. */
-    private fun openOldView() {
-        startActivity(
-            Intent(this, ShowAyahsActivity::class.java)
-                .putExtra(Constants.PAGE_INDEX, currentPage)
-                .putExtra(ShowAyahsActivity.EXTRA_OLD_VIEW, true),
-        )
-        finish()
     }
 
     override fun onResume() {

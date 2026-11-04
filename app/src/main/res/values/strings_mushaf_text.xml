@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mushaf_text_old_view">العرض القديم</string>
-    <string name="mushaf_text_bookmark">حفظ علامة</string>
-    <string name="mushaf_text_bookmark_saved">تم حفظ العلامة</string>
     <string name="mushaf_text_ayah_not_loaded">بيانات الآية لم تُحمَّل بعد</string>
 </resources>
