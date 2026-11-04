@@ -62,6 +62,12 @@ class LocalShared(context: Application) {
             preferences.edit().putBoolean(BOOK_FLIP_ENABLED, enabled).apply()
         }
 
+    var fullMushafViewEnabled: Boolean
+        get() = preferences.getBoolean(FULL_MUSHAF_VIEW_ENABLED, false)
+        set(enabled) {
+            preferences.edit().putBoolean(FULL_MUSHAF_VIEW_ENABLED, enabled).apply()
+        }
+
     var score: Long
         get() = preferences.getLong(Constants.SCORE, 0)
         set(score) {
@@ -115,5 +121,6 @@ class LocalShared(context: Application) {
         const val MUSHAF_HEADER_STYLE = "mushaf_header_style"
         const val MUSHAF_PAGE_FRAME = "mushaf_page_frame"
         const val BOOK_FLIP_ENABLED = "book_flip_enabled"
+        const val FULL_MUSHAF_VIEW_ENABLED = "full_mushaf_view_enabled"
     }
 }

@@ -28,6 +28,7 @@ import education.mahmoud.quranyapp.feature.showSuraAyas.PageAdapter.IBookmark
 import education.mahmoud.quranyapp.feature.showSuraAyas.flip.BookFlipController
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafOptions
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafTextActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.Data
 import education.mahmoud.quranyapp.utils.DateOperation
@@ -187,6 +188,13 @@ class ShowAyahsActivity : AppCompatActivity() {
         lastpageShown = pos + 1
 
         //endregion
+
+        if (model.fullMushafViewEnabled) {
+            startActivity(MushafTextActivity.intent(this, (pos + 1).coerceIn(1, LAST_PAGE)))
+            finish()
+            return
+        }
+
         "$name   onCreate: $pos\"".log()
         initRV()
 

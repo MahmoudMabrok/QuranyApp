@@ -64,6 +64,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".feature.showSuraAyas.mushaftext.MushafTextActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".feature.home_Activity.HomeActivity"
             android:label="@string/app_name"
             android:exported="true"

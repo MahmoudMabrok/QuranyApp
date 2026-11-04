@@ -101,6 +101,8 @@ fun SettingsScreen(
     versionName: String = "",
     onRate: () -> Unit = {},
     onUpdate: () -> Unit = {},
+    fullMushafView: Boolean = false,
+    onFullMushafViewChange: (Boolean) -> Unit = {},
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -137,89 +139,124 @@ fun SettingsScreen(
                 .padding(bottom = padding.calculateBottomPadding())
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
-            SectionHeader(R.string.settings_section_reading)
+            SectionHeader(R.string.settings_mode)
             SettingsCard {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .toggleable(value = nightMode, role = Role.Switch, onValueChange = onNightModeChange)
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(Icons.Filled.DarkMode, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                    Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
-                        Text(stringResource(R.string.night_mode), style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            stringResource(R.string.night_mode_summary),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                Column(Modifier.selectableGroup().padding(vertical = 4.dp)) {
+                    listOf(
+                        Triple(true, R.string.settings_mode_full, R.string.settings_mode_full_summary),
+                        Triple(false, R.string.settings_mode_custom, R.string.settings_mode_custom_summary),
+                    ).forEach { (fullView, title, summary) ->
+                        val selected = fullMushafView == fullView
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .selectable(
+                                    selected = selected,
+                                    role = Role.RadioButton,
+                                    onClick = { onFullMushafViewChange(fullView) },
+                                )
+                                .padding(horizontal = 16.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            RadioButton(selected = selected, onClick = null)
+                            Column(Modifier.weight(1f).padding(start = 12.dp)) {
+                                Text(stringResource(title), style = MaterialTheme.typography.titleMedium)
+                                Text(
+                                    stringResource(summary),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                        }
                     }
-                    Switch(checked = nightMode, onCheckedChange = null)
                 }
             }
 
-            Spacer(Modifier.height(12.dp))
-            SettingsCard {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .toggleable(value = bookFlip, role = Role.Switch, onValueChange = onBookFlipChange)
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Column(Modifier.weight(1f).padding(end = 16.dp)) {
-                        Text(stringResource(R.string.book_flip), style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            stringResource(R.string.book_flip_summary),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                    Switch(checked = bookFlip, onCheckedChange = null)
-                }
-            }
-
-            SectionHeader(R.string.color_for_background_for_regular_mode)
-            SettingsCard {
-                Column(Modifier.alpha(if (nightMode) DISABLED_ALPHA else 1f).padding(vertical = 12.dp)) {
+            if (!fullMushafView) {
+                SectionHeader(R.string.settings_section_reading)
+                SettingsCard {
                     Row(
-                        modifier = Modifier.fillMaxWidth().selectableGroup().padding(horizontal = 8.dp),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .toggleable(value = nightMode, role = Role.Switch, onValueChange = onNightModeChange)
+                            .padding(horizontal = 16.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        backgroundOptions.forEach { option ->
-                            ColorOption(
-                                option = option,
-                                selected = option.id == backgroundColor,
-                                enabled = !nightMode,
-                                onClick = { onBackgroundColorChange(option.id) },
+                        Icon(Icons.Filled.DarkMode, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
+                            Text(stringResource(R.string.night_mode), style = MaterialTheme.typography.titleMedium)
+                            Text(
+                                stringResource(R.string.night_mode_summary),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        Switch(checked = nightMode, onCheckedChange = null)
+                    }
+                }
+
+                Spacer(Modifier.height(12.dp))
+                SettingsCard {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .toggleable(value = bookFlip, role = Role.Switch, onValueChange = onBookFlipChange)
+                            .padding(horizontal = 16.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Column(Modifier.weight(1f).padding(end = 16.dp)) {
+                            Text(stringResource(R.string.book_flip), style = MaterialTheme.typography.titleMedium)
+                            Text(
+                                stringResource(R.string.book_flip_summary),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        Switch(checked = bookFlip, onCheckedChange = null)
+                    }
+                }
+
+                SectionHeader(R.string.settings_section_ayah_background)
+                SettingsCard {
+                    Column(Modifier.alpha(if (nightMode) DISABLED_ALPHA else 1f).padding(vertical = 12.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().selectableGroup().padding(horizontal = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                        ) {
+                            backgroundOptions.forEach { option ->
+                                ColorOption(
+                                    option = option,
+                                    selected = option.id == backgroundColor,
+                                    enabled = !nightMode,
+                                    onClick = { onBackgroundColorChange(option.id) },
+                                )
+                            }
+                        }
+                        if (nightMode) {
+                            Text(
+                                stringResource(R.string.background_disabled_in_night_mode),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 16.dp, end = 16.dp),
                             )
                         }
                     }
-                    if (nightMode) {
-                        Text(
-                            stringResource(R.string.background_disabled_in_night_mode),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 16.dp, end = 16.dp),
-                        )
-                    }
                 }
+
+                SectionHeader(R.string.settings_section_mushaf)
+                MushafSettings(
+                    headerStyle = headerStyle,
+                    pageFrame = pageFrame,
+                    nightMode = nightMode,
+                    backgroundColor = backgroundColor,
+                    onHeaderStyleChange = onHeaderStyleChange,
+                    onPageFrameChange = onPageFrameChange,
+                )
+
+                SectionHeader(R.string.settings_section_preview)
+                ReadingPreview(nightMode = nightMode, backgroundColor = backgroundColor)
             }
-
-            SectionHeader(R.string.settings_section_mushaf)
-            MushafSettings(
-                headerStyle = headerStyle,
-                pageFrame = pageFrame,
-                nightMode = nightMode,
-                backgroundColor = backgroundColor,
-                onHeaderStyleChange = onHeaderStyleChange,
-                onPageFrameChange = onPageFrameChange,
-            )
-
-            SectionHeader(R.string.settings_section_preview)
-            ReadingPreview(nightMode = nightMode, backgroundColor = backgroundColor)
 
             SectionHeader(R.string.settings_section_about)
             SettingsCard {
