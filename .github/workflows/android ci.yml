@@ -32,7 +32,6 @@ jobs:
 
       - name: build app bundle
         run: |
-          chmod +x gradlew .github/scripts/build-universal-apk.sh
           ./gradlew :app:bundleDebug
 #      - name: test
 #        run: ./gradlew test

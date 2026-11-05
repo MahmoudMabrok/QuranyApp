@@ -1,7 +1,7 @@
 name: Build APK
 
 # Manual only. A tag or GitHub Release trigger is intentionally not enabled.
-# Produces one sideloadable universal APK (base + fused dynamic features, including quran_asr).
+# Produces one sideloadable universal APK (base + any fused dynamic features). quran_asr is currently excluded.
 # The Play bundle uploaded by "Deploy to Play store" is unchanged.
 on:
   workflow_dispatch:

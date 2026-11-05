@@ -2,7 +2,7 @@ package education.mahmoud.quranyapp
 
 import android.app.Application
 import android.content.Context
-import com.google.android.play.core.splitcompat.SplitCompat
+// import com.google.android.play.core.splitcompat.SplitCompat  // commented out with quran_asr module
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.datalayer.QuranRepository
@@ -30,8 +30,8 @@ class App : Application() {
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
-        // Required so on-demand code in :quran_asr is visible as soon as it is installed.
-        SplitCompat.install(this)
+        // Commented out with the :quran_asr module.
+        // SplitCompat.install(this)
     }
 
     override fun onCreate() {
