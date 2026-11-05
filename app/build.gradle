@@ -62,9 +62,8 @@ android {
         noCompress += ['tsv', 'txt']
     }
 
-    // Registers :quran_asr with the base module so AGP writes its feature name
-    // into feature-metadata.json. Without this, :quran_asr:process*Manifest fails.
-    dynamicFeatures = [':quran_asr']
+    // Commented out: :quran_asr dynamic feature is excluded from builds for now.
+    // dynamicFeatures = [':quran_asr']
 }
 
 dependencies {
@@ -170,8 +169,8 @@ dependencies {
     implementation "androidx.media3:media3-exoplayer:$media3_version"
     implementation "androidx.media3:media3-session:$media3_version"
 
-    // On-demand install API for the :quran_asr dynamic feature.
-    implementation 'com.google.android.play:feature-delivery:2.1.0'
+    // Commented out with the :quran_asr module.
+    // implementation 'com.google.android.play:feature-delivery:2.1.0'
 
     // Installs baseline profiles on Android 7-8 and before Play delivers them.
     implementation 'androidx.profileinstaller:profileinstaller:1.4.1'
