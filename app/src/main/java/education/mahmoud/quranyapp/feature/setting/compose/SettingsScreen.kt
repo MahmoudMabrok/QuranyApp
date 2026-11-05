@@ -244,19 +244,20 @@ fun SettingsScreen(
                     }
                 }
 
-                SectionHeader(R.string.settings_section_mushaf)
-                MushafSettings(
-                    headerStyle = headerStyle,
-                    pageFrame = pageFrame,
-                    nightMode = nightMode,
-                    backgroundColor = backgroundColor,
-                    onHeaderStyleChange = onHeaderStyleChange,
-                    onPageFrameChange = onPageFrameChange,
-                )
-
                 SectionHeader(R.string.settings_section_preview)
                 ReadingPreview(nightMode = nightMode, backgroundColor = backgroundColor)
             }
+
+            // إعدادات الإطار واسم السورة تظهر في الوضعين (الكامل والمخصص)
+            SectionHeader(R.string.settings_section_mushaf)
+            MushafSettings(
+                headerStyle = headerStyle,
+                pageFrame = pageFrame,
+                nightMode = nightMode,
+                backgroundColor = backgroundColor,
+                onHeaderStyleChange = onHeaderStyleChange,
+                onPageFrameChange = onPageFrameChange,
+            )
 
             SectionHeader(R.string.settings_section_about)
             SettingsCard {
