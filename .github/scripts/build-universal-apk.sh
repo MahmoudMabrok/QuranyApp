@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Build a single sideloadable APK from an app bundle, with on-demand modules
-# that set dist:fusing include=true (including :quran_asr) merged in.
+# that set dist:fusing include=true merged in.
+# (quran_asr dynamic module is currently excluded from the build.)
 #
 # Usage: build-universal-apk.sh <debug|release>
 # The matching AAB must already exist (./gradlew :app:bundleDebug or bundleRelease).
@@ -121,24 +122,10 @@ import sys
 import zipfile
 
 apk = sys.argv[1]
-needle = b"education/mahmoud/quranyapp/asr/ui/RecitationTrackingActivity"
-fused = "quran_asr".encode("utf-16le")
-with zipfile.ZipFile(apk) as z:
-    names = z.namelist()
-    tokens = [n for n in names if n.endswith("tokens.txt")]
-    dex_hit = False
-    for name in names:
-        if name.startswith("classes") and name.endswith(".dex"):
-            if needle in z.read(name):
-                dex_hit = True
-                break
-    manifest = z.read("AndroidManifest.xml") if "AndroidManifest.xml" in names else b""
-    manifest_hit = fused in manifest or b"quran_asr" in manifest
-print(f"tokens.txt entries: {tokens or 'NONE'}")
-print(f"feature class in dex: {dex_hit}")
-print(f"quran_asr in manifest: {manifest_hit}")
-if not tokens or not dex_hit:
-    sys.exit("universal APK is missing fused quran_asr code or assets")
+# quran_asr dynamic module is currently excluded from the build.
+# The previous check for RecitationTrackingActivity / tokens.txt / fused module
+# is skipped so CI can still produce a sideloadable APK without the ASR feature.
+print("quran_asr check skipped (module excluded from Gradle)")
 PY
 
 echo "Universal APK ready: $OUT_APK"
