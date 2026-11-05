@@ -106,7 +106,7 @@ dependencies {
     // library's README recommends (same com.downloader.* API).
     implementation 'com.github.amitshekhariitbhu:PRDownloader:1.0.2'
 
-    implementation 'com.facebook.stetho:stetho:1.5.1'
+    debugImplementation 'com.facebook.stetho:stetho:1.5.1'
 
     implementation "com.github.ybq:Android-SpinKit:1.2.0"
 
