@@ -69,6 +69,7 @@ class MushafTextActivity : AppCompatActivity() {
                 colors = colors,
                 paperColor = colors.paper,
                 headerStyle = SuraHeaderStyle.fromId(model.mushafHeaderStyle),
+                pageFrame = model.mushafPageFrame,
                 highlightedAyahs = highlights.associateWith { highlightColor },
                 onAyahLongClick = ::onAyahLongPressed,
                 onPageChanged = { page ->

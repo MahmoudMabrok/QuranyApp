@@ -38,13 +38,14 @@ fun MushafView(
     colors: MushafColors = MushafColors.Light,
     paperColor: Color? = null,
     headerStyle: SuraHeaderStyle = SuraHeaderStyle.CLASSIC,
+    pageFrame: Boolean = true,
     highlightedAyahs: Map<Int, Color> = emptyMap(),
     onAyahLongClick: ((Ayah) -> Unit)? = null,
     onPageChanged: (Int) -> Unit = {},
 ) {
     val effectiveColors = if (paperColor != null) colors.copy(paper = paperColor) else colors
     val decoration = MushafDecoration(
-        pageFrame = true,
+        pageFrame = pageFrame,
         surahHeaderStyle = when (headerStyle) {
             SuraHeaderStyle.MODERN -> LibSurahHeaderStyle.MODERN
             SuraHeaderStyle.PLAIN -> LibSurahHeaderStyle.PLAIN
