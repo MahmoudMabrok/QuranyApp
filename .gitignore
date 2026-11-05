@@ -59,4 +59,11 @@ fastlane/test_output
 fastlane/readme.md
 
 app/release/output.json
-app/src/main/res/values-w820dp/
+# Android skills installed locally (not part of the project)
+.commandcode/skills/
+
+# Temporary analysis artifacts
+tmp/
+
+# macOS
+.DS_Store

@@ -545,7 +545,7 @@ private fun DownloadCard(phase: ListenPhase.Downloading, onCancel: () -> Unit) {
                 fontFamily = FontFamily.Default,
             )
             val fraction = if (phase.total == 0) 0f else phase.done / phase.total.toFloat()
-            LinearProgressIndicator(progress = fraction, modifier = Modifier.fillMaxWidth())
+            LinearProgressIndicator(progress = { fraction }, modifier = Modifier.fillMaxWidth())
             OutlinedButton(onClick = onCancel, modifier = Modifier.align(Alignment.End)) {
                 Text(stringResource(R.string.cancel_action))
             }
