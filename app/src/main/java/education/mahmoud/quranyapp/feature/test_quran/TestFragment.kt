@@ -27,7 +27,7 @@ import education.mahmoud.quranyapp.databinding.FragmentTestBinding
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.SuraItem
-import education.mahmoud.quranyapp.feature.asr.AsrEntryPoint
+// import education.mahmoud.quranyapp.feature.asr.AsrEntryPoint  // commented out with quran_asr module
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity
 import education.mahmoud.quranyapp.feature.scores.ScoreLevels
 import education.mahmoud.quranyapp.feature.test_quran.MemorizationTest.Level
@@ -196,6 +196,13 @@ class TestFragment : BaseFragment() {
             suraName(range.startSura), getArabicNumber(range.startAyah),
             suraName(range.endSura), getArabicNumber(range.endAyah),
         )
+        // ASR module is temporarily excluded from the build.
+        android.widget.Toast.makeText(
+            requireContext(),
+            "ميزة التعرف على التلاوة غير متاحة حالياً",
+            android.widget.Toast.LENGTH_SHORT
+        ).show()
+        /*
         AsrEntryPoint.launch(
             requireContext(),
             AsrEntryPoint.RecitationRange(
@@ -208,6 +215,7 @@ class TestFragment : BaseFragment() {
                 ayahTexts = texts,
             ),
         )
+        */
     }
 
     private fun start(random: Boolean) {
