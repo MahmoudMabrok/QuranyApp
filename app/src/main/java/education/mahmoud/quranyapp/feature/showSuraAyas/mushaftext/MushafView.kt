@@ -1,6 +1,5 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,11 +15,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
@@ -68,62 +63,18 @@ fun MushafView(
             CompositionLocalProvider(LocalLayoutDirection provides outer) {
                 val page = index + 1
                 Column(Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp)) {
-                    Box(Modifier.weight(1f).fillMaxWidth()) {
-                        MushafPage(
-                            page = page,
-                            modifier = Modifier.fillMaxSize().padding(10.dp),
-                            colors = colors,
-                            highlightedAyahs = highlightedAyahs,
-                            onAyahLongClick = onAyahLongClick,
-                        )
-                        MushafPageFrame(colors = colors)
-                    }
+                    MushafPage(
+                        page = page,
+                        modifier = Modifier.weight(1f).fillMaxWidth(),
+                        colors = colors,
+                        highlightedAyahs = highlightedAyahs,
+                        onAyahLongClick = onAyahLongClick,
+                    )
                     Box(Modifier.fillMaxWidth().padding(top = 2.dp), contentAlignment = Alignment.Center) {
                         BasicText(toArabicDigits(page), style = TextStyle(fontSize = 15.sp, color = colors.marker))
                     }
                 }
             }
-        }
-    }
-}
-
-/** Decorative double-line frame around a mushaf page (outer + inner rule + corner marks). */
-@Composable
-private fun MushafPageFrame(colors: MushafColors) {
-    val line = colors.marker.copy(alpha = 0.7f)
-    val thin = colors.marker.copy(alpha = 0.4f)
-    Canvas(Modifier.fillMaxSize()) {
-        val stroke = 1.5.dp.toPx()
-        val inset = 4.dp.toPx()
-        val innerInset = 10.dp.toPx()
-        // outer border
-        drawRect(
-            color = line,
-            topLeft = Offset(inset, inset),
-            size = Size(size.width - inset * 2, size.height - inset * 2),
-            style = Stroke(width = stroke),
-        )
-        // inner border
-        drawRect(
-            color = thin,
-            topLeft = Offset(innerInset, innerInset),
-            size = Size(size.width - innerInset * 2, size.height - innerInset * 2),
-            style = Stroke(width = stroke * 0.7f),
-        )
-        // simple corner ornaments
-        val corner = 14.dp.toPx()
-        val path = Path()
-        listOf(
-            Offset(inset, inset),
-            Offset(size.width - inset, inset),
-            Offset(inset, size.height - inset),
-            Offset(size.width - inset, size.height - inset),
-        ).forEach { c ->
-            path.reset()
-            path.moveTo(c.x - corner * (if (c.x < size.width / 2) 1 else -1), c.y)
-            path.lineTo(c.x, c.y)
-            path.lineTo(c.x, c.y - corner * (if (c.y < size.height / 2) 1 else -1))
-            drawPath(path, line, style = Stroke(width = stroke * 1.4f))
         }
     }
 }
