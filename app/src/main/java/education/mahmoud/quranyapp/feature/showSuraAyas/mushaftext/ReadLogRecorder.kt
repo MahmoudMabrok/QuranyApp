@@ -7,7 +7,7 @@ import education.mahmoud.quranyapp.utils.DateOperation
 import education.mahmoud.quranyapp.utils.log
 
 /**
- * Today's reading log, recorded the same way as the old reader (ShowAyahsActivity):
+ * Today's reading log, recorded the same way as the previous reader:
  * pages shown are collected in a set, loaded from today's stored ReadLog on resume and
  * written back (insert, or update if today's row exists) on stop.
  */
