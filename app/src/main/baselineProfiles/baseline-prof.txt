@@ -42,10 +42,6 @@ Leducation/mahmoud/quranyapp/feature/bookmark_fragment/compose/BookmarkScreenKt;
 
 # Opened from the surah list. Not part of startup DEX layout (no S on its own
 # beyond the class rule); ART still compiles it from this baseline profile.
-Leducation/mahmoud/quranyapp/feature/showSuraAyas/ShowAyahsActivity;
-PLeducation/mahmoud/quranyapp/feature/showSuraAyas/ShowAyahsActivity;-><init>()V
-PLeducation/mahmoud/quranyapp/feature/showSuraAyas/ShowAyahsActivity;->onCreate(Landroid/os/Bundle;)V
-Leducation/mahmoud/quranyapp/feature/showSuraAyas/PageAdapter;
 Leducation/mahmoud/quranyapp/feature/showSuraAyas/Page;
 
 Leducation/mahmoud/quranyapp/feature/listen/ListenActivity;
