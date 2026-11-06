@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(git:*)",
+      "Shell(for:*)",
+      "Shell(do:*)",
+      "Shell(done:*)",
+      "Shell(./gradlew:*)",
+      "artifact_publish",
+      "Shell(find \"$HOME/.gradle/caches/modules-2/files-2.1/com.github.k2-fsa.sherpa-onnx\" -type f -exec du -h {} \\; 2>/dev/null; find quran_asr/src/main -type f -exec du -h {} \\;)",
+      "Shell(python3 -c 'import zipfile,glob,os; files=glob.glob(\"$HOME/.gradle/caches/modules-2/files-2.1/com.github.k2-fsa.sherpa-onnx/sherpa-onnx/v1.13.5/*/*.aar\"); print(\"Sherpa AAR:\"); [print(os.path.getsize(f), f) for f in files]; [print(\" \"+i.filename, i.file_size) for f in files for i in zipfile.ZipFile(f).infolist() if i.filename.startswith(\"jni/\")]')",
+      "Shell(python3 -c import sys; s=sys.stdin.read(); print(\"Prior build already had Compose:\", \"compose = true\" in s); print(\"Prior build already had Media3:\", \"media3-exoplayer\" in s); print(\"Prior dynamic feature:\", \"dynamicFeatures\" in s); print(\"Prior Play feature-delivery:\", \"feature-delivery\" in s))",
+      "Shell(python3 -c 'import glob,os,zipfile; pattern=os.path.expanduser(\"~/.gradle/caches/modules-2/files-2.1/com.github.k2-fsa.sherpa-onnx/sherpa-onnx/v1.13.5/*/*.aar\"); files=glob.glob(pattern); print(\"AARs:\", files); [(print(f\"AAR total: {os.path.getsize(f)/1024/1024:.1f} MiB\"), [print(f\"{i.filename}: {i.file_size/1024/1024:.1f} MiB\") for i in zipfile.ZipFile(f).infolist() if i.filename.startswith(\"jni/\")]) for f in files]')",
+      "Shell(python3 -c 'from pathlib import Path; p=Path(\"build/reports/profile/profile-2026-11-04-16-43-13.html\").read_text(); terms=(\"sherpa\", \"Task Execution\", \"Task\", \"Total Build Time\"); lines=p.splitlines(); [(print(f\"{i+1}: {line[:300]}\")) for i,line in enumerate(lines) if any(t.lower() in line.lower() for t in terms)]')",
+      "Shell(wc -l .git/shallow 2>/dev/null; echo '--- shallow contents ---'; cat .git/shallow 2>/dev/null)",
+      "Shell(ls ~/.agents/skills 2>/dev/null; echo \"---\"; find / -maxdepth 4 -name \"SKILL.md\" 2>/dev/null | head -20)",
+      "Shell(find /Users/appleworld/Documents/QuranyApp -name \"get-play-latest-version-code*\" 2>/dev/null; echo \"---\"; git rev-list --all --objects | grep -i \"get-play\")"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  }
+}

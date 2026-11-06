@@ -33,6 +33,8 @@ jobs:
   deploy-android:
     name: Deploy Android → Google Play
     runs-on: ubuntu-latest
+    outputs:
+      version_code: ${{ steps.set_version.outputs.new_code }}
 
     steps:
       - uses: actions/checkout@v4
@@ -48,28 +50,57 @@ jobs:
         with:
           cache-read-only: false
 
-      - name: Set Play versionName
+      - name: Install Python deps for Play version lookup
+        run: pip install --quiet google-auth google-api-python-client
+
+      - name: Get latest versionCode from Google Play
+        id: play_version
+        env:
+          PACKAGE_NAME: education.mahmoud.quranyapp
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          set -euo pipefail
+          LATEST=$(python .github/scripts/get-play-latest-version-code.py)
+          echo "latest play versionCode: $LATEST"
+          echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+
+      - name: Set Play versionName and versionCode
+        id: set_version
+        env:
+          PLAY_LATEST: ${{ steps.play_version.outputs.latest }}
         run: |
           VERSION_NAME="${{ github.event.inputs.version_name }}"
           if [ -z "$VERSION_NAME" ]; then
             echo "version_name is required" >&2
             exit 1
           fi
-          # versionCode is +1 on every merge to master. Do not bump it again here,
-          # or the AAB would not match the code committed in git.
-          VERSION_CODE_STEP=0
+          # Fetch the latest versionCode published in Play Store and build on top
+          # of it (+1) so the upload never collides with an existing code.
+          CURRENT_FILE_CODE=$(grep -m 1 -E '^[[:space:]]*versionCode[[:space:]]*=?[[:space:]]*[0-9]+' app/build.gradle | grep -oE '[0-9]+' || true)
+          if [ -z "$CURRENT_FILE_CODE" ]; then CURRENT_FILE_CODE=0; fi
+          PLAY_LATEST="${PLAY_LATEST:-0}"
+          if [ "$PLAY_LATEST" -gt "$CURRENT_FILE_CODE" ]; then
+            BASE="$PLAY_LATEST"
+          else
+            BASE="$CURRENT_FILE_CODE"
+          fi
+          VERSION_CODE_BASE="$BASE"
+          VERSION_CODE_STEP=1
+          export VERSION_CODE_BASE VERSION_CODE_STEP
           # Groovy (`versionCode 31`) and Kotlin DSL (`versionCode = 31`).
           source .github/scripts/bump-android-version.sh
           bump_android_version
-          echo "versionCode: $NEW_CODE (unchanged)"
+          echo "versionCode: $CURRENT_CODE (file) -> $PLAY_LATEST (play) -> $NEW_CODE (build)"
           echo "versionName: $VERSION_NAME"
+          echo "new_code=$NEW_CODE" >> "$GITHUB_OUTPUT"
 
           {
             echo "## 📦 Android version dump"
             echo ""
             echo "| Field | Old | New |"
             echo "|-------|-----|-----|"
-            echo "| versionCode | \`$CURRENT_CODE\` | \`$NEW_CODE\` |"
+            echo "| versionCode (file) | \`$CURRENT_CODE\` | \`$NEW_CODE\` |"
+            echo "| versionCode (play latest) | — | \`$PLAY_LATEST\` |"
             echo "| versionName | — | \`$VERSION_NAME\` |"
             echo ""
             echo "**Track:** \`${{ github.event.inputs.track }}\`"
@@ -145,14 +176,21 @@ jobs:
 
           if [ "${{ needs.deploy-android.result }}" = "success" ]; then
             VERSION_NAME="${{ github.event.inputs.version_name }}"
-            # versionCode is owned by the merge workflow. Only the name is stored here.
-            VERSION_CODE_STEP=0
+            # Persist the versionCode actually deployed (play latest + 1).
+            DEPLOYED_CODE="${{ needs.deploy-android.outputs.version_code }}"
+            if [ -n "$DEPLOYED_CODE" ]; then
+              VERSION_CODE_BASE="$DEPLOYED_CODE"
+              VERSION_CODE_STEP=0
+            else
+              VERSION_CODE_STEP=0
+            fi
+            export VERSION_CODE_BASE VERSION_CODE_STEP
             # shellcheck disable=SC1091
             source .github/scripts/bump-android-version.sh
             bump_android_version
-            echo "Android versionCode: $NEW_CODE (unchanged)"
+            echo "Android versionCode: $NEW_CODE"
             echo "ANDROID_VERSION_CODE=$NEW_CODE" >> "$GITHUB_ENV"
-            echo "| Android | versionCode | \`$NEW_CODE\` | \`$NEW_CODE\` |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Android | versionCode | \`$CURRENT_CODE\` | \`$NEW_CODE\` |" >> "$GITHUB_STEP_SUMMARY"
             echo "| Android | versionName | — | \`$VERSION_NAME\` |" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "Android deploy failed — skipping Android version bump"
@@ -174,7 +212,7 @@ jobs:
 
           echo "Version name: $VERSION_NAME"
 
-      - name: Commit versionName through a pull request
+      - name: Commit versionName via force push
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -187,27 +225,10 @@ jobs:
             exit 0
           fi
           name="${{ github.event.inputs.version_name }}"
-          branch="chore/version-name-${name}-${GITHUB_RUN_ID}"
-          git checkout -b "$branch"
           git commit -m "chore: set versionName to ${name} [skip version]"
-          git push origin "HEAD:${branch}"
-          # master rejects a direct push. A pull request is required, and this
-          # commit skips the +1 workflow so a name change does not burn a code.
-          pr=$(gh pr create \
-            --base "${{ github.ref_name }}" \
-            --head "$branch" \
-            --title "chore: set versionName to ${name} [skip version]" \
-            --body "Persist the version name used for the Play release.")
-          for attempt in 1 2 3 4 5 6; do
-            if gh pr merge "$pr" --squash --delete-branch; then
-              echo "Merged $pr"
-              exit 0
-            fi
-            echo "Merge not ready (attempt ${attempt}); retrying"
-            sleep 5
-          done
-          echo "Could not merge ${pr}" >&2
-          exit 1
+          # Force push the version bump directly to the target branch instead of
+          # opening a pull request.
+          git push --force origin "HEAD:${{ github.ref_name }}"
 
       - name: Create GitHub release
         env:
