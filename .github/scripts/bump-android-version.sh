@@ -30,6 +30,14 @@ bump_android_version() {
     return 1
   fi
 
+  # Optional base to compute from (e.g. latest versionCode fetched from Play Store).
+  # When set, the new code is base + step instead of the file's current code + step.
+  local base_code="${VERSION_CODE_BASE:-$current_code}"
+  if ! [[ "$base_code" =~ ^[0-9]+$ ]]; then
+    echo "VERSION_CODE_BASE must be a non-negative integer (got '$base_code')" >&2
+    return 1
+  fi
+
   local current_name
   current_name=$(grep -m 1 -E '^[[:space:]]*versionName[[:space:]]*=?[[:space:]]*"[^"]*"' "$gradle_file" | sed -E 's/^[^"]*"([^"]*)".*/\1/' || true)
   if [ -z "$current_name" ]; then
@@ -40,13 +48,15 @@ bump_android_version() {
     version_name="$current_name"
   fi
 
-  local new_code=$((current_code + step))
+  local new_code=$((base_code + step))
   # Escape sed replacement metacharacters so a version name cannot alter the edit.
   local escaped_name
   escaped_name=$(printf '%s\n' "$version_name" | sed -e 's/[&/\]/\\&/g')
 
-  sed -i -E "s/^([[:space:]]*versionCode[[:space:]]*=?[[:space:]]*)[0-9]+/\1${new_code}/" "$gradle_file"
-  sed -i -E "s/^([[:space:]]*versionName[[:space:]]*=?[[:space:]]*)\"[^\"]*\"/\1\"${escaped_name}\"/" "$gradle_file"
+  sed -i.bak -E "s/^([[:space:]]*versionCode[[:space:]]*=?[[:space:]]*)[0-9]+/\1@@VERSION_CODE@@/" "$gradle_file"
+  sed -i.bak "s/@@VERSION_CODE@@/${new_code}/" "$gradle_file"
+  sed -i.bak -E "s/^([[:space:]]*versionName[[:space:]]*=?[[:space:]]*)\"[^\"]*\"/\1\"${escaped_name}\"/" "$gradle_file"
+  rm -f "$gradle_file.bak"
 
   local updated_code updated_name
   updated_code=$(grep -m 1 -E '^[[:space:]]*versionCode[[:space:]]*=?[[:space:]]*[0-9]+' "$gradle_file" | grep -oE '[0-9]+' || true)

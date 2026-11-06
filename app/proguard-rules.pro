@@ -38,9 +38,6 @@
 
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
--keepclassmembers,allowobfuscation class * {
-    @com.google.gson.annotations.SerializedName <fields>;
-}
 
 # Retain service method parameters when optimizing.
 -keepclassmembers,allowshrinking,allowobfuscation interface * {
