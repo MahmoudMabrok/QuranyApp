@@ -27,7 +27,7 @@ import education.mahmoud.quranyapp.feature.listen.ListenActivity
 import education.mahmoud.quranyapp.feature.read_log.ReadLogFragment
 import education.mahmoud.quranyapp.feature.scores.ScoreActivity
 import education.mahmoud.quranyapp.feature.setting.SettingActivity
-import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafTextActivity
 import education.mahmoud.quranyapp.feature.splash.Splash
 import education.mahmoud.quranyapp.feature.test_quran.TestFragment
 import education.mahmoud.quranyapp.utils.Constants
@@ -169,26 +169,26 @@ class HomeActivity : AppCompatActivity() {
             Toast.makeText(this, "You Have no saved recitation", Toast.LENGTH_SHORT).show()
             return
         }
-        val openAcivity = Intent(this, ShowAyahsActivity::class.java)
+        val openAcivity = Intent(this, MushafTextActivity::class.java)
         openAcivity.putExtra(Constants.LAST_INDEX, index)
         startActivity(openAcivity)
     }
 
     private fun openSura(index: Int) {
-        val openAcivity = Intent(this, ShowAyahsActivity::class.java)
+        val openAcivity = Intent(this, MushafTextActivity::class.java)
         openAcivity.putExtra(Constants.SURAH_INDEX, index)
         startActivity(openAcivity)
     }
 
     private fun openBookmarkItem(item: BookmarkItem) {
-        val openAcivity = Intent(this, ShowAyahsActivity::class.java)
+        val openAcivity = Intent(this, MushafTextActivity::class.java)
         openAcivity.putExtra(Constants.PAGE_INDEX, item.pageNum)
         startActivity(openAcivity)
     }
 
     /** Opens the reader on the page of a highlighted ayah. */
     private fun openHighlightedAyah(ayah: AyahItem) {
-        val open = Intent(this, ShowAyahsActivity::class.java)
+        val open = Intent(this, MushafTextActivity::class.java)
         open.putExtra(Constants.PAGE_INDEX, ayah.pageNum)
         startActivity(open)
     }
@@ -199,7 +199,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun openAyahs(vararg extras: Pair<String, Int>) {
         showGoTo = false
-        val intent = Intent(this, ShowAyahsActivity::class.java)
+        val intent = Intent(this, MushafTextActivity::class.java)
         extras.forEach { (key, value) -> intent.putExtra(key, value) }
         startActivity(intent)
     }

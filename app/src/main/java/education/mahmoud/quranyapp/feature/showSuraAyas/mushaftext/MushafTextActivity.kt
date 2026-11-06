@@ -49,10 +49,32 @@ class MushafTextActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        currentPage = intent.getIntExtra(Constants.PAGE_INDEX, 1).coerceIn(1, LAST_PAGE)
+        currentPage = resolveStartPage()
         highlights = model.highlightedAyahs
         val night = model.nightModeState
         setContent { Reader(night) }
+    }
+
+    /** Same entry extras as the old ShowAyahsActivity: surah, page, juz, last-read, go-to ayah. */
+    private fun resolveStartPage(): Int {
+        val page = when {
+            intent.hasExtra(Constants.SURAH_GO_INDEX) -> {
+                val surah = intent.getIntExtra(Constants.SURAH_GO_INDEX, 1)
+                val ayah = intent.getIntExtra(Constants.AYAH_GO_INDEX, 1)
+                model.getPageFromSurahAndAyah(surah, ayah)
+            }
+            intent.hasExtra(Constants.LAST_INDEX) -> {
+                val latest = model.getLatestRead()
+                if (latest in 1..LAST_PAGE) latest else 1
+            }
+            intent.hasExtra(Constants.PAGE_INDEX) -> intent.getIntExtra(Constants.PAGE_INDEX, 1)
+            intent.hasExtra(Constants.JUZ_INDEX) ->
+                model.getPageFromJuz(intent.getIntExtra(Constants.JUZ_INDEX, 1))
+            intent.hasExtra(Constants.SURAH_INDEX) ->
+                model.getSuraStartpage(intent.getIntExtra(Constants.SURAH_INDEX, 1))
+            else -> 1
+        }
+        return page.coerceIn(1, LAST_PAGE)
     }
 
     @Composable
