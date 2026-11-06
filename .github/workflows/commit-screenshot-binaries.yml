@@ -1,0 +1,53 @@
+name: Commit screenshot binaries (one-shot)
+on:
+  workflow_dispatch:
+jobs:
+  decode:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/use-custom-mushaf
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Decode b64 → png, remove staging, push feature branch
+        run: |
+          set -euo pipefail
+          DIR=docs/screenshots/custom-mushaf
+          for f in "$DIR"/*.png.b64; do
+            [ -f "$f" ] || continue
+            out="${f%.b64}"
+            base64 -d "$f" > "$out"
+            rm -f "$f"
+            file "$out" || true
+            echo "wrote $out ($(wc -c < "$out") bytes)"
+          done
+          rm -f "$DIR"/_probe_tiny.png
+          rm -f .github/workflows/commit-screenshot-binaries.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "nothing to commit on feature branch"
+          else
+            git commit -m "docs: add custom mushaf screenshot PNGs [skip version]"
+            git push origin HEAD:feature/use-custom-mushaf
+          fi
+      - name: Remove one-shot workflow from master
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          git fetch origin master
+          git checkout -B master-cleanup origin/master
+          if [ -f .github/workflows/commit-screenshot-binaries.yml ]; then
+            git rm -f .github/workflows/commit-screenshot-binaries.yml
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: remove one-shot screenshot decode workflow [skip version]"
+            git push origin HEAD:master
+          else
+            echo "workflow already absent on master"
+          fi
