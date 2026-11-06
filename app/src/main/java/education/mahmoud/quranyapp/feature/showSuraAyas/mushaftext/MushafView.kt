@@ -21,30 +21,38 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import io.github.sherifshabans.mushaf.Ayah
 import io.github.sherifshabans.mushaf.MushafColors
+import io.github.sherifshabans.mushaf.MushafDecoration
 import io.github.sherifshabans.mushaf.MushafPage
+import io.github.sherifshabans.mushaf.SurahHeaderStyle as LibSurahHeaderStyle
 import io.github.sherifshabans.mushaf.toArabicDigits
 
 const val MUSHAF_PAGE_COUNT = 604
 
-/**
- * The whole mushaf, one [MushafPage] per screen. Owns the paging itself: 604 pages,
- * right-to-left like a printed copy (next page comes in from the left) whatever the locale.
- *
- * @param startPage mushaf page (1..604) shown first.
- * @param onPageChanged called with the mushaf page (1..604) each time a page settles,
- * including the start page; use it to save the last page and the reading log.
- */
 @Composable
 fun MushafView(
     startPage: Int,
     modifier: Modifier = Modifier,
     colors: MushafColors = MushafColors.Light,
+    paperColor: Color? = null,
+    headerStyle: SuraHeaderStyle = SuraHeaderStyle.CLASSIC,
+    pageFrame: Boolean = true,
     highlightedAyahs: Map<Int, Color> = emptyMap(),
     onAyahLongClick: ((Ayah) -> Unit)? = null,
     onPageChanged: (Int) -> Unit = {},
 ) {
+    val effectiveColors = if (paperColor != null) colors.copy(paper = paperColor) else colors
+    val decoration = MushafDecoration(
+        pageFrame = pageFrame,
+        surahHeaderStyle = when (headerStyle) {
+            SuraHeaderStyle.MODERN -> LibSurahHeaderStyle.MODERN
+            SuraHeaderStyle.PLAIN -> LibSurahHeaderStyle.PLAIN
+            else -> LibSurahHeaderStyle.CLASSIC
+        },
+        ayahFrame = true,
+    )
     val pagerState = rememberPagerState(
         initialPage = (startPage - 1).coerceIn(0, MUSHAF_PAGE_COUNT - 1),
     ) { MUSHAF_PAGE_COUNT }
@@ -62,16 +70,26 @@ fun MushafView(
         ) { index ->
             CompositionLocalProvider(LocalLayoutDirection provides outer) {
                 val page = index + 1
-                Column(Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp)) {
+                // Outer padding is small so the ornate frame sits close to the screen
+                // edge; text↔frame spacing comes from MushafDecoration.textGap.
+                // When the page frame is on, the medallion draws the page number —
+                // do not add a second footer (that was the duplicate "١" / "٢").
+                Column(Modifier.fillMaxSize().padding(horizontal = 3.dp, vertical = 2.dp)) {
                     MushafPage(
                         page = page,
                         modifier = Modifier.weight(1f).fillMaxWidth(),
-                        colors = colors,
+                        colors = effectiveColors,
+                        decoration = decoration,
                         highlightedAyahs = highlightedAyahs,
                         onAyahLongClick = onAyahLongClick,
                     )
-                    Box(Modifier.fillMaxWidth().padding(top = 2.dp), contentAlignment = Alignment.Center) {
-                        BasicText(toArabicDigits(page), style = TextStyle(fontSize = 15.sp, color = colors.marker))
+                    if (!pageFrame) {
+                        Box(Modifier.fillMaxWidth().padding(top = 2.dp), contentAlignment = Alignment.Center) {
+                            BasicText(
+                                toArabicDigits(page),
+                                style = TextStyle(fontSize = 15.sp, color = effectiveColors.marker),
+                            )
+                        }
                     }
                 }
             }

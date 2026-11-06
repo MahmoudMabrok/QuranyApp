@@ -26,7 +26,7 @@ import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.feature.ayah_actions.TafseerSheet
 import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie
-import education.mahmoud.quranyapp.feature.showSuraAyas.ShowAyahsActivity
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafTextActivity
 import education.mahmoud.quranyapp.utils.Constants
 import education.mahmoud.quranyapp.utils.KeyboardHelper
 import education.mahmoud.quranyapp.utils.NumberHelper
@@ -172,7 +172,7 @@ class ShowSearchResults : BaseFragment() {
 
     private fun openPage(pageNum: Int) {
         activity?.let {
-            val openAcivity = Intent(requireContext(), ShowAyahsActivity::class.java)
+            val openAcivity = Intent(requireContext(), MushafTextActivity::class.java)
             openAcivity.putExtra(Constants.PAGE_INDEX, pageNum)
             startActivity(openAcivity)
         }

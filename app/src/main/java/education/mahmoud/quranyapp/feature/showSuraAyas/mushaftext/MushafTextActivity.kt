@@ -22,6 +22,7 @@ import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.feature.ayah_actions.AyahActionsSheet
 import education.mahmoud.quranyapp.feature.ayah_actions.TafseerSheet
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie
 import education.mahmoud.quranyapp.feature.showSuraAyas.AyahsViewModel
@@ -48,10 +49,32 @@ class MushafTextActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        currentPage = intent.getIntExtra(Constants.PAGE_INDEX, 1).coerceIn(1, LAST_PAGE)
+        currentPage = resolveStartPage()
         highlights = model.highlightedAyahs
         val night = model.nightModeState
         setContent { Reader(night) }
+    }
+
+    /** Same entry extras as the old ShowAyahsActivity: surah, page, juz, last-read, go-to ayah. */
+    private fun resolveStartPage(): Int {
+        val page = when {
+            intent.hasExtra(Constants.SURAH_GO_INDEX) -> {
+                val surah = intent.getIntExtra(Constants.SURAH_GO_INDEX, 1)
+                val ayah = intent.getIntExtra(Constants.AYAH_GO_INDEX, 1)
+                model.getPageFromSurahAndAyah(surah, ayah)
+            }
+            intent.hasExtra(Constants.LAST_INDEX) -> {
+                val latest = model.getLatestRead()
+                if (latest in 1..LAST_PAGE) latest else 1
+            }
+            intent.hasExtra(Constants.PAGE_INDEX) -> intent.getIntExtra(Constants.PAGE_INDEX, 1)
+            intent.hasExtra(Constants.JUZ_INDEX) ->
+                model.getPageFromJuz(intent.getIntExtra(Constants.JUZ_INDEX, 1))
+            intent.hasExtra(Constants.SURAH_INDEX) ->
+                model.getSuraStartpage(intent.getIntExtra(Constants.SURAH_INDEX, 1))
+            else -> 1
+        }
+        return page.coerceIn(1, LAST_PAGE)
     }
 
     @Composable
@@ -66,6 +89,9 @@ class MushafTextActivity : AppCompatActivity() {
                 startPage = startPage,
                 modifier = Modifier.fillMaxSize(),
                 colors = colors,
+                paperColor = colors.paper,
+                headerStyle = SuraHeaderStyle.fromId(model.mushafHeaderStyle),
+                pageFrame = model.mushafPageFrame,
                 highlightedAyahs = highlights.associateWith { highlightColor },
                 onAyahLongClick = ::onAyahLongPressed,
                 onPageChanged = { page ->
