@@ -70,7 +70,11 @@ fun MushafView(
         ) { index ->
             CompositionLocalProvider(LocalLayoutDirection provides outer) {
                 val page = index + 1
-                Column(Modifier.fillMaxSize().padding(horizontal = 12.dp, vertical = 8.dp)) {
+                // Outer padding is small so the ornate frame sits close to the screen
+                // edge; text↔frame spacing comes from MushafDecoration.textGap.
+                // When the page frame is on, the medallion draws the page number —
+                // do not add a second footer (that was the duplicate "١" / "٢").
+                Column(Modifier.fillMaxSize().padding(horizontal = 3.dp, vertical = 2.dp)) {
                     MushafPage(
                         page = page,
                         modifier = Modifier.weight(1f).fillMaxWidth(),
@@ -79,8 +83,13 @@ fun MushafView(
                         highlightedAyahs = highlightedAyahs,
                         onAyahLongClick = onAyahLongClick,
                     )
-                    Box(Modifier.fillMaxWidth().padding(top = 2.dp), contentAlignment = Alignment.Center) {
-                        BasicText(toArabicDigits(page), style = TextStyle(fontSize = 15.sp, color = effectiveColors.marker))
+                    if (!pageFrame) {
+                        Box(Modifier.fillMaxWidth().padding(top = 2.dp), contentAlignment = Alignment.Center) {
+                            BasicText(
+                                toArabicDigits(page),
+                                style = TextStyle(fontSize = 15.sp, color = effectiveColors.marker),
+                            )
+                        }
                     }
                 }
             }
