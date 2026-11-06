@@ -28,8 +28,6 @@ class SettingActivity : AppCompatActivity() {
     private var backgroundColor by mutableStateOf(0)
     private var headerStyle by mutableStateOf(0)
     private var pageFrame by mutableStateOf(true)
-    private var bookFlip by mutableStateOf(true)
-    private var fullMushafView by mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +36,6 @@ class SettingActivity : AppCompatActivity() {
         backgroundColor = quranRepository.backColorState
         headerStyle = quranRepository.mushafHeaderStyle
         pageFrame = quranRepository.mushafPageFrame
-        bookFlip = quranRepository.bookFlipEnabled
-        fullMushafView = quranRepository.fullMushafViewEnabled
 
         setContent {
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -65,16 +61,6 @@ class SettingActivity : AppCompatActivity() {
                         onPageFrameChange = {
                             pageFrame = it
                             quranRepository.mushafPageFrame = it
-                        },
-                        bookFlip = bookFlip,
-                        onBookFlipChange = {
-                            bookFlip = it
-                            quranRepository.bookFlipEnabled = it
-                        },
-                        fullMushafView = fullMushafView,
-                        onFullMushafViewChange = {
-                            fullMushafView = it
-                            quranRepository.fullMushafViewEnabled = it
                         },
                         versionName = StoreReview.versionName(this@SettingActivity),
                         onRate = { StoreReview.openStore(this@SettingActivity) },

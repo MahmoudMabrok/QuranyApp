@@ -1,7 +1,6 @@
 package education.mahmoud.quranyapp.feature.showSuraAyas
 
 import androidx.lifecycle.ViewModel
-import com.jakewharton.rxrelay2.PublishRelay
 import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
@@ -14,11 +13,6 @@ class AyahsViewModel(private val repo: QuranRepository) : ViewModel() {
     val nightModeState = repo.nightModeState
     val mushafHeaderStyle = repo.mushafHeaderStyle
     val mushafPageFrame = repo.mushafPageFrame
-    val bookFlipEnabled = repo.bookFlipEnabled
-    val fullMushafViewEnabled = repo.fullMushafViewEnabled
-    val hizbQuaterStart: List<Int> = repo.hizbQuaterStart
-
-    val replay = PublishRelay.create<List<Page>>()
 
     val bg = CompositeDisposable()
 
