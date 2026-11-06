@@ -1,0 +1,35 @@
+name: Commit screenshot binaries (one-shot)
+on:
+  workflow_dispatch:
+jobs:
+  decode:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/use-custom-mushaf
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Decode b64 → png and clean up
+        run: |
+          set -euo pipefail
+          DIR=docs/screenshots/custom-mushaf
+          for f in "$DIR"/*.png.b64; do
+            [ -f "$f" ] || continue
+            out="${f%.b64}"
+            base64 -d "$f" > "$out"
+            rm -f "$f"
+            echo "wrote $out ($(wc -c < "$out") bytes)"
+          done
+          rm -f "$DIR"/_probe_tiny.png
+          rm -f .github/workflows/commit-screenshot-binaries.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A "$DIR" .github/workflows/commit-screenshot-binaries.yml
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+            exit 0
+          fi
+          git commit -m "docs: add custom mushaf screenshot PNGs [skip version]"
+          git push origin HEAD:feature/use-custom-mushaf
