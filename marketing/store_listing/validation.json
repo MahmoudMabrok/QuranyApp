@@ -1,0 +1,102 @@
+[
+  {
+    "file": "01_pages.png",
+    "size": [
+      1080,
+      1920
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 336396
+  },
+  {
+    "file": "02_index.png",
+    "size": [
+      1080,
+      1920
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 167955
+  },
+  {
+    "file": "03_search.png",
+    "size": [
+      1080,
+      1920
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 232510
+  },
+  {
+    "file": "04_tafseer.png",
+    "size": [
+      1080,
+      1920
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 265611
+  },
+  {
+    "file": "05_favorites.png",
+    "size": [
+      1080,
+      1920
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 126295
+  },
+  {
+    "file": "06_night.png",
+    "size": [
+      1080,
+      1920
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 350729
+  },
+  {
+    "file": "07_audio.png",
+    "size": [
+      1080,
+      1920
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 106171
+  },
+  {
+    "file": "08_test.png",
+    "size": [
+      1080,
+      1920
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 101238
+  },
+  {
+    "file": "app_icon_512.png",
+    "size": [
+      512,
+      512
+    ],
+    "mode": "RGBA",
+    "has_alpha": true,
+    "bytes": 41480
+  },
+  {
+    "file": "feature_graphic_1024x500.png",
+    "size": [
+      1024,
+      500
+    ],
+    "mode": "RGB",
+    "has_alpha": false,
+    "bytes": 80728
+  }
+]

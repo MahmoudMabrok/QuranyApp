@@ -1,0 +1,58 @@
+[
+  {
+    "id": "pages",
+    "path": "real_screens/pages.png",
+    "headline": "اقرأ بقلب حاضر",
+    "subheadline": "المصحف بالصفحات... واضح وسهل",
+    "output": "store_listing/01_pages.png"
+  },
+  {
+    "id": "index",
+    "path": "real_screens/index.png",
+    "headline": "سور القرآن بين إيديك",
+    "subheadline": "فهرس مرتب للوصول للسورة",
+    "output": "store_listing/02_index.png"
+  },
+  {
+    "id": "search",
+    "path": "real_screens/search.png",
+    "headline": "دوّر على أي آية",
+    "subheadline": "بحث سريع في آيات القرآن",
+    "output": "store_listing/03_search.png"
+  },
+  {
+    "id": "tafseer",
+    "path": "real_screens/tafseer.png",
+    "headline": "افهم معنى الآيات",
+    "subheadline": "تفسير يساعدك على التدبّر",
+    "output": "store_listing/04_tafseer.png"
+  },
+  {
+    "id": "favorites",
+    "path": "real_screens/favorites.png",
+    "headline": "ارجع لآياتك المميزة",
+    "subheadline": "المفضلة والآيات المظللة في مكان واحد",
+    "output": "store_listing/05_favorites.png"
+  },
+  {
+    "id": "night",
+    "path": "real_screens/night.png",
+    "headline": "قراءة بهدوء",
+    "subheadline": "الوضع الليلي حسب راحتك",
+    "output": "store_listing/06_night.png"
+  },
+  {
+    "id": "audio",
+    "path": "real_screens/audio.png",
+    "headline": "استمع بطريقتك",
+    "subheadline": "تلاوة مشاري العفاسي وتكرار الآيات",
+    "output": "store_listing/07_audio.png"
+  },
+  {
+    "id": "test",
+    "path": "real_screens/test.png",
+    "headline": "راجع حفظك",
+    "subheadline": "اختبار الحفظ • النقاط والإنجازات",
+    "output": "store_listing/08_test.png"
+  }
+]
