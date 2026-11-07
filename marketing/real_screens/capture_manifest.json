@@ -1,0 +1,134 @@
+[
+  {
+    "feature": "index",
+    "path": "real_screens/index.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:23:03.297016+02:00",
+    "sha256": "df3c00edf0ca25de7b5554e75b5ad8c965e7bb39e8ec07525d84041aff1e9727"
+  },
+  {
+    "feature": "pages",
+    "path": "real_screens/pages.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:23:49.448856+02:00",
+    "sha256": "36f4d2b46600cf55fa95646f24383dec5dc99a011a15c336e43c8374d93d08da"
+  },
+  {
+    "feature": "search",
+    "path": "real_screens/search.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:33:11.410906+02:00",
+    "sha256": "f6b98f02e33640fa0aaa5efc76201d861962bef619a2d723f57da358c14d249d"
+  },
+  {
+    "feature": "tafseer",
+    "path": "real_screens/tafseer.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:24:58.668615+02:00",
+    "sha256": "5912d2b0aaf7c8c9b09f6dd27eb2b34b162b6a3915c1c78754fe8d3d3e730257"
+  },
+  {
+    "feature": "longpress",
+    "path": "real_screens/longpress.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:24:20.912746+02:00",
+    "sha256": "c26d374fd69d2274ea8d7cbfc0e73086e7d53904654418848053b6848cb2be29"
+  },
+  {
+    "feature": "bookmark",
+    "path": "real_screens/bookmark.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:26:22.868323+02:00",
+    "sha256": "7d984b6d6b959fb177bbb5c97d264781dc1e3f874f4058192266498be108aad4"
+  },
+  {
+    "feature": "favorites",
+    "path": "real_screens/favorites.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:27:20.884122+02:00",
+    "sha256": "eb8792cf96e5cb0132fb47a89fe24beac239b112bafdc0dd4ad8eb041809d6a4"
+  },
+  {
+    "feature": "night",
+    "path": "real_screens/night.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:29:30.843671+02:00",
+    "sha256": "512bd2ffdddb7d1e5ac1398be4233946eaa84e706e2b129dde648aa25eef826e"
+  },
+  {
+    "feature": "history",
+    "path": "real_screens/history.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:33:35.138824+02:00",
+    "sha256": "778b32dd9ea8f185ede47be4a8c5943724a92462bb34fd814f5e16b5ceb51150"
+  },
+  {
+    "feature": "audio",
+    "path": "real_screens/audio.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:48:38.807688+02:00",
+    "sha256": "80cd21b6457d66e898b2aa678e5ebe519d5ad50e49fd7123bdb7b5dce3597a87"
+  },
+  {
+    "feature": "test",
+    "path": "real_screens/test.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:44:40.500515+02:00",
+    "sha256": "e3e84fc101a79dac10b7b0a2e2d247bce7c39f1fcc4aa2527dadc4f1c1beda96"
+  },
+  {
+    "feature": "points",
+    "path": "real_screens/points.png",
+    "dimensions": [
+      1080,
+      1920
+    ],
+    "source": "adb exec-out screencap -p; running unmodified Qurany 3.0.5 (65), master d6a91c0, Android 11/API 30 software emulator",
+    "captured_at_cairo": "2026-11-07T20:45:34.420328+02:00",
+    "sha256": "0b1d8f62812f75baf4205d1c3c315912f258d54f92ace8bfc34bb20701ed3a12"
+  }
+]

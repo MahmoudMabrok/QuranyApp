@@ -1,0 +1,9 @@
+node_modules/
+.venv/
+__pycache__/
+*.apk
+*.aab
+*.onnx
+*.safetensors
+*.pt
+.video-*
