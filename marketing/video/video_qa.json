@@ -1,0 +1,24 @@
+{
+  "duration_seconds": 30.0,
+  "resolution": [
+    1080,
+    1920
+  ],
+  "fps": "30/1",
+  "video_codec": "h264",
+  "pixel_format": "yuvj420p",
+  "audio_codec": "aac",
+  "sample_rate": "48000",
+  "audio_start_seconds": "0.000000",
+  "video_start_seconds": "0.000000",
+  "integrated_lufs": -16.2,
+  "true_peak_dbtp": -1.43,
+  "bytes": 14923472,
+  "scene_timing_source": "voice/timings.json; boundaries rounded to 30fps",
+  "native_captures": "1080x1920 verified by PIL and adb wm size; no poster crops used in narrated video",
+  "previews": [
+    "/workspace/qurany/voice_preview_01.png",
+    "/workspace/qurany/voice_preview_02.png",
+    "/workspace/qurany/voice_preview_03.png"
+  ]
+}

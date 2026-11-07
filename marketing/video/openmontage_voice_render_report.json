@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "data": {
+    "operation": "render",
+    "composition_mode": "atelier",
+    "entry": "/workspace/openmontage/projects/qurany-promo-voice/index.tsx",
+    "effective_entry": "/workspace/openmontage/remotion-composer/projects/qurany-promo-voice/index.tsx",
+    "composition_id": "QuranyPromoVoice",
+    "output": "/workspace/qurany/qurany_promo_voice.mp4",
+    "final_review": {
+      "version": "1.0",
+      "output_path": "/workspace/qurany/qurany_promo_voice.mp4",
+      "status": "pass",
+      "checks": {
+        "technical_probe": {
+          "valid_container": true,
+          "duration_seconds": 30.0,
+          "resolution": "1080x1920",
+          "fps": 30.0,
+          "has_audio": true,
+          "codec": "h264",
+          "file_size_bytes": 14923472,
+          "issues": [],
+          "target_duration": 30,
+          "duration_drift_pct": 0.0
+        },
+        "visual_spotcheck": {
+          "frames_sampled": 4,
+          "frame_paths": [
+            "/workspace/qurany/.final_review_frames/review_frame_0.png",
+            "/workspace/qurany/.final_review_frames/review_frame_1.png",
+            "/workspace/qurany/.final_review_frames/review_frame_2.png",
+            "/workspace/qurany/.final_review_frames/review_frame_3.png"
+          ],
+          "black_frames_detected": false,
+          "broken_overlays": false,
+          "missing_assets": false,
+          "unreadable_text": false,
+          "issues": []
+        },
+        "audio_spotcheck": {
+          "narration_present": true,
+          "music_present": true,
+          "unexpected_silence": false,
+          "clipping_detected": false,
+          "mix_intelligible": true,
+          "issues": []
+        },
+        "promise_preservation": {
+          "delivery_promise_honored": true,
+          "silent_downgrade_detected": false,
+          "runtime_swap_detected": false,
+          "issues": [],
+          "renderer_family_used": "",
+          "render_runtime_used": "remotion",
+          "runtime_swap_check": "ok — proposal and edit agree (proposal_packet.production_plan.render_runtime)"
+        },
+        "subtitle_check": {
+          "subtitles_expected": false,
+          "subtitles_present": false,
+          "issues": []
+        },
+        "transcript_comparison": {
+          "transcript_matches_script": false,
+          "word_accuracy": null,
+          "script_word_count": 0,
+          "transcript_word_count": 0,
+          "spurious_punctuation_words": [],
+          "issues": [
+            "transcript_comparison skipped: narration_transcript not provided"
+          ]
+        },
+        "atelier": {
+          "stock_reuse_detected": false,
+          "offending_imports": [],
+          "art_direction_declared": true,
+          "art_direction": "/workspace/openmontage/projects/qurany-promo-voice/art-direction.md",
+          "issues": []
+        }
+      },
+      "issues_found": [
+        "transcript_comparison skipped: narration_transcript not provided"
+      ],
+      "recommended_action": "present_to_user"
+    },
+    "final_review_status": "pass"
+  },
+  "error": null
+}
