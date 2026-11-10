@@ -72,6 +72,7 @@ import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderSpan
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafLook
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.toDecoration
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.toLibraryPageTurn
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafPageTurn
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafReaderSettings
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafSpreadMode
@@ -85,7 +86,6 @@ import education.mahmoud.quranyapp.utils.NumberHelper
 import androidx.compose.foundation.layout.PaddingValues
 import io.github.sherifshabans.mushaf.MushafColors
 import io.github.sherifshabans.mushaf.MushafPager
-import io.github.sherifshabans.mushaf.PageTurn
 import io.github.sherifshabans.mushaf.rememberMushafPagerState
 
 private data class BackgroundOption(val id: Int, @StringRes val label: Int, @ColorRes val color: Int)
@@ -307,6 +307,13 @@ private val headerOptions = listOf(
 
 private data class LookOption(val look: MushafLook, @StringRes val label: Int, @StringRes val summary: Int)
 
+private data class TurnOption(val turn: MushafPageTurn, @StringRes val label: Int, @StringRes val summary: Int)
+
+private val turnOptions = listOf(
+    TurnOption(MushafPageTurn.SLIDE, R.string.mushaf_turn_slide, R.string.mushaf_turn_slide_summary),
+    TurnOption(MushafPageTurn.CURL, R.string.mushaf_turn_curl, R.string.mushaf_turn_curl_summary),
+)
+
 private val lookOptions = listOf(
     LookOption(MushafLook.ORNATE, R.string.mushaf_look_ornate, R.string.mushaf_look_ornate_summary),
     LookOption(MushafLook.CAIRO, R.string.mushaf_look_cairo, R.string.mushaf_look_cairo_summary),
@@ -354,15 +361,7 @@ private fun MushafSettings(
         onCheckedChange = { onChange(settings.copy(divisionMarks = it)) },
     )
     Spacer(Modifier.height(12.dp))
-    SwitchCard(
-        title = R.string.book_flip,
-        summary = R.string.book_flip_summary,
-        checked = settings.pageTurn == MushafPageTurn.CURL,
-        enabled = true,
-        onCheckedChange = { enabled ->
-            onChange(settings.copy(pageTurn = if (enabled) MushafPageTurn.CURL else MushafPageTurn.SLIDE))
-        },
-    )
+    PageTurnCard(settings = settings, onChange = onChange)
     Spacer(Modifier.height(12.dp))
     SwitchCard(
         title = R.string.mushaf_spread,
@@ -432,11 +431,7 @@ private fun MushafAppearancePreview(settings: MushafReaderSettings, nightMode: B
                         colors = colors,
                         decoration = settings.toDecoration(),
                         showHeaders = false,
-                        pageTurn = if (settings.pageTurn == MushafPageTurn.CURL) {
-                            PageTurn.Curl
-                        } else {
-                            PageTurn.Slide
-                        },
+                        pageTurn = settings.pageTurn.toLibraryPageTurn(),
                         pagePadding = PaddingValues(horizontal = 2.dp, vertical = 2.dp),
                     )
                 }
@@ -453,6 +448,49 @@ private fun MushafAppearancePreview(settings: MushafReaderSettings, nightMode: B
 
 private val MUSHAF_PREVIEW_HEIGHT = 300.dp
 private const val MUSHAF_PREVIEW_PAGE = 1
+
+@Composable
+private fun PageTurnCard(settings: MushafReaderSettings, onChange: (MushafReaderSettings) -> Unit) {
+    SettingsCard {
+        Column(Modifier.padding(vertical = 8.dp).selectableGroup()) {
+            Text(
+                stringResource(R.string.mushaf_page_turn),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+            )
+            Text(
+                stringResource(R.string.mushaf_page_turn_summary),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
+            )
+            turnOptions.forEach { option ->
+                val selected = option.turn == settings.pageTurn
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = selected,
+                            role = Role.RadioButton,
+                            onClick = { onChange(settings.copy(pageTurn = option.turn)) },
+                        )
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    RadioButton(selected = selected, onClick = null)
+                    Column(Modifier.weight(1f).padding(start = 12.dp)) {
+                        Text(stringResource(option.label), style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            stringResource(option.summary),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 private fun LookCard(settings: MushafReaderSettings, onChange: (MushafReaderSettings) -> Unit) {

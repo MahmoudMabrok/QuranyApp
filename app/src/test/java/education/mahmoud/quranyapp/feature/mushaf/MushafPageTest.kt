@@ -34,6 +34,8 @@ class MushafPageTest {
     fun readerSettings_unknownIdsKeepThePreviousReader() {
         assertEquals(MushafLook.ORNATE, MushafLook.fromId(99))
         assertEquals(MushafPageTurn.SLIDE, MushafPageTurn.fromId(-1))
+        assertEquals(0, MushafPageTurn.SLIDE.id)
+        assertEquals(1, MushafPageTurn.CURL.id)
         assertEquals(MushafSpreadMode.SINGLE, MushafSpreadMode.fromId(7))
         val stored = MushafReaderSettings(
             headerStyle = SuraHeaderStyle.MODERN,
