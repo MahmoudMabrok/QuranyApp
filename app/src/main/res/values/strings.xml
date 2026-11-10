@@ -256,6 +256,10 @@
     <string name="mushaf_natural_madd_summary">مدّ الحركتين. يصبغ معظم حروف الصفحة، لذا هو مغلق افتراضيًا</string>
     <string name="mushaf_tajweed_word">الكلمة: %1$s</string>
     <string name="mushaf_tajweed_ok">حسنًا</string>
+    <string name="mushaf_preview_title">معاينة الشكل</string>
+    <string name="mushaf_preview_summary">صفحة الفاتحة كما ستظهر بهذه الاختيارات</string>
+    <string name="mushaf_preview_turn_slide">التقليب: سحب الصفحات</string>
+    <string name="mushaf_preview_turn_curl">التقليب: قلب الورقة حول الكعب</string>
     <string name="settings_preview_ayah">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</string>
     <!-- listen screen -->
     <string name="listen_reciter">القارئ</string>

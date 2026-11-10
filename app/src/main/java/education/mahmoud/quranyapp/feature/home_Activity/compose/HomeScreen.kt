@@ -88,6 +88,9 @@ fun HomeScreen(
                     IconButton(onClick = actions.onSearch) {
                         Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search))
                     }
+                    IconButton(onClick = actions.onSettings) {
+                        Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.setting))
+                    }
                     HomeOverflowMenu(actions)
                 },
             )
@@ -142,7 +145,6 @@ private fun HomeOverflowMenu(actions: HomeActions) {
         MenuRow(stringResource(R.string.memorization_test), Icons.Filled.Quiz, dismiss, actions.onMemorizationTest)
         MenuRow(stringResource(R.string.score), Icons.Filled.EmojiEvents, dismiss, actions.onScore)
         MenuRow(stringResource(R.string.download), Icons.Filled.Download, dismiss, actions.onDownload)
-        MenuRow(stringResource(R.string.setting), Icons.Filled.Settings, dismiss, actions.onSettings)
     }
 }
 
