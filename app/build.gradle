@@ -161,8 +161,10 @@ dependencies {
 
     // Madinah mushaf rendered as text (KFGQPC Hafs font, exact 15-line pages), used by
     // MushafTextActivity. Bundles its own text, layout and font; depends only on Compose.
-    // https://github.com/sherifshabans/mushaf-text (MIT; font under the KFGQPC licence)
-    implementation 'com.github.MahmoudMabrok:mushaf-text-customizable:db28b6897208cec34aa259b66d8095bc79e8e534'
+    // Fork of https://github.com/sherifshabans/mushaf-text (MIT; font under the KFGQPC licence)
+    // with frames, printed looks, division marks and page curl.
+    // 1.6.0 — https://github.com/MahmoudMabrok/mushaf-text-customizable/releases/tag/1.6.0
+    implementation 'com.github.MahmoudMabrok:mushaf-text-customizable:1.6.0'
 
     // Background playback with media notification controls (Listen screen)
     def media3_version = '1.5.1'

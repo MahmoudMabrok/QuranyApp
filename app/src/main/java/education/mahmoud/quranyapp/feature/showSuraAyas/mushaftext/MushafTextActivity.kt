@@ -11,24 +11,28 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.feature.ayah_actions.AyahActionsSheet
 import education.mahmoud.quranyapp.feature.ayah_actions.TafseerSheet
-import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.feature.listening_activity.AyahsListen
 import education.mahmoud.quranyapp.feature.listening_activity.ListenServie
 import education.mahmoud.quranyapp.feature.showSuraAyas.AyahsViewModel
 import education.mahmoud.quranyapp.utils.Constants
 import io.github.sherifshabans.mushaf.Ayah
 import io.github.sherifshabans.mushaf.MushafColors
+import io.github.sherifshabans.mushaf.TajweedHit
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -81,7 +85,9 @@ class MushafTextActivity : AppCompatActivity() {
     private fun Reader(night: Boolean) {
         val colors = if (night) MushafColors.Dark else MushafColors.Light
         val startPage = remember { currentPage }
+        val readerSettings = remember { model.mushafReaderSettings }
         val highlightColor = if (night) Color(0x66B8860B) else Color(0x66FFC107)
+        var tajweedHit by remember { mutableStateOf<TajweedHit?>(null) }
         Box(
             Modifier.fillMaxSize().background(colors.paper).statusBarsPadding().navigationBarsPadding(),
         ) {
@@ -90,16 +96,36 @@ class MushafTextActivity : AppCompatActivity() {
                 modifier = Modifier.fillMaxSize(),
                 colors = colors,
                 paperColor = colors.paper,
-                headerStyle = SuraHeaderStyle.fromId(model.mushafHeaderStyle),
-                pageFrame = model.mushafPageFrame,
+                settings = readerSettings,
                 highlightedAyahs = highlights.associateWith { highlightColor },
                 onAyahLongClick = ::onAyahLongPressed,
+                onTajweedClick = { tajweedHit = it },
                 onPageChanged = { page ->
                     currentPage = page
                     readLog.onPageShown(page)
                 },
             )
         }
+        tajweedHit?.let { hit -> TajweedRuleDialog(hit) { tajweedHit = null } }
+    }
+
+    @Composable
+    private fun TajweedRuleDialog(hit: TajweedHit, onDismiss: () -> Unit) {
+        val details = listOf(hit.rule.definition, hit.rule.amount, hit.rule.evidence)
+            .filter { it.isNotBlank() }
+            .joinToString("\n")
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(hit.rule.label) },
+            text = {
+                Text(stringResource(R.string.mushaf_tajweed_word, hit.word) + "\n" + details)
+            },
+            confirmButton = {
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(R.string.mushaf_tajweed_ok))
+                }
+            },
+        )
     }
 
     private fun onAyahLongPressed(ayah: Ayah) {

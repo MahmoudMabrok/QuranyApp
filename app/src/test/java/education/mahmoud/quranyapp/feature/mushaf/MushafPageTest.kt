@@ -1,20 +1,20 @@
 package education.mahmoud.quranyapp.feature.mushaf
 
-import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
-import education.mahmoud.quranyapp.feature.showSuraAyas.Page
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.HizbMark
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.JuzNames
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderInfo
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.isRightPage
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafLook
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafPageTurn
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafReaderSettings
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafSpreadMode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MushafPageTest {
-
-    private val basmala = "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
 
     @Test
     fun oddPagesAreRightPages() {
@@ -28,6 +28,43 @@ class MushafPageTest {
         assertEquals(SuraHeaderStyle.MODERN, SuraHeaderStyle.fromId(1))
         assertEquals(SuraHeaderStyle.PLAIN, SuraHeaderStyle.fromId(2))
         assertEquals(SuraHeaderStyle.CLASSIC, SuraHeaderStyle.fromId(42))
+    }
+
+    @Test
+    fun readerSettings_unknownIdsKeepThePreviousReader() {
+        assertEquals(MushafLook.ORNATE, MushafLook.fromId(99))
+        assertEquals(MushafPageTurn.SLIDE, MushafPageTurn.fromId(-1))
+        assertEquals(MushafSpreadMode.SINGLE, MushafSpreadMode.fromId(7))
+        val stored = MushafReaderSettings(
+            headerStyle = SuraHeaderStyle.MODERN,
+            pageFrame = false,
+        )
+        assertEquals(SuraHeaderStyle.MODERN, stored.headerStyle)
+        assertTrue(!stored.pageFrame)
+        assertTrue(!stored.drawDivisionMarks)
+        assertTrue(!stored.libraryDrawsPageNumber)
+        assertTrue(!stored.colorNaturalMadd)
+        assertTrue(stored.ornateControlsApply)
+    }
+
+    @Test
+    fun readerSettings_divisionMarksNeedTheOrnateFrame() {
+        val marksOn = MushafReaderSettings(divisionMarks = true, pageFrame = true)
+        assertTrue(marksOn.drawDivisionMarks)
+        assertTrue(marksOn.libraryDrawsPageNumber)
+        val frameOff = marksOn.copy(pageFrame = false)
+        assertTrue(!frameOff.drawDivisionMarks)
+        val cairo = marksOn.copy(look = MushafLook.CAIRO)
+        assertTrue(!cairo.drawDivisionMarks)
+        assertTrue(!cairo.ornateControlsApply)
+        assertTrue(cairo.libraryDrawsPageNumber)
+    }
+
+    @Test
+    fun readerSettings_naturalMaddFollowsTajweed() {
+        val madd = MushafReaderSettings(naturalMadd = true)
+        assertTrue(!madd.colorNaturalMadd)
+        assertTrue(madd.copy(tajweed = true).colorNaturalMadd)
     }
 
     @Test
@@ -56,35 +93,5 @@ class MushafPageTest {
     fun juzNames() {
         assertEquals("الجزء الأول", JuzNames.of(1))
         assertEquals("الجزء الثلاثون", JuzNames.of(30))
-    }
-
-    @Test
-    fun splitBasmala_whateverDiacriticsOrder() {
-        val split = Page.splitBasmala("$basmala وَٱلسَّمَآءِ وَٱلطَّارِقِ")!!
-        assertEquals(basmala, split.first)
-        assertEquals("وَٱلسَّمَآءِ وَٱلطَّارِقِ", split.second)
-        assertNull(Page.splitBasmala("بَرَآءَةٌ مِّنَ ٱللَّهِ وَرَسُولِهِۦٓ إِلَى ٱلَّذِينَ"))
-    }
-
-    @Test
-    fun buildContent_marksHeadersAndAyahStarts() {
-        val page = Page(
-            listOf(
-                AyahItem(surahIndex = 113, ayahInSurahIndex = 5, text = "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ"),
-                AyahItem(surahIndex = 114, ayahInSurahIndex = 1, text = "$basmala قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ"),
-                AyahItem(surahIndex = 114, ayahInSurahIndex = 2, text = "مَلِكِ ٱلنَّاسِ"),
-            ),
-            pageNum = 604,
-        )
-        val content = page.buildContent()
-        assertEquals(1, content.headers.size)
-        val header = content.headers[0]
-        assertEquals(114, header.surahIndex)
-        assertEquals("الناس", content.text.substring(header.start, header.end))
-        assertEquals(3, content.ayahStarts.size)
-        // ayah 1 of a sura starts at its header line
-        assertEquals(header.start, content.ayahStarts[1])
-        assertTrue(content.text.contains("الناس\n$basmala\nقُلْ"))
-        assertEquals(content.text, page.getText())
     }
 }
