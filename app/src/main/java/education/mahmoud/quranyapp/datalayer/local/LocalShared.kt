@@ -55,6 +55,51 @@ class LocalShared(context: Application) {
             preferences.edit().putBoolean(MUSHAF_PAGE_FRAME, enabled).apply()
         }
 
+    /**
+     * Printed look of the text mushaf. See [education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafLook].
+     * 0 keeps the header style and page frame above (the pre-1.6.0 reader).
+     */
+    var mushafLook: Int
+        get() = preferences.getInt(MUSHAF_LOOK, 0)
+        set(look) {
+            preferences.edit().putInt(MUSHAF_LOOK, look).apply()
+        }
+
+    /** Juz / hizb / sajdah medallions. Off by default so existing frames stay as they were. */
+    var mushafDivisionMarks: Boolean
+        get() = preferences.getBoolean(MUSHAF_DIVISION_MARKS, false)
+        set(enabled) {
+            preferences.edit().putBoolean(MUSHAF_DIVISION_MARKS, enabled).apply()
+        }
+
+    /** 0 = slide (previous pager), 1 = leaf curl. See MushafPageTurn. */
+    var mushafPageTurn: Int
+        get() = preferences.getInt(MUSHAF_PAGE_TURN, 0)
+        set(turn) {
+            preferences.edit().putInt(MUSHAF_PAGE_TURN, turn).apply()
+        }
+
+    /** 0 = one page, 1 = two-page spread on wide screens. See MushafSpreadMode. */
+    var mushafSpread: Int
+        get() = preferences.getInt(MUSHAF_SPREAD, 0)
+        set(spread) {
+            preferences.edit().putInt(MUSHAF_SPREAD, spread).apply()
+        }
+
+    /** Colour tajweed rules in the text mushaf. Off by default. */
+    var mushafTajweed: Boolean
+        get() = preferences.getBoolean(MUSHAF_TAJWEED, false)
+        set(enabled) {
+            preferences.edit().putBoolean(MUSHAF_TAJWEED, enabled).apply()
+        }
+
+    /** Also colour natural madd. Stored independently; the reader applies it only while tajweed is on. */
+    var mushafNaturalMadd: Boolean
+        get() = preferences.getBoolean(MUSHAF_NATURAL_MADD, false)
+        set(enabled) {
+            preferences.edit().putBoolean(MUSHAF_NATURAL_MADD, enabled).apply()
+        }
+
 
 
     var score: Long
@@ -109,5 +154,11 @@ class LocalShared(context: Application) {
         const val PLAYBACK_SPEED = "playback_speed"
         const val MUSHAF_HEADER_STYLE = "mushaf_header_style"
         const val MUSHAF_PAGE_FRAME = "mushaf_page_frame"
+        const val MUSHAF_LOOK = "mushaf_look"
+        const val MUSHAF_DIVISION_MARKS = "mushaf_division_marks"
+        const val MUSHAF_PAGE_TURN = "mushaf_page_turn"
+        const val MUSHAF_SPREAD = "mushaf_spread"
+        const val MUSHAF_TAJWEED = "mushaf_tajweed"
+        const val MUSHAF_NATURAL_MADD = "mushaf_natural_madd"
     }
 }

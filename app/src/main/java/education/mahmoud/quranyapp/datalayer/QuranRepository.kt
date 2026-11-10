@@ -71,6 +71,42 @@ class QuranRepository(private var localShared: LocalShared, private var quranDB:
             localShared.mushafPageFrame = enabled
         }
 
+    var mushafLook: Int
+        get() = localShared.mushafLook
+        set(look) {
+            localShared.mushafLook = look
+        }
+
+    var mushafDivisionMarks: Boolean
+        get() = localShared.mushafDivisionMarks
+        set(enabled) {
+            localShared.mushafDivisionMarks = enabled
+        }
+
+    var mushafPageTurn: Int
+        get() = localShared.mushafPageTurn
+        set(turn) {
+            localShared.mushafPageTurn = turn
+        }
+
+    var mushafSpread: Int
+        get() = localShared.mushafSpread
+        set(spread) {
+            localShared.mushafSpread = spread
+        }
+
+    var mushafTajweed: Boolean
+        get() = localShared.mushafTajweed
+        set(enabled) {
+            localShared.mushafTajweed = enabled
+        }
+
+    var mushafNaturalMadd: Boolean
+        get() = localShared.mushafNaturalMadd
+        set(enabled) {
+            localShared.mushafNaturalMadd = enabled
+        }
+
 
 
     var listenReciter: String?

@@ -68,6 +68,10 @@ import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.MushafPalette
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderInfo
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderSpan
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafLook
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafPageTurn
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafReaderSettings
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafSpreadMode
 import education.mahmoud.quranyapp.R
 import education.mahmoud.quranyapp.feature.home_Activity.compose.SafeInsets
 import education.mahmoud.quranyapp.feature.home_Activity.compose.paddingExceptBottom
@@ -92,10 +96,8 @@ fun SettingsScreen(
     onNightModeChange: (Boolean) -> Unit,
     onBackgroundColorChange: (Int) -> Unit,
     onBack: () -> Unit,
-    headerStyle: Int = SuraHeaderStyle.DEFAULT.id,
-    pageFrame: Boolean = true,
-    onHeaderStyleChange: (Int) -> Unit = {},
-    onPageFrameChange: (Boolean) -> Unit = {},
+    reader: MushafReaderSettings = MushafReaderSettings(),
+    onReaderChange: (MushafReaderSettings) -> Unit = {},
     versionName: String = "",
     onRate: () -> Unit = {},
     onUpdate: () -> Unit = {},
@@ -159,12 +161,10 @@ fun SettingsScreen(
 
             SectionHeader(R.string.settings_section_mushaf)
             MushafSettings(
-                headerStyle = headerStyle,
-                pageFrame = pageFrame,
+                settings = reader,
                 nightMode = nightMode,
                 backgroundColor = backgroundColor,
-                onHeaderStyleChange = onHeaderStyleChange,
-                onPageFrameChange = onPageFrameChange,
+                onChange = onReaderChange,
             )
 
             SectionHeader(R.string.settings_section_about)
@@ -297,32 +297,177 @@ private val headerOptions = listOf(
     HeaderOption(SuraHeaderStyle.PLAIN, R.string.mushaf_header_plain, R.string.mushaf_header_plain_summary),
 )
 
+private data class LookOption(val look: MushafLook, @StringRes val label: Int, @StringRes val summary: Int)
+
+private val lookOptions = listOf(
+    LookOption(MushafLook.ORNATE, R.string.mushaf_look_ornate, R.string.mushaf_look_ornate_summary),
+    LookOption(MushafLook.CAIRO, R.string.mushaf_look_cairo, R.string.mushaf_look_cairo_summary),
+    LookOption(MushafLook.DIYANET, R.string.mushaf_look_diyanet, R.string.mushaf_look_diyanet_summary),
+    LookOption(MushafLook.INDOPAK, R.string.mushaf_look_indopak, R.string.mushaf_look_indopak_summary),
+)
+
 @Composable
 private fun MushafSettings(
-    headerStyle: Int,
-    pageFrame: Boolean,
+    settings: MushafReaderSettings,
     nightMode: Boolean,
     backgroundColor: Int,
-    onHeaderStyleChange: (Int) -> Unit,
-    onPageFrameChange: (Boolean) -> Unit,
+    onChange: (MushafReaderSettings) -> Unit,
 ) {
+    val ornate = settings.ornateControlsApply
+    LookCard(settings = settings, onChange = onChange)
+    Spacer(Modifier.height(12.dp))
+    HeaderStyleCard(
+        settings = settings,
+        enabled = ornate,
+        nightMode = nightMode,
+        backgroundColor = backgroundColor,
+        onChange = onChange,
+    )
+    Spacer(Modifier.height(12.dp))
+    SwitchCard(
+        title = R.string.mushaf_page_frame,
+        summary = if (ornate) R.string.mushaf_page_frame_summary else R.string.mushaf_ornate_only,
+        checked = settings.pageFrame,
+        enabled = ornate,
+        onCheckedChange = { onChange(settings.copy(pageFrame = it)) },
+    )
+    Spacer(Modifier.height(12.dp))
+    SwitchCard(
+        title = R.string.mushaf_division_marks,
+        summary = when {
+            !ornate -> R.string.mushaf_ornate_only
+            !settings.pageFrame -> R.string.mushaf_division_needs_frame
+            else -> R.string.mushaf_division_marks_summary
+        },
+        checked = settings.divisionMarks,
+        enabled = ornate && settings.pageFrame,
+        onCheckedChange = { onChange(settings.copy(divisionMarks = it)) },
+    )
+    Spacer(Modifier.height(12.dp))
+    SwitchCard(
+        title = R.string.book_flip,
+        summary = R.string.book_flip_summary,
+        checked = settings.pageTurn == MushafPageTurn.CURL,
+        enabled = true,
+        onCheckedChange = { enabled ->
+            onChange(settings.copy(pageTurn = if (enabled) MushafPageTurn.CURL else MushafPageTurn.SLIDE))
+        },
+    )
+    Spacer(Modifier.height(12.dp))
+    SwitchCard(
+        title = R.string.mushaf_spread,
+        summary = R.string.mushaf_spread_summary,
+        checked = settings.spread == MushafSpreadMode.AUTO,
+        enabled = true,
+        onCheckedChange = { enabled ->
+            onChange(settings.copy(spread = if (enabled) MushafSpreadMode.AUTO else MushafSpreadMode.SINGLE))
+        },
+    )
+    Spacer(Modifier.height(12.dp))
+    SwitchCard(
+        title = R.string.mushaf_tajweed,
+        summary = R.string.mushaf_tajweed_summary,
+        checked = settings.tajweed,
+        enabled = true,
+        onCheckedChange = { onChange(settings.copy(tajweed = it)) },
+    )
+    Spacer(Modifier.height(12.dp))
+    SwitchCard(
+        title = R.string.mushaf_natural_madd,
+        summary = R.string.mushaf_natural_madd_summary,
+        checked = settings.naturalMadd,
+        enabled = settings.tajweed,
+        onCheckedChange = { onChange(settings.copy(naturalMadd = it)) },
+    )
+}
+
+@Composable
+private fun LookCard(settings: MushafReaderSettings, onChange: (MushafReaderSettings) -> Unit) {
     SettingsCard {
         Column(Modifier.padding(vertical = 8.dp).selectableGroup()) {
+            Text(
+                stringResource(R.string.mushaf_look),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+            )
+            Text(
+                stringResource(R.string.mushaf_look_summary),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp),
+            )
+            lookOptions.forEach { option ->
+                val selected = option.look == settings.look
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = selected,
+                            role = Role.RadioButton,
+                            onClick = { onChange(settings.copy(look = option.look)) },
+                        )
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = selected, onClick = null)
+                        Column(Modifier.weight(1f).padding(start = 12.dp)) {
+                            Text(stringResource(option.label), style = MaterialTheme.typography.bodyLarge)
+                            Text(
+                                stringResource(option.summary),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun HeaderStyleCard(
+    settings: MushafReaderSettings,
+    enabled: Boolean,
+    nightMode: Boolean,
+    backgroundColor: Int,
+    onChange: (MushafReaderSettings) -> Unit,
+) {
+    SettingsCard {
+        Column(
+            Modifier
+                .padding(vertical = 8.dp)
+                .alpha(if (enabled) 1f else DISABLED_ALPHA)
+                .selectableGroup(),
+        ) {
             Text(
                 stringResource(R.string.mushaf_header_style),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
             )
+            if (!enabled) {
+                Text(
+                    stringResource(R.string.mushaf_ornate_only),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
             headerOptions.forEach { option ->
-                val selected = option.style.id == headerStyle
+                val selected = option.style == settings.headerStyle
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .selectable(selected = selected, role = Role.RadioButton, onClick = { onHeaderStyleChange(option.style.id) })
+                        .selectable(
+                            selected = selected,
+                            enabled = enabled,
+                            role = Role.RadioButton,
+                            onClick = { onChange(settings.copy(headerStyle = option.style)) },
+                        )
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(selected = selected, onClick = null)
+                        RadioButton(selected = selected, onClick = null, enabled = enabled)
                         Column(Modifier.weight(1f).padding(start = 12.dp)) {
                             Text(stringResource(option.label), style = MaterialTheme.typography.bodyLarge)
                             Text(
@@ -344,24 +489,39 @@ private fun MushafSettings(
             }
         }
     }
-    Spacer(Modifier.height(12.dp))
+}
+
+@Composable
+private fun SwitchCard(
+    @StringRes title: Int,
+    @StringRes summary: Int,
+    checked: Boolean,
+    enabled: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
     SettingsCard {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .toggleable(value = pageFrame, role = Role.Switch, onValueChange = onPageFrameChange)
+                .alpha(if (enabled) 1f else DISABLED_ALPHA)
+                .toggleable(
+                    value = checked,
+                    enabled = enabled,
+                    role = Role.Switch,
+                    onValueChange = onCheckedChange,
+                )
                 .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(Modifier.weight(1f).padding(end = 16.dp)) {
-                Text(stringResource(R.string.mushaf_page_frame), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(title), style = MaterialTheme.typography.titleMedium)
                 Text(
-                    stringResource(R.string.mushaf_page_frame_summary),
+                    stringResource(summary),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Switch(checked = pageFrame, onCheckedChange = null)
+            Switch(checked = checked, onCheckedChange = null, enabled = enabled)
         }
     }
 }

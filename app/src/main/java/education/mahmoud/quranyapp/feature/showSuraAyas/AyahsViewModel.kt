@@ -5,14 +5,29 @@ import education.mahmoud.quranyapp.datalayer.QuranRepository
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
 import education.mahmoud.quranyapp.datalayer.local.room.ReadLog
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaf.SuraHeaderStyle
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafLook
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafPageTurn
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafReaderSettings
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafSpreadMode
 import io.reactivex.disposables.CompositeDisposable
 
 class AyahsViewModel(private val repo: QuranRepository) : ViewModel() {
 
     val backColorState = repo.backColorState
     val nightModeState = repo.nightModeState
-    val mushafHeaderStyle = repo.mushafHeaderStyle
-    val mushafPageFrame = repo.mushafPageFrame
+
+    /** Snapshot of the text-mushaf preferences. Unknown stored ids fall back to the previous reader. */
+    val mushafReaderSettings = MushafReaderSettings(
+        headerStyle = SuraHeaderStyle.fromId(repo.mushafHeaderStyle),
+        pageFrame = repo.mushafPageFrame,
+        look = MushafLook.fromId(repo.mushafLook),
+        divisionMarks = repo.mushafDivisionMarks,
+        pageTurn = MushafPageTurn.fromId(repo.mushafPageTurn),
+        spread = MushafSpreadMode.fromId(repo.mushafSpread),
+        tajweed = repo.mushafTajweed,
+        naturalMadd = repo.mushafNaturalMadd,
+    )
 
     val bg = CompositeDisposable()
 
