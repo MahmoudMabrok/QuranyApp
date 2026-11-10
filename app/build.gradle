@@ -48,6 +48,7 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
     }
 
     buildFeatures{
@@ -70,6 +71,9 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'androidx.compose.ui:ui-test-junit4:1.8.3'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.8.3'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
