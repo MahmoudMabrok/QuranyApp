@@ -72,7 +72,7 @@ class LocalShared(context: Application) {
             preferences.edit().putBoolean(MUSHAF_DIVISION_MARKS, enabled).apply()
         }
 
-    /** Library page turn. 0 = slide, 1 = curl. See MushafPageTurn. */
+    /** Library page turn. 0 slide, 1 curl, 2 flip, 3 fade, 4 cover. See MushafPageTurn. */
     var mushafPageTurn: Int
         get() = preferences.getInt(MUSHAF_PAGE_TURN, 0)
         set(turn) {

@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -312,6 +313,9 @@ private data class TurnOption(val turn: MushafPageTurn, @StringRes val label: In
 private val turnOptions = listOf(
     TurnOption(MushafPageTurn.SLIDE, R.string.mushaf_turn_slide, R.string.mushaf_turn_slide_summary),
     TurnOption(MushafPageTurn.CURL, R.string.mushaf_turn_curl, R.string.mushaf_turn_curl_summary),
+    TurnOption(MushafPageTurn.FLIP, R.string.mushaf_turn_flip, R.string.mushaf_turn_flip_summary),
+    TurnOption(MushafPageTurn.FADE, R.string.mushaf_turn_fade, R.string.mushaf_turn_fade_summary),
+    TurnOption(MushafPageTurn.COVER, R.string.mushaf_turn_cover, R.string.mushaf_turn_cover_summary),
 )
 
 private val lookOptions = listOf(
@@ -398,10 +402,12 @@ private fun MushafSettings(
 @Composable
 private fun MushafAppearancePreview(settings: MushafReaderSettings, nightMode: Boolean) {
     val colors = if (nightMode) MushafColors.Dark else MushafColors.Light
-    val turnLabel = if (settings.pageTurn == MushafPageTurn.CURL) {
-        R.string.mushaf_preview_turn_curl
-    } else {
-        R.string.mushaf_preview_turn_slide
+    val turnLabel = when (settings.pageTurn) {
+        MushafPageTurn.SLIDE -> R.string.mushaf_preview_turn_slide
+        MushafPageTurn.CURL -> R.string.mushaf_preview_turn_curl
+        MushafPageTurn.FLIP -> R.string.mushaf_preview_turn_flip
+        MushafPageTurn.FADE -> R.string.mushaf_preview_turn_fade
+        MushafPageTurn.COVER -> R.string.mushaf_preview_turn_cover
     }
     SettingsCard {
         Column(Modifier.padding(12.dp)) {
@@ -452,7 +458,7 @@ private const val MUSHAF_PREVIEW_PAGE = 1
 @Composable
 private fun PageTurnCard(settings: MushafReaderSettings, onChange: (MushafReaderSettings) -> Unit) {
     SettingsCard {
-        Column(Modifier.padding(vertical = 8.dp).selectableGroup()) {
+        Column(Modifier.padding(vertical = 8.dp).selectableGroup().testTag("page_turn")) {
             Text(
                 stringResource(R.string.mushaf_page_turn),
                 style = MaterialTheme.typography.titleMedium,

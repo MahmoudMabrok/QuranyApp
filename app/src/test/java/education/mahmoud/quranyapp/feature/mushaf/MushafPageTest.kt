@@ -36,6 +36,10 @@ class MushafPageTest {
         assertEquals(MushafPageTurn.SLIDE, MushafPageTurn.fromId(-1))
         assertEquals(0, MushafPageTurn.SLIDE.id)
         assertEquals(1, MushafPageTurn.CURL.id)
+        assertEquals(2, MushafPageTurn.FLIP.id)
+        assertEquals(3, MushafPageTurn.FADE.id)
+        assertEquals(4, MushafPageTurn.COVER.id)
+        assertEquals(MushafPageTurn.SLIDE, MushafPageTurn.fromId(9))
         assertEquals(MushafSpreadMode.SINGLE, MushafSpreadMode.fromId(7))
         val stored = MushafReaderSettings(
             headerStyle = SuraHeaderStyle.MODERN,

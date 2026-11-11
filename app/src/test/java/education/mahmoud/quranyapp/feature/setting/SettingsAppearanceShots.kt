@@ -7,7 +7,19 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.unit.dp
+import io.github.sherifshabans.mushaf.MushafDecoration
+import io.github.sherifshabans.mushaf.MushafPager
+import io.github.sherifshabans.mushaf.PageTurn
+import io.github.sherifshabans.mushaf.rememberMushafPagerState
 import androidx.compose.ui.unit.LayoutDirection
 import education.mahmoud.quranyapp.datalayer.local.room.AyahItem
 import education.mahmoud.quranyapp.datalayer.local.room.BookmarkItem
@@ -16,6 +28,7 @@ import education.mahmoud.quranyapp.feature.home_Activity.compose.HomeTopBar
 import education.mahmoud.quranyapp.feature.home_Activity.compose.QuranyTheme
 import education.mahmoud.quranyapp.feature.setting.compose.SettingsScreen
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafLook
+import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafPageTurn
 import education.mahmoud.quranyapp.feature.showSuraAyas.mushaftext.MushafReaderSettings
 import education.mahmoud.quranyapp.utils.Constants
 import org.junit.Rule
@@ -56,6 +69,34 @@ class SettingsAppearanceShots {
     fun settingsPreviewCairo() {
         show { SettingsPreview(MushafReaderSettings(look = MushafLook.CAIRO)) }
         save("settings-preview-cairo.png")
+    }
+
+    @Test
+    fun settingsPickerShowsTheLibraryTurns() {
+        show { SettingsPreview(MushafReaderSettings(pageTurn = MushafPageTurn.FLIP)) }
+        rule.onNodeWithTag("page_turn").performScrollTo()
+        rule.waitForIdle()
+        save("settings-page-turn-picker.png")
+    }
+
+    @Test
+    fun readerFlipMidTurn() {
+        show {
+            MushafPager(
+                modifier = Modifier.fillMaxSize(),
+                state = rememberMushafPagerState(initialPage = 2),
+                decoration = MushafDecoration.Classic,
+                pageTurn = PageTurn.Flip,
+                pagePadding = PaddingValues(0.dp),
+            )
+        }
+        rule.waitForIdle()
+        rule.onRoot().performTouchInput {
+            down(center)
+            moveBy(percentOffset(0.35f, 0f))
+        }
+        rule.waitForIdle()
+        save("reader-flip-mid.png")
     }
 
     private fun show(content: @Composable () -> Unit) {

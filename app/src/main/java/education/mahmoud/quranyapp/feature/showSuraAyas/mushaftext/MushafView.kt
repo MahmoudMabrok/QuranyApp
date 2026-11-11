@@ -89,14 +89,13 @@ fun MushafView(
     }
 }
 
-/**
- * The library's [PageTurn] for this stored choice.
- * Slide is 0 and curl is 1, matching mushaf-text 1.6.0. Later library turns
- * are added here when the dependency is bumped.
- */
+/** The library's [PageTurn] for this stored choice. */
 internal fun MushafPageTurn.toLibraryPageTurn(): PageTurn = when (this) {
-    MushafPageTurn.CURL -> PageTurn.Curl
     MushafPageTurn.SLIDE -> PageTurn.Slide
+    MushafPageTurn.CURL -> PageTurn.Curl
+    MushafPageTurn.FLIP -> PageTurn.Flip
+    MushafPageTurn.FADE -> PageTurn.Fade
+    MushafPageTurn.COVER -> PageTurn.Cover
 }
 
 /** Maps stored reader settings onto a 1.6.0 [MushafDecoration]. */
