@@ -75,23 +75,7 @@ fun HomeScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         contentWindowInsets = SafeInsets.content,
-        topBar = {
-            TopAppBar(
-                windowInsets = SafeInsets.topBar,
-                title = { Text(stringResource(R.string.app_name)) },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-                actions = {
-                    IconButton(onClick = actions.onSearch) {
-                        Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search))
-                    }
-                    HomeOverflowMenu(actions)
-                },
-            )
-        },
+        topBar = { HomeTopBar(actions) },
     ) { innerPadding ->
         // lists draw behind the navigation bar; their last rows get the bottom inset as content padding
         Column(Modifier.fillMaxSize().paddingExceptBottom(innerPadding)) {
@@ -127,6 +111,29 @@ fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun HomeTopBar(actions: HomeActions) {
+    TopAppBar(
+        windowInsets = SafeInsets.topBar,
+        title = { Text(stringResource(R.string.app_name)) },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
+        ),
+        actions = {
+            IconButton(onClick = actions.onSearch) {
+                Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search))
+            }
+            IconButton(onClick = actions.onSettings) {
+                Icon(Icons.Filled.Settings, contentDescription = stringResource(R.string.setting))
+            }
+            HomeOverflowMenu(actions)
+        },
+    )
+}
+
 @Composable
 private fun HomeOverflowMenu(actions: HomeActions) {
     var expanded by remember { mutableStateOf(false) }
@@ -142,7 +149,6 @@ private fun HomeOverflowMenu(actions: HomeActions) {
         MenuRow(stringResource(R.string.memorization_test), Icons.Filled.Quiz, dismiss, actions.onMemorizationTest)
         MenuRow(stringResource(R.string.score), Icons.Filled.EmojiEvents, dismiss, actions.onScore)
         MenuRow(stringResource(R.string.download), Icons.Filled.Download, dismiss, actions.onDownload)
-        MenuRow(stringResource(R.string.setting), Icons.Filled.Settings, dismiss, actions.onSettings)
     }
 }
 

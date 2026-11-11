@@ -23,10 +23,16 @@ enum class MushafLook(val id: Int) {
     }
 }
 
-/** How pages turn. [SLIDE] is the previous right-to-left pager. */
+/**
+ * How pages turn. Ids match what is already stored in `mushaf_page_turn`:
+ * 0 slide, 1 curl. Later library turns use the next free ids.
+ */
 enum class MushafPageTurn(val id: Int) {
     SLIDE(0),
-    CURL(1);
+    CURL(1),
+    FLIP(2),
+    FADE(3),
+    COVER(4);
 
     companion object {
         val DEFAULT = SLIDE

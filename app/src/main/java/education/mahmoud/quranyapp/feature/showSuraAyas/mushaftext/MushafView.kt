@@ -71,7 +71,7 @@ fun MushafView(
             colors = effectiveColors,
             decoration = decoration,
             showHeaders = false,
-            pageTurn = if (settings.pageTurn == MushafPageTurn.CURL) PageTurn.Curl else PageTurn.Slide,
+            pageTurn = settings.pageTurn.toLibraryPageTurn(),
             spread = if (settings.spread == MushafSpreadMode.AUTO) MushafSpread.Auto else MushafSpread.Single,
             highlightedAyahs = highlightedAyahs,
             onAyahLongClick = onAyahLongClick,
@@ -87,6 +87,15 @@ fun MushafView(
             }
         }
     }
+}
+
+/** The library's [PageTurn] for this stored choice. */
+internal fun MushafPageTurn.toLibraryPageTurn(): PageTurn = when (this) {
+    MushafPageTurn.SLIDE -> PageTurn.Slide
+    MushafPageTurn.CURL -> PageTurn.Curl
+    MushafPageTurn.FLIP -> PageTurn.Flip
+    MushafPageTurn.FADE -> PageTurn.Fade
+    MushafPageTurn.COVER -> PageTurn.Cover
 }
 
 /** Maps stored reader settings onto a 1.6.0 [MushafDecoration]. */

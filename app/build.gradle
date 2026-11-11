@@ -48,6 +48,7 @@ android {
     }
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
     }
 
     buildFeatures{
@@ -70,6 +71,9 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'androidx.compose.ui:ui-test-junit4:1.8.3'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.8.3'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
@@ -163,8 +167,8 @@ dependencies {
     // MushafTextActivity. Bundles its own text, layout and font; depends only on Compose.
     // Fork of https://github.com/sherifshabans/mushaf-text (MIT; font under the KFGQPC licence)
     // with frames, printed looks, division marks and page curl.
-    // 1.6.0 — https://github.com/MahmoudMabrok/mushaf-text-customizable/releases/tag/1.6.0
-    implementation 'com.github.MahmoudMabrok:mushaf-text-customizable:1.6.0'
+    // 1.7.0 — https://github.com/MahmoudMabrok/mushaf-text-customizable/releases/tag/1.7.0
+    implementation 'com.github.MahmoudMabrok:mushaf-text-customizable:1.7.0'
 
     // Background playback with media notification controls (Listen screen)
     def media3_version = '1.5.1'

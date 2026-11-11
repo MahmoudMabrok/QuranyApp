@@ -256,6 +256,25 @@
     <string name="mushaf_natural_madd_summary">مدّ الحركتين. يصبغ معظم حروف الصفحة، لذا هو مغلق افتراضيًا</string>
     <string name="mushaf_tajweed_word">الكلمة: %1$s</string>
     <string name="mushaf_tajweed_ok">حسنًا</string>
+    <string name="mushaf_preview_title">معاينة الشكل</string>
+    <string name="mushaf_preview_summary">صفحة الفاتحة كما ستظهر بهذه الاختيارات</string>
+    <string name="mushaf_preview_turn_slide">التقليب: سحب الصفحات</string>
+    <string name="mushaf_preview_turn_curl">التقليب: تقشير الحافة</string>
+    <string name="mushaf_preview_turn_flip">التقليب: قلب حول الكعب</string>
+    <string name="mushaf_preview_turn_fade">التقليب: تلاشي</string>
+    <string name="mushaf_preview_turn_cover">التقليب: تغطية</string>
+    <string name="mushaf_page_turn">تقليب الصفحات</string>
+    <string name="mushaf_page_turn_summary">الخيارات التي توفرها مكتبة المصحف. اسحب المعاينة لتجربة المختار</string>
+    <string name="mushaf_turn_slide">سحب</string>
+    <string name="mushaf_turn_slide_summary">الصفحة التالية تنزلق من اليسار</string>
+    <string name="mushaf_turn_curl">تقشير الحافة</string>
+    <string name="mushaf_turn_curl_summary">حافة الورقة ترتفع وتكشف الصفحة التالية</string>
+    <string name="mushaf_turn_flip">قلب حول الكعب</string>
+    <string name="mushaf_turn_flip_summary">الورقة تدور حول كعب الكتاب مع ظل على الصفحة</string>
+    <string name="mushaf_turn_fade">تلاشي</string>
+    <string name="mushaf_turn_fade_summary">الصفحة الحالية تخفت بينما تظهر التالية</string>
+    <string name="mushaf_turn_cover">تغطية</string>
+    <string name="mushaf_turn_cover_summary">الصفحة التالية تنزلق من الحافة وتغطي الحالية</string>
     <string name="settings_preview_ayah">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</string>
     <!-- listen screen -->
     <string name="listen_reciter">القارئ</string>
