@@ -18,6 +18,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import io.github.sherifshabans.mushaf.MushafDecoration
 import io.github.sherifshabans.mushaf.MushafPager
+import io.github.sherifshabans.mushaf.MushafSpread
 import io.github.sherifshabans.mushaf.PageTurn
 import io.github.sherifshabans.mushaf.rememberMushafPagerState
 import androidx.compose.ui.unit.LayoutDirection
@@ -73,10 +74,53 @@ class SettingsAppearanceShots {
 
     @Test
     fun settingsPickerShowsTheLibraryTurns() {
-        show { SettingsPreview(MushafReaderSettings(pageTurn = MushafPageTurn.FLIP)) }
+        show { SettingsPreview(MushafReaderSettings(pageTurn = MushafPageTurn.CURL)) }
         rule.onNodeWithTag("page_turn").performScrollTo()
         rule.waitForIdle()
         save("settings-page-turn-picker.png")
+    }
+
+    @Test
+    fun readerCurlMidTurn() {
+        showCurl(MushafSpread.Single)
+        holdFingerHalfway()
+        save("reader-curl-mid.png")
+    }
+
+    @Config(qualifiers = "w1000dp-h640dp-land-420dpi")
+    @Test
+    fun readerCurlMidTurnSpread() {
+        showCurl(MushafSpread.Auto)
+        // The curl lives on the left-hand page of the spread, so the drag stays in that half.
+        rule.onRoot().performTouchInput {
+            down(percentOffset(0.08f, 0.5f))
+            moveTo(percentOffset(0.42f, 0.5f))
+        }
+        rule.waitForIdle()
+        save("reader-curl-mid-spread.png")
+    }
+
+    private fun showCurl(spread: MushafSpread) {
+        show {
+            MushafPager(
+                modifier = Modifier.fillMaxSize(),
+                state = rememberMushafPagerState(initialPage = 2),
+                decoration = MushafDecoration.Classic,
+                pageTurn = PageTurn.Curl,
+                spread = spread,
+                pagePadding = PaddingValues(0.dp),
+            )
+        }
+        rule.waitForIdle()
+    }
+
+    /** Drag half the page width and leave the finger down, the way a held curl looks. */
+    private fun holdFingerHalfway() {
+        rule.onRoot().performTouchInput {
+            down(percentOffset(0.08f, 0.5f))
+            moveTo(percentOffset(0.58f, 0.5f))
+        }
+        rule.waitForIdle()
     }
 
     @Test
