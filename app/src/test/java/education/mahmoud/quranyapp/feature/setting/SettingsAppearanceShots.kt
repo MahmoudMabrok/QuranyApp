@@ -18,6 +18,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import io.github.sherifshabans.mushaf.MushafDecoration
 import io.github.sherifshabans.mushaf.MushafPager
+import io.github.sherifshabans.mushaf.MushafSpread
 import io.github.sherifshabans.mushaf.PageTurn
 import io.github.sherifshabans.mushaf.rememberMushafPagerState
 import androidx.compose.ui.unit.LayoutDirection
@@ -77,6 +78,44 @@ class SettingsAppearanceShots {
         rule.onNodeWithTag("page_turn").performScrollTo()
         rule.waitForIdle()
         save("settings-page-turn-picker.png")
+    }
+
+    @Test
+    fun readerCurlMidTurn() {
+        showCurl(MushafSpread.Single)
+        holdFingerHalfway()
+        save("reader-curl-mid.png")
+    }
+
+    @Config(qualifiers = "land-w1000dp-h640dp-420dpi")
+    @Test
+    fun readerCurlMidTurnSpread() {
+        showCurl(MushafSpread.Auto)
+        holdFingerHalfway()
+        save("reader-curl-mid-spread.png")
+    }
+
+    private fun showCurl(spread: MushafSpread) {
+        show {
+            MushafPager(
+                modifier = Modifier.fillMaxSize(),
+                state = rememberMushafPagerState(initialPage = 2),
+                decoration = MushafDecoration.Classic,
+                pageTurn = PageTurn.Curl,
+                spread = spread,
+                pagePadding = PaddingValues(0.dp),
+            )
+        }
+        rule.waitForIdle()
+    }
+
+    /** Drag half the page width and leave the finger down, the way a held curl looks. */
+    private fun holdFingerHalfway() {
+        rule.onRoot().performTouchInput {
+            down(percentOffset(0.15f, 0.55f))
+            moveTo(percentOffset(0.65f, 0.55f))
+        }
+        rule.waitForIdle()
     }
 
     @Test
