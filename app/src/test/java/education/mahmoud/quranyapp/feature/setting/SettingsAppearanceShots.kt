@@ -74,7 +74,7 @@ class SettingsAppearanceShots {
 
     @Test
     fun settingsPickerShowsTheLibraryTurns() {
-        show { SettingsPreview(MushafReaderSettings(pageTurn = MushafPageTurn.FLIP)) }
+        show { SettingsPreview(MushafReaderSettings(pageTurn = MushafPageTurn.CURL)) }
         rule.onNodeWithTag("page_turn").performScrollTo()
         rule.waitForIdle()
         save("settings-page-turn-picker.png")
@@ -87,11 +87,16 @@ class SettingsAppearanceShots {
         save("reader-curl-mid.png")
     }
 
-    @Config(qualifiers = "land-w1000dp-h640dp-420dpi")
+    @Config(qualifiers = "w1000dp-h640dp-land-420dpi")
     @Test
     fun readerCurlMidTurnSpread() {
         showCurl(MushafSpread.Auto)
-        holdFingerHalfway()
+        // The curl lives on the left-hand page of the spread, so the drag stays in that half.
+        rule.onRoot().performTouchInput {
+            down(percentOffset(0.08f, 0.5f))
+            moveTo(percentOffset(0.42f, 0.5f))
+        }
+        rule.waitForIdle()
         save("reader-curl-mid-spread.png")
     }
 
@@ -112,8 +117,8 @@ class SettingsAppearanceShots {
     /** Drag half the page width and leave the finger down, the way a held curl looks. */
     private fun holdFingerHalfway() {
         rule.onRoot().performTouchInput {
-            down(percentOffset(0.15f, 0.55f))
-            moveTo(percentOffset(0.65f, 0.55f))
+            down(percentOffset(0.08f, 0.5f))
+            moveTo(percentOffset(0.58f, 0.5f))
         }
         rule.waitForIdle()
     }
