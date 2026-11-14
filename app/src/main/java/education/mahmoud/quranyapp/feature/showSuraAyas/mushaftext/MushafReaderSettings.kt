@@ -24,12 +24,12 @@ enum class MushafLook(val id: Int) {
 }
 
 /**
- * How pages turn. Ids match what is already stored in `mushaf_page_turn`:
- * 0 slide, 1 curl. Later library turns use the next free ids.
+ * How pages turn. Ids match what is already stored in `mushaf_page_turn`.
+ * Curl is intentionally unavailable for now; an old stored Curl id falls
+ * through to [DEFAULT] and is therefore opened with Slide.
  */
 enum class MushafPageTurn(val id: Int) {
     SLIDE(0),
-    CURL(1),
     FLIP(2),
     FADE(3),
     COVER(4);

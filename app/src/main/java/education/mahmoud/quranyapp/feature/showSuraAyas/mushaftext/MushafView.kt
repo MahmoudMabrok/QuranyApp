@@ -92,7 +92,6 @@ fun MushafView(
 /** The library's [PageTurn] for this stored choice. */
 internal fun MushafPageTurn.toLibraryPageTurn(): PageTurn = when (this) {
     MushafPageTurn.SLIDE -> PageTurn.Slide
-    MushafPageTurn.CURL -> PageTurn.Curl
     MushafPageTurn.FLIP -> PageTurn.Flip
     MushafPageTurn.FADE -> PageTurn.Fade
     MushafPageTurn.COVER -> PageTurn.Cover
