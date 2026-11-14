@@ -1,7 +1,5 @@
 package education.mahmoud.quranyapp.feature.show_sura_list.compose
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,13 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -48,7 +47,7 @@ import io.reactivex.schedulers.Schedulers
 
 /**
  * Compose replacement for the legacy Surah-list fragment + RecyclerView adapter.
- * Observes the Surah list from Room off the main thread and renders it as a [LazyColumn].
+ * Observes the Surah list from Room off the main thread and renders it as a two-column grid.
  */
 @Composable
 fun SuraListScreen(
@@ -79,9 +78,18 @@ fun SuraListScreen(
                 modifier = Modifier.align(Alignment.Center).padding(24.dp),
             )
             else -> Column(Modifier.fillMaxSize()) {
-                SuraHeaderRow()
-                HorizontalDivider()
-                LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = bottomInset)) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(
+                        start = 12.dp,
+                        top = 12.dp,
+                        end = 12.dp,
+                        bottom = bottomInset + 12.dp,
+                    ),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     items(
                         items = suras,
                         key = { it.index },
@@ -100,39 +108,6 @@ fun SuraListScreen(
 }
 
 @Composable
-private fun SuraHeaderRow() {
-    Surface(color = MaterialTheme.colorScheme.surfaceVariant) {
-        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                HeaderCell(stringResource(R.string.sura_name), weight = 3f, align = TextAlign.Start)
-                HeaderCell("", weight = 1f)
-                HeaderCell(stringResource(R.string.sura_num), weight = 1f)
-                HeaderCell(stringResource(R.string.ayahs_count), weight = 1f)
-            }
-        }
-    }
-}
-
-@Composable
-private fun androidx.compose.foundation.layout.RowScope.HeaderCell(
-    text: String,
-    weight: Float,
-    align: TextAlign = TextAlign.Center,
-) {
-    Text(
-        text = text,
-        modifier = Modifier.weight(weight),
-        textAlign = align,
-        fontSize = 14.sp,
-        color = MaterialTheme.colorScheme.primary,
-        style = MaterialTheme.typography.labelLarge,
-    )
-}
-
-@Composable
 private fun SuraRow(
     sura: SuraItem,
     even: Boolean,
@@ -145,42 +120,54 @@ private fun SuraRow(
 
     val displayName = sura.name.orEmpty().removePrefix("سورة").trimStart()
 
+    val revelationLabel = if (sura.revelationType == "Meccan") {
+        stringResource(R.string.sura_rev_mackkia)
+    } else {
+        stringResource(R.string.sura_rev_madniaa)
+    }
+
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onClick)
-                .background(if (even) EvenRowColor else Color.Transparent)
-                .padding(horizontal = 12.dp, vertical = 14.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
+        Card(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = if (even) EvenRowColor else MaterialTheme.colorScheme.surface,
+            ),
         ) {
-            Text(
-                text = displayName,
-                modifier = Modifier.weight(3f),
-                textAlign = TextAlign.Start,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Icon(
-                painter = icon,
-                contentDescription = sura.revelationType,
-                tint = Color.Unspecified,
-                modifier = Modifier.width(32.dp).padding(horizontal = 4.dp),
-            )
-            Text(
-                text = sura.index.toString(),
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = sura.numOfAyahs.toString(),
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+            Column(Modifier.padding(horizontal = 12.dp, vertical = 12.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = displayName,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Start,
+                        fontSize = 18.sp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Icon(
+                        painter = icon,
+                        contentDescription = sura.revelationType,
+                        tint = Color.Unspecified,
+                        modifier = Modifier.width(28.dp).padding(horizontal = 3.dp),
+                    )
+                    Text(
+                        text = sura.index.toString(),
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
+                Text(
+                    text = revelationLabel,
+                    modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+                    textAlign = TextAlign.Start,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
         }
     }
 }
