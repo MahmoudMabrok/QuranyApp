@@ -120,12 +120,6 @@ private fun SuraRow(
 
     val displayName = sura.name.orEmpty().removePrefix("سورة").trimStart()
 
-    val revelationLabel = if (sura.revelationType == "Meccan") {
-        stringResource(R.string.sura_rev_mackkia)
-    } else {
-        stringResource(R.string.sura_rev_madniaa)
-    }
-
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         Card(
             onClick = onClick,
@@ -160,13 +154,6 @@ private fun SuraRow(
                         style = MaterialTheme.typography.labelLarge,
                     )
                 }
-                Text(
-                    text = revelationLabel,
-                    modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
-                    textAlign = TextAlign.Start,
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.labelMedium,
-                )
             }
         }
     }
