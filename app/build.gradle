@@ -16,7 +16,7 @@ android {
         applicationId "education.mahmoud.quranyapp"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode 70
+        versionCode 71
         versionName "3.0.5"
         multiDexEnabled true
     }
