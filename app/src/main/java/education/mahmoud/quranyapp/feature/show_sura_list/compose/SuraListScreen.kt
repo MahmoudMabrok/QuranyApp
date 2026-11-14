@@ -78,6 +78,12 @@ fun SuraListScreen(
                 modifier = Modifier.align(Alignment.Center).padding(24.dp),
             )
             else -> Column(Modifier.fillMaxSize()) {
+                val gridSuras = remember(suras) {
+                    val half = (suras.size + 1) / 2
+                    suras.take(half).flatMapIndexed { index, firstSura ->
+                        listOfNotNull(firstSura, suras.getOrNull(index + half))
+                    }
+                }
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier.fillMaxSize(),
@@ -91,7 +97,7 @@ fun SuraListScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(
-                        items = suras,
+                        items = gridSuras,
                         key = { it.index },
                         contentType = { "sura" },
                     ) { sura ->
@@ -134,8 +140,14 @@ private fun SuraRow(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
+                        text = sura.index.toString(),
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                    Text(
                         text = displayName,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f).padding(horizontal = 6.dp),
                         textAlign = TextAlign.Start,
                         fontSize = 18.sp,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -146,12 +158,6 @@ private fun SuraRow(
                         contentDescription = sura.revelationType,
                         tint = Color.Unspecified,
                         modifier = Modifier.width(28.dp).padding(horizontal = 3.dp),
-                    )
-                    Text(
-                        text = sura.index.toString(),
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.labelLarge,
                     )
                 }
             }
